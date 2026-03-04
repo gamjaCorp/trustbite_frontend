@@ -1,9 +1,5 @@
-import SignIn from './components/sign-in';
+import SignIn from '../components/sign-in';
 
 export default function Home() {
-  return (
-    <div>
-      <SignIn />
-    </div>
-  );
+  return <div>홈페이지입니다.</div>;
 }
