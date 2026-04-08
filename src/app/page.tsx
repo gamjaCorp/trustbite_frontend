@@ -8,23 +8,26 @@ export default function Home() {
 
   return (
     <>
-      <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
-        {/* 타이틀 섹션 */}
-        <div className="space-y-1">
+      <div className="max-w-5xl mx-auto px-6 pt-8 pb-24 space-y-5">
+        {/* 타이틀 */}
+        <div className="space-y-0.5 px-1">
           <h1 className="text-2xl font-bold text-foreground">나만의 미식 가이드</h1>
           <p className="text-sm text-muted-foreground">내가 직접 기록한 검증된 맛집들</p>
-          <div className="flex items-center gap-2 pt-1 text-sm text-muted-foreground">
-            <span>
-              방문 <strong className="text-foreground">{visitCount}</strong>곳
-            </span>
-            <span>·</span>
-            <span>
-              리뷰 <strong className="text-foreground">{reviewCount}</strong>개
-            </span>
-            <span>·</span>
-            <span>
-              신뢰도 <strong className="text-score-high">{trustScore}%</strong>
-            </span>
+        </div>
+
+        {/* 스탯 카드 */}
+        <div className="bg-card rounded-2xl shadow-card flex divide-x divide-border">
+          <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
+            <span className="text-2xl font-bold text-foreground">{visitCount}</span>
+            <span className="text-xs text-muted-foreground">방문한 곳</span>
+          </div>
+          <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
+            <span className="text-2xl font-bold text-foreground">{reviewCount}</span>
+            <span className="text-xs text-muted-foreground">리뷰</span>
+          </div>
+          <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
+            <span className="text-2xl font-bold text-score-high">{trustScore}</span>
+            <span className="text-xs text-muted-foreground">신뢰도</span>
           </div>
         </div>
 

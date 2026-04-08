@@ -1,11 +1,5 @@
 import { cn } from '@/lib/utils';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { CATEGORY_STYLE } from '@/lib/category';
 import { Category, SortKey } from '@/types/restaurant';
 
 const CATEGORIES: Array<Category | 'all'> = [
@@ -40,14 +34,14 @@ export function SortFilterBar({
 }: Props) {
   return (
     <div className="space-y-2">
-      {/* 정렬 토글 */}
-      <div className="flex gap-1.5">
+      {/* 정렬 + 카테고리 */}
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5">
         {(['score', 'recent'] as const).map((key) => (
           <button
             key={key}
             onClick={() => onSortChange(key)}
             className={cn(
-              'rounded-chip px-3 py-1 text-xs font-medium transition-colors',
+              'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
               sort === key
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:text-foreground',
@@ -56,39 +50,57 @@ export function SortFilterBar({
             {key === 'score' ? '점수순' : '최근 방문순'}
           </button>
         ))}
+
+        <div className="w-px h-4 bg-border shrink-0" />
+
+        {CATEGORIES.map((c) => (
+          <button
+            key={c}
+            onClick={() => onCategoryChange(c)}
+            className={cn(
+              'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+              category === c
+                ? c === 'all'
+                  ? 'bg-foreground text-background'
+                  : CATEGORY_STYLE[c as Category]
+                : 'bg-muted text-muted-foreground hover:text-foreground',
+            )}
+          >
+            {c === 'all' ? '전체' : c}
+          </button>
+        ))}
       </div>
 
-      {/* 필터 */}
-      <div className="flex gap-2">
-        <Select value={category} onValueChange={(v) => onCategoryChange(v as Category | 'all')}>
-          <SelectTrigger className="h-8 text-xs flex-1">
-            <SelectValue placeholder="카테고리" />
-          </SelectTrigger>
-          <SelectContent>
-            {CATEGORIES.map((c) => (
-              <SelectItem key={c} value={c} className="text-xs">
-                {c === 'all' ? '전체 카테고리' : c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={region} onValueChange={onRegionChange}>
-          <SelectTrigger className="h-8 text-xs flex-1">
-            <SelectValue placeholder="지역" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all" className="text-xs">
-              전체 지역
-            </SelectItem>
-            {regions.map((r) => (
-              <SelectItem key={r} value={r} className="text-xs">
-                {r}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {/* 지역 필터 (복수 지역일 때만) */}
+      {regions.length > 1 && (
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5">
+          <button
+            onClick={() => onRegionChange('all')}
+            className={cn(
+              'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+              region === 'all'
+                ? 'bg-foreground text-background'
+                : 'bg-muted text-muted-foreground hover:text-foreground',
+            )}
+          >
+            전체 지역
+          </button>
+          {regions.map((r) => (
+            <button
+              key={r}
+              onClick={() => onRegionChange(r)}
+              className={cn(
+                'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+                region === r
+                  ? 'bg-foreground text-background'
+                  : 'bg-muted text-muted-foreground hover:text-foreground',
+              )}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

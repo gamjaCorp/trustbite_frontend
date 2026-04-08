@@ -45,29 +45,32 @@ export function RestaurantRankList({ entries }: Props) {
   }, [entries, category, region, sort]);
 
   return (
-    <div className="space-y-6">
-      {/* TOP 3 하이라이트 */}
-      <div className="bg-primary-subtle rounded-2xl px-6 py-5 space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8 items-start">
+      {/* LEFT: TOP 3 */}
+      <div className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">인생 맛집 TOP 3</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <div className="space-y-2">
           {top3.map((entry, i) => (
             <RestaurantTop3Card key={entry.id} entry={entry} displayRank={i + 1} />
           ))}
         </div>
       </div>
 
-      {/* 전체 랭킹 */}
-      <div className="space-y-3 pt-2">
-        <h2 className="text-base font-semibold text-foreground">전체 랭킹</h2>
-        <SortFilterBar
-          sort={sort}
-          onSortChange={setSort}
-          category={category}
-          onCategoryChange={setCategory}
-          region={region}
-          onRegionChange={setRegion}
-          regions={regions}
-        />
+      {/* RIGHT: 전체 랭킹 */}
+      <div className="space-y-1">
+        <h2 className="text-base font-semibold text-foreground pb-2">전체 랭킹</h2>
+
+        <div className="sticky top-[91px] bg-background z-10 py-2 border-b border-border/50">
+          <SortFilterBar
+            sort={sort}
+            onSortChange={setSort}
+            category={category}
+            onCategoryChange={setCategory}
+            region={region}
+            onRegionChange={setRegion}
+            regions={regions}
+          />
+        </div>
 
         {filteredList.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16 text-center">
@@ -75,7 +78,7 @@ export function RestaurantRankList({ entries }: Props) {
             <p className="text-sm text-muted-foreground">해당하는 맛집이 없어요</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="pt-2">
             {filteredList.map((entry, i) => (
               <RestaurantRankItem key={entry.id} entry={{ ...entry, rank: i + 1 }} />
             ))}

@@ -18,55 +18,47 @@ const RANK_COLORS: Record<number, string> = {
 };
 
 export function RestaurantRankItem({ entry }: Props) {
-  const { id, rank, name, category, imageUrl, comment, scores, avgScore, visitCount, lastVisitedAt } = entry;
+  const { id, rank, name, category, region, imageUrl, avgScore, visitCount, lastVisitedAt } =
+    entry;
 
   const rankColor = RANK_COLORS[rank] ?? 'text-muted-foreground';
   const lastVisited = formatDistanceToNow(lastVisitedAt, { addSuffix: true, locale: ko });
-
   const isFirst = rank === 1;
 
   return (
     <Link
       href={`/restaurant/${id}`}
       className={cn(
-        'group flex items-center gap-4 rounded-card shadow-card p-3 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200',
-        isFirst ? 'bg-primary/5 border border-primary/20' : 'bg-card',
+        'flex items-center gap-3 rounded-2xl px-3 py-3 hover:bg-muted/40 transition-colors',
+        isFirst && 'border-l-2 border-primary',
       )}
     >
       {/* 순위 */}
-      <div className="w-8 shrink-0 text-center">
+      <div className="w-7 shrink-0 text-center">
         {isFirst ? (
-          <span className="text-xl">👑</span>
+          <span className="text-base leading-none">👑</span>
         ) : (
-          <span className={cn('text-xl font-bold', rankColor)}>{rank}</span>
+          <span className={cn('text-base font-bold', rankColor)}>{rank}</span>
         )}
       </div>
 
       {/* 썸네일 */}
-      <div className="relative w-24 h-16 shrink-0 overflow-hidden rounded-md">
-        <Image
-          src={imageUrl}
-          alt={name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+      <div className="relative w-14 h-14 shrink-0 overflow-hidden rounded-xl">
+        <Image src={imageUrl} alt={name} fill className="object-cover" />
       </div>
 
       {/* 본문 */}
-      <div className="flex-1 min-w-0 space-y-1">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-semibold truncate">{name}</span>
-          <span className={cn('text-xs rounded-chip px-2 py-0.5 shrink-0', CATEGORY_STYLE[category])}>
+      <div className="flex-1 min-w-0 space-y-0.5">
+        <p className="text-sm font-semibold truncate">{name}</p>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className={cn('text-xs rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
             {category}
           </span>
+          <span className="text-xs text-muted-foreground">{region}</span>
+          <span className="text-xs text-muted-foreground" suppressHydrationWarning>
+            · {visitCount}번 · {lastVisited}
+          </span>
         </div>
-        <p className="text-xs text-muted-foreground border-l-2 border-primary/40 pl-2 truncate">{comment}</p>
-        <p className="text-xs text-muted-foreground">
-          맛 {scores.taste}&nbsp;|&nbsp;가성비 {scores.value}&nbsp;|&nbsp;분위기 {scores.vibe}
-        </p>
-        <p className="text-xs text-muted-foreground" suppressHydrationWarning>
-          {visitCount}번 방문 · {lastVisited}
-        </p>
       </div>
 
       {/* 평균 점수 */}

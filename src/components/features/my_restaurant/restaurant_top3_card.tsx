@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CATEGORY_STYLE } from '@/lib/category';
@@ -9,39 +10,38 @@ interface Props {
   displayRank: number;
 }
 
-const RANK_STYLES: Record<number, { color: string; medal: string }> = {
-  1: { color: 'text-grade-s', medal: '🥇' },
-  2: { color: 'text-grade-a', medal: '🥈' },
-  3: { color: 'text-grade-b', medal: '🥉' },
+const RANK_MEDALS: Record<number, string> = {
+  1: '🥇',
+  2: '🥈',
+  3: '🥉',
 };
 
 export function RestaurantTop3Card({ entry, displayRank }: Props) {
-  const { id, name, category, scores, avgScore } = entry;
-
-  const { color, medal } = RANK_STYLES[displayRank] ?? { color: 'text-muted-foreground', medal: '' };
+  const { id, name, category, region, imageUrl, avgScore } = entry;
+  const medal = RANK_MEDALS[displayRank] ?? '';
 
   return (
     <Link
       href={`/restaurant/${id}`}
-      className="flex items-center gap-4 bg-white/70 rounded-xl px-4 py-3 hover:bg-white transition-colors"
+      className="flex items-center gap-3 bg-card rounded-2xl px-4 py-3 shadow-card hover:shadow-md transition-shadow"
     >
-      {/* 순위 */}
-      <span className={cn('text-2xl font-bold shrink-0', color)}>{medal}</span>
+      <span className="text-xl shrink-0">{medal}</span>
 
-      {/* 본문 */}
-      <div className="flex-1 min-w-0 space-y-0.5">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold truncate">{name}</span>
-          <span className={cn('text-xs rounded-chip px-2 py-0.5 shrink-0', CATEGORY_STYLE[category])}>
-            {category}
-          </span>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          맛 {scores.taste}&nbsp;|&nbsp;가성비 {scores.value}&nbsp;|&nbsp;분위기 {scores.vibe}
-        </p>
+      <div className="relative w-12 h-12 shrink-0 rounded-xl overflow-hidden">
+        <Image src={imageUrl} alt={name} fill className="object-cover" />
       </div>
 
-      {/* 평균 점수 */}
+      <div className="flex-1 min-w-0 space-y-0.5">
+        <p className="text-sm font-semibold truncate">{name}</p>
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <span className={cn('rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
+            {category}
+          </span>
+          <span>·</span>
+          <span>{region}</span>
+        </div>
+      </div>
+
       <div className="shrink-0 flex items-center gap-1">
         <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
         <span className="text-sm font-bold">{avgScore.toFixed(1)}</span>
