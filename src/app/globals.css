@@ -9,65 +9,122 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  /* TrustBite 시맨틱 컬러 */
-  --color-primary-subtle: var(--primary-subtle);
-  --color-success: var(--success);
-  --color-success-subtle: var(--success-subtle);
-  --color-info: var(--info);
-  --color-error: var(--error);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
+
+  /* ── shadcn 기본 색상 ── */
+  --color-primary-subtle:           var(--primary-subtle);
+  --color-success:                  var(--success);
+  --color-success-subtle:           var(--success-subtle);
+  --color-info:                     var(--info);
+  --color-error:                    var(--error);
+  --color-warning:                  var(--warning);
+  --color-sidebar-ring:             var(--sidebar-ring);
+  --color-sidebar-border:           var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent:           var(--sidebar-accent);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --color-sidebar-primary:          var(--sidebar-primary);
+  --color-sidebar-foreground:       var(--sidebar-foreground);
+  --color-sidebar:                  var(--sidebar);
+  --color-chart-5:                  var(--chart-5);
+  --color-chart-4:                  var(--chart-4);
+  --color-chart-3:                  var(--chart-3);
+  --color-chart-2:                  var(--chart-2);
+  --color-chart-1:                  var(--chart-1);
+  --color-ring:                     var(--ring);
+  --color-input:                    var(--input);
+  --color-border:                   var(--border);
+  --color-destructive:              var(--destructive);
+  --color-accent-foreground:        var(--accent-foreground);
+  --color-accent:                   var(--accent);
+  --color-muted-foreground:         var(--muted-foreground);
+  --color-muted:                    var(--muted);
+  --color-secondary-foreground:     var(--secondary-foreground);
+  --color-secondary:                var(--secondary);
+  --color-primary-foreground:       var(--primary-foreground);
+  --color-primary:                  var(--primary);
+  --color-popover-foreground:       var(--popover-foreground);
+  --color-popover:                  var(--popover);
+  --color-card-foreground:          var(--card-foreground);
+  --color-card:                     var(--card);
+
+  /* ── TrustBite: 등급 색상 ── */
+  --color-grade-s: var(--grade-s);
+  --color-grade-a: var(--grade-a);
+  --color-grade-b: var(--grade-b);
+  --color-grade-c: var(--grade-c);
+  --color-grade-d: var(--grade-d);
+
+  /* ── TrustBite: TrustScore 게이지 색상 ── */
+  --color-score-high:   var(--score-high);
+  --color-score-good:   var(--score-good);
+  --color-score-mid:    var(--score-mid);
+  --color-score-low:    var(--score-low);
+  --color-score-danger: var(--score-danger);
+
+  /* ── 라운딩 ── */
+  --radius-sm:    calc(var(--radius) - 4px);
+  --radius-md:    calc(var(--radius) - 2px);
+  --radius-lg:    var(--radius);
+  --radius-xl:    calc(var(--radius) + 4px);
+  --radius-2xl:   calc(var(--radius) + 8px);
+  --radius-3xl:   calc(var(--radius) + 12px);
+  --radius-4xl:   calc(var(--radius) + 16px);
+  --radius-chip:  var(--radius-chip);
+  --radius-card:  var(--radius-card);
+  --radius-modal: var(--radius-modal);
+
+  /* ── 그림자 ── */
+  --shadow-xs:   var(--shadow-xs);
+  --shadow-sm:   var(--shadow-sm);
+  --shadow-md:   var(--shadow-md);
+  --shadow-lg:   var(--shadow-lg);
+  --shadow-xl:   var(--shadow-xl);
+  --shadow-card: var(--shadow-card);
 }
 
 :root {
-  --radius: 0.625rem;
+  /* ── 라운딩 (토스/당근 스타일 — 둥글고 귀엽게) ── */
+  --radius:       0.75rem;   /* 기본 12px */
+  --radius-chip:  9999px;    /* pill — 태그, 배지 */
+  --radius-card:  1rem;      /* 16px — 카드 */
+  --radius-modal: 1.5rem;    /* 24px — 바텀시트/모달 */
+
+  /* ── 그림자 (토스 스타일 — 은은하고 부드럽게) ── */
+  --shadow-xs:   0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm:   0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl:   0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.04), 0 2px 8px 0 rgb(0 0 0 / 0.06);
+
+  /* ── TrustBite: 등급 색상 (S → A → B → C → D) ── */
+  /* subtle 배경 필요 시 bg-grade-s/10 처럼 opacity 조합 사용 */
+  --grade-s: #F59E0B;   /* Gold  — 최상위 신뢰 */
+  --grade-a: #22C55E;   /* Green — 우수 */
+  --grade-b: #3B82F6;   /* Blue  — 양호 */
+  --grade-c: #9CA3AF;   /* Gray  — 보통 */
+  --grade-d: #EF4444;   /* Red   — 주의 */
+
+  /* ── TrustBite: TrustScore 게이지 색상 (0~100점) ── */
+  --score-high:   #22C55E;   /* 80~100: 안전 */
+  --score-good:   #84CC16;   /* 60~79:  양호 */
+  --score-mid:    #F59E0B;   /* 40~59:  보통 */
+  --score-low:    #F97316;   /* 20~39:  주의 */
+  --score-danger: #EF4444;   /* 0~19:   위험 */
+
+  /* ── shadcn 기본 색상 ── */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* primary: #FF7A00 주황 */
   --primary: #FF7A00;
   --primary-foreground: oklch(0.985 0 0);
-  /* TrustBite 시맨틱 컬러 */
   --primary-subtle: #FFF3E6;
   --success: #22C55E;
   --success-subtle: #ECFDF5;
+  --warning: #F59E0B;
   --info: #3B82F6;
   --error: #EF4444;
   --secondary: oklch(0.97 0 0);
@@ -96,14 +153,13 @@
 }
 
 .dark {
+  /* ── shadcn 기본 색상 (다크) ── */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -127,6 +183,32 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ── Primary: 다크에서도 오렌지 유지 ── */
+  --primary:            #FF8C1A;
+  --primary-foreground: oklch(0.145 0 0);
+
+  /* ── 그림자 (다크 — 불투명도 높여 가시성 확보) ── */
+  --shadow-xs:   0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-sm:   0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.2);
+  --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.35), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+  --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+  --shadow-xl:   0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.06), 0 2px 8px 0 rgb(0 0 0 / 0.3);
+
+  /* ── TrustBite: 등급 색상 (다크 — 어두운 배경 가독성 확보) ── */
+  --grade-s: #FBB740;
+  --grade-a: #4ADE80;
+  --grade-b: #60A5FA;
+  --grade-c: #D1D5DB;
+  --grade-d: #F87171;
+
+  /* ── TrustBite: TrustScore 게이지 색상 (다크) ── */
+  --score-high:   #4ADE80;
+  --score-good:   #A3E635;
+  --score-mid:    #FBB740;
+  --score-low:    #FB923C;
+  --score-danger: #F87171;
 }
 
 @layer base {

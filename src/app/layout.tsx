@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
+import { Header } from '@/components/common/Header';
 
 const notoSansKR = Noto_Sans_KR({
   variable: '--font-sans',
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <body className={`${notoSansKR.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          <main className="min-h-screen bg-background">{children}</main>
+        </Providers>
       </body>
     </html>
   );
