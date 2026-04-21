@@ -84,3 +84,86 @@ export interface RealtimeReview {
   comment: string;
   minutesAgo: number;
 }
+
+/* ── 상세 페이지용 타입 ── */
+
+export type SceneTag = '데이트' | '회식' | '혼밥';
+
+export interface OpeningHours {
+  weekday: string;
+}
+
+export interface SceneScore {
+  tag: SceneTag;
+  score: number;
+}
+
+export interface DetailedReview {
+  id: string;
+  reviewerName: string;
+  reviewerInitial: string;
+  reviewerGrade: Grade;
+  reviewerLevel: number;
+  reviewerTitle: string;
+  reviewerTrustScore: number;
+  visitOrdinal: number;
+  scores: RatingScores;
+  content: string;
+  photos?: string[];
+  sceneTags: SceneTag[];
+  helpfulCount: number;
+  postedAt: string;
+}
+
+export interface RepeatVisitEntry {
+  label: string;
+  scores: RatingScores;
+  content: string;
+}
+
+export interface MyReviewEntry {
+  label: string;
+  scores: RatingScores;
+  content: string;
+  sceneTags: SceneTag[];
+  photos?: string[];
+}
+
+export interface MyReview {
+  visitCount: number;
+  lastVisitLabel: string;
+  visits: MyReviewEntry[];
+}
+
+export interface RepeatVisitReview {
+  reviewerName: string;
+  reviewerInitial: string;
+  reviewerGrade: Grade;
+  reviewerLevel: number;
+  reviewerTitle: string;
+  reviewerTrustScore: number;
+  visitCount: number;
+  visits: RepeatVisitEntry[];
+}
+
+export interface RestaurantDetail {
+  id: string;
+  name: string;
+  category: Category;
+  subCategory?: string;
+  address: string;
+  accessSummary: string;
+  hours: OpeningHours;
+  coordinates: Coordinates;
+  photos: string[];
+  totalPhotoCount: number;
+  locationDescription: string;
+  communityAvgScore: number;
+  dimensionScores: RatingScores;
+  sceneScores: SceneScore[];
+  trustScore: number;
+  reviewCount: number;
+  myReview?: MyReview;
+  repeatVisitReview?: RepeatVisitReview;
+  reviews: DetailedReview[];
+}

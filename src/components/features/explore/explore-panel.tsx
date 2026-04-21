@@ -55,11 +55,11 @@ export function ExplorePanel({ entries, realtimeReviews, activeId }: Props) {
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="font-numeric text-[10px] tracking-[0.2em] text-ink/70 uppercase">
+                <span className="font-numeric text-xs tracking-[0.2em] text-ink/70 uppercase">
                   SEOUL · 37.55°N
                 </span>
               </div>
-              <h1 className="text-[26px] font-extrabold text-foreground tracking-tight leading-none">
+              <h1 className="text-2xl font-extrabold text-foreground tracking-tight leading-none">
                 맛집 탐색
               </h1>
               <p className="text-xs text-ink/80 pt-0.5 flex items-center gap-1">

@@ -38,13 +38,31 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
         <div
           data-restaurant-id={id}
           className={cn(
-            'group relative bg-card rounded-2xl overflow-hidden transition-all duration-200 flex scroll-mt-[180px]',
+            'group relative bg-card rounded-2xl transition-all duration-200 flex items-stretch gap-4 p-4 scroll-mt-[180px]',
             'hover:shadow-md hover:-translate-y-0.5 shadow-card ring-1 ring-paper-edge/40',
             active && 'ring-2 ring-primary shadow-lg',
           )}
         >
-          <Link href={`/restaurant/${id}`} className="relative w-24 h-auto shrink-0 overflow-hidden">
-            <Image src={imageUrl} alt={name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+          {/* ① 랭크 번호 */}
+          {rank > 3 && (
+            <div className="w-8 shrink-0 flex items-center justify-center">
+              <span className="font-numeric text-base font-semibold text-ink/60">
+                {rank}
+              </span>
+            </div>
+          )}
+
+          {/* ② 이미지 */}
+          <Link
+            href={`/restaurant/${id}`}
+            className="relative w-24 h-24 shrink-0 overflow-hidden rounded-xl"
+          >
+            <Image
+              src={imageUrl}
+              alt={name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
             {rank <= 3 && (
               <span className="absolute bottom-1 left-1 text-base leading-none drop-shadow-md">
                 {MEDALS[rank - 1]}
@@ -52,51 +70,80 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
             )}
           </Link>
 
-          <div className="flex-1 min-w-0 p-3 flex flex-col gap-1.5">
-            <Link href={`/restaurant/${id}`} className="flex items-start justify-between gap-2">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
-                  {rank > 3 && (
-                    <span className="font-numeric text-[11px] font-semibold text-ink/60 shrink-0">
-                      {String(rank).padStart(2, '0')}
-                    </span>
-                  )}
-                  <p className="font-bold text-sm text-foreground leading-snug truncate">{name}</p>
-                </div>
-                <div className="flex items-center gap-1 text-[11px] text-ink/70 pt-0.5">
-                  <span className={cn('rounded-chip px-1.5 py-0.5 text-[10px] font-medium', CATEGORY_STYLE[category])}>
-                    {category}
-                  </span>
-                  <span>· {region}</span>
-                </div>
-              </div>
-              <button
-                onClick={(e) => { e.preventDefault(); setBookmarked((v) => !v); }}
+          {/* ③ 가운데 — meta / 이름 / 코멘트 / CTA */}
+          <div className="flex-1 min-w-0 flex flex-col gap-2">
+            <div className="flex items-center gap-1 text-sm text-ink/70">
+              <span
                 className={cn(
-                  'shrink-0 p-1 rounded-full transition-all active:scale-90',
-                  bookmarked ? 'text-primary' : 'text-ink/40 hover:text-ink/70',
+                  'rounded-chip px-2 py-0.5 text-xs font-medium',
+                  CATEGORY_STYLE[category],
                 )}
               >
-                <Bookmark className={cn('w-4 h-4', bookmarked && 'fill-current')} />
-              </button>
-            </Link>
-
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <div className="flex items-center gap-0.5">
-                <Star className="w-3 h-3 fill-grade-s text-grade-s" />
-                <span className="font-numeric text-sm font-bold text-foreground">{communityAvgScore.toFixed(1)}</span>
-              </div>
-              <TrustScoreBadge score={trustScore} size="sm" onClick={() => setSheetOpen(true)} />
-              <span className="font-numeric text-[10px] text-ink/60">
-                리뷰 {reviewCount.toLocaleString()}
+                {category}
               </span>
+              <span>· {region}</span>
             </div>
 
+            <Link
+              href={`/restaurant/${id}`}
+              className="font-bold text-base text-foreground truncate"
+            >
+              {name}
+            </Link>
+
             {comment && (
-              <p className="text-[11px] text-ink/70 line-clamp-1 border-l-2 border-primary/30 pl-2 italic mt-0.5">
+              <p className="text-sm text-ink/70 line-clamp-1">
                 &ldquo;{comment}&rdquo;
               </p>
             )}
+
+            {/* 리뷰 CTA */}
+            <div className="pt-1">
+              {myStatus !== 'reviewed' ? (
+                <button className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:brightness-90 active:scale-95 transition-all">
+                  ✍️ 리뷰 쓰기
+                </button>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 text-sm text-ink/60">
+                  <Star className="w-3.5 h-3.5 fill-primary text-primary" />
+                  <span>내 평점 <span className="font-numeric">{avgScore.toFixed(1)}</span></span>
+                  <span className="text-ink/40">·</span>
+                  <button className="text-ink/70 hover:text-foreground transition-colors">
+                    수정
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ④ 우측 — 평점/신뢰도 + 큰 북마크 */}
+          <div className="shrink-0 flex items-center gap-2 self-center">
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-center gap-0.5">
+                <Star className="w-4 h-4 fill-grade-s text-grade-s" />
+                <span className="font-numeric text-base font-bold text-foreground">
+                  {communityAvgScore.toFixed(1)}
+                </span>
+              </div>
+              <TrustScoreBadge
+                score={trustScore}
+                size="sm"
+                onClick={() => setSheetOpen(true)}
+              />
+            </div>
+
+            <button
+              onClick={() => setBookmarked((v) => !v)}
+              className={cn(
+                'shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90',
+                bookmarked
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-muted text-ink/50 hover:bg-muted/80 hover:text-ink/80',
+              )}
+              aria-label="북마크"
+            >
+              <Bookmark className={cn('w-5 h-5', bookmarked && 'fill-current')} />
+            </button>
           </div>
         </div>
 
@@ -148,43 +195,45 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
 
       {/* 본문 */}
       <div className="flex flex-col flex-1 p-4 gap-3">
-        {/* 순위 + 이름 + 카테고리 */}
-        <Link href={`/restaurant/${id}`} className="space-y-1">
-          <div className="flex items-center gap-2">
-            {rank <= 3 ? (
-              <span className={cn('leading-none shrink-0', isFeatured ? 'text-2xl' : 'text-xl')}>
-                {MEDALS[rank - 1]}
-              </span>
-            ) : (
-              <span className={cn('text-sm font-bold w-6 shrink-0', RANK_COLORS[rank] ?? 'text-muted-foreground')}>
-                {rank}위
-              </span>
-            )}
-            <p className={cn('font-bold text-foreground leading-snug truncate', isFeatured ? 'text-base' : 'text-sm')}>
-              {name}
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5 pl-0.5">
-            <span className={cn('text-xs rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
+        {/* 메타 (카테고리 · 지역) */}
+        <Link href={`/restaurant/${id}`} className="space-y-1.5">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <span className={cn('rounded-chip px-2 py-0.5 text-xs font-medium', CATEGORY_STYLE[category])}>
               {category}
             </span>
-            <span className="text-xs text-muted-foreground">· {region}</span>
+            <span>· {region}</span>
+          </div>
+
+          {/* 순위 메달 + 이름 */}
+          <div className="flex items-center gap-1.5">
+            {rank <= 3 ? (
+              <span className="text-xl leading-none shrink-0">{MEDALS[rank - 1]}</span>
+            ) : (
+              <span className={cn('font-numeric text-base font-semibold shrink-0', RANK_COLORS[rank] ?? 'text-muted-foreground')}>
+                {rank}
+              </span>
+            )}
+            <p className="font-bold text-base text-foreground leading-snug truncate">
+              {name}
+            </p>
           </div>
         </Link>
 
         {/* 한줄 평가 */}
         {comment && (
-          <p className="text-xs text-muted-foreground italic line-clamp-1 border-l-2 border-primary/30 pl-2">
+          <p className="text-sm text-muted-foreground line-clamp-1">
             &ldquo;{comment}&rdquo;
           </p>
         )}
 
         {/* 커뮤니티 평점 + 신뢰도 */}
         <div className="flex items-center gap-1.5 flex-wrap">
-          <Star className={cn('fill-grade-s text-grade-s shrink-0', isFeatured ? 'w-5 h-5' : 'w-4 h-4')} />
-          <span className={cn('font-bold', isFeatured ? 'text-lg' : 'text-base')}>{communityAvgScore.toFixed(1)}</span>
-          <TrustScoreBadge score={trustScore} size={isFeatured ? 'md' : 'sm'} onClick={() => setSheetOpen(true)} />
-          <span className="text-xs text-muted-foreground">· 리뷰 {reviewCount.toLocaleString()}개</span>
+          <Star className="w-4 h-4 fill-grade-s text-grade-s shrink-0" />
+          <span className="font-numeric text-base font-bold text-foreground">
+            {communityAvgScore.toFixed(1)}
+          </span>
+          <TrustScoreBadge score={trustScore} size="sm" onClick={() => setSheetOpen(true)} />
+          <span className="text-sm text-muted-foreground">· 리뷰 {reviewCount.toLocaleString()}</span>
         </div>
 
         {/* CTA */}
@@ -195,11 +244,11 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
             </button>
           ) : (
             <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1 rounded-chip px-2.5 py-1.5 bg-primary/10 text-primary text-xs font-semibold">
+              <span className="inline-flex items-center gap-1 rounded-chip px-2.5 py-1 bg-primary/10 text-primary text-sm font-semibold">
                 <Star className="w-3.5 h-3.5 fill-primary" />
-                내 평점 {avgScore.toFixed(1)}
+                내 평점 <span className="font-numeric">{avgScore.toFixed(1)}</span>
               </span>
-              <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 수정 →
               </button>
             </div>

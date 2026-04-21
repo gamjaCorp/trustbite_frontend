@@ -57,7 +57,7 @@ export function RealtimeReviews({ reviews }: Props) {
             </div>
 
             {/* 리뷰어 신뢰도 · 방문 */}
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               신뢰도 {review.reviewerTrustScore}% · 방문 {review.reviewerVisitCount}회
             </p>
 

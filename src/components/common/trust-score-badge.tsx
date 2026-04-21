@@ -28,7 +28,7 @@ export function TrustScoreBadge({ score, size = 'sm', onClick, showIcon = true, 
       )}
     >
       {showIcon && <ShieldCheck className={size === 'sm' ? 'w-3 h-3' : 'w-3.5 h-3.5'} />}
-      신뢰도 {Math.round(score)}%
+      {Math.round(score)}%
     </span>
   );
 
