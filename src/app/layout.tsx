@@ -1,18 +1,19 @@
 import type { Metadata } from 'next';
-import { Noto_Sans_KR } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
 import { Providers } from '@/components/providers';
 import { Header } from '@/components/common/Header';
 
-const notoSansKR = Noto_Sans_KR({
-  variable: '--font-sans',
+const jetbrainsMono = JetBrains_Mono({
+  variable: '--font-mono',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
   title: 'TrustBite',
-  description: '신뢰할 수 있는 맛집 리뷰',
+  description: '믿을 수 있는 별점, 같이 모으는 맛집',
 };
 
 export default function RootLayout({
@@ -22,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${notoSansKR.variable} antialiased`}>
+      <body className={`${jetbrainsMono.variable} antialiased`}>
         <Providers>
           <Header />
           <main className="min-h-screen bg-background">{children}</main>

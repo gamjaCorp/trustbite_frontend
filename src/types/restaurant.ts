@@ -26,18 +26,61 @@ export interface RatingScores {
   vibe: number;   // 분위기 (1~5)
 }
 
-export interface RestaurantRankEntry {
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+interface RestaurantBase {
   id: string;
-  rank: number;
   name: string;
   category: Category;
   region: string;
   imageUrl: string;
+  coordinates: Coordinates;
+}
+
+/** 나의 맛집 탭 — 내가 기록한 데이터 */
+export type MyRestaurantEntry = RestaurantBase & {
+  rank: number;
   comment: string;
   scores: RatingScores;
   avgScore: number;
   visitCount: number;
   lastVisitedAt: Date;
+};
+
+export type VisitStatus = 'none' | 'visited' | 'reviewed';
+
+export type Grade = 'S' | 'A' | 'B' | 'C' | 'D';
+
+/** 가게 단위 신뢰도 구성 요소 (0~1 비율) */
+export interface TrustBreakdown {
+  photoRatio: number;
+  longTextRatio: number;
+  recentActivityRatio: number;
 }
 
+/** 지역 랭킹 탭 — 커뮤니티 데이터 + 방문 상태 포함 (필수) */
+export type RegionalRankEntry = MyRestaurantEntry & {
+  communityAvgScore: number;
+  reviewCount: number;
+  myStatus: VisitStatus;
+  trustScore: number;
+  trustBreakdown: TrustBreakdown;
+};
+
 export type SortKey = 'score' | 'recent';
+
+export interface RealtimeReview {
+  id: string;
+  restaurantId: string;
+  restaurantName: string;
+  reviewerName: string;
+  reviewerGrade: Grade;
+  reviewerTrustScore: number;
+  reviewerVisitCount: number;
+  score: number;
+  comment: string;
+  minutesAgo: number;
+}

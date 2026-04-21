@@ -1,14 +1,23 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { UtensilsCrossed } from 'lucide-react';
-import { Category, RestaurantRankEntry, SortKey } from '@/types/restaurant';
-import { SortFilterBar } from './sort_filter_bar';
-import { RestaurantTop3Card } from './restaurant_top3_card';
-import { RestaurantRankItem } from './restaurant_rank_item';
+import { Plus, UtensilsCrossed } from 'lucide-react';
+import { Category, MyRestaurantEntry, SortKey } from '@/types/restaurant';
+import { Button } from '@/components/ui/button';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
+import { SortFilterBar } from './sort-filter-bar';
+import { RestaurantTop3Card } from './restaurant-top3-card';
+import { RestaurantRankItem } from './restaurant-rank-item';
 
 interface Props {
-  entries: RestaurantRankEntry[];
+  entries: MyRestaurantEntry[];
 }
 
 export function RestaurantRankList({ entries }: Props) {
@@ -73,10 +82,22 @@ export function RestaurantRankList({ entries }: Props) {
         </div>
 
         {filteredList.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 py-16 text-center">
-            <UtensilsCrossed className="w-8 h-8 text-muted-foreground/40" />
-            <p className="text-sm text-muted-foreground">해당하는 맛집이 없어요</p>
-          </div>
+          <Empty className="border-0 py-16">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <UtensilsCrossed />
+              </EmptyMedia>
+              <EmptyTitle>아직 기록한 맛집이 없어요</EmptyTitle>
+              <EmptyDescription>
+                첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button className="gap-1.5 rounded-chip">
+                <Plus className="w-4 h-4" />새 맛집 추가하기
+              </Button>
+            </EmptyContent>
+          </Empty>
         ) : (
           <div className="pt-2">
             {filteredList.map((entry, i) => (

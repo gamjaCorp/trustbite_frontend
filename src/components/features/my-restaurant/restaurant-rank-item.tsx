@@ -3,12 +3,13 @@ import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CATEGORY_STYLE } from '@/lib/category';
-import { RestaurantRankEntry } from '@/types/restaurant';
+import { MyRestaurantEntry } from '@/types/restaurant';
+import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 interface Props {
-  entry: RestaurantRankEntry;
+  entry: MyRestaurantEntry & { trustScore?: number };
 }
 
 const RANK_COLORS: Record<number, string> = {
@@ -18,7 +19,7 @@ const RANK_COLORS: Record<number, string> = {
 };
 
 export function RestaurantRankItem({ entry }: Props) {
-  const { id, rank, name, category, region, imageUrl, avgScore, visitCount, lastVisitedAt } =
+  const { id, rank, name, category, region, imageUrl, avgScore, visitCount, lastVisitedAt, trustScore } =
     entry;
 
   const rankColor = RANK_COLORS[rank] ?? 'text-muted-foreground';
@@ -29,7 +30,7 @@ export function RestaurantRankItem({ entry }: Props) {
     <Link
       href={`/restaurant/${id}`}
       className={cn(
-        'flex items-center gap-3 rounded-2xl px-3 py-3 hover:bg-muted/40 transition-colors',
+        'flex items-center gap-3 rounded-2xl px-3 py-3 hover:bg-muted/40 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-200',
         isFirst && 'border-l-2 border-primary',
       )}
     >
@@ -61,10 +62,13 @@ export function RestaurantRankItem({ entry }: Props) {
         </div>
       </div>
 
-      {/* 평균 점수 */}
-      <div className="shrink-0 flex items-center gap-1">
-        <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
-        <span className="text-sm font-bold">{avgScore.toFixed(1)}</span>
+      {/* 평균 점수 + 신뢰도 */}
+      <div className="shrink-0 flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
+          <span className="text-sm font-bold">{avgScore.toFixed(1)}</span>
+        </div>
+        {typeof trustScore === 'number' && <TrustScoreBadge score={trustScore} size="sm" showIcon={false} />}
       </div>
     </Link>
   );

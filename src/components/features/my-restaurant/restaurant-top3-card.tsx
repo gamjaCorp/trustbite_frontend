@@ -3,10 +3,11 @@ import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CATEGORY_STYLE } from '@/lib/category';
-import { RestaurantRankEntry } from '@/types/restaurant';
+import { MyRestaurantEntry } from '@/types/restaurant';
+import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 
 interface Props {
-  entry: RestaurantRankEntry;
+  entry: MyRestaurantEntry & { trustScore?: number };
   displayRank: number;
 }
 
@@ -17,13 +18,13 @@ const RANK_MEDALS: Record<number, string> = {
 };
 
 export function RestaurantTop3Card({ entry, displayRank }: Props) {
-  const { id, name, category, region, imageUrl, avgScore } = entry;
+  const { id, name, category, region, imageUrl, avgScore, trustScore } = entry;
   const medal = RANK_MEDALS[displayRank] ?? '';
 
   return (
     <Link
       href={`/restaurant/${id}`}
-      className="flex items-center gap-3 bg-card rounded-2xl px-4 py-3 shadow-card hover:shadow-md transition-shadow"
+      className="flex items-center gap-3 bg-card rounded-2xl px-4 py-3 shadow-card hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
     >
       <span className="text-xl shrink-0">{medal}</span>
 
@@ -31,7 +32,7 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
         <Image src={imageUrl} alt={name} fill className="object-cover" />
       </div>
 
-      <div className="flex-1 min-w-0 space-y-0.5">
+      <div className="flex-1 min-w-0 space-y-1">
         <p className="text-sm font-semibold truncate">{name}</p>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <span className={cn('rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
@@ -40,6 +41,9 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
           <span>·</span>
           <span>{region}</span>
         </div>
+        {typeof trustScore === 'number' && (
+          <TrustScoreBadge score={trustScore} size="sm" showIcon={false} />
+        )}
       </div>
 
       <div className="shrink-0 flex items-center gap-1">
