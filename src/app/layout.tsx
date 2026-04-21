@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
-import { Providers } from '@/components/providers';
+import { Providers } from '@/components/core/providers';
 import { Header } from '@/components/common/Header';
 
 const jetbrainsMono = JetBrains_Mono({
