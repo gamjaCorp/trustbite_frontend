@@ -1,11 +1,13 @@
+import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 import { MyReview } from '@/types/restaurant';
 
 interface Props {
+  restaurantId: string;
   myReview?: MyReview;
 }
 
-export function ReviewCtaBar({ myReview }: Props) {
+export function ReviewCtaBar({ restaurantId, myReview }: Props) {
   const isRevisit = Boolean(myReview);
 
   return (
@@ -27,13 +29,13 @@ export function ReviewCtaBar({ myReview }: Props) {
             </p>
           )}
         </div>
-        <button
-          type="button"
+        <Link
+          href={`/restaurant/${restaurantId}/review/new`}
           className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
         >
           <PencilLine className="w-4 h-4" />
           {isRevisit ? '재방문 리뷰 쓰기' : '리뷰 쓰기'}
-        </button>
+        </Link>
       </div>
     </div>
   );

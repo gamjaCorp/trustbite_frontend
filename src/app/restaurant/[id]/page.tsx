@@ -71,7 +71,7 @@ export default async function RestaurantDetailPage({
 
         <LocationSection detail={detail} />
       </main>
-      <ReviewCtaBar myReview={detail.myReview} />
+      <ReviewCtaBar restaurantId={detail.id} myReview={detail.myReview} />
     </>
   );
 }

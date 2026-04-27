@@ -1,4 +1,5 @@
-import { Plus, Share2, Users } from 'lucide-react';
+import Link from 'next/link';
+import { PencilLine, Share2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { RestaurantRankList } from '@/components/features/my-restaurant/restaurant-rank-list';
 import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
@@ -51,9 +52,14 @@ export default function MyRestaurantPage() {
         </div>
       </div>
 
-      <Button className="fixed bottom-8 right-8 rounded-chip gap-2 shadow-lg px-5 py-3 h-auto">
-        <Plus className="w-4 h-4" />
-        새 맛집 추가하기
+      <Button
+        asChild
+        className="fixed bottom-8 right-8 rounded-chip gap-2 shadow-lg px-5 py-3 h-auto"
+      >
+        <Link href="/review/new">
+          <PencilLine className="w-4 h-4" />
+          리뷰 쓰기
+        </Link>
       </Button>
     </>
   );
