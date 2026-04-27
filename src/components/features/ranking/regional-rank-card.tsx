@@ -100,9 +100,12 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
             {/* 리뷰 CTA */}
             <div className="pt-1">
               {myStatus !== 'reviewed' ? (
-                <button className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:brightness-90 active:scale-95 transition-all">
+                <Link
+                  href={`/restaurant/${id}/review/new`}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:brightness-90 active:scale-95 transition-all"
+                >
                   ✍️ 리뷰 쓰기
-                </button>
+                </Link>
               ) : (
                 <div className="inline-flex items-center gap-1.5 text-sm text-ink/60">
                   <Star className="w-3.5 h-3.5 fill-primary text-primary" />
@@ -239,9 +242,12 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
         {/* CTA */}
         <div className="mt-auto pt-1">
           {myStatus !== 'reviewed' ? (
-            <button className="w-full rounded-xl py-2 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+            <Link
+              href={`/restaurant/${id}/review/new`}
+              className="block w-full rounded-xl py-2 text-center text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
               ✍️ 리뷰 쓰기
-            </button>
+            </Link>
           ) : (
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1 rounded-chip px-2.5 py-1 bg-primary/10 text-primary text-sm font-semibold">

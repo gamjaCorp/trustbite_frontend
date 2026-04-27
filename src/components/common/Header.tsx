@@ -44,8 +44,14 @@ function ThemeToggle() {
 export function Header() {
   const pathname = usePathname();
 
-  // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다.
-  if (pathname.startsWith('/restaurant/') || pathname.startsWith('/user/')) return null;
+  // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다. 로그인/온보딩은 미니 랜딩.
+  if (
+    pathname.startsWith('/restaurant/') ||
+    pathname.startsWith('/user/') ||
+    pathname === '/login' ||
+    pathname === '/onboarding'
+  )
+    return null;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
