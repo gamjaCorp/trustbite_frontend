@@ -1,4 +1,4 @@
-import type { MyRestaurantEntry } from './restaurant';
+import type { Grade, MyRestaurantEntry } from './restaurant';
 
 export interface MutualFollowing {
   displayName: string;
@@ -20,4 +20,33 @@ export interface UserProfile {
   aiTastePersona: string;
   rankings: MyRestaurantEntry[];
   totalRankCount: number;
+}
+
+export interface MyProfile {
+  id: string;
+  name: string;
+  avatarInitial: string;
+  email: string;
+  joinedAt: string;
+  currentGrade: Grade;
+  nextGrade: Grade;
+  followerCount: number;
+  followingCount: number;
+  reviewCount: number;
+  reviewsToNextGrade: number;
+  trustScore: number;
+  trustScoreThreshold: number;
+  trustScoreMet: boolean;
+  badgeLevel: number;
+  points: number;
+  recentPointDelta: number;
+  recentPointReason: string;
+  sharedListCount: number;
+  sharedListPreview: string[];
+  sharedListExtraCount: number;
+  myReviewCount: number;
+  unlockedGuideUserCount: number;
+  unlockedGuideTier: number;
+  helpfulVoteTier: number;
+  activityRegion: string;
 }

@@ -60,19 +60,21 @@ export function Header() {
             <Bell className="w-4 h-4" />
           </Button>
 
-          <div className="flex items-center gap-1.5">
+          <Link
+            href="/me"
+            className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+          >
             <span className="text-sm font-medium text-foreground">감자먹는 햄찌</span>
             <Badge className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
               🏆
             </Badge>
-          </div>
-
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt="프로필" />
-            <AvatarFallback className="bg-primary-subtle text-primary text-xs font-bold">
-              햄
-            </AvatarFallback>
-          </Avatar>
+            <Avatar className="h-8 w-8 ml-0.5">
+              <AvatarImage src="" alt="프로필" />
+              <AvatarFallback className="bg-primary-subtle text-primary text-xs font-bold">
+                햄
+              </AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
       </div>
 
