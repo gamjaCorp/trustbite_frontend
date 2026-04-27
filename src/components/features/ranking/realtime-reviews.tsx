@@ -51,7 +51,12 @@ export function RealtimeReviews({ reviews }: Props) {
             <div className="flex items-center justify-between gap-2">
               <StarRow score={review.score} />
               <div className="flex items-center gap-1 min-w-0">
-                <span className="text-xs text-muted-foreground truncate">{review.reviewerName}</span>
+                <Link
+                  href={`/user/${review.reviewerId}`}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors truncate"
+                >
+                  {review.reviewerName}
+                </Link>
                 <GradeBadge grade={review.reviewerGrade} size="sm" showLabel={false} />
               </div>
             </div>

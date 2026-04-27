@@ -8,6 +8,8 @@ import { Category, MyRestaurantEntry } from '@/types/restaurant';
 
 interface Props {
   entries: MyRestaurantEntry[];
+  subjectName?: string;
+  aiPersonaText?: string;
 }
 
 function avg(nums: number[]) {
@@ -15,7 +17,7 @@ function avg(nums: number[]) {
   return nums.reduce((a, b) => a + b, 0) / nums.length;
 }
 
-export function TasteProfileSection({ entries }: Props) {
+export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Props) {
   const radarData = useMemo(() => {
     if (entries.length === 0) return [];
     return [
@@ -48,7 +50,9 @@ export function TasteProfileSection({ entries }: Props) {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-bold text-foreground">🧠 나의 미식 성향</h2>
+      <h2 className="text-lg font-bold text-foreground">
+        🧠 {subjectName ? `${subjectName}님의` : '나의'} 미식 성향
+      </h2>
 
       <div className="bg-card rounded-2xl shadow-card overflow-hidden">
         {/* 상단: 점수 바 | 카테고리 + 지역 */}
@@ -121,8 +125,12 @@ export function TasteProfileSection({ entries }: Props) {
         <div className="border-t border-border px-5 py-4 bg-primary/5 space-y-1">
           <p className="text-xs text-primary font-semibold">✨ AI 미식 성향 분석</p>
           <p className="text-sm text-foreground leading-relaxed">
-            가성비를 중시하면서도 맛에 대한 기준이 높은 <strong>실속파 미식가</strong>예요.
-            한 번 마음에 든 곳은 꾸준히 재방문하는 단골형 성향도 보여요.
+            {aiPersonaText ?? (
+              <>
+                가성비를 중시하면서도 맛에 대한 기준이 높은 <strong>실속파 미식가</strong>예요.
+                한 번 마음에 든 곳은 꾸준히 재방문하는 단골형 성향도 보여요.
+              </>
+            )}
           </p>
         </div>
       </div>

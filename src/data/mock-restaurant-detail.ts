@@ -60,6 +60,7 @@ const yangmiok: RestaurantDetail = {
     ],
   },
   repeatVisitReview: {
+    reviewerId: 'minseo',
     reviewerName: '이준기',
     reviewerInitial: '이',
     reviewerGrade: 'A',
@@ -85,6 +86,7 @@ const yangmiok: RestaurantDetail = {
   reviews: [
     {
       id: 'r1',
+      reviewerId: 'minseo',
       reviewerName: '김미식',
       reviewerInitial: '김',
       reviewerGrade: 'S',
@@ -106,6 +108,7 @@ const yangmiok: RestaurantDetail = {
     },
     {
       id: 'r2',
+      reviewerId: 'minseo',
       reviewerName: '박도윤',
       reviewerInitial: '박',
       reviewerGrade: 'A',
@@ -122,6 +125,7 @@ const yangmiok: RestaurantDetail = {
     },
     {
       id: 'r3',
+      reviewerId: 'minseo',
       reviewerName: '최서연',
       reviewerInitial: '최',
       reviewerGrade: 'B',
@@ -138,6 +142,7 @@ const yangmiok: RestaurantDetail = {
     },
     {
       id: 'r4',
+      reviewerId: 'minseo',
       reviewerName: '정유진',
       reviewerInitial: '정',
       reviewerGrade: 'B',
@@ -187,6 +192,7 @@ const sushidoku: RestaurantDetail = {
   reviews: [
     {
       id: 's1',
+      reviewerId: 'minseo',
       reviewerName: '오마카세러버',
       reviewerInitial: '오',
       reviewerGrade: 'S',
@@ -204,6 +210,7 @@ const sushidoku: RestaurantDetail = {
     },
     {
       id: 's2',
+      reviewerId: 'minseo',
       reviewerName: '스시덕후',
       reviewerInitial: '스',
       reviewerGrade: 'A',
@@ -253,6 +260,7 @@ const onion: RestaurantDetail = {
   reviews: [
     {
       id: 'o1',
+      reviewerId: 'minseo',
       reviewerName: '커피덕후',
       reviewerInitial: '커',
       reviewerGrade: 'A',

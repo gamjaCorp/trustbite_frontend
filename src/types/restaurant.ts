@@ -76,6 +76,7 @@ export interface RealtimeReview {
   id: string;
   restaurantId: string;
   restaurantName: string;
+  reviewerId: string;
   reviewerName: string;
   reviewerGrade: Grade;
   reviewerTrustScore: number;
@@ -100,6 +101,7 @@ export interface SceneScore {
 
 export interface DetailedReview {
   id: string;
+  reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;
   reviewerGrade: Grade;
@@ -136,6 +138,7 @@ export interface MyReview {
 }
 
 export interface RepeatVisitReview {
+  reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;
   reviewerGrade: Grade;

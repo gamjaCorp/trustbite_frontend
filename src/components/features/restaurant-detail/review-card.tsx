@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DetailedReview } from '@/types/restaurant';
@@ -21,14 +22,20 @@ export function ReviewCard({ review }: Props) {
     <article className="px-6 py-4 border-t border-border first:border-t-0">
       <header className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
-          <span className="shrink-0 w-10 h-10 rounded-full bg-primary-subtle text-primary font-bold flex items-center justify-center">
+          <Link
+            href={`/user/${review.reviewerId}`}
+            className="shrink-0 w-10 h-10 rounded-full bg-primary-subtle text-primary font-bold flex items-center justify-center hover:opacity-90 transition-opacity"
+          >
             {review.reviewerInitial}
-          </span>
+          </Link>
           <div className="min-w-0">
             <div className="flex items-center flex-wrap gap-1.5">
-              <span className="text-sm font-semibold text-foreground">
+              <Link
+                href={`/user/${review.reviewerId}`}
+                className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
+              >
                 {review.reviewerName}
-              </span>
+              </Link>
               <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-xs font-semibold">
                 Lv.{review.reviewerLevel} {review.reviewerTitle}
               </span>
