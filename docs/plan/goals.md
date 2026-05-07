@@ -29,6 +29,8 @@
 - 팔로우 / 타임라인 / 포인트 시스템
 - 뱃지 Lv.3~6 (1차 MVP는 Lv.1~2 범위)
 - 방문 횟수 캐러셀
+- **PWA** (manifest, service worker, 설치 프롬프트)
+- **테스트 코드 작성** (인프라는 유지)
 
 ---
 
@@ -46,6 +48,8 @@
 | 뱃지 Lv.3~Lv.6 확장        | 3장           | 조건 표 기준으로 컴포넌트 확장          |
 | 방문 횟수 캐러셀           | 4.2장         | `/profile` 에 '자주 간 맛집' 섹션       |
 | Storybook 핵심 컴포넌트 10개 | —           | `pnpm storybook` 에서 시각 확인 가능    |
+| PWA (설치 가능 + 오프라인 캐시) | —         | manifest + 아이콘 + Serwist service worker (Next 16 호환) |
+| 테스트 코드 활성화 | —                  | 인프라는 1차에 완비. RTL 단위 + Storybook stories 자동 검증부터 |
 
 ---
 

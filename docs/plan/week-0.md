@@ -177,7 +177,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 **`pnpm design:check` 스크립트 추가**
 - [ ] `package.json` scripts에 추가:
   ```json
-  "design:check": "grep -rn 'text-\\[1[01]px\\]' src/ && grep -rn '#[0-9a-fA-F]\\{3,6\\}' src/components src/app --include='*.tsx' | grep -v 'Google 로고\\|브랜드 고정' || echo 'design:check passed'"
+  "design:check": "! grep -rnE 'text-\\[1[01]px\\]' src/ && ! (grep -rnE '#[0-9a-fA-F]{3,6}' src/components src/app --include='*.tsx' | grep -vE 'Google 로고|브랜드 고정' | grep .) && echo 'design:check passed'"
   ```
 - [ ] 실행 확인 — 위반 0
 

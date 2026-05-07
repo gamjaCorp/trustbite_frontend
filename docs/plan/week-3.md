@@ -121,7 +121,14 @@ PRD 5장. 탐색 탭을 지도 + 리스트 결합 형태로.
 - [ ] `src/lib/types/review/request.ts` 보강 (`CreateReviewRequest` 정합)
 - [ ] Week 2 Day 4의 `useSubmitReview` 사용 일관화 — 모든 submit 경로가 mutation 통과
 - [ ] 사진 업로드는 mock URL 반환만 (실제 업로드는 백엔드 붙은 후)
-- [ ] `review-write-store` (Zustand) 유지 — 폼 상태 관리
+- [ ] `review-write-store` (Zustand) 유지 — 단계 전이·선택된 가게·사진 상태 관리
+
+**RHF + zod hybrid 적용**
+
+- [ ] `src/lib/types/review/schema.ts` 신규 — `reviewWriteSchema` (가게 선택 필수 / 평점 / 텍스트 100자 이상 / 사진 0~5장, 한국어 에러 메시지)
+- [ ] `RatingFields`, `ReviewTextField`, `PhotoUploadGrid`의 입력값을 `Controller`로 RHF에 등록 (검증만 RHF 담당)
+- [ ] submit: `handleSubmit(onValid)` → `useSubmitReview` mutation 호출
+- [ ] 검증 실패: shadcn `<FormMessage>`로 한국어 에러 표시
 
 **`/my-places` 마이그**
 
@@ -140,9 +147,9 @@ PRD 5장. 탐색 탭을 지도 + 리스트 결합 형태로.
 
 ---
 
-## Day 5 (금) — `/user/[id]` + Wishlist mutation + 9개 화면 디자인 점검 — ≈ 5.5h
+## Day 5 (금) — `/user/[id]` + Wishlist mutation + 코드 리뷰 punch list — ≈ 4h
 
-마지막 마이그 + 북마크 mutation으로 데이터 레이어 마무리, 이후 **9개 화면 cross-page 디자인 정합성 점검** (W4에서 옮겨온 코드 품질 점검 포함).
+마지막 마이그 + 북마크 mutation으로 데이터 레이어 마무리. 9개 화면 디자인 점검은 W4 Day 1로 이전.
 
 **`/user/[id]` 마이그 (≈ 0.5h)**
 
@@ -166,34 +173,21 @@ PRD 5장. 탐색 탭을 지도 + 리스트 결합 형태로.
 - [ ] `src/data/mock-*` 디렉터리에 남은 파일 0개 확인
 - [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 그린
 
-**9개 화면 디자인 점검 (≈ 3h)**
+**코드 리뷰 punch list 수집**
 
-순회 대상: `/`, `/restaurant/[id]`, `/review/new`, `/review/new/result`, `/profile`, `/profile/grade`, `/my-places`, `/user/[id]`, `/login`+`/onboarding`
+- [ ] **`frontend-code-reviewer` 에이전트** 1바퀴 — 컨벤션 위반 punch list 수집 (이슈 fix는 W4 Day 1)
 
-각 화면 체크 (W0 Day 1 표준 기준):
-- [ ] 시맨틱 타이포 사용률 ≥ 90% — raw `text-{xs,sm,...} font-*` 조합 잔존 검출
-- [ ] 컬러 토큰 — arbitrary hex 0 (Google 로고/Pin SVG 예외만)
-- [ ] 카드 톤 통일 — 패딩(`p-4` 위주), 그림자(`shadow-card`), 라운딩(`rounded-card`) 일관
-- [ ] 스페이싱 — `gap-{2,3,4,6}` 위주, `[px]` 임의값 정당화 확인
-- [ ] 로딩/빈/에러 상태 — 스켈레톤/Empty/Error 톤 일관
-- [ ] 반응형 단서 — 모바일 375에서 깨짐 빠른 점검 (정밀 점검은 W4 Wed)
-- [ ] 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, 폼 라벨, alt 텍스트
-- [ ] **`frontend-code-reviewer` 에이전트** 1바퀴 — 컨벤션 위반 punch list
-
-**점검 결과 처리**
-- [ ] critical(시각 깨짐, 접근성) 즉시 fix
-- [ ] minor 메모 → W4 Mon/Tue 버퍼 시간에 처리
-
-> 산출물: 1차 MVP 9개 화면이 실 데이터 + 토큰 표준 위에서 일관된 톤. W4 Wed/Thu/Fri로 깔끔하게 진입.
+> 산출물: 1차 MVP 9개 화면이 실 백엔드 API 위에서 동작. W4 Day 1 디자인 점검 진입 준비.
 
 ---
 
 ## 다음 주 punch list (→ Week 4)
 
+- 9개 화면 cross-page 디자인 점검 + punch list 처리 (Mon)
+- 잔여 이슈 + 빌드 점검 (Tue)
 - 모바일/태블릿/데스크톱 반응형 점검 (Wed)
 - PRD 16 플로우 1-1, 1-2, 1-3 통합 QA (Thu)
 - Vercel 스테이징 배포 (Fri)
-- Mon/Tue: 버퍼 — W3 D5 디자인 점검에서 발견된 minor 이슈 처리
 
 ---
 

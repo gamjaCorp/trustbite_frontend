@@ -13,11 +13,11 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 
 | Day | 날짜 | 목표                                    | 주요 산출물                                                | 완료 |
 | --- | ---- | --------------------------------------- | ---------------------------------------------------------- | ---- |
-| Mon | 5/19 | 기반 다지기 + 로그인 백엔드 통합        | 타입 이동, `lib/axios` (인증 인터셉터), `src/auth.ts` 확장, onboarding 저장 | ☐    |
-| Tue | 5/20 | `/profile` 데이터 레이어 표준화         | `api/user`, `hooks/user/use-my-profile`, 페이지 리팩토링   | ☐    |
-| Wed | 5/21 | `/profile/grade` 데이터 레이어          | `useGradeProgress`, `getGradeProgress` 정식화              | ☐    |
-| Thu | 5/22 | `/review/new/result` + submit mutation | `useSubmitReview` mutation, 결과 화면 정합                 | ☐    |
-| Fri | 5/23 | 인증 가드 통합 + 에러 페이지            | middleware 가드, `not-found.tsx`, `error.tsx`              | ☐    |
+| Mon | 5/19 | 인프라 그릇 다지기                      | 타입 이동, `lib/axios` (인증 인터셉터), env 정리           | ☐    |
+| Tue | 5/20 | 로그인 백엔드 통합                      | `src/auth.ts` 확장, login/onboarding 실 API                | ☐    |
+| Wed | 5/21 | `/profile` 데이터 레이어 표준화         | `api/user`, `hooks/user/use-my-profile`, 페이지 리팩토링   | ☐    |
+| Thu | 5/22 | `/profile/grade` 데이터 레이어          | `useGradeProgress`, `getGradeProgress` 정식화              | ☐    |
+| Fri | 5/23 | `/review/new/result` + 인증 가드 + 에러 | `useSubmitReview` mutation, middleware 가드, `not-found/error.tsx` | ☐    |
 
 ---
 
@@ -37,9 +37,9 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 
 ---
 
-## Day 1 (월) — 기반 다지기 + 로그인 백엔드 통합 — ≈ 6h
+## Day 1 (월) — 인프라 그릇 다지기 — ≈ 4h
 
-목표: 타입/인프라 정리 + 로그인 실 백엔드 연결 (W2 Day 2~의 데이터 레이어가 진짜 session으로 검증되게).
+목표: 타입 경로 정리 + axios 인프라 완비. W2 Day 2~의 데이터 레이어가 올바른 구조 위에서 시작하게.
 (`common/` → `core/` 마이그레이션은 W0 Day 2에서 완료)
 
 **타입 이동**
@@ -54,7 +54,27 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 - [ ] `src/lib/axios.ts` — baseURL `process.env.NEXT_PUBLIC_API_BASE_URL`, 요청 인터셉터(NextAuth session → Authorization 헤더), 응답 인터셉터(401 처리 + sonner 에러 토스트)
 - [ ] `.env.local` / Vercel Preview / Production env 분리
 
-**로그인 백엔드 통합 (≈ 3h)**
+**점검**
+
+- [ ] `pnpm lint && npx tsc --noEmit` 그린
+
+> 산출물: 타입 경로 일관 + axios 인프라 그릇 완비
+
+---
+
+## Day 2 (화) — 로그인 백엔드 통합 + RHF/zod 셋업 — ≈ 6h
+
+목표: 로그인 실 백엔드 연결 + react-hook-form + zod 폼 컨벤션 첫 도입.
+
+**RHF + zod 셋업 (≈ 1h)**
+
+- [ ] 의존성 설치: `pnpm add react-hook-form zod @hookform/resolvers`
+- [ ] shadcn form 추가: `npx shadcn@latest add form` → `src/components/ui/form.tsx` 생성
+- [ ] `src/lib/types/auth/schema.ts` 신규 — `onboardingSchema` (닉네임 2~16자, 지역 1개 이상, 한국어 에러 메시지)
+- [ ] `/onboarding` 폼에 첫 적용: `useForm({ resolver: zodResolver(onboardingSchema) })` + shadcn `<Form>`/`<FormField>`/`<FormItem>`/`<FormControl>`/`<FormMessage>`
+- [ ] `/login`은 OAuth 버튼만이므로 폼 적용 스킵
+
+**로그인 백엔드 통합**
 
 - [ ] `src/auth.ts` 확장
   - [ ] `callbacks.signIn`: 첫 로그인 시 백엔드 `POST /auth/login` 호출 → 기존 사용자면 매칭, 신규면 `needsOnboarding: true` 응답
@@ -64,7 +84,7 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
   - [ ] "Google로 계속하기" `<Link href="/onboarding">` → `signIn('google', { callbackUrl: '/onboarding' })` 서버 액션
   - [ ] `/signin/page.tsx` 로직 중복 정리 (`/login`을 단일 진입점화)
 - [ ] `src/app/onboarding/page.tsx` 백엔드 연결
-  - [ ] "시작하기" 클릭 → `POST /users/onboarding` (닉네임 + selectedRegions) 후 `/`로 이동
+  - [ ] "시작하기" 클릭 → RHF `handleSubmit(onValid)` → `POST /users/onboarding` (닉네임 + selectedRegions) 후 `/`로 이동
   - [ ] `src/hooks/auth/use-onboarding.ts` React Query mutation
   - [ ] 에러: `sonner` toast
   - [ ] 이미 온보딩 완료 사용자 `/onboarding` 진입 → `/` 리다이렉트 (session.needsOnboarding 체크)
@@ -78,11 +98,11 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 - [ ] 기존 사용자 → `/login` → Google → 곧장 `/`
 - [ ] `pnpm lint && npx tsc --noEmit` 그린
 
-> 산출물: 인증 흐름이 실 백엔드 위에서 동작 + 타입/인프라 그릇 완비
+> 산출물: 인증 흐름이 실 백엔드 위에서 동작 + RHF + zod 폼 컨벤션이 onboarding에 첫 적용
 
 ---
 
-## Day 2 (화) — `/profile` 데이터 레이어 첫 표준화 — ≈ 4~5h
+## Day 3 (수) — `/profile` 데이터 레이어 첫 표준화 — ≈ 4~5h
 
 표준 7단계를 `/profile`에 적용해 **다른 화면이 따라할 레퍼런스 1개** 완성.
 
@@ -112,7 +132,7 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 
 ---
 
-## Day 3 (수) — `/profile/grade` 데이터 레이어 — ≈ 4h
+## Day 4 (목) — `/profile/grade` 데이터 레이어 — ≈ 4h
 
 Week 1 Day 2에서 만든 등급 안내 화면을 표준 절차로 정착.
 
@@ -143,9 +163,9 @@ Week 1 Day 2에서 만든 등급 안내 화면을 표준 절차로 정착.
 
 ---
 
-## Day 4 (목) — `/review/new/result` + submit mutation — ≈ 5~6h
+## Day 5 (금) — `/review/new/result` + 인증 가드 + 에러 페이지 — ≈ 6h
 
-Week 1에서 라우팅으로 연결만 해둔 결과 화면을 데이터 레이어 위에 올리고, 리뷰 제출도 정식 mutation으로 전환.
+Week 1에서 라우팅으로 연결만 해둔 결과 화면을 데이터 레이어 위에 올리고, 인증 가드와 에러 화면을 함께 마무리.
 
 **타입**
 
@@ -178,13 +198,7 @@ Week 1에서 라우팅으로 연결만 해둔 결과 화면을 데이터 레이�
 
 - [ ] Week 1의 `src/data/mock-review-result.ts` 흡수 후 삭제
 
-> 산출물: 폼 → mutation → 결과 화면 흐름 정식화
-
----
-
-## Day 5 (금) — 인증 가드 통합 + 에러 페이지 — ≈ 5h
-
-지금까지 페이지별로 분산되어 있던 가드를 middleware로 통합 + 일관된 에러 화면.
+> 산출물: 폼 → mutation → 결과 화면 흐름 정식화 + 인증/에러 일관 동작
 
 **Middleware 통합 가드**
 
@@ -205,8 +219,7 @@ Week 1에서 라우팅으로 연결만 해둔 결과 화면을 데이터 레이�
 
 - [ ] 동선: 비로그인 `/profile` 진입 → `/login?next=/profile` → 로그인 → `/profile` 자동 복귀
 - [ ] 잘못된 ID로 `/restaurant/abc123` → 404 페이지
-
-> 산출물: 인증/에러가 빈틈없이 일관되게 동작
+- [ ] `pnpm lint && npx tsc --noEmit` 그린
 
 ---
 

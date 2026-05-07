@@ -183,7 +183,6 @@ PRD 7.3 탭 2 "가고 싶은" 서브탭 + 한 주 결과 검수.
 
 ## 다음 주 punch list (→ Week 2)
 
-- 컨벤션 정착: `common/` → `core/`, `Header.tsx` → `header/index.tsx`, `src/types/` → `src/lib/types/`
 - 인프라: `src/lib/axios.ts`
 - `/profile` 데이터 레이어 표준 사례 수립 (api/user, hooks/user)
 - `/profile/grade`, `/review/new/result` 표준화
@@ -201,7 +200,7 @@ PRD 7.3 탭 2 "가고 싶은" 서브탭 + 한 주 결과 검수.
 | 진행바                 | `src/components/ui/progress.tsx`                                 |
 | 모달                   | `src/components/ui/dialog.tsx`                                   |
 | 레이더 차트            | `recharts` `RadarChart` (이미 설치)                              |
-| 인트로 카드            | `src/components/common/intro-card.tsx`                           |
-| TrustScore 표시        | `src/components/common/trust-score-badge.tsx`, `trust-score-sheet.tsx` |
-| 등급 표시              | `src/components/common/grade-badge.tsx`                          |
+| 인트로 카드            | `src/components/core/intro-card/index.tsx`                           |
+| TrustScore 표시        | `src/components/core/trust-score-badge/index.tsx`, `core/trust-score-sheet/index.tsx` |
+| 등급 표시              | `src/components/core/grade-badge/index.tsx`                          |
 | TOP 3 카드             | `src/components/features/my-restaurant/restaurant-top3-card.tsx` |

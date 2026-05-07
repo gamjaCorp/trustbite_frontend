@@ -3,8 +3,8 @@
 ## 이번 주 목표
 
 W3까지 모든 1차 MVP 화면이 실 백엔드 위에서 동작하는 상태.  
-코드 품질/디자인 점검은 W3 D5에서 완료됨. 이번 주는 **반응형 + 통합 QA + 스테이징 배포**에 집중한다.  
-Mon/Tue는 버퍼 (W3 D5 punch list에서 발견된 minor 이슈 처리). Wed부터 본 작업 시작.
+이번 주는 **9개 화면 디자인 점검(Mon) → 반응형(Wed) → 통합 QA(Thu) → 스테이징 배포(Fri)** 순서로 진행한다.  
+Tue는 Mon 점검에서 발견된 critical 이슈 처리 + 빌드 정리 버퍼.
 
 ---
 
@@ -12,21 +12,44 @@ Mon/Tue는 버퍼 (W3 D5 punch list에서 발견된 minor 이슈 처리). Wed부
 
 | Day | 날짜 | 목표                              | 주요 산출물                                              | 완료 |
 | --- | ---- | --------------------------------- | -------------------------------------------------------- | ---- |
-| Mon | 6/2  | 버퍼 (W3 D5 minor 이슈 처리)      | punch list 처리, `pnpm build` 그린                        | ☐    |
-| Tue | 6/3  | 버퍼 (잔여 이슈 + 빌드 점검)      | `pnpm lint && npx tsc --noEmit && pnpm build` 그린        | ☐    |
+| Mon | 6/2  | 9개 화면 디자인 점검              | cross-page 톤 통일, punch list fix, `design:check` 그린  | ☐    |
+| Tue | 6/3  | 잔여 이슈 + 빌드 점검             | `any`/`console.log` 제거, `pnpm build` 그린              | ☐    |
 | Wed | 6/4  | 반응형 (모바일 + 데스크톱)        | breakpoint 전체 점검, 레이아웃 수정                      | ☐    |
 | Thu | 6/5  | 통합 시나리오 QA                  | PRD 16 플로우 1-1, 1-2, 1-3 수동 테스트                  | ☐    |
 | Fri | 6/6  | 스테이징 배포 + 내부 테스트       | Vercel preview, env 점검, 내부 피드백 수집               | ☐    |
 
 ---
 
-## Day 1~2 (월~화) — 버퍼 — W3 D5 punch list 처리
+## Day 1 (월) — 9개 화면 디자인 점검 — ≈ 5h
 
-- [ ] W3 D5 디자인 점검에서 발견된 minor 이슈 처리
+W3 Day 5 `frontend-code-reviewer` punch list를 처리하며, 9개 화면을 순회해 디자인 정합성을 완성.
+
+순회 대상: `/`, `/restaurant/[id]`, `/review/new`, `/review/new/result`, `/profile`, `/profile/grade`, `/my-places`, `/user/[id]`, `/login`+`/onboarding`
+
+각 화면 체크 (W0 표준 기준, 화면당 ≈ 30분):
+- [ ] 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 ≤ 5건 (전체)
+- [ ] 컬러 토큰 — arbitrary hex 0 (Google 로고/Pin SVG 예외만)
+- [ ] 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관
+- [ ] 스페이싱 — `[px]` 임의값 정당화 확인
+- [ ] 로딩/빈/에러 톤 일관 (스켈레톤/Empty/Error)
+- [ ] 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, alt 텍스트
+
+**완료 게이트**
+
+- [ ] `pnpm design:check` 통과
+- [ ] critical(시각 깨짐, 접근성) 즉시 fix
+
+> 산출물: 9개 화면이 일관된 디자인 토큰 위에서 동작. Wed 반응형 점검 진입 준비.
+
+---
+
+## Day 2 (화) — 잔여 이슈 + 빌드 점검 — ≈ 4h
+
+- [ ] W4 Day 1에서 발견된 minor 이슈 처리
 - [ ] `any` 타입 검색 → 명시적 타입으로 교체
 - [ ] `console.log` 제거
 - [ ] `pnpm build` 번들 사이즈 큰 페이지 체크 (지도 청크 분리 확인)
-- [ ] `npx tsc --noEmit` 그린
+- [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 그린
 
 > 산출물: Wed 반응형 점검에 들어가기 전에 커밋이 깨끗한 상태
 

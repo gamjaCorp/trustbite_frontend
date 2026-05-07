@@ -139,11 +139,11 @@
 
 | Day | 날짜 | 목표                                    | 주요 산출물                                                |
 | --- | ---- | --------------------------------------- | ---------------------------------------------------------- |
-| Mon | 5/19 | 기반 다지기 (구조 + 인프라)             | `core/` 마이그, `lib/axios` (인증 인터셉터), `lib/types` 구조 |
-| Tue | 5/20 | `/profile` 데이터 레이어 표준화              | `api/user`, `hooks/user/use-my-profile`, 페이지 리팩토링   |
-| Wed | 5/21 | `/profile/grade` 데이터 레이어          | `useGradeProgress`, `getGradeProgress` 정식화              |
-| Thu | 5/22 | `/review/new/result` + submit mutation  | `useSubmitReview` mutation, 결과 화면 정합                 |
-| Fri | 5/23 | 인증 가드 통합 + 에러 페이지            | middleware 가드, `not-found.tsx`, `error.tsx`               |
+| Mon | 5/19 | 인프라 그릇 다지기                      | 타입 이동, `lib/axios` (인증 인터셉터), env 정리           |
+| Tue | 5/20 | 로그인 백엔드 통합 + RHF/zod 셋업       | `src/auth.ts` 확장, login/onboarding 실 API, RHF + zod 컨벤션 첫 적용 |
+| Wed | 5/21 | `/profile` 데이터 레이어 표준화         | `api/user`, `hooks/user/use-my-profile`, 페이지 리팩토링   |
+| Thu | 5/22 | `/profile/grade` 데이터 레이어          | `useGradeProgress`, `getGradeProgress` 정식화              |
+| Fri | 5/23 | `/review/new/result` + 인증 가드 + 에러 | `useSubmitReview` mutation, middleware 가드, `not-found/error.tsx` |
 
 ---
 
@@ -159,7 +159,7 @@
 | Tue | 5/27 | 지도 시트 통합 (Kakao Maps SDK)     | 시트 30↔70 드래그, 핀 렌더, 영역 재검색                        |
 | Wed | 5/28 | `/restaurant/[id]` 마이그           | `useRestaurantDetail`, 비로그인 분기 정합                      |
 | Thu | 5/29 | `/review/new` + `/my` 마이그        | `useSubmitReview` 정합, `useMyRanking` / `useMyStats`          |
-| Fri | 5/30 | `/user/[id]` + Wishlist mutation    | `useUserProfile`, `useToggleBookmark` (낙관적 업데이트)        |
+| Fri | 5/30 | `/user/[id]` + Wishlist mutation + 코드 리뷰 punch list | `useUserProfile`, `useToggleBookmark`, `frontend-code-reviewer` 1바퀴 |
 
 ---
 
@@ -171,8 +171,8 @@
 
 | Day | 날짜 | 목표                         | 주요 산출물                                              |
 | --- | ---- | ---------------------------- | -------------------------------------------------------- |
-| Mon | 6/2  | 코드 품질 점검               | `frontend-code-reviewer` 한 바퀴 + 이슈 fix              |
-| Tue | 6/3  | Storybook 핵심 컴포넌트 10개 | `src/stories/*.stories.tsx`                              |
+| Mon | 6/2  | 9개 화면 디자인 점검         | cross-page 톤 통일, punch list fix, `design:check` 그린  |
+| Tue | 6/3  | 잔여 이슈 + 빌드 점검        | `any`/`console.log` 제거, `pnpm build` 그린              |
 | Wed | 6/4  | 반응형 (모바일 + 데스크톱)   | breakpoint 전체 점검, 레이아웃 수정                      |
 | Thu | 6/5  | 통합 시나리오 QA             | PRD 16 플로우 1-1, 1-2, 1-3 수동 테스트                  |
 | Fri | 6/6  | 스테이징 배포 + 내부 테스트  | Vercel preview, env 점검, 내부 피드백 수집               |
