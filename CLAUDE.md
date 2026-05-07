@@ -25,7 +25,7 @@ TrustBite는 신뢰도 기반 맛집 지도 서비스다.
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
-- **Map**: Naver Maps SDK (`react-naver-maps`)
+- **Map**: Kakao Maps JS SDK (`NEXT_PUBLIC_KAKAO_MAP_KEY`, `next/script` 동적 로드)
 - **Chart**: Recharts (레이더 차트, 바 차트)
 - **State**: Zustand (글로벌), React Query (서버 상태)
 - **Form**: React Hook Form + Zod
