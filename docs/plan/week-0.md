@@ -15,7 +15,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 
 | Day | 날짜 | 목표                                                       | 주요 산출물                                                               | 완료 |
 | --- | ---- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ---- |
-| Thu | 5/8  | 라우트 구조 정리 + 타이포 시맨틱 + 컬러 토큰 체크           | route rename + 타이포 시맨틱화 + arbitrary hex 0 (Google 로고 예외)        | ☐    |
+| Thu | 5/8  | 라우트 구조 정리 + 타이포 시맨틱 + 컬러 토큰 체크           | route rename + 타이포 시맨틱화 + arbitrary hex 0 (Google 로고 예외)        | ☑    |
 | Fri | 5/9  | `core/` 정착 + 카드 패턴 통일 + hex/shadow 토큰화          | `core/header/*`, `core/grade-badge/*` 등, hex 7→0                         | ☐    |
 | Sat | 5/10 | 레퍼런스 화면 (홈 `/`) + `pnpm design:check` 자동화        | 표준 적용 페이지 1개, 위반 검출 그린                                      | ☐    |
 | Sun | 5/11 | 버퍼 — 시각 보정 + W1 진입 준비                            | `pnpm lint && npx tsc --noEmit && pnpm build` 그린                        | ☐    |
@@ -57,16 +57,16 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 | 홈 `?tab=explore\|my`             | `/` (탐색만, 단일 콘텐츠) — `/my-places` 분리 |
 
 **파일 이동**
-- [ ] `src/app/me/page.tsx` → `src/app/profile/page.tsx`
-- [ ] `src/app/me/grade/page.tsx` → `src/app/profile/grade/page.tsx`
-- [ ] `src/app/my/page.tsx` → `src/app/my-places/page.tsx`
-- [ ] 빈 `src/app/me/`, `src/app/my/` 삭제
+- [x] `src/app/me/page.tsx` → `src/app/profile/page.tsx` (커밋 6e92cea)
+- [-] `src/app/me/grade/page.tsx` → `src/app/profile/grade/page.tsx` — 스킵: 원본 없음, W1 등급 화면 구현 시 자연 추가
+- [x] `src/app/my/page.tsx` → `src/app/my-places/page.tsx` (커밋 6e92cea)
+- [x] 빈 `src/app/me/`, `src/app/my/` 삭제 (rename으로 자연 제거)
 
 **링크/네비 갱신**
-- [ ] `src/components/common/Header.tsx` 네비 항목 `{ href: '/my' }` → `'/my-places'`, `href="/me"` → `'/profile'`
-- [ ] `src/components/features/my-profile/profile-summary-card.tsx` `href="/my"` → `'/my-places'`
-- [ ] 프로젝트 전체 grep으로 `'/me'`, `'/me/grade'`, `'/my'` 문자열 사용처 모두 갱신
-- [ ] `'/login?next=/me'` 같은 redirect 경로도 같이 갱신
+- [x] `src/components/common/Header.tsx` 네비 항목 `{ href: '/my' }` → `'/my-places'`, `href="/me"` → `'/profile'`
+- [x] `src/components/features/my-profile/profile-summary-card.tsx` `href="/my"` → `'/my-places'`
+- [x] 프로젝트 전체 grep으로 `'/me'`, `'/me/grade'`, `'/my'` 문자열 사용처 모두 갱신 → 0건
+- [x] `'/login?next=/me'` 같은 redirect 경로도 같이 갱신 → 하드코딩 없음 확인
 
 **※ 변경하지 않는 것** (이름이 비슷하지만 라우트 아님):
 - `src/components/features/my-profile/`, `my-restaurant/` 폴더 (feature 이름)
@@ -74,21 +74,21 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 - `mock-my-profile.ts` 같은 mock 파일명
 
 **홈 2탭 → 단일 탐색 결정**:
-- 홈은 탐색 전용 (`/` 단일 콘텐츠)
+- 홈은 탐색 전용 (`/` 단일 콘텐츠) — 처음부터 tab searchParam 없음
 - "나의 맛집" 진입은 헤더/하단 nav에서 `/my-places`로 이동
 
 **점검**
-- [ ] `pnpm dev` — `/profile`, `/profile/grade`, `/my-places` 진입 확인
-- [ ] 헤더 nav 클릭 동선 확인
-- [ ] `grep -rn "'/me\|'/my\|\"/me\|\"/my" src/` → 0건 (feature 폴더명 매치 제외)
+- [x] `pnpm dev` — `/profile`, `/my-places` 진입 확인 (사용자 수동 확인)
+- [x] 헤더 nav 클릭 동선 확인
+- [x] `grep -rn "'/me\|'/my\|\"/me\|\"/my" src/` → 0건
 
 ### 2부 — 타이포 시맨틱 마이그레이션 + 컬러 토큰 체크 (≈ 5h)
 
 > 타이포 마이그가 모든 컴포넌트를 한 번 훑는 작업이므로, **그 김에 컬러 토큰 위반도 같은 패스에서 체크**한다. 별도 패스를 다시 도는 비용을 아낌.
 
 **준비**
-- [ ] `globals.css` L277 위에 매핑 가이드 주석 박기 (위 표 기준)
-- [ ] 현황 grep — 치환 전 베이스라인 기록:
+- [x] `globals.css` L277 위에 매핑 가이드 주석 박기 — 이미 L277–288에 존재
+- [x] 현황 grep — 치환 전 베이스라인 기록 (raw 조합 16건 전부 shadcn ui, app/feature 0건; text-xs 109건; arbitrary hex 0건; hex 8건):
   ```bash
   grep -rn "text-\(xs\|sm\|base\|lg\|xl\|2xl\) font-" src/ | wc -l   # 타이포 raw 조합
   grep -rn "text-xs" src/components src/app | wc -l                  # 12px 사용처
@@ -112,22 +112,22 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 - ※ 예외: `app/login/page.tsx` Google 로고 — 브랜드 fill로 유지
 
 도메인 체크리스트:
-- [ ] `src/components/common/Header.tsx` — 타이포 + 컬러
-- [ ] `src/components/features/explore/**` — 카드 제목/본문/메타 + 컬러
-- [ ] `src/components/features/ranking/**` — 카드 제목/순위/메타 + 컬러
-- [ ] `src/components/features/restaurant-detail/**` — 타이포 + 컬러
-- [ ] `src/components/features/review-write/**` — 타이포 + 컬러
-- [ ] `src/components/features/my-profile/**` — 타이포 + 컬러
-- [ ] `src/components/features/my-restaurant/**` — 타이포 + 컬러
-- [ ] `src/components/features/user-profile/**` — 타이포 + 컬러
-- [ ] `src/components/features/auth/**` — 타이포 + 컬러
-- [ ] `src/app/**` 페이지 레벨 타이포 (헤딩, 섹션 제목) + 컬러
-- [ ] `text-xs` 사용처 중 카드 본문/메타에 해당하는 곳 `text-body-2`로 승격
+- [x] `src/components/common/` — 타이포 + 컬러 (grade-badge, intro-card, trust-score-badge, trust-score-sheet)
+- [x] `src/components/features/explore/**` — 카드 제목/본문/메타 + 컬러
+- [x] `src/components/features/ranking/**` — 카드 제목/순위/메타 + 컬러
+- [x] `src/components/features/restaurant-detail/**` — 타이포 + 컬러
+- [x] `src/components/features/review-write/**` — 타이포 + 컬러
+- [x] `src/components/features/my-profile/**` — 타이포 + 컬러
+- [x] `src/components/features/my-restaurant/**` — 타이포 + 컬러 (+ text-[var(--score-*)] → text-score-* 교체)
+- [x] `src/components/features/user-profile/**` — 타이포 + 컬러
+- [x] `src/components/features/auth/**` — text-xs 0건, 컬러 위반 없음
+- [x] `src/app/**` 페이지 레벨 타이포 (login, my-places, onboarding, restaurant/[id], signin)
+- [x] `text-xs` 사용처 중 카드 본문/메타에 해당하는 곳 `text-body-2`로 승격 (점수 행 3건 + 리뷰 코멘트 1건)
 
 **점검**
-- [ ] `pnpm lint && npx tsc --noEmit`
-- [ ] `grep -rn "#[0-9a-fA-F]\{3,6\}\b" src/components src/app --include="*.tsx" | grep -v "Google\|브랜드"` → Day 2에 남길 hex(restaurant-pin SVG 3건)만 잔존
-- [ ] `grep -rn "text-\[#\|bg-\[#\|border-\[#" src/` → 0건
+- [x] `pnpm lint && npx tsc --noEmit` — 그린
+- [x] `grep -rn "#[0-9a-fA-F]\{3,6\}\b" src/components src/app --include="*.tsx" | grep -v "Google\|브랜드"` → restaurant-pin SVG 4건 잔존 (Day 2에서 currentColor 처리)
+- [x] `grep -rn "text-\[#\|bg-\[#\|border-\[#" src/` → 0건
 - [ ] 브라우저 — 홈 + `/profile` + 맛집 상세 시각 확인 (폰트 충분히 큰지, 컬러 톤 깨짐 없는지)
 
 > 산출물: raw `text-* font-*` 조합 ≤ 5건, `text-xs` 승격 완료, arbitrary hex 클래스 0, hex 직접 사용은 SVG 인라인 케이스만 잔존(Day 2에서 `currentColor`로 처리)

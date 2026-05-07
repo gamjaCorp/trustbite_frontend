@@ -158,7 +158,7 @@
 | Mon | 5/26 | 탐색 탭 검색/필터 동작              | `api/restaurant/search`, `useSearchRestaurants` (디바운스/URL) |
 | Tue | 5/27 | 지도 시트 통합 (Kakao Maps SDK)     | 시트 30↔70 드래그, 핀 렌더, 영역 재검색                        |
 | Wed | 5/28 | `/restaurant/[id]` 마이그           | `useRestaurantDetail`, 비로그인 분기 정합                      |
-| Thu | 5/29 | `/review/new` + `/my` 마이그        | `useSubmitReview` 정합, `useMyRanking` / `useMyStats`          |
+| Thu | 5/29 | `/review/new` + `/my-places` 마이그 | `useSubmitReview` 정합, `useMyRanking` / `useMyStats`          |
 | Fri | 5/30 | `/user/[id]` + Wishlist mutation + 코드 리뷰 punch list | `useUserProfile`, `useToggleBookmark`, `frontend-code-reviewer` 1바퀴 |
 
 ---
