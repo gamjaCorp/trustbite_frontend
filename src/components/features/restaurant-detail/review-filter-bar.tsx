@@ -27,7 +27,7 @@ export function ReviewFilterBar({
 
   return (
     <div className="px-6 pt-6">
-      <h2 className="text-lg font-bold text-foreground">{title}</h2>
+      <h2 className="text-headline-3 text-foreground">{title}</h2>
       <p className="mt-1 text-xs text-muted-foreground">{caption}</p>
 
       <div className="mt-3 flex gap-2 overflow-x-auto scrollbar-hide -mx-6 px-6 pb-1">
@@ -39,7 +39,7 @@ export function ReviewFilterBar({
               type="button"
               onClick={() => setActive(f.id)}
               className={cn(
-                'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+                'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
                 isActive
                   ? 'bg-foreground text-background'
                   : 'bg-muted text-ink/70 hover:bg-muted/80',

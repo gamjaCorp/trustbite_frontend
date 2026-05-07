@@ -43,7 +43,7 @@ export function RegionSelector({ regions, value, onChange }: Props) {
       <PopoverTrigger asChild>
         <button
           className={cn(
-            'flex items-center gap-1.5 rounded-lg px-3 h-9 text-sm font-medium transition-colors shrink-0 border',
+            'flex items-center gap-1.5 rounded-lg px-3 h-9 text-title-3 transition-colors shrink-0 border',
             isSelected
               ? 'bg-primary/10 text-primary border-primary/30'
               : 'bg-background text-foreground border-border hover:border-foreground/30',

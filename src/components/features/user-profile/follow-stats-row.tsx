@@ -32,7 +32,7 @@ export function FollowStatsRow({ profile }: Props) {
       {profile.mutualFollowing && (
         <div className="inline-flex items-center gap-1.5 rounded-full bg-card border border-border px-2.5 py-1">
           <Avatar className="h-5 w-5">
-            <AvatarFallback className="bg-primary-subtle text-primary text-xs font-bold">
+            <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
               {profile.mutualFollowing.displayName[0]}
             </AvatarFallback>
           </Avatar>

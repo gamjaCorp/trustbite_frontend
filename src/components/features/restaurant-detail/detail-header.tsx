@@ -14,19 +14,19 @@ export function DetailHeader() {
           탐색으로
         </Link>
 
-        <span className="absolute left-1/2 -translate-x-1/2 text-base font-bold text-primary tracking-tight">
+        <span className="absolute left-1/2 -translate-x-1/2 text-title-1 text-primary tracking-tight">
           TrustBite.
         </span>
 
         <div className="flex items-center gap-2">
           <div className="flex flex-col items-end leading-tight">
-            <span className="rounded-chip bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">
+            <span className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-foreground">
               Lv.3
             </span>
             <span className="text-xs text-muted-foreground mt-0.5">신뢰도 72%</span>
           </div>
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary-subtle text-primary text-xs font-bold">
+            <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
               민
             </AvatarFallback>
           </Avatar>

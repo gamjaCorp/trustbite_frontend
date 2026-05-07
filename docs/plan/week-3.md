@@ -140,11 +140,11 @@ PRD 5장. 탐색 탭을 지도 + 리스트 결합 형태로.
 
 ---
 
-## Day 5 (금) — `/user/[id]` + Wishlist mutation — ≈ 5~6h
+## Day 5 (금) — `/user/[id]` + Wishlist mutation + 9개 화면 디자인 점검 — ≈ 5.5h
 
-마지막 마이그 + 북마크 mutation으로 1차 MVP 데이터 레이어 마무리.
+마지막 마이그 + 북마크 mutation으로 데이터 레이어 마무리, 이후 **9개 화면 cross-page 디자인 정합성 점검** (W4에서 옮겨온 코드 품질 점검 포함).
 
-**`/user/[id]` 마이그**
+**`/user/[id]` 마이그 (≈ 0.5h)**
 
 - [ ] `src/lib/types/user/response.ts`에 `UserProfileResponse` 추가
 - [ ] `src/api/user/user.ts`에 `getUserProfile(id)` 추가
@@ -152,7 +152,7 @@ PRD 5장. 탐색 탭을 지도 + 리스트 결합 형태로.
 - [ ] `/user/[id]/page.tsx` client 전환
 - [ ] `mock-other-user.ts` 흡수 후 삭제
 
-**Wishlist mutation (낙관적 업데이트)**
+**Wishlist mutation 낙관적 업데이트 (≈ 2h)**
 
 - [ ] `src/lib/types/wishlist/type.ts` — `WishlistItem`
 - [ ] `src/api/wishlist/wishlist.ts` — `getWishlist()`, `addBookmark`, `removeBookmark`
@@ -161,21 +161,39 @@ PRD 5장. 탐색 탭을 지도 + 리스트 결합 형태로.
 - [ ] Week 1 Day 5에서 만든 `wishlist-section.tsx`의 mock 토글 → 실제 mutation 호출
 - [ ] `/restaurant/[id]` 헤더 북마크 → `useToggleBookmark` 호출
 
-**최종 점검**
+**최종 mock-* 정리**
 
 - [ ] `src/data/mock-*` 디렉터리에 남은 파일 0개 확인
 - [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 그린
 
-> 산출물: 1차 MVP 9개 화면 + Wishlist 모두 데이터 레이어 위에서 동작
+**9개 화면 디자인 점검 (≈ 3h)**
+
+순회 대상: `/`, `/restaurant/[id]`, `/review/new`, `/review/new/result`, `/profile`, `/profile/grade`, `/my-places`, `/user/[id]`, `/login`+`/onboarding`
+
+각 화면 체크 (W0 Day 1 표준 기준):
+- [ ] 시맨틱 타이포 사용률 ≥ 90% — raw `text-{xs,sm,...} font-*` 조합 잔존 검출
+- [ ] 컬러 토큰 — arbitrary hex 0 (Google 로고/Pin SVG 예외만)
+- [ ] 카드 톤 통일 — 패딩(`p-4` 위주), 그림자(`shadow-card`), 라운딩(`rounded-card`) 일관
+- [ ] 스페이싱 — `gap-{2,3,4,6}` 위주, `[px]` 임의값 정당화 확인
+- [ ] 로딩/빈/에러 상태 — 스켈레톤/Empty/Error 톤 일관
+- [ ] 반응형 단서 — 모바일 375에서 깨짐 빠른 점검 (정밀 점검은 W4 Wed)
+- [ ] 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, 폼 라벨, alt 텍스트
+- [ ] **`frontend-code-reviewer` 에이전트** 1바퀴 — 컨벤션 위반 punch list
+
+**점검 결과 처리**
+- [ ] critical(시각 깨짐, 접근성) 즉시 fix
+- [ ] minor 메모 → W4 Mon/Tue 버퍼 시간에 처리
+
+> 산출물: 1차 MVP 9개 화면이 실 데이터 + 토큰 표준 위에서 일관된 톤. W4 Wed/Thu/Fri로 깔끔하게 진입.
 
 ---
 
 ## 다음 주 punch list (→ Week 4)
 
-- Storybook 핵심 컴포넌트 10개
-- 모바일/태블릿/데스크톱 반응형 점검
-- PRD 16 플로우 1-1, 1-2, 1-3 통합 QA
-- Vercel 스테이징 배포
+- 모바일/태블릿/데스크톱 반응형 점검 (Wed)
+- PRD 16 플로우 1-1, 1-2, 1-3 통합 QA (Thu)
+- Vercel 스테이징 배포 (Fri)
+- Mon/Tue: 버퍼 — W3 D5 디자인 점검에서 발견된 minor 이슈 처리
 
 ---
 

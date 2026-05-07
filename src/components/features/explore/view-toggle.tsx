@@ -23,7 +23,7 @@ export function ViewToggle() {
             key={href}
             href={href}
             className={cn(
-              'inline-flex items-center gap-1.5 rounded-md px-3 h-8 text-sm font-medium transition-colors',
+              'inline-flex items-center gap-1.5 rounded-md px-3 h-8 text-title-3 transition-colors',
               isActive
                 ? 'bg-foreground text-background'
                 : 'text-muted-foreground hover:text-foreground',

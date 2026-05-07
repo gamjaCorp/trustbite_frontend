@@ -1,10 +1,10 @@
-# Week 4 — QA + 가드 + Storybook + 스테이징 배포
+# Week 4 — 반응형 + QA + 스테이징 배포
 
 ## 이번 주 목표
 
-W3까지 모든 1차 MVP 화면이 실 백엔드 위에서 동작하는 상태. 이번 주는 **품질**에 집중한다.  
-핵심 컴포넌트 10개에 Storybook 스토리를 붙여 시각적 회귀 안전망을 만든다.  
-PRD 16 화면 플로우 시나리오를 실 데이터로 따라가는 통합 QA 후 **스테이징 배포**로 마무리.
+W3까지 모든 1차 MVP 화면이 실 백엔드 위에서 동작하는 상태.  
+코드 품질/디자인 점검은 W3 D5에서 완료됨. 이번 주는 **반응형 + 통합 QA + 스테이징 배포**에 집중한다.  
+Mon/Tue는 버퍼 (W3 D5 punch list에서 발견된 minor 이슈 처리). Wed부터 본 작업 시작.
 
 ---
 
@@ -12,65 +12,27 @@ PRD 16 화면 플로우 시나리오를 실 데이터로 따라가는 통합 QA 
 
 | Day | 날짜 | 목표                              | 주요 산출물                                              | 완료 |
 | --- | ---- | --------------------------------- | -------------------------------------------------------- | ---- |
-| Mon | 6/2  | 코드 품질 점검                    | `frontend-code-reviewer` 한 바퀴 + 발견 이슈 fix         | ☐    |
-| Tue | 6/3  | Storybook 핵심 컴포넌트 10개      | `src/stories/*.stories.tsx`                              | ☐    |
+| Mon | 6/2  | 버퍼 (W3 D5 minor 이슈 처리)      | punch list 처리, `pnpm build` 그린                        | ☐    |
+| Tue | 6/3  | 버퍼 (잔여 이슈 + 빌드 점검)      | `pnpm lint && npx tsc --noEmit && pnpm build` 그린        | ☐    |
 | Wed | 6/4  | 반응형 (모바일 + 데스크톱)        | breakpoint 전체 점검, 레이아웃 수정                      | ☐    |
 | Thu | 6/5  | 통합 시나리오 QA                  | PRD 16 플로우 1-1, 1-2, 1-3 수동 테스트                  | ☐    |
 | Fri | 6/6  | 스테이징 배포 + 내부 테스트       | Vercel preview, env 점검, 내부 피드백 수집               | ☐    |
 
 ---
 
-## Day 1 (월) — 코드 품질 점검 — ≈ 5h
+## Day 1~2 (월~화) — 버퍼 — W3 D5 punch list 처리
 
-목표: Storybook/QA 들어가기 전에 누적된 컨벤션 위반 + 잠재 이슈 청소.
-
-**`frontend-code-reviewer` 에이전트 한 바퀴**
-
-- [ ] 핵심 화면 5개 review 의뢰
-  - `/` (홈 — 탐색)
-  - `/profile`, `/profile/grade`
-  - `/restaurant/[id]`
-  - `/review/new` + `/review/new/result`
-  - `/my-places` (랭킹 + wishlist)
-- [ ] 리뷰 결과 정리 → 카테고리별 punch list (네이밍/import/타입/스타일/접근성)
-
-**즉시 fix (공통 위반)**
-
-- [ ] `text-xs` 미만 (`text-[10px]`, `text-[11px]`) 검색 → 모두 `text-xs`+ 로 교체
-- [ ] hex/oklch 직접 사용 → 토큰으로 교체
-- [ ] `[px]` 임의값 → Tailwind 스케일 토큰으로 가능한 한 교체
+- [ ] W3 D5 디자인 점검에서 발견된 minor 이슈 처리
 - [ ] `any` 타입 검색 → 명시적 타입으로 교체
 - [ ] `console.log` 제거
-
-**번들/타입 점검**
-
-- [ ] `pnpm build` 결과 번들 사이즈 큰 페이지 체크 (지도 청크가 적절히 분리됐는지)
+- [ ] `pnpm build` 번들 사이즈 큰 페이지 체크 (지도 청크 분리 확인)
 - [ ] `npx tsc --noEmit` 그린
 
-> 산출물: Storybook + QA에 들어가기 전에 커밋이 깨끗한 상태
+> 산출물: Wed 반응형 점검에 들어가기 전에 커밋이 깨끗한 상태
 
 ---
 
-## Day 2 (화) — Storybook 핵심 10개 — ≈ 5~6h
-
-각 컴포넌트당 default + 핵심 variant 스토리. 스토리 위치: `src/stories/`
-
-- [ ] `TrustScoreBadge.stories.tsx` — 점수 4단계 (20 / 50 / 77 / 95)
-- [ ] `GradeBadge.stories.tsx` — Lv.1(새싹) ~ Lv.6(미슐랭)
-- [ ] `ScorePanel.stories.tsx` — 풍부 / 점수 낮음 / 리뷰 적음
-- [ ] `IntroCard.stories.tsx` — 기본
-- [ ] `ReviewCard.stories.tsx` — 사진 있음/없음, 신뢰도 high/low
-- [ ] `RegionalRankCard.stories.tsx` — 1~3위 large / 4위 이하 list
-- [ ] `TrustScoreDeltaGauge.stories.tsx` — 애니메이션 default (72 → 77)
-- [ ] `GradeTimeline.stories.tsx` — Lv.3 현재 상태
-- [ ] `BadgeCollection.stories.tsx` — 일부 획득 / 전체 미달성
-- [ ] `TasteRadarChart.stories.tsx` — 균형 / 분위기 편향
-
-> 산출물: `pnpm storybook` 실행 시 10개 컴포넌트가 시각적으로 검증 가능
-
----
-
-## Day 3 (수) — 반응형 점검 — ≈ 4~5h
+## Day 3 (수) — 반응형 점검 — ≈ 4~5h  <!-- 본 작업 시작 -->
 
 목표: 모바일/데스크톱 양쪽에서 의도한 레이아웃이 유지되는지 확인.
 

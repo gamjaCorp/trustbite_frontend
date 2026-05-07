@@ -15,7 +15,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 
 | Day | 날짜 | 목표                                                       | 주요 산출물                                                               | 완료 |
 | --- | ---- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ---- |
-| Thu | 5/8  | 라우트 구조 정리 + 타이포 시맨틱 마이그 + 폰트 승격         | `/me`→`/profile`, `/my`→`/my-places` rename + raw `text-*/font-*` 시맨틱화 | ☐    |
+| Thu | 5/8  | 라우트 구조 정리 + 타이포 시맨틱 + 컬러 토큰 체크           | route rename + 타이포 시맨틱화 + arbitrary hex 0 (Google 로고 예외)        | ☐    |
 | Fri | 5/9  | `core/` 정착 + 카드 패턴 통일 + hex/shadow 토큰화          | `core/header/*`, `core/grade-badge/*` 등, hex 7→0                         | ☐    |
 | Sat | 5/10 | 레퍼런스 화면 (홈 `/`) + `pnpm design:check` 자동화        | 표준 적용 페이지 1개, 위반 검출 그린                                      | ☐    |
 | Sun | 5/11 | 버퍼 — 시각 보정 + W1 진입 준비                            | `pnpm lint && npx tsc --noEmit && pnpm build` 그린                        | ☐    |
@@ -43,7 +43,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 
 ---
 
-## Day 1 (목) — 라우트 재구조 + 타이포 시맨틱 마이그 — ≈ 6~7h
+## Day 1 (목) — 라우트 재구조 + 타이포 시맨틱 + 컬러 토큰 체크 — ≈ 6~7h
 
 ### 1부 — 라우트 재구조화 (≈ 1.5h)
 
@@ -82,34 +82,55 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 - [ ] 헤더 nav 클릭 동선 확인
 - [ ] `grep -rn "'/me\|'/my\|\"/me\|\"/my" src/` → 0건 (feature 폴더명 매치 제외)
 
-### 2부 — 타이포 시맨틱 마이그레이션 (≈ 5h)
+### 2부 — 타이포 시맨틱 마이그레이션 + 컬러 토큰 체크 (≈ 5h)
+
+> 타이포 마이그가 모든 컴포넌트를 한 번 훑는 작업이므로, **그 김에 컬러 토큰 위반도 같은 패스에서 체크**한다. 별도 패스를 다시 도는 비용을 아낌.
 
 **준비**
 - [ ] `globals.css` L277 위에 매핑 가이드 주석 박기 (위 표 기준)
 - [ ] 현황 grep — 치환 전 베이스라인 기록:
   ```bash
-  grep -rn "text-\(xs\|sm\|base\|lg\|xl\|2xl\) font-" src/ | wc -l
-  grep -rn "text-xs" src/components src/app | wc -l
+  grep -rn "text-\(xs\|sm\|base\|lg\|xl\|2xl\) font-" src/ | wc -l   # 타이포 raw 조합
+  grep -rn "text-xs" src/components src/app | wc -l                  # 12px 사용처
+  grep -rn "#[0-9a-fA-F]\{3,6\}\b" src/components src/app --include="*.tsx" | wc -l  # hex 직접 사용
+  grep -rn "text-\[#\|bg-\[#\|border-\[#" src/ | wc -l                # arbitrary hex 클래스
   ```
 
-**일괄 치환 (도메인별 순서대로, 매번 pnpm dev 시각 확인)**
-- [ ] `src/components/common/Header.tsx` — 타이포 raw 조합 → 시맨틱 이름
-- [ ] `src/components/features/explore/**` — 카드 제목/본문/메타
-- [ ] `src/components/features/ranking/**` — 카드 제목/순위/메타
-- [ ] `src/components/features/restaurant-detail/**`
-- [ ] `src/components/features/review-write/**`
-- [ ] `src/components/features/my-profile/**`
-- [ ] `src/components/features/my-restaurant/**`
-- [ ] `src/components/features/user-profile/**`
-- [ ] `src/components/features/auth/**`
-- [ ] `src/app/**` 페이지 레벨 타이포 (헤딩, 섹션 제목)
+**컬러 토큰 매핑 (참고)** — `globals.css @theme inline` 기 정의 토큰
+- 브랜드: `bg-primary`, `text-primary-foreground`, `bg-primary-subtle`
+- 시맨틱: `text-success`, `bg-warning`, `border-error`, `text-info`
+- 등급(S→D): `text-grade-s` ~ `text-grade-d`, `bg-grade-*`
+- TrustScore: `bg-score-high` ~ `bg-score-danger`, `text-score-*`
+- 중립: `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border`
+
+**일괄 치환 — 도메인별 순서대로, 매 도메인마다 (1) 타이포 시맨틱화 + (2) 컬러 토큰 체크 함께 수행, 끝나면 `pnpm dev` 시각 확인**
+
+각 도메인에서 점검할 컬러 위반:
+- `text-[#xxx]`, `bg-[#xxx]`, `border-[#xxx]` 같은 arbitrary hex → 의미상 가까운 토큰으로 교체
+- 인라인 `style={{ color: '#xxx' }}` → 토큰 클래스로 교체 (동적 계산값이 아니라면)
+- SVG `fill="#xxx"` / `stroke="#xxx"` → `currentColor` + 부모에 토큰 (Day 2의 `restaurant-pin.tsx` 예시 참고)
+- ※ 예외: `app/login/page.tsx` Google 로고 — 브랜드 fill로 유지
+
+도메인 체크리스트:
+- [ ] `src/components/common/Header.tsx` — 타이포 + 컬러
+- [ ] `src/components/features/explore/**` — 카드 제목/본문/메타 + 컬러
+- [ ] `src/components/features/ranking/**` — 카드 제목/순위/메타 + 컬러
+- [ ] `src/components/features/restaurant-detail/**` — 타이포 + 컬러
+- [ ] `src/components/features/review-write/**` — 타이포 + 컬러
+- [ ] `src/components/features/my-profile/**` — 타이포 + 컬러
+- [ ] `src/components/features/my-restaurant/**` — 타이포 + 컬러
+- [ ] `src/components/features/user-profile/**` — 타이포 + 컬러
+- [ ] `src/components/features/auth/**` — 타이포 + 컬러
+- [ ] `src/app/**` 페이지 레벨 타이포 (헤딩, 섹션 제목) + 컬러
 - [ ] `text-xs` 사용처 중 카드 본문/메타에 해당하는 곳 `text-body-2`로 승격
 
 **점검**
 - [ ] `pnpm lint && npx tsc --noEmit`
-- [ ] 브라우저 — 홈 + `/profile` + 맛집 상세 시각 확인 (폰트 충분히 큰지)
+- [ ] `grep -rn "#[0-9a-fA-F]\{3,6\}\b" src/components src/app --include="*.tsx" | grep -v "Google\|브랜드"` → Day 2에 남길 hex(restaurant-pin SVG 3건)만 잔존
+- [ ] `grep -rn "text-\[#\|bg-\[#\|border-\[#" src/` → 0건
+- [ ] 브라우저 — 홈 + `/profile` + 맛집 상세 시각 확인 (폰트 충분히 큰지, 컬러 톤 깨짐 없는지)
 
-> 산출물: raw `text-* font-*` 조합 ≤ 5건, `text-xs` 승격 완료
+> 산출물: raw `text-* font-*` 조합 ≤ 5건, `text-xs` 승격 완료, arbitrary hex 클래스 0, hex 직접 사용은 SVG 인라인 케이스만 잔존(Day 2에서 `currentColor`로 처리)
 
 ---
 

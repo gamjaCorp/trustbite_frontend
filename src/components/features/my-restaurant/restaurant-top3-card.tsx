@@ -33,7 +33,7 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
       </div>
 
       <div className="flex-1 min-w-0 space-y-1">
-        <p className="text-sm font-semibold truncate">{name}</p>
+        <p className="text-title-2 truncate">{name}</p>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <span className={cn('rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
             {category}
@@ -48,7 +48,7 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
 
       <div className="shrink-0 flex items-center gap-1">
         <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
-        <span className="text-sm font-bold">{avgScore.toFixed(1)}</span>
+        <span className="text-title-2">{avgScore.toFixed(1)}</span>
       </div>
     </Link>
   );

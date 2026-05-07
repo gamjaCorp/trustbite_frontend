@@ -15,17 +15,17 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
   return (
     <div className="bg-card rounded-2xl shadow-card p-4 flex items-start gap-3">
       <Avatar className="h-11 w-11 shrink-0">
-        <AvatarFallback className="bg-primary-subtle text-primary text-sm font-bold">
+        <AvatarFallback className="bg-primary-subtle text-primary text-title-2">
           {profile.name[0]}
         </AvatarFallback>
       </Avatar>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center flex-wrap gap-1.5">
-          <h1 className="text-base font-bold text-foreground truncate">
+          <h1 className="text-title-1 text-foreground truncate">
             {profile.name}님의 미식 가이드
           </h1>
-          <span className="rounded-chip bg-primary/10 text-primary px-2 py-0.5 text-xs font-semibold">
+          <span className="rounded-chip bg-primary/10 text-primary px-2 py-0.5 text-label-3">
             {profile.gradeName}
           </span>
         </div>

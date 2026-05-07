@@ -22,7 +22,7 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="w-8 text-right font-numeric text-xs font-semibold text-foreground">
+      <span className="w-8 text-right font-numeric text-label-3 text-foreground">
         {score.toFixed(1)}
       </span>
     </div>
@@ -45,11 +45,11 @@ export function ScorePanel({ detail }: Props) {
             <p className="mt-0.5 text-xs text-muted-foreground">
               리뷰 {detail.reviewCount}개 · 신뢰도 가중 평균
             </p>
-            <span className="mt-2 inline-flex items-center gap-1 rounded-chip bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+            <span className="mt-2 inline-flex items-center gap-1 rounded-chip bg-primary/10 px-2 py-0.5 text-label-3 text-primary">
               <ShieldCheck className="w-3 h-3" />
               신뢰도 {detail.trustScore}%
             </span>
-            <p className="mt-1.5 text-xs text-foreground font-medium">검증된 평가</p>
+            <p className="mt-1.5 text-label-3 text-foreground">검증된 평가</p>
             <p className="text-xs text-muted-foreground">고신뢰도 리뷰어 비중이 높아요</p>
           </div>
 

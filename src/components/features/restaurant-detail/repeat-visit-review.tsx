@@ -39,11 +39,11 @@ export function RepeatVisitReviewCard({ review }: Props) {
         <div className="flex items-center flex-wrap gap-1.5">
           <Link
             href={`/user/${review.reviewerId}`}
-            className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
+            className="text-title-2 text-foreground hover:text-primary transition-colors"
           >
             {review.reviewerName}
           </Link>
-          <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-xs font-semibold">
+          <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-label-3">
             Lv.{review.reviewerLevel} {review.reviewerTitle}
           </span>
           <span className="text-xs text-muted-foreground">신뢰도 {review.reviewerTrustScore}%</span>
@@ -56,7 +56,7 @@ export function RepeatVisitReviewCard({ review }: Props) {
             key={visit.label}
             className="rounded-xl bg-background/60 dark:bg-background/30 p-3"
           >
-            <p className="text-xs font-semibold text-blue-900 dark:text-blue-200 mb-1.5">
+            <p className="text-label-3 text-blue-900 dark:text-blue-200 mb-1.5">
               {visit.label}
             </p>
             <div className="flex items-center gap-2.5 text-xs text-ink/70 mb-1.5">

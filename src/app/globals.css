@@ -274,6 +274,19 @@
   }
 }
 
+/*
+ * 타이포그래피 매핑 가이드 — raw 조합 대신 아래 이름만 사용
+ *   text-2xl font-bold/semibold → text-headline-1  (24px/600)
+ *   text-xl  font-bold/semibold → text-headline-2  (20px/600)
+ *   text-lg  font-bold/semibold → text-headline-3  (16px/600)
+ *   text-base font-semibold/bold → text-title-1    (16px/600)
+ *   text-base font-medium       → text-label-1     (16px/500)
+ *   text-sm  font-semibold/bold → text-title-2     (14px/600)
+ *   text-sm  font-medium        → text-title-3     (14px/500)
+ *   text-xs  font-semibold/medium/bold → text-label-3 (12px/500)
+ *   숫자 자릿수 정렬이 필요한 곳: font-numeric text-{시맨틱}
+ */
+
 /* Headline — 페이지/주요 영역 제목 */
 @utility text-headline-1 {
   font-size: 1.5rem; /* 24px */

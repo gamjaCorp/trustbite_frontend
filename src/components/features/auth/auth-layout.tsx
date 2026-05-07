@@ -18,7 +18,7 @@ export function AuthLayout({ step, totalSteps = 2, left, right }: Props) {
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-foreground text-background">
             <ShieldCheck className="w-5 h-5" strokeWidth={2.25} />
           </span>
-          <span className="text-xl font-bold tracking-tight text-foreground">
+          <span className="text-headline-2 tracking-tight text-foreground">
             TrustBite
           </span>
         </div>
@@ -49,7 +49,7 @@ function StepIndicator({ step, total }: { step: number; total: number }) {
           />
         ))}
       </div>
-      <span className="text-xs text-muted-foreground font-medium">
+      <span className="text-label-3 text-muted-foreground">
         Step {step} of {total}
       </span>
     </div>

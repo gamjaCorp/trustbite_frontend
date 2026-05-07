@@ -57,7 +57,7 @@ export function RestaurantRankList({ entries }: Props) {
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8 items-start">
       {/* LEFT: TOP 3 */}
       <div className="space-y-3">
-        <h2 className="text-base font-semibold text-foreground">인생 맛집 TOP 3</h2>
+        <h2 className="text-title-1 text-foreground">인생 맛집 TOP 3</h2>
         <div className="space-y-2">
           {top3.map((entry, i) => (
             <RestaurantTop3Card key={entry.id} entry={entry} displayRank={i + 1} />
@@ -67,7 +67,7 @@ export function RestaurantRankList({ entries }: Props) {
 
       {/* RIGHT: 전체 랭킹 */}
       <div className="space-y-1">
-        <h2 className="text-base font-semibold text-foreground pb-2">전체 랭킹</h2>
+        <h2 className="text-title-1 text-foreground pb-2">전체 랭킹</h2>
 
         <div className="sticky top-[91px] bg-background z-10 py-2 border-b border-border/50">
           <SortFilterBar

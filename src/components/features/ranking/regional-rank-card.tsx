@@ -46,7 +46,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
           {/* ① 랭크 번호 */}
           {rank > 3 && (
             <div className="w-8 shrink-0 flex items-center justify-center">
-              <span className="font-numeric text-base font-semibold text-ink/60">
+              <span className="font-numeric text-title-1 text-ink/60">
                 {rank}
               </span>
             </div>
@@ -75,7 +75,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
             <div className="flex items-center gap-1 text-sm text-ink/70">
               <span
                 className={cn(
-                  'rounded-chip px-2 py-0.5 text-xs font-medium',
+                  'rounded-chip px-2 py-0.5 text-label-3',
                   CATEGORY_STYLE[category],
                 )}
               >
@@ -86,7 +86,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
 
             <Link
               href={`/restaurant/${id}`}
-              className="font-bold text-base text-foreground truncate"
+              className="text-title-1 text-foreground truncate"
             >
               {name}
             </Link>
@@ -102,7 +102,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
               {myStatus !== 'reviewed' ? (
                 <Link
                   href={`/restaurant/${id}/review/new`}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:brightness-90 active:scale-95 transition-all"
+                  className="inline-flex items-center gap-1 text-title-3 text-primary hover:brightness-90 active:scale-95 transition-all"
                 >
                   ✍️ 리뷰 쓰기
                 </Link>
@@ -124,7 +124,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
             <div className="flex flex-col items-center gap-1">
               <div className="flex items-center gap-0.5">
                 <Star className="w-4 h-4 fill-grade-s text-grade-s" />
-                <span className="font-numeric text-base font-bold text-foreground">
+                <span className="font-numeric text-title-1 text-foreground">
                   {communityAvgScore.toFixed(1)}
                 </span>
               </div>
@@ -201,7 +201,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
         {/* 메타 (카테고리 · 지역) */}
         <Link href={`/restaurant/${id}`} className="space-y-1.5">
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <span className={cn('rounded-chip px-2 py-0.5 text-xs font-medium', CATEGORY_STYLE[category])}>
+            <span className={cn('rounded-chip px-2 py-0.5 text-label-3', CATEGORY_STYLE[category])}>
               {category}
             </span>
             <span>· {region}</span>
@@ -212,11 +212,11 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
             {rank <= 3 ? (
               <span className="text-xl leading-none shrink-0">{MEDALS[rank - 1]}</span>
             ) : (
-              <span className={cn('font-numeric text-base font-semibold shrink-0', RANK_COLORS[rank] ?? 'text-muted-foreground')}>
+              <span className={cn('font-numeric text-title-1 shrink-0', RANK_COLORS[rank] ?? 'text-muted-foreground')}>
                 {rank}
               </span>
             )}
-            <p className="font-bold text-base text-foreground leading-snug truncate">
+            <p className="text-title-1 text-foreground leading-snug truncate">
               {name}
             </p>
           </div>
@@ -232,7 +232,7 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
         {/* 커뮤니티 평점 + 신뢰도 */}
         <div className="flex items-center gap-1.5 flex-wrap">
           <Star className="w-4 h-4 fill-grade-s text-grade-s shrink-0" />
-          <span className="font-numeric text-base font-bold text-foreground">
+          <span className="font-numeric text-title-1 text-foreground">
             {communityAvgScore.toFixed(1)}
           </span>
           <TrustScoreBadge score={trustScore} size="sm" onClick={() => setSheetOpen(true)} />
@@ -244,13 +244,13 @@ export function RegionalRankCard({ entry, variant = 'default', active = false }:
           {myStatus !== 'reviewed' ? (
             <Link
               href={`/restaurant/${id}/review/new`}
-              className="block w-full rounded-xl py-2 text-center text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              className="block w-full rounded-xl py-2 text-center text-title-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               ✍️ 리뷰 쓰기
             </Link>
           ) : (
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1 rounded-chip px-2.5 py-1 bg-primary/10 text-primary text-sm font-semibold">
+              <span className="inline-flex items-center gap-1 rounded-chip px-2.5 py-1 bg-primary/10 text-primary text-title-2">
                 <Star className="w-3.5 h-3.5 fill-primary" />
                 내 평점 <span className="font-numeric">{avgScore.toFixed(1)}</span>
               </span>

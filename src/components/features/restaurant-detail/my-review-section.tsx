@@ -31,7 +31,7 @@ function MyReviewPhotos({ photos }: { photos: string[] }) {
             />
             {isOverlay && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="text-background font-bold text-xl">+{hiddenCount}</span>
+                <span className="text-background text-headline-2">+{hiddenCount}</span>
               </div>
             )}
           </div>
@@ -55,7 +55,7 @@ function MyReviewVisit({
   return (
     <div className="rounded-xl bg-background p-3">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-xs font-semibold text-foreground">{visit.label}</p>
+        <p className="text-label-3 text-foreground">{visit.label}</p>
         <button
           type="button"
           className="shrink-0 w-7 h-7 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
@@ -99,7 +99,7 @@ function MyReviewVisit({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
         >
           {expanded ? '접기' : '…더보기'}
         </button>
@@ -130,7 +130,7 @@ export function MyReviewSection({ review }: Props) {
     <section className="mx-6 mt-3 rounded-2xl bg-primary-subtle ring-1 ring-primary/20 p-4">
       <header className="flex items-center gap-1.5 pb-3 border-b border-primary/15 mb-3">
         <Bookmark className="w-4 h-4 fill-primary text-primary" />
-        <span className="text-sm font-semibold text-foreground">내 리뷰</span>
+        <span className="text-title-2 text-foreground">내 리뷰</span>
       </header>
 
       <div

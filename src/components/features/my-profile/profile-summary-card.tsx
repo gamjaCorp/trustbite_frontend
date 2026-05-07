@@ -16,13 +16,13 @@ export function ProfileSummaryCard({ profile }: Props) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
           <Avatar className="h-12 w-12 shrink-0">
-            <AvatarFallback className="bg-primary-subtle text-primary text-base font-bold">
+            <AvatarFallback className="bg-primary-subtle text-primary text-title-1">
               {profile.avatarInitial}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-base font-bold text-foreground truncate">
+              <span className="text-title-1 text-foreground truncate">
                 {profile.name}
               </span>
               <GradeBadge grade={profile.currentGrade} />
@@ -57,7 +57,7 @@ export function ProfileSummaryCard({ profile }: Props) {
           </button>
         </div>
         <Link
-          href="/my"
+          href="/my-places"
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           <Eye className="w-3.5 h-3.5" />

@@ -94,7 +94,7 @@ export default function OnboardingPage() {
         <div className="flex-1 flex flex-col w-full max-w-md mx-auto">
           <div className="flex-1 flex flex-col justify-center space-y-6">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              <h2 className="text-headline-1 tracking-tight text-foreground">
                 두 가지만 알려주시면 시작해요
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -105,7 +105,7 @@ export default function OnboardingPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="nickname"
-                className="block text-sm font-semibold text-foreground"
+                className="block text-title-2 text-foreground"
               >
                 닉네임
               </label>
@@ -123,7 +123,7 @@ export default function OnboardingPage() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-foreground">자주 가는 지역</p>
+              <p className="text-title-2 text-foreground">자주 가는 지역</p>
               <div className="flex flex-wrap gap-2">
                 {visibleRegions.map((region) => {
                   const selected = selectedRegions.includes(region);
@@ -171,11 +171,11 @@ export default function OnboardingPage() {
               type="button"
               onClick={handleStart}
               disabled={!isValid}
-              className="w-full rounded-xl bg-foreground text-background px-4 py-3.5 text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full rounded-xl bg-foreground text-background px-4 py-3.5 text-title-2 hover:bg-foreground/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               시작하기
             </button>
-            <p className="mt-3 text-center text-sm font-medium text-primary">
+            <p className="mt-3 text-center text-title-3 text-primary">
               리뷰를 쓸수록 내 신뢰도가 올라가요
             </p>
           </div>

@@ -28,7 +28,7 @@ export function PointsAndListsRow({ profile }: Props) {
           </span>
         </div>
         <p className="text-foreground">
-          <span className="text-2xl font-bold font-numeric">{profile.points}</span>
+          <span className="text-headline-1 font-numeric">{profile.points}</span>
           <span className="text-sm text-muted-foreground ml-0.5">P</span>
         </p>
         <p className="text-xs text-muted-foreground mt-1">
@@ -48,7 +48,7 @@ export function PointsAndListsRow({ profile }: Props) {
             <ChevronRight className="w-3 h-3" />
           </span>
         </div>
-        <p className="text-2xl font-bold font-numeric text-foreground">
+        <p className="text-headline-1 font-numeric text-foreground">
           {profile.sharedListCount}
         </p>
         <p className="text-xs text-muted-foreground mt-1 truncate">{sharedListLabel}</p>

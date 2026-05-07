@@ -17,7 +17,7 @@ export function ActivityPulse({ reviews }: Props) {
         <span className="pulse-ring absolute inline-flex h-full w-full rounded-full bg-primary/60" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
       </span>
-      <span className="text-xs font-medium text-primary">
+      <span className="text-label-3 text-primary">
         <span className="font-numeric">{mostRecent.minutesAgo}분 전</span> · {recent.length}명이 새 리뷰를 남겼어요
       </span>
     </div>

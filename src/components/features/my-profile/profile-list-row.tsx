@@ -15,7 +15,7 @@ export function ProfileListRow({ label, value, href, tone = 'default' }: Props) 
     <>
       <span
         className={cn(
-          'text-sm font-medium',
+          'text-title-3',
           tone === 'danger' ? 'text-error' : 'text-foreground',
         )}
       >

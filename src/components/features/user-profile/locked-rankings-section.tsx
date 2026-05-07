@@ -15,7 +15,7 @@ export function LockedRankingsSection({ previewItem, totalCount, targetName, onF
   return (
     <section className="mt-8 space-y-3">
       <div className="flex items-baseline justify-between px-1">
-        <h2 className="text-base font-semibold text-foreground">전체 랭킹 {totalCount}곳</h2>
+        <h2 className="text-title-1 text-foreground">전체 랭킹 {totalCount}곳</h2>
         <span className="text-xs text-muted-foreground">팔로우하면 열람할 수 있어요</span>
       </div>
 
@@ -29,7 +29,7 @@ export function LockedRankingsSection({ previewItem, totalCount, targetName, onF
         <span className="flex items-center justify-center w-10 h-10 rounded-full bg-card border border-border">
           <Lock className="w-4 h-4 text-muted-foreground" />
         </span>
-        <p className="text-sm font-semibold text-foreground">
+        <p className="text-title-2 text-foreground">
           팔로우하고 {targetName}님의 {totalCount}곳을 확인해보세요
         </p>
         <p className="text-xs text-muted-foreground">

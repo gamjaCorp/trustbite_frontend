@@ -29,13 +29,13 @@ export function GradeProgressCard({ profile }: Props) {
       <div className="flex items-end justify-between gap-3">
         <div>
           <p className="text-xs text-muted-foreground mb-1">현재 등급</p>
-          <p className="text-lg font-bold text-foreground">
+          <p className="text-headline-3 text-foreground">
             {GRADE_LABEL[profile.currentGrade]}
           </p>
         </div>
         <div className="text-right">
           <p className="text-xs text-muted-foreground mb-1">다음</p>
-          <p className="text-lg font-bold text-primary">
+          <p className="text-headline-3 text-primary">
             {GRADE_LABEL[profile.nextGrade]}
           </p>
         </div>
@@ -47,7 +47,7 @@ export function GradeProgressCard({ profile }: Props) {
         <div className="rounded-xl bg-muted/50 px-4 py-3">
           <p className="text-xs text-muted-foreground mb-1">리뷰 수</p>
           <p className="font-numeric">
-            <span className="text-base font-bold text-foreground">
+            <span className="text-title-1 text-foreground">
               {profile.reviewCount}
             </span>
             <span className="text-xs text-muted-foreground"> / {profile.reviewsToNextGrade}</span>
@@ -56,7 +56,7 @@ export function GradeProgressCard({ profile }: Props) {
         <div className="rounded-xl bg-muted/50 px-4 py-3">
           <p className="text-xs text-muted-foreground mb-1">신뢰도</p>
           <p className="font-numeric flex items-baseline gap-1">
-            <span className="text-base font-bold text-foreground">
+            <span className="text-title-1 text-foreground">
               {profile.trustScore}%
             </span>
             <span className="text-xs text-muted-foreground">/ {profile.trustScoreThreshold}%</span>
@@ -68,7 +68,7 @@ export function GradeProgressCard({ profile }: Props) {
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-muted-foreground mb-3">뱃지 컬렉션</p>
+        <p className="text-label-3 text-muted-foreground mb-3">뱃지 컬렉션</p>
         <ul className="grid grid-cols-6 gap-1">
           {BADGE_LEVELS.map(({ level, label }) => {
             const isActive = level === profile.badgeLevel;
@@ -76,7 +76,7 @@ export function GradeProgressCard({ profile }: Props) {
               <li key={level} className="flex flex-col items-center gap-1.5">
                 <span
                   className={cn(
-                    'inline-flex items-center justify-center w-9 h-9 rounded-full text-xs font-bold transition-colors',
+                    'inline-flex items-center justify-center w-9 h-9 rounded-full text-label-3 transition-colors',
                     isActive
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground',

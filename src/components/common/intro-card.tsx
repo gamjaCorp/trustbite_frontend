@@ -37,7 +37,7 @@ export function IntroCard() {
           <Sparkles className="w-4 h-4 text-primary" />
         </div>
         <div className="space-y-1">
-          <p className="text-sm font-semibold text-foreground leading-snug">
+          <p className="text-title-2 text-foreground leading-snug">
             별점 4.5인데 맛없었던 적 있죠?
           </p>
           <p className="text-xs text-muted-foreground leading-relaxed">

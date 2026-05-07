@@ -15,7 +15,7 @@ function RatingRow({ dim, label }: { dim: 'taste' | 'value' | 'vibe'; label: str
 
   return (
     <div className="flex items-center justify-between rounded-xl bg-card ring-1 ring-paper-edge/40 px-4 py-3">
-      <span className="text-sm font-medium text-foreground">{label}</span>
+      <span className="text-title-3 text-foreground">{label}</span>
       <StarRatingInput
         value={value}
         onChange={(n) => setRating(dim, n)}

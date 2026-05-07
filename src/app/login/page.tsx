@@ -69,7 +69,7 @@ export default function LoginPage() {
                   <Icon className="w-3.5 h-3.5" strokeWidth={2.25} />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-foreground">{title}</p>
+                  <p className="text-title-2 text-foreground">{title}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
                 </div>
               </li>
@@ -81,7 +81,7 @@ export default function LoginPage() {
         <div className="flex-1 flex flex-col w-full max-w-md mx-auto">
           <div className="flex-1 flex flex-col justify-center space-y-7">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              <h2 className="text-headline-1 tracking-tight text-foreground">
                 1초만에 시작하기
               </h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
             <Link
               href="/onboarding"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-card border border-border px-4 py-3.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted/40 transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-card border border-border px-4 py-3.5 text-title-2 text-foreground shadow-sm hover:bg-muted/40 transition-colors"
             >
               <GoogleLogo className="w-4 h-4" />
               Google로 계속하기

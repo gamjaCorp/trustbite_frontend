@@ -32,14 +32,14 @@ export function ReviewCard({ review }: Props) {
             <div className="flex items-center flex-wrap gap-1.5">
               <Link
                 href={`/user/${review.reviewerId}`}
-                className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                className="text-title-2 text-foreground hover:text-primary transition-colors"
               >
                 {review.reviewerName}
               </Link>
-              <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-xs font-semibold">
+              <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-label-3">
                 Lv.{review.reviewerLevel} {review.reviewerTitle}
               </span>
-              <span className="rounded-chip bg-blue-50 text-blue-700 px-1.5 py-0.5 text-xs font-medium dark:bg-blue-900/30 dark:text-blue-300">
+              <span className="rounded-chip bg-blue-50 text-blue-700 px-1.5 py-0.5 text-label-3 dark:bg-blue-900/30 dark:text-blue-300">
                 {review.visitOrdinal}번째 방문
               </span>
             </div>
@@ -76,7 +76,7 @@ export function ReviewCard({ review }: Props) {
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
         >
           {expanded ? '접기' : '…더보기'}
         </button>

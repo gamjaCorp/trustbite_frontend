@@ -20,7 +20,7 @@ export function RestaurantSummary({ detail }: Props) {
             {detail.category}
             {detail.subCategory ? ` · ${detail.subCategory}` : ''}
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-foreground">{detail.name}</h1>
+          <h1 className="mt-1 text-headline-1 text-foreground">{detail.name}</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             {detail.address} · {detail.accessSummary} · {detail.hours.weekday}
           </p>

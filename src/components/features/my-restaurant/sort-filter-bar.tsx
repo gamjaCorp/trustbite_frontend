@@ -41,7 +41,7 @@ export function SortFilterBar({
             key={key}
             onClick={() => onSortChange(key)}
             className={cn(
-              'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+              'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
               sort === key
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:text-foreground',
@@ -58,7 +58,7 @@ export function SortFilterBar({
             key={c}
             onClick={() => onCategoryChange(c)}
             className={cn(
-              'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+              'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
               category === c
                 ? c === 'all'
                   ? 'bg-foreground text-background'
@@ -77,7 +77,7 @@ export function SortFilterBar({
           <button
             onClick={() => onRegionChange('all')}
             className={cn(
-              'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+              'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
               region === 'all'
                 ? 'bg-foreground text-background'
                 : 'bg-muted text-muted-foreground hover:text-foreground',
@@ -90,7 +90,7 @@ export function SortFilterBar({
               key={r}
               onClick={() => onRegionChange(r)}
               className={cn(
-                'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+                'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
                 region === r
                   ? 'bg-foreground text-background'
                   : 'bg-muted text-muted-foreground hover:text-foreground',

@@ -13,7 +13,7 @@ const GRID_STYLE: React.CSSProperties = {
 export function LocationSection({ detail }: Props) {
   return (
     <section className="px-6 pt-8">
-      <h2 className="text-lg font-bold text-foreground mb-3">위치</h2>
+      <h2 className="text-headline-3 text-foreground mb-3">위치</h2>
 
       <div
         className="relative w-full aspect-[5/3] rounded-2xl bg-paper overflow-hidden ring-1 ring-paper-edge/50"
@@ -31,7 +31,7 @@ export function LocationSection({ detail }: Props) {
       </div>
 
       <div className="mt-3">
-        <h3 className="text-sm font-semibold text-foreground">{detail.address}</h3>
+        <h3 className="text-title-2 text-foreground">{detail.address}</h3>
         <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
           {detail.locationDescription}
         </p>

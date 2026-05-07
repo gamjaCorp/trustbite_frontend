@@ -3,9 +3,9 @@
 ## 이번 주 목표
 
 Week 1에서 시각적 1차 MVP가 완성된 상태.  
-이번 주는 **컨벤션 정리 + 데이터 레이어 표준 사례 수립**에 집중한다.
+이번 주는 **로그인 백엔드 통합 + 데이터 레이어 표준 사례 수립**에 집중한다.
 
-`common/` → `core/` 마이그레이션, 타입/인프라 정리, 그리고 Week 1에서 만든 핵심 신규 화면 3개(`/profile`, `/profile/grade`, `/review/new/result`)를 표준 절차로 리팩토링해서 **다른 화면이 따라할 레퍼런스**로 삼는다.
+타입/인프라 정리 + 로그인 실 연결, 그리고 Week 1에서 만든 핵심 신규 화면 3개(`/profile`, `/profile/grade`, `/review/new/result`)를 표준 절차로 리팩토링해서 **다른 화면이 따라할 레퍼런스**로 삼는다. (`common/` → `core/` 마이그레이션은 W0 Day 2에서 완료)
 
 ---
 
@@ -13,7 +13,7 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 
 | Day | 날짜 | 목표                                    | 주요 산출물                                                | 완료 |
 | --- | ---- | --------------------------------------- | ---------------------------------------------------------- | ---- |
-| Mon | 5/19 | 기반 다지기 (구조 + 인프라)             | `core/` 마이그, `lib/axios` (인증 인터셉터), `lib/types` 구조 | ☐    |
+| Mon | 5/19 | 기반 다지기 + 로그인 백엔드 통합        | 타입 이동, `lib/axios` (인증 인터셉터), `src/auth.ts` 확장, onboarding 저장 | ☐    |
 | Tue | 5/20 | `/profile` 데이터 레이어 표준화         | `api/user`, `hooks/user/use-my-profile`, 페이지 리팩토링   | ☐    |
 | Wed | 5/21 | `/profile/grade` 데이터 레이어          | `useGradeProgress`, `getGradeProgress` 정식화              | ☐    |
 | Thu | 5/22 | `/review/new/result` + submit mutation | `useSubmitReview` mutation, 결과 화면 정합                 | ☐    |
@@ -37,20 +37,10 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 
 ---
 
-## Day 1 (월) — 기반 다지기 — ≈ 5~6h
+## Day 1 (월) — 기반 다지기 + 로그인 백엔드 통합 — ≈ 6h
 
-목표: 컨벤션 드리프트 + 인프라 공백 한 번에 정리.
-
-**`common/` → `core/` 마이그레이션**
-
-- [ ] `Header.tsx` → `src/components/core/header/index.tsx` (PascalCase 동시 수정)
-- [ ] `grade-badge.tsx` → `src/components/core/grade-badge/index.tsx`
-- [ ] `intro-card.tsx` → `src/components/core/intro-card/index.tsx`
-- [ ] `rank-card-skeleton.tsx` → `src/components/core/rank-card-skeleton/index.tsx`
-- [ ] `trust-score-badge.tsx` → `src/components/core/trust-score-badge/index.tsx`
-- [ ] `trust-score-sheet.tsx` → `src/components/core/trust-score-sheet/index.tsx`
-- [ ] 프로젝트 내 `@/components/common/*` import 일괄 수정
-- [ ] 빈 `src/components/common/` 디렉터리 삭제
+목표: 타입/인프라 정리 + 로그인 실 백엔드 연결 (W2 Day 2~의 데이터 레이어가 진짜 session으로 검증되게).
+(`common/` → `core/` 마이그레이션은 W0 Day 2에서 완료)
 
 **타입 이동**
 
@@ -64,11 +54,31 @@ Week 1에서 시각적 1차 MVP가 완성된 상태.
 - [ ] `src/lib/axios.ts` — baseURL `process.env.NEXT_PUBLIC_API_BASE_URL`, 요청 인터셉터(NextAuth session → Authorization 헤더), 응답 인터셉터(401 처리 + sonner 에러 토스트)
 - [ ] `.env.local` / Vercel Preview / Production env 분리
 
-**마무리**
+**로그인 백엔드 통합 (≈ 3h)**
 
+- [ ] `src/auth.ts` 확장
+  - [ ] `callbacks.signIn`: 첫 로그인 시 백엔드 `POST /auth/login` 호출 → 기존 사용자면 매칭, 신규면 `needsOnboarding: true` 응답
+  - [ ] `callbacks.jwt`: 백엔드 user id, accessToken, needsOnboarding 플래그를 토큰에 저장
+  - [ ] `callbacks.session`: 토큰 → session에 `userId`, `accessToken`, `needsOnboarding` 노출
+- [ ] `src/app/login/page.tsx` 실 signIn 연결
+  - [ ] "Google로 계속하기" `<Link href="/onboarding">` → `signIn('google', { callbackUrl: '/onboarding' })` 서버 액션
+  - [ ] `/signin/page.tsx` 로직 중복 정리 (`/login`을 단일 진입점화)
+- [ ] `src/app/onboarding/page.tsx` 백엔드 연결
+  - [ ] "시작하기" 클릭 → `POST /users/onboarding` (닉네임 + selectedRegions) 후 `/`로 이동
+  - [ ] `src/hooks/auth/use-onboarding.ts` React Query mutation
+  - [ ] 에러: `sonner` toast
+  - [ ] 이미 온보딩 완료 사용자 `/onboarding` 진입 → `/` 리다이렉트 (session.needsOnboarding 체크)
+- [ ] `src/lib/types/auth/{request,response,type}.ts` 신규 — `LoginResponse`, `OnboardingRequest`
+- [ ] `src/api/auth/auth.ts` 신규 — `loginWithProvider()`, `submitOnboarding()`
+- [ ] axios 요청 인터셉터에서 session의 `accessToken` → Authorization 헤더
+
+**점검**
+
+- [ ] 비로그인 → `/login` → Google → 신규 사용자 생성 → `/onboarding` → 닉네임/지역 저장 → `/` 진입
+- [ ] 기존 사용자 → `/login` → Google → 곧장 `/`
 - [ ] `pnpm lint && npx tsc --noEmit` 그린
 
-> 산출물: 새 CLAUDE.md 규약과 일치한 구조 + 데이터 레이어 그릇
+> 산출물: 인증 흐름이 실 백엔드 위에서 동작 + 타입/인프라 그릇 완비
 
 ---
 

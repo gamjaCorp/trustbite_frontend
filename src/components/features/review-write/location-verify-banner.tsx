@@ -9,7 +9,7 @@ export function LocationVerifyBanner() {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <span className="text-sm font-semibold text-foreground">위치 인증</span>
+          <span className="text-title-2 text-foreground">위치 인증</span>
           <span className="rounded-chip bg-background px-1.5 py-0.5 text-xs text-muted-foreground">
             2차 MVP
           </span>

@@ -53,7 +53,7 @@ export function PhotoUploadGrid({ maxSlots = 4 }: Props) {
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-sm font-medium text-foreground">사진</span>
+        <span className="text-title-3 text-foreground">사진</span>
         <span
           className={cn(
             'inline-flex items-center gap-1 text-xs transition-colors',

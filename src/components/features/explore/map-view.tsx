@@ -57,7 +57,7 @@ export function MapView(props: MapViewProps) {
     return (
       <div className="absolute inset-0 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground">
         <MapPin className="w-8 h-8" />
-        <p className="text-sm font-medium">지도를 불러올 수 없어요</p>
+        <p className="text-title-3">지도를 불러올 수 없어요</p>
         <p className="text-xs font-numeric">NEXT_PUBLIC_NAVER_MAP_CLIENT_ID 미설정</p>
       </div>
     );

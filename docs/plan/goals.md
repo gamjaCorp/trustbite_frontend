@@ -15,7 +15,6 @@
 | 인증 가드                             | 미들웨어 통합, 비로그인 → `/login?next=` 리다이렉트 일관           |
 | 에러 화면                             | `not-found.tsx`, `error.tsx`, `/restaurant/[id]/error.tsx`         |
 | 디자인 시스템                         | 시맨틱 타이포(`text-headline/title/body/label/caption-*`) 사용률 ≥ 90%, `common/` 제거, hex 위반 0 |
-| Storybook                             | 핵심 컴포넌트 10개, `pnpm storybook` 에서 시각 확인 가능           |
 | 반응형                                | 375 (모바일) · 768 (태블릿) · 1280 (데스크톱) 레이아웃 정상       |
 | 빌드                                  | `pnpm build` 에러 없음                                             |
 | 스테이징 배포                         | Vercel preview URL 접근 가능, 내부 테스터 3~5명 피드백 시작        |
@@ -46,6 +45,7 @@
 | AI 취향 요약               | 12.1장        | Anthropic API → 내 취향 요약 텍스트     |
 | 뱃지 Lv.3~Lv.6 확장        | 3장           | 조건 표 기준으로 컴포넌트 확장          |
 | 방문 횟수 캐러셀           | 4.2장         | `/profile` 에 '자주 간 맛집' 섹션       |
+| Storybook 핵심 컴포넌트 10개 | —           | `pnpm storybook` 에서 시각 확인 가능    |
 
 ---
 
