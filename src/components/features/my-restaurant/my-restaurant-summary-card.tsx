@@ -12,11 +12,11 @@ interface Props {
 const RANK_COLORS = ['text-grade-s', 'text-grade-a', 'text-grade-b'];
 
 function getTrustScoreColor(score: number) {
-  if (score >= 80) return 'text-[var(--score-high)]';
-  if (score >= 60) return 'text-[var(--score-good)]';
-  if (score >= 40) return 'text-[var(--score-mid)]';
-  if (score >= 20) return 'text-[var(--score-low)]';
-  return 'text-[var(--score-danger)]';
+  if (score >= 80) return 'text-score-high';
+  if (score >= 60) return 'text-score-good';
+  if (score >= 40) return 'text-score-mid';
+  if (score >= 20) return 'text-score-low';
+  return 'text-score-danger';
 }
 
 export function MyRestaurantSummaryCard({ stats, onWriteReview }: Props) {
@@ -66,7 +66,7 @@ function StatChip({
 }) {
   return (
     <div className="flex-1 bg-primary/10 rounded-chip px-3 py-2 text-center">
-      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-caption-2 text-muted-foreground">{label}</p>
       <p className={cn('text-title-2 text-primary', valueClassName)}>{value}</p>
     </div>
   );
@@ -116,7 +116,7 @@ function FullState({
                 {r.rank}위
               </span>
               <span className="flex-1 text-title-3 truncate">{r.name}</span>
-              <span className="flex items-center gap-0.5 text-xs text-muted-foreground shrink-0">
+              <span className="flex items-center gap-0.5 text-caption-2 text-muted-foreground shrink-0">
                 <Star className="w-3 h-3 fill-grade-s text-grade-s" />
                 {r.myRating}
               </span>
@@ -131,7 +131,7 @@ function FullState({
           {regionCounts.map(({ region, count }) => (
             <span
               key={region}
-              className="flex items-center gap-1 text-xs bg-muted rounded-chip px-2.5 py-1"
+              className="flex items-center gap-1 text-label-3 bg-muted rounded-chip px-2.5 py-1"
             >
               <MapPin className="w-3 h-3 text-primary" />
               {region} {count}곳

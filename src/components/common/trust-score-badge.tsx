@@ -22,7 +22,7 @@ export function TrustScoreBadge({ score, size = 'sm', onClick, showIcon = true, 
         'inline-flex items-center gap-1 rounded-chip font-semibold',
         tone.text,
         tone.bg,
-        size === 'sm' ? 'text-xs px-2 py-0.5' : 'text-sm px-2.5 py-1',
+        size === 'sm' ? 'text-label-3 px-2 py-0.5' : 'text-sm px-2.5 py-1',
         interactive && 'hover:brightness-95 active:scale-95 transition-all cursor-pointer',
         className,
       )}

@@ -41,7 +41,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
     <div className="rounded-2xl bg-card ring-1 ring-paper-edge/40 p-4 shadow-card">
       <header className="mb-3">
         <h3 className="text-title-2 text-foreground">내 랭킹 미리보기</h3>
-        <p className="text-xs text-muted-foreground mt-0.5">
+        <p className="text-caption-2 text-muted-foreground mt-0.5">
           별점 입력하면 위치가 바뀌어요
         </p>
       </header>
@@ -59,7 +59,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
             >
               <span
                 className={cn(
-                  'w-5 text-center text-sm font-numeric font-semibold shrink-0',
+                  'w-5 text-center text-title-2 font-numeric shrink-0',
                   row.isNew ? 'text-primary' : 'text-muted-foreground',
                 )}
               >

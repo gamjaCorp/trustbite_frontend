@@ -28,13 +28,13 @@ export function GradeProgressCard({ profile }: Props) {
     <section className="rounded-2xl bg-card shadow-card p-5 space-y-5">
       <div className="flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs text-muted-foreground mb-1">현재 등급</p>
+          <p className="text-caption-2 text-muted-foreground mb-1">현재 등급</p>
           <p className="text-headline-3 text-foreground">
             {GRADE_LABEL[profile.currentGrade]}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-muted-foreground mb-1">다음</p>
+          <p className="text-caption-2 text-muted-foreground mb-1">다음</p>
           <p className="text-headline-3 text-primary">
             {GRADE_LABEL[profile.nextGrade]}
           </p>
@@ -45,21 +45,21 @@ export function GradeProgressCard({ profile }: Props) {
 
       <div className="grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-muted/50 px-4 py-3">
-          <p className="text-xs text-muted-foreground mb-1">리뷰 수</p>
+          <p className="text-caption-2 text-muted-foreground mb-1">리뷰 수</p>
           <p className="font-numeric">
             <span className="text-title-1 text-foreground">
               {profile.reviewCount}
             </span>
-            <span className="text-xs text-muted-foreground"> / {profile.reviewsToNextGrade}</span>
+            <span className="text-caption-2 text-muted-foreground"> / {profile.reviewsToNextGrade}</span>
           </p>
         </div>
         <div className="rounded-xl bg-muted/50 px-4 py-3">
-          <p className="text-xs text-muted-foreground mb-1">신뢰도</p>
+          <p className="text-caption-2 text-muted-foreground mb-1">신뢰도</p>
           <p className="font-numeric flex items-baseline gap-1">
             <span className="text-title-1 text-foreground">
               {profile.trustScore}%
             </span>
-            <span className="text-xs text-muted-foreground">/ {profile.trustScoreThreshold}%</span>
+            <span className="text-caption-2 text-muted-foreground">/ {profile.trustScoreThreshold}%</span>
             {profile.trustScoreMet && (
               <Check className="w-3.5 h-3.5 text-success self-center" strokeWidth={3} />
             )}
@@ -86,7 +86,7 @@ export function GradeProgressCard({ profile }: Props) {
                 </span>
                 <span
                   className={cn(
-                    'text-xs',
+                    'text-label-3',
                     isActive ? 'text-foreground font-semibold' : 'text-muted-foreground',
                   )}
                 >

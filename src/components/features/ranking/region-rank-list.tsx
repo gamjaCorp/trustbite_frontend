@@ -130,7 +130,7 @@ export function RegionRankList({ entries, activeId }: Props) {
             <section className="pt-8 space-y-3">
               <div className="space-y-0.5">
                 <h2 className="text-headline-3 text-foreground">맛집 랭킹</h2>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-caption-2 text-muted-foreground">
                   총 {filteredList.length}곳
                 </p>
               </div>

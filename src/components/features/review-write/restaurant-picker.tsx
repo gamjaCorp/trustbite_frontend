@@ -37,7 +37,7 @@ export function RestaurantPicker({ candidates }: Props) {
         />
       </div>
 
-      <p className="mt-3 mb-1 px-1 text-xs text-muted-foreground">
+      <p className="mt-3 mb-1 px-1 text-caption-2 text-muted-foreground">
         {query.trim() ? '검색 결과' : '최근 방문한 곳'}
       </p>
 
@@ -75,13 +75,13 @@ export function RestaurantPicker({ candidates }: Props) {
                   <div className="mt-0.5 flex items-center gap-1.5">
                     <span
                       className={cn(
-                        'rounded-chip px-1.5 py-0.5 text-xs',
+                        'rounded-chip px-1.5 py-0.5 text-label-3',
                         CATEGORY_STYLE[entry.category],
                       )}
                     >
                       {entry.category}
                     </span>
-                    <span className="text-xs text-muted-foreground truncate">
+                    <span className="text-caption-2 text-muted-foreground truncate">
                       {entry.region}
                     </span>
                   </div>

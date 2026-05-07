@@ -55,14 +55,14 @@ export function ExplorePanel({ entries, realtimeReviews, activeId }: Props) {
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="font-numeric text-xs tracking-[0.2em] text-ink/70 uppercase">
+                <span className="font-numeric text-caption-2 tracking-[0.2em] text-ink/70 uppercase">
                   SEOUL · 37.55°N
                 </span>
               </div>
               <h1 className="text-2xl font-extrabold text-foreground tracking-tight leading-none">
                 맛집 탐색
               </h1>
-              <p className="text-xs text-ink/80 pt-0.5 flex items-center gap-1">
+              <p className="text-caption-2 text-ink/80 pt-0.5 flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-primary" />
                 신뢰도 기반 검증된 맛집 {filteredList.length}곳
               </p>

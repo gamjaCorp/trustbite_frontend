@@ -59,7 +59,7 @@ export function TrustDeltaCard({
       <Progress value={next} className={cn('mt-3 h-2', tone.bg)} />
 
       <div className="mt-4">
-        <p className="text-xs text-muted-foreground mb-2">획득 예정</p>
+        <p className="text-caption-2 text-muted-foreground mb-2">획득 예정</p>
         <div className="flex flex-wrap gap-1.5">
           <PointChip label="리뷰" points={5} active={isValid} />
           <PointChip label="사진" points={3} active={hasPhoto} />
@@ -81,7 +81,7 @@ export function TrustDeltaCard({
         리뷰 등록하기
       </button>
 
-      <p className="mt-2 text-center text-xs text-muted-foreground">
+      <p className="mt-2 text-center text-caption-2 text-muted-foreground">
         {nextGradeName}까지 리뷰{' '}
         <span className="font-numeric font-semibold text-foreground">
           {remainingReviewsForNextGrade}

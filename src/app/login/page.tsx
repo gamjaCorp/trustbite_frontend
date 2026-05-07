@@ -70,7 +70,7 @@ export default function LoginPage() {
                 </span>
                 <div className="min-w-0">
                   <p className="text-title-2 text-foreground">{title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+                  <p className="text-caption-2 text-muted-foreground mt-0.5">{description}</p>
                 </div>
               </li>
             ))}
@@ -99,14 +99,14 @@ export default function LoginPage() {
               Google로 계속하기
             </Link>
 
-            <p className="text-center text-xs text-muted-foreground leading-relaxed">
+            <p className="text-center text-caption-2 text-muted-foreground leading-relaxed">
               처음 가입이라면 다음 단계에서
               <br />
               닉네임과 활동 지역을 선택하게 돼요
             </p>
           </div>
 
-          <p className="pt-5 border-t border-border text-center text-xs text-muted-foreground leading-relaxed">
+          <p className="pt-5 border-t border-border text-center text-caption-2 text-muted-foreground leading-relaxed">
             계속 진행하면{' '}
             <button type="button" className="underline-offset-2 hover:underline">
               이용약관

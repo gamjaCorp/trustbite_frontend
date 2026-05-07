@@ -27,7 +27,7 @@ export function ProfileSummaryCard({ profile }: Props) {
               </span>
               <GradeBadge grade={profile.currentGrade} />
             </div>
-            <p className="text-xs text-muted-foreground mt-1 truncate">
+            <p className="text-caption-2 text-muted-foreground mt-1 truncate">
               {profile.email} · {profile.joinedAt}
             </p>
           </div>
@@ -58,7 +58,7 @@ export function ProfileSummaryCard({ profile }: Props) {
         </div>
         <Link
           href="/my-places"
-          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-1 text-caption-2 text-muted-foreground hover:text-foreground transition-colors"
         >
           <Eye className="w-3.5 h-3.5" />
           <span>내 미식 가이드 보기</span>

@@ -63,7 +63,7 @@ export default async function RestaurantDetailPage({
               리뷰 <span className="font-numeric">{remainingReviews}</span>개 더 보기
               <ChevronDown className="w-4 h-4" />
             </button>
-            <p className="mt-2 text-center text-xs text-muted-foreground">
+            <p className="mt-2 text-center text-caption-2 text-muted-foreground">
               {visibleReviews.length} / {othersReviewCount}개 표시 중 · 신뢰도순
             </p>
           </div>

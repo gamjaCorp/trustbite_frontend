@@ -43,15 +43,15 @@ export function ReviewCard({ review }: Props) {
                 {review.visitOrdinal}번째 방문
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-muted-foreground">
+            <p className="mt-0.5 text-caption-2 text-muted-foreground">
               신뢰도 {review.reviewerTrustScore}%
             </p>
           </div>
         </div>
-        <span className="shrink-0 text-xs text-muted-foreground">{review.postedAt}</span>
+        <span className="shrink-0 text-caption-2 text-muted-foreground">{review.postedAt}</span>
       </header>
 
-      <div className="mt-2.5 flex items-center gap-3 text-xs text-ink/70">
+      <div className="mt-2.5 flex items-center gap-3 text-body-2 text-ink/70">
         <span>
           맛 <span className="font-numeric font-semibold text-foreground">{review.scores.taste.toFixed(1)}</span>
         </span>
@@ -102,7 +102,7 @@ export function ReviewCard({ review }: Props) {
         {review.sceneTags.map((tag) => (
           <span
             key={tag}
-            className="rounded-chip bg-muted px-2 py-0.5 text-xs text-ink/70"
+            className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-ink/70"
           >
             #{tag}
           </span>
@@ -111,7 +111,7 @@ export function ReviewCard({ review }: Props) {
 
       <button
         type="button"
-        className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-ink/70 hover:bg-muted transition-colors"
+        className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-label-3 text-ink/70 hover:bg-muted transition-colors"
       >
         <ThumbsUp className="w-3 h-3" />
         도움됐어요 <span className="font-numeric">{review.helpfulCount}</span>

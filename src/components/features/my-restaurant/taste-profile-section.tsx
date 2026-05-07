@@ -98,7 +98,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
                 {topCategories.map(({ label, count }) => (
                   <span
                     key={label}
-                    className={cn('text-xs rounded-chip px-2.5 py-1 font-medium', CATEGORY_STYLE[label as Category])}
+                    className={cn('text-label-3 rounded-chip px-2.5 py-1 font-medium', CATEGORY_STYLE[label as Category])}
                   >
                     {label} ({count})
                   </span>
@@ -111,7 +111,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
                 {topRegions.map(({ label, count }) => (
                   <span
                     key={label}
-                    className="text-xs rounded-chip px-2.5 py-1 font-medium bg-muted text-muted-foreground"
+                    className="text-label-3 rounded-chip px-2.5 py-1 font-medium bg-muted text-muted-foreground"
                   >
                     {label} ({count})
                   </span>
@@ -123,7 +123,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
 
         {/* 하단: AI 분석 풀 너비 */}
         <div className="border-t border-border px-5 py-4 bg-primary/5 space-y-1">
-          <p className="text-xs text-primary font-semibold">✨ AI 미식 성향 분석</p>
+          <p className="text-label-3 text-primary font-semibold">✨ AI 미식 성향 분석</p>
           <p className="text-sm text-foreground leading-relaxed">
             {aiPersonaText ?? (
               <>

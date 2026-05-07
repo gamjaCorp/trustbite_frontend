@@ -56,7 +56,7 @@ export function PhotoUploadGrid({ maxSlots = 4 }: Props) {
         <span className="text-title-3 text-foreground">사진</span>
         <span
           className={cn(
-            'inline-flex items-center gap-1 text-xs transition-colors',
+            'inline-flex items-center gap-1 text-caption-2 transition-colors',
             reached ? 'text-primary font-semibold' : 'text-muted-foreground',
           )}
         >

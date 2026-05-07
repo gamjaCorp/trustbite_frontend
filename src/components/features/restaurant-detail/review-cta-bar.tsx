@@ -17,14 +17,14 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
           {isRevisit && myReview ? (
             <>
               <p className="text-title-2 text-foreground">또 다녀오셨나요?</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="mt-0.5 text-caption-2 text-muted-foreground">
                 <span className="font-numeric font-semibold">{myReview.visitCount}번</span> 방문 · 최근{' '}
                 {myReview.lastVisitLabel} · 재방문 리뷰를 쓰면{' '}
                 <span className="font-semibold text-primary">+5pt</span>
               </p>
             </>
           ) : (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-caption-2 text-muted-foreground">
               리뷰를 쓰면 <span className="font-semibold text-primary">+5pt</span> 적립 · 내 신뢰도에 반영됩니다
             </p>
           )}

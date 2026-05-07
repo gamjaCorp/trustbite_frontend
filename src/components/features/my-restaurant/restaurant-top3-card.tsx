@@ -34,7 +34,7 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
 
       <div className="flex-1 min-w-0 space-y-1">
         <p className="text-title-2 truncate">{name}</p>
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+        <div className="flex items-center gap-1 text-caption-2 text-muted-foreground">
           <span className={cn('rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
             {category}
           </span>

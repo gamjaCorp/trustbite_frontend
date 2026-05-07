@@ -76,7 +76,7 @@ export default function OnboardingPage() {
                 <br />
                 다른 사람의 신중한 선택을 만드는 거예요.&rdquo;
               </p>
-              <footer className="mt-2 text-xs text-muted-foreground">
+              <footer className="mt-2 text-caption-2 text-muted-foreground">
                 — TrustBite의 약속
               </footer>
             </blockquote>
@@ -117,7 +117,7 @@ export default function OnboardingPage() {
                 maxLength={NICKNAME_MAX}
                 className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-caption-2 text-muted-foreground">
                 {NICKNAME_MIN}~{NICKNAME_MAX}자 · 나중에 변경 가능
               </p>
             </div>
@@ -160,7 +160,7 @@ export default function OnboardingPage() {
                   </button>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-caption-2 text-muted-foreground">
                 최대 {MAX_REGIONS}개 · 검색 시 우선 노출
               </p>
             </div>

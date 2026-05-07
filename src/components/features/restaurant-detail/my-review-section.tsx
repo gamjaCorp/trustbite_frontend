@@ -65,7 +65,7 @@ function MyReviewVisit({
         </button>
       </div>
 
-      <div className="flex items-center gap-3 text-xs text-ink/70 mb-2">
+      <div className="flex items-center gap-3 text-body-2 text-ink/70 mb-2">
         <span>
           맛{' '}
           <span className="font-numeric font-semibold text-foreground">
@@ -112,7 +112,7 @@ function MyReviewVisit({
           {visit.sceneTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-chip bg-muted px-2 py-0.5 text-xs text-ink/70"
+              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-ink/70"
             >
               #{tag}
             </span>

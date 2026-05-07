@@ -45,7 +45,7 @@ export default async function SignInPage(props: {
           ))}
         </div>
 
-        <p className="text-center text-xs text-muted-foreground leading-relaxed">
+        <p className="text-center text-caption-2 text-muted-foreground leading-relaxed">
           로그인하면 TrustBite의 서비스 약관과 개인정보 처리방침에 동의하게 돼요.
         </p>
       </div>

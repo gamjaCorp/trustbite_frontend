@@ -15,7 +15,7 @@ export function Top3Highlight({ entries, region = 'all' }: Props) {
     <section className="space-y-3 pt-2">
       <div className="space-y-0.5">
         <h2 className="text-headline-3 text-foreground">{title}</h2>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-caption-2 text-muted-foreground">
           신뢰도 80% 이상 리뷰어의 평가만 반영한 주간 랭킹
         </p>
       </div>

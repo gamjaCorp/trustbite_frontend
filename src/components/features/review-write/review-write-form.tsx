@@ -141,7 +141,7 @@ function FieldGroup({
     <div>
       <div className="mb-2 flex items-baseline gap-2">
         <span className="text-title-2 text-foreground">{label}</span>
-        {hint && <span className="text-xs text-muted-foreground">· {hint}</span>}
+        {hint && <span className="text-caption-2 text-muted-foreground">· {hint}</span>}
       </div>
       {children}
     </div>

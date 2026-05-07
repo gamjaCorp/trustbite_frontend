@@ -29,7 +29,7 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
             {profile.gradeName}
           </span>
         </div>
-        <p className="mt-1 text-xs text-muted-foreground truncate">
+        <p className="mt-1 text-caption-2 text-muted-foreground truncate">
           @{profile.handle} · 검증된 맛집 {profile.curatedCount}곳
         </p>
       </div>

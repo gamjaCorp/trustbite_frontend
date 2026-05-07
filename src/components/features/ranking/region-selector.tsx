@@ -66,7 +66,7 @@ export function RegionSelector({ regions, value, onChange }: Props) {
             placeholder="지역 검색"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-8 text-xs"
+            className="h-8 text-caption-2"
             autoFocus
           />
         </div>
@@ -81,7 +81,7 @@ export function RegionSelector({ regions, value, onChange }: Props) {
             >
               <span className={cn('font-medium', value === 'all' && 'text-primary')}>전체</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">
+                <span className="text-caption-2 text-muted-foreground">
                   {regions.reduce((s, r) => s + r.count, 0)}곳
                 </span>
                 {value === 'all' && <Check className="w-3.5 h-3.5 text-primary" />}
@@ -91,7 +91,7 @@ export function RegionSelector({ regions, value, onChange }: Props) {
 
           {/* 지역 목록 */}
           {filteredRegions.length === 0 ? (
-            <p className="px-3 py-4 text-xs text-center text-muted-foreground">
+            <p className="px-3 py-4 text-caption-2 text-center text-muted-foreground">
               검색 결과가 없어요
             </p>
           ) : (
@@ -105,7 +105,7 @@ export function RegionSelector({ regions, value, onChange }: Props) {
                   {r.name}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{r.count}곳</span>
+                  <span className="text-caption-2 text-muted-foreground">{r.count}곳</span>
                   {value === r.name && <Check className="w-3.5 h-3.5 text-primary" />}
                 </div>
               </button>

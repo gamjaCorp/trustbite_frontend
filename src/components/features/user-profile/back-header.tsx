@@ -29,7 +29,7 @@ export function BackHeader() {
             <span className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-foreground">
               Lv.3
             </span>
-            <span className="text-xs text-muted-foreground mt-0.5">신뢰도 72%</span>
+            <span className="text-caption-2 text-muted-foreground mt-0.5">신뢰도 72%</span>
           </div>
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-primary-subtle text-primary text-label-3">

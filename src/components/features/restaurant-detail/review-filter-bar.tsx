@@ -28,7 +28,7 @@ export function ReviewFilterBar({
   return (
     <div className="px-6 pt-6">
       <h2 className="text-headline-3 text-foreground">{title}</h2>
-      <p className="mt-1 text-xs text-muted-foreground">{caption}</p>
+      <p className="mt-1 text-caption-2 text-muted-foreground">{caption}</p>
 
       <div className="mt-3 flex gap-2 overflow-x-auto scrollbar-hide -mx-6 px-6 pb-1">
         {FILTERS.map((f) => {

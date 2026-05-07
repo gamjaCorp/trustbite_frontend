@@ -25,13 +25,13 @@ export function TargetRestaurantCard() {
         <div className="mt-1 flex items-center gap-1.5">
           <span
             className={cn(
-              'rounded-chip px-1.5 py-0.5 text-xs',
+              'rounded-chip px-1.5 py-0.5 text-label-3',
               CATEGORY_STYLE[selected.category],
             )}
           >
             {selected.category}
           </span>
-          <span className="text-xs text-muted-foreground truncate">{selected.subtitle}</span>
+          <span className="text-caption-2 text-muted-foreground truncate">{selected.subtitle}</span>
         </div>
       </div>
 

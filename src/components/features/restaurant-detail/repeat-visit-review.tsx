@@ -46,7 +46,7 @@ export function RepeatVisitReviewCard({ review }: Props) {
           <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-label-3">
             Lv.{review.reviewerLevel} {review.reviewerTitle}
           </span>
-          <span className="text-xs text-muted-foreground">신뢰도 {review.reviewerTrustScore}%</span>
+          <span className="text-caption-2 text-muted-foreground">신뢰도 {review.reviewerTrustScore}%</span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export function RepeatVisitReviewCard({ review }: Props) {
             <p className="text-label-3 text-blue-900 dark:text-blue-200 mb-1.5">
               {visit.label}
             </p>
-            <div className="flex items-center gap-2.5 text-xs text-ink/70 mb-1.5">
+            <div className="flex items-center gap-2.5 text-body-2 text-ink/70 mb-1.5">
               <span>
                 맛 <span className="font-numeric font-semibold text-foreground">{visit.scores.taste.toFixed(1)}</span>
               </span>

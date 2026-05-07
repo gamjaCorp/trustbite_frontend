@@ -84,14 +84,14 @@ export function TrustScoreSheet({
                 <div className="flex items-center gap-2">
                   <Icon className="w-4 h-4 text-muted-foreground" />
                   <span className="text-title-3 text-foreground flex-1">{label}</span>
-                  <span className="text-xs text-muted-foreground tabular-nums">{desc}</span>
+                  <span className="text-caption-2 text-muted-foreground tabular-nums">{desc}</span>
                 </div>
                 <Progress value={ratio * 100} className="h-1.5" />
               </div>
             ))}
           </div>
 
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-caption-2 text-muted-foreground leading-relaxed">
             사진과 자세한 글이 있는 리뷰, 최근 활동이 많을수록 신뢰도가 올라가요.
           </p>
         </div>

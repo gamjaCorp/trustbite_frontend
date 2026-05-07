@@ -36,7 +36,7 @@ export function FollowStatsRow({ profile }: Props) {
               {profile.mutualFollowing.displayName[0]}
             </AvatarFallback>
           </Avatar>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-caption-2 text-muted-foreground">
             <span className="font-semibold text-foreground">{profile.mutualFollowing.displayName}</span>
             {' 외 내 팔로잉 '}
             <span className="font-numeric font-semibold text-foreground">{profile.mutualFollowing.extraCount}</span>
