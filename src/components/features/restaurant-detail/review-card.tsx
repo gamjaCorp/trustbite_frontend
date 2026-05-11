@@ -39,9 +39,6 @@ export function ReviewCard({ review }: Props) {
               <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-xs font-semibold">
                 Lv.{review.reviewerLevel} {review.reviewerTitle}
               </span>
-              <span className="rounded-chip bg-blue-50 text-blue-700 px-1.5 py-0.5 text-xs font-medium dark:bg-blue-900/30 dark:text-blue-300">
-                {review.visitOrdinal}번째 방문
-              </span>
             </div>
             <p className="mt-0.5 text-xs text-muted-foreground">
               신뢰도 {review.reviewerTrustScore}%
@@ -98,24 +95,26 @@ export function ReviewCard({ review }: Props) {
         </div>
       )}
 
-      <div className="mt-3 flex items-center flex-wrap gap-1.5">
-        {review.sceneTags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-chip bg-muted px-2 py-0.5 text-xs text-ink/70"
-          >
-            #{tag}
-          </span>
-        ))}
-      </div>
+      <div className="mt-3 flex items-end justify-between gap-3">
+        <div className="flex flex-wrap gap-1.5">
+          {review.sceneTags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-chip bg-muted px-2 py-0.5 text-xs text-ink/70"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
 
-      <button
-        type="button"
-        className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-ink/70 hover:bg-muted transition-colors"
-      >
-        <ThumbsUp className="w-3 h-3" />
-        도움됐어요 <span className="font-numeric">{review.helpfulCount}</span>
-      </button>
+        <button
+          type="button"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-ink/70 hover:bg-muted transition-colors"
+        >
+          <ThumbsUp className="w-3 h-3" />
+          도움됐어요 <span className="font-numeric">{review.helpfulCount}</span>
+        </button>
+      </div>
     </article>
   );
 }

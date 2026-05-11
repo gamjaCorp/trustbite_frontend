@@ -8,7 +8,6 @@ import { ScorePanel } from '@/components/features/restaurant-detail/score-panel'
 import { MyReviewSection } from '@/components/features/restaurant-detail/my-review-section';
 import { ReviewFilterBar } from '@/components/features/restaurant-detail/review-filter-bar';
 import { ReviewCard } from '@/components/features/restaurant-detail/review-card';
-import { RepeatVisitReviewCard } from '@/components/features/restaurant-detail/repeat-visit-review';
 import { LocationSection } from '@/components/features/restaurant-detail/location-section';
 import { ReviewCtaBar } from '@/components/features/restaurant-detail/review-cta-bar';
 
@@ -43,13 +42,7 @@ export default async function RestaurantDetailPage({
         <ReviewFilterBar title={othersTitle} />
 
         <div className="mt-2">
-          {visibleReviews.length > 0 && <ReviewCard review={visibleReviews[0]} />}
-
-          {detail.repeatVisitReview && (
-            <RepeatVisitReviewCard review={detail.repeatVisitReview} />
-          )}
-
-          {visibleReviews.slice(1).map((review) => (
+          {visibleReviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
         </div>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Bookmark, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MyReview, MyReviewEntry } from '@/types/restaurant';
 
@@ -127,14 +127,12 @@ export function MyReviewSection({ review }: Props) {
   const hasMultiple = review.visits.length >= 2;
 
   return (
-    <section className="mx-6 mt-3 rounded-2xl bg-primary-subtle ring-1 ring-primary/20 p-4">
-      <header className="flex items-center gap-1.5 pb-3 border-b border-primary/15 mb-3">
-        <Bookmark className="w-4 h-4 fill-primary text-primary" />
-        <span className="text-sm font-semibold text-foreground">내 리뷰</span>
-      </header>
+    <section className="px-6 pt-10">
+      <h2 className="text-xl font-bold text-foreground mb-3">내 리뷰</h2>
 
       <div
         className={cn(
+          'rounded-2xl bg-primary-subtle ring-1 ring-primary/20 p-4',
           hasMultiple
             ? 'grid grid-cols-1 md:grid-cols-2 gap-3'
             : 'flex flex-col',

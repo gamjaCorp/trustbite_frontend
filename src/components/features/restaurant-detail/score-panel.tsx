@@ -14,15 +14,15 @@ const DIMENSION_LABELS: Array<{ key: keyof RestaurantDetail['dimensionScores']; 
 function ScoreBar({ label, score }: { label: string; score: number }) {
   const pct = Math.min(100, (score / 5) * 100);
   return (
-    <div className="flex items-center gap-3">
-      <span className="w-12 text-xs text-ink/70 shrink-0">{label}</span>
-      <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+    <div className="flex items-center gap-2.5">
+      <span className="w-10 text-xs text-ink/70 shrink-0">{label}</span>
+      <div className="flex-1 h-1 rounded-full bg-muted overflow-hidden">
         <div
           className="h-full rounded-full bg-foreground"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="w-8 text-right font-numeric text-xs font-semibold text-foreground">
+      <span className="w-7 text-right font-numeric text-xs font-semibold text-foreground">
         {score.toFixed(1)}
       </span>
     </div>
@@ -35,7 +35,7 @@ export function ScorePanel({ detail }: Props) {
       <div className="bg-card rounded-2xl p-5 ring-1 ring-paper-edge/40 shadow-card">
         <div className="flex gap-5">
           {/* 좌측 ── 평점/신뢰도 */}
-          <div className="shrink-0">
+          <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-0.5">
               <span className="font-numeric text-3xl font-bold text-foreground">
                 {detail.communityAvgScore.toFixed(1)}
@@ -54,7 +54,7 @@ export function ScorePanel({ detail }: Props) {
           </div>
 
           {/* 우측 ── 항목별 바 */}
-          <div className="flex-1 flex flex-col justify-center gap-2">
+          <div className="flex-1 flex flex-col justify-center gap-1.5">
             {DIMENSION_LABELS.map(({ key, label }) => (
               <ScoreBar key={key} label={label} score={detail.dimensionScores[key]} />
             ))}

@@ -26,9 +26,9 @@ export function ReviewFilterBar({
   const [active, setActive] = useState<FilterId>('all');
 
   return (
-    <div className="px-6 pt-6">
-      <h2 className="text-lg font-bold text-foreground">{title}</h2>
-      <p className="mt-1 text-xs text-muted-foreground">{caption}</p>
+    <div className="px-6 pt-10">
+      <h2 className="text-xl font-bold text-foreground">{title}</h2>
+      <p className="mt-1 text-sm text-muted-foreground">{caption}</p>
 
       <div className="mt-3 flex gap-2 overflow-x-auto scrollbar-hide -mx-6 px-6 pb-1">
         {FILTERS.map((f) => {

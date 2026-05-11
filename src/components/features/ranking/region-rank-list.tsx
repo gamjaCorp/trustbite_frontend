@@ -1,8 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Plus, Search, UtensilsCrossed } from 'lucide-react';
-import { Category, RegionalRankEntry, SortKey } from '@/types/restaurant';
+import { Plus, Search, Sparkles, UtensilsCrossed } from 'lucide-react';
+import { Category, RegionalRankEntry } from '@/types/restaurant';
+import { CATEGORY_STYLE } from '@/lib/category';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Empty,
@@ -12,34 +14,76 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
-import { SortFilterBar } from '@/components/features/my-restaurant/sort-filter-bar';
-import { ViewToggle } from '@/components/features/explore/view-toggle';
-import { RegionSelector } from './region-selector';
+import { MapView, type MapBounds } from '@/components/features/explore/map-view';
+import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { RegionalRankCard } from './regional-rank-card';
-import { Top3Highlight } from './top3-highlight';
 
 interface Props {
   entries: RegionalRankEntry[];
-  activeId?: string | null;
 }
 
-export function RegionRankList({ entries, activeId }: Props) {
-  const [selectedRegion, setSelectedRegion] = useState<string | 'all'>('all');
-  const [sort, setSort] = useState<SortKey>('score');
+const CATEGORIES: Array<Category | 'all'> = [
+  'all',
+  '한식',
+  '일식',
+  '중식',
+  '양식',
+  '카페',
+  '술집',
+  '기타',
+];
+
+function isInsideBounds(
+  coords: { lat: number; lng: number },
+  bounds: MapBounds,
+): boolean {
+  return (
+    coords.lat >= bounds.sw.lat &&
+    coords.lat <= bounds.ne.lat &&
+    coords.lng >= bounds.sw.lng &&
+    coords.lng <= bounds.ne.lng
+  );
+}
+
+export function RegionRankList({ entries }: Props) {
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [query, setQuery] = useState('');
+  const [activeId, setActiveId] = useState<string | null>(null);
 
-  const regionOptions = useMemo(() => {
-    const map = new Map<string, number>();
-    entries.forEach((e) => map.set(e.region, (map.get(e.region) ?? 0) + 1));
-    return Array.from(map.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([name, count]) => ({ name, count }));
-  }, [entries]);
+  // 지도 bounds 상태 — applied: 마지막 "재검색" 시점, pending: 현재 지도 상태
+  const [appliedBounds, setAppliedBounds] = useState<MapBounds | null>(null);
+  const [pendingBounds, setPendingBounds] = useState<MapBounds | null>(null);
 
-  // region + category + query 필터 적용 목록
+  const areaMoved = useMemo(() => {
+    if (!pendingBounds || !appliedBounds) return false;
+    const sw1 = appliedBounds.sw;
+    const ne1 = appliedBounds.ne;
+    const sw2 = pendingBounds.sw;
+    const ne2 = pendingBounds.ne;
+    const eps = 1e-5;
+    return (
+      Math.abs(sw1.lat - sw2.lat) > eps ||
+      Math.abs(sw1.lng - sw2.lng) > eps ||
+      Math.abs(ne1.lat - ne2.lat) > eps ||
+      Math.abs(ne1.lng - ne2.lng) > eps
+    );
+  }, [appliedBounds, pendingBounds]);
+
+  const handleBoundsChange = (bounds: MapBounds) => {
+    setPendingBounds(bounds);
+    // 첫 로드 시 자동으로 적용 (사용자 입력 없이도 화면을 보여주기 위해)
+    setAppliedBounds((prev) => prev ?? bounds);
+  };
+
+  const handleAreaSearch = () => {
+    if (pendingBounds) setAppliedBounds(pendingBounds);
+  };
+
+  // 지도 bounds + category + query 필터 적용 → 점수 내림차순 고정
   const filteredList = useMemo(() => {
-    let list = selectedRegion === 'all' ? entries : entries.filter((e) => e.region === selectedRegion);
+    let list = appliedBounds
+      ? entries.filter((e) => isInsideBounds(e.coordinates, appliedBounds))
+      : entries;
     if (category !== 'all') list = list.filter((e) => e.category === category);
     if (query.trim()) {
       const q = query.trim().toLowerCase();
@@ -50,68 +94,101 @@ export function RegionRankList({ entries, activeId }: Props) {
           e.category.toLowerCase().includes(q),
       );
     }
-    return [...list].sort((a, b) =>
-      sort === 'score'
-        ? b.communityAvgScore - a.communityAvgScore || a.rank - b.rank
-        : b.lastVisitedAt.getTime() - a.lastVisitedAt.getTime(),
+    return [...list].sort(
+      (a, b) => b.communityAvgScore - a.communityAvgScore || a.rank - b.rank,
     );
-  }, [entries, selectedRegion, category, query, sort]);
+  }, [entries, appliedBounds, category, query]);
 
-  // TOP 3: filteredList 상위 3개
-  const top3 = useMemo(
-    () => filteredList.slice(0, 3).map((e, i) => ({ ...e, rank: i + 1 })),
+  // 핀 표시용: 현재 보이는 영역의 결과 전체에 1~N 랭크 부여
+  const rankedEntries = useMemo(
+    () => filteredList.map((e, i) => ({ ...e, rank: i + 1 })),
     [filteredList],
   );
 
-  // 맛집 랭킹: TOP 3 제외한 4위~
-  const restList = useMemo(
-    () => filteredList.slice(3).map((e, i) => ({ ...e, rank: i + 4 })),
-    [filteredList],
+  // 현재 결과의 대표 지역 — 가장 많이 등장한 region 한 곳
+  const dominantRegion = useMemo(() => {
+    if (rankedEntries.length === 0) return null;
+    const counts = new Map<string, number>();
+    rankedEntries.forEach((e) => counts.set(e.region, (counts.get(e.region) ?? 0) + 1));
+    return Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0][0];
+  }, [rankedEntries]);
+
+  // 핀 클릭 → 해당 카드로 스크롤
+  const handlePinClick = (id: string) => {
+    setActiveId(id);
+    requestAnimationFrame(() => {
+      document
+        .querySelector(`[data-restaurant-id="${id}"]`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  };
+
+  // 현재 화면에 없는 항목은 active 상태를 무시 (별도 setState 없이 파생)
+  const effectiveActiveId = useMemo(
+    () => (activeId && rankedEntries.some((e) => e.id === activeId) ? activeId : null),
+    [activeId, rankedEntries],
   );
 
   return (
     <div className="space-y-4">
-      {/* sticky 필터 바 */}
-      <div className="sticky top-[91px] bg-background z-10 py-3 border-b border-border/50 space-y-3">
-        <div className="flex items-center gap-2">
-          {/* 검색 */}
-          <div className="relative flex-1 min-w-0">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="맛집, 지역, 메뉴 검색"
-              className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all"
-            />
-          </div>
-          <RegionSelector
-            regions={regionOptions}
-            value={selectedRegion}
-            onChange={setSelectedRegion}
+      {/* sticky 블록 — 필터 바 + 지도가 함께 헤더(top-[91px]) 아래에 고정 */}
+      <div className="sticky top-[91px] z-10 bg-background space-y-3 pt-3 pb-4">
+        {/* 검색 */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="맛집, 지역, 메뉴 검색"
+            className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all"
           />
-          <ViewToggle />
         </div>
-        <SortFilterBar
-          sort={sort}
-          onSortChange={setSort}
-          category={category}
-          onCategoryChange={setCategory}
-          region="all"
-          onRegionChange={() => {}}
-          regions={[]}
-        />
+
+        {/* 카테고리 칩 */}
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCategory(c)}
+              className={cn(
+                'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+                category === c
+                  ? c === 'all'
+                    ? 'bg-foreground text-background'
+                    : CATEGORY_STYLE[c as Category]
+                  : 'bg-muted text-muted-foreground hover:text-foreground',
+              )}
+            >
+              {c === 'all' ? '전체' : c}
+            </button>
+          ))}
+        </div>
+
+        {/* 임베드 지도 */}
+        <div className="relative h-80 rounded-2xl overflow-hidden border border-border">
+          <MapView
+            entries={rankedEntries}
+            activeId={effectiveActiveId}
+            onPinClick={handlePinClick}
+            onBoundsChange={handleBoundsChange}
+          />
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20">
+            <SearchThisArea visible={areaMoved} onClick={handleAreaSearch} />
+          </div>
+        </div>
       </div>
 
-      {filteredList.length === 0 ? (
+      {rankedEntries.length === 0 ? (
         <Empty className="border-0 py-16">
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <UtensilsCrossed />
             </EmptyMedia>
-            <EmptyTitle>검색 결과가 없어요</EmptyTitle>
+            <EmptyTitle>이 지역엔 맛집이 없어요</EmptyTitle>
             <EmptyDescription>
-              다른 검색어나 필터로 다시 시도해보세요.
+              지도를 옮기거나 다른 검색어·필터로 다시 시도해보세요.
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -121,33 +198,34 @@ export function RegionRankList({ entries, activeId }: Props) {
           </EmptyContent>
         </Empty>
       ) : (
-        <>
-          {/* 1. TOP 3 하이라이트 */}
-          <Top3Highlight entries={top3} region={selectedRegion} />
-
-          {/* 2. 전체 랭킹 (4위~) */}
-          {restList.length > 0 && (
-            <section className="pt-8 space-y-3">
-              <div className="space-y-0.5">
-                <h2 className="text-lg font-bold text-foreground">맛집 랭킹</h2>
-                <p className="text-xs text-muted-foreground">
-                  총 {filteredList.length}곳
-                </p>
-              </div>
-              <ul className="space-y-3">
-                {restList.map((entry) => (
-                  <li key={entry.id}>
-                    <RegionalRankCard
-                      entry={entry}
-                      variant="compact"
-                      active={activeId === entry.id}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </>
+        <section className="space-y-3">
+          <div className="space-y-1">
+            <h2 className="text-xl font-extrabold text-foreground tracking-tight">
+              {dominantRegion ? `${dominantRegion} 일대 맛집` : '이 지역 맛집'}
+            </h2>
+            <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              이번 주 신뢰도 80%+ 리뷰만 반영 ·{' '}
+              <span className="font-numeric">{rankedEntries.length}</span>곳
+            </p>
+          </div>
+          {/* 0.5px 분리선 — Tailwind 스케일에 없어 arbitrary value 사용 */}
+          <ul className="border-y-[0.5px] border-border/60">
+            {rankedEntries.map((entry, i) => (
+              <li
+                key={entry.id}
+                className={cn(
+                  i > 0 && 'border-t-[0.5px] border-border/60',
+                )}
+              >
+                <RegionalRankCard
+                  entry={entry}
+                  active={effectiveActiveId === entry.id}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   );
