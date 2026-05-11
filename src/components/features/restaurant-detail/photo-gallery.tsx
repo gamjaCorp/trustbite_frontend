@@ -41,7 +41,7 @@ export function PhotoGallery({ photos, totalCount }: Props) {
 
       <button
         type="button"
-        className="absolute bottom-3 right-8 inline-flex items-center gap-1.5 rounded-full bg-background/90 backdrop-blur px-3 py-1.5 text-xs font-medium text-foreground shadow-sm border border-border hover:bg-background transition-colors"
+        className="absolute bottom-3 right-8 inline-flex items-center gap-1.5 rounded-full bg-background/90 backdrop-blur px-3 py-1.5 text-label-3 text-foreground shadow-sm border border-border hover:bg-background transition-colors"
       >
         <LayoutGrid className="w-3.5 h-3.5" />
         사진 {totalCount}장 모두 보기

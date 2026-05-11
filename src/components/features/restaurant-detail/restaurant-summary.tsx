@@ -16,11 +16,11 @@ export function RestaurantSummary({ detail }: Props) {
     <section className="px-6 pt-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-caption-2 text-muted-foreground">
             {detail.category}
             {detail.subCategory ? ` · ${detail.subCategory}` : ''}
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-foreground">{detail.name}</h1>
+          <h1 className="mt-1 text-headline-1 text-foreground">{detail.name}</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             {detail.address} · {detail.accessSummary} · {detail.hours.weekday}
           </p>

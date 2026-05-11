@@ -20,12 +20,12 @@ export function ReviewTextField() {
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">
+        <span className="text-caption-2 text-muted-foreground">
           <span className="font-numeric">{length}</span>자
         </span>
         <span
           className={cn(
-            'inline-flex items-center gap-1 text-xs transition-colors',
+            'inline-flex items-center gap-1 text-caption-2 transition-colors',
             reached ? 'text-primary font-semibold' : 'text-muted-foreground',
           )}
         >

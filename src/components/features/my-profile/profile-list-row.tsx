@@ -15,14 +15,14 @@ export function ProfileListRow({ label, value, href, tone = 'default' }: Props) 
     <>
       <span
         className={cn(
-          'text-sm font-medium',
+          'text-title-3',
           tone === 'danger' ? 'text-error' : 'text-foreground',
         )}
       >
         {label}
       </span>
       <span className="inline-flex items-center gap-2">
-        {value && <span className="text-xs text-muted-foreground">{value}</span>}
+        {value && <span className="text-caption-2 text-muted-foreground">{value}</span>}
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </span>
     </>

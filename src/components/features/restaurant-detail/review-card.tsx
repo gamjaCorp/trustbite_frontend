@@ -32,23 +32,26 @@ export function ReviewCard({ review }: Props) {
             <div className="flex items-center flex-wrap gap-1.5">
               <Link
                 href={`/user/${review.reviewerId}`}
-                className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                className="text-title-2 text-foreground hover:text-primary transition-colors"
               >
                 {review.reviewerName}
               </Link>
-              <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-xs font-semibold">
+              <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-label-3">
                 Lv.{review.reviewerLevel} {review.reviewerTitle}
               </span>
+              <span className="rounded-chip bg-blue-50 text-blue-700 px-1.5 py-0.5 text-label-3 dark:bg-blue-900/30 dark:text-blue-300">
+                {review.visitOrdinal}번째 방문
+              </span>
             </div>
-            <p className="mt-0.5 text-xs text-muted-foreground">
+            <p className="mt-0.5 text-caption-2 text-muted-foreground">
               신뢰도 {review.reviewerTrustScore}%
             </p>
           </div>
         </div>
-        <span className="shrink-0 text-xs text-muted-foreground">{review.postedAt}</span>
+        <span className="shrink-0 text-caption-2 text-muted-foreground">{review.postedAt}</span>
       </header>
 
-      <div className="mt-2.5 flex items-center gap-3 text-xs text-ink/70">
+      <div className="mt-2.5 flex items-center gap-3 text-body-2 text-ink/70">
         <span>
           맛 <span className="font-numeric font-semibold text-foreground">{review.scores.taste.toFixed(1)}</span>
         </span>
@@ -73,7 +76,7 @@ export function ReviewCard({ review }: Props) {
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
         >
           {expanded ? '접기' : '…더보기'}
         </button>
@@ -100,7 +103,7 @@ export function ReviewCard({ review }: Props) {
           {review.sceneTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-chip bg-muted px-2 py-0.5 text-xs text-ink/70"
+              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-ink/70"
             >
               #{tag}
             </span>
@@ -109,7 +112,7 @@ export function ReviewCard({ review }: Props) {
 
         <button
           type="button"
-          className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-ink/70 hover:bg-muted transition-colors"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-label-3 text-ink/70 hover:bg-muted transition-colors"
         >
           <ThumbsUp className="w-3 h-3" />
           도움됐어요 <span className="font-numeric">{review.helpfulCount}</span>

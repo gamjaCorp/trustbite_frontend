@@ -31,7 +31,7 @@ function MyReviewPhotos({ photos }: { photos: string[] }) {
             />
             {isOverlay && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="text-background font-bold text-xl">+{hiddenCount}</span>
+                <span className="text-background text-headline-2">+{hiddenCount}</span>
               </div>
             )}
           </div>
@@ -55,7 +55,7 @@ function MyReviewVisit({
   return (
     <div className="rounded-xl bg-background p-3">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-xs font-semibold text-foreground">{visit.label}</p>
+        <p className="text-label-3 text-foreground">{visit.label}</p>
         <button
           type="button"
           className="shrink-0 w-7 h-7 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
@@ -65,7 +65,7 @@ function MyReviewVisit({
         </button>
       </div>
 
-      <div className="flex items-center gap-3 text-xs text-ink/70 mb-2">
+      <div className="flex items-center gap-3 text-body-2 text-ink/70 mb-2">
         <span>
           맛{' '}
           <span className="font-numeric font-semibold text-foreground">
@@ -99,7 +99,7 @@ function MyReviewVisit({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
         >
           {expanded ? '접기' : '…더보기'}
         </button>
@@ -112,7 +112,7 @@ function MyReviewVisit({
           {visit.sceneTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-chip bg-muted px-2 py-0.5 text-xs text-ink/70"
+              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-ink/70"
             >
               #{tag}
             </span>
@@ -128,7 +128,7 @@ export function MyReviewSection({ review }: Props) {
 
   return (
     <section className="px-6 pt-10">
-      <h2 className="text-xl font-bold text-foreground mb-3">내 리뷰</h2>
+      <h2 className="text-headline-2 text-foreground mb-3">내 리뷰</h2>
 
       <div
         className={cn(

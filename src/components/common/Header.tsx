@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 const NAV_TABS = [
   { label: '맛집 탐색', href: '/' },
-  { label: '나의 맛집', href: '/my' },
+  { label: '나의 맛집', href: '/my-places' },
 ] as const;
 
 function ThemeToggle() {
@@ -56,7 +56,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
       <div className="max-w-5xl mx-auto w-full flex items-center justify-between px-6 py-3">
-        <Link href="/" className="text-xl font-bold text-primary tracking-tight">
+        <Link href="/" className="text-headline-2 text-primary tracking-tight">
           TrustBite
         </Link>
 
@@ -67,16 +67,16 @@ export function Header() {
           </Button>
 
           <Link
-            href="/me"
+            href="/profile"
             className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
           >
-            <span className="text-sm font-medium text-foreground">감자먹는 햄찌</span>
-            <Badge className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
+            <span className="text-title-3 text-foreground">감자먹는 햄찌</span>
+            <Badge className="rounded-full bg-primary px-2 py-0.5 text-label-3 text-primary-foreground">
               🏆
             </Badge>
             <Avatar className="h-8 w-8 ml-0.5">
               <AvatarImage src="" alt="프로필" />
-              <AvatarFallback className="bg-primary-subtle text-primary text-xs font-bold">
+              <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
                 햄
               </AvatarFallback>
             </Avatar>

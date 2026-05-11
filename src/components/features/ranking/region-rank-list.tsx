@@ -153,7 +153,7 @@ export function RegionRankList({ entries }: Props) {
               type="button"
               onClick={() => setCategory(c)}
               className={cn(
-                'shrink-0 rounded-chip px-3 py-1.5 text-xs font-medium transition-colors',
+                'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
                 category === c
                   ? c === 'all'
                     ? 'bg-foreground text-background'
@@ -203,7 +203,7 @@ export function RegionRankList({ entries }: Props) {
             <h2 className="text-xl font-extrabold text-foreground tracking-tight">
               {dominantRegion ? `${dominantRegion} 일대 맛집` : '이 지역 맛집'}
             </h2>
-            <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+            <p className="inline-flex items-center gap-1 text-caption-2 text-muted-foreground">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               이번 주 신뢰도 80%+ 리뷰만 반영 ·{' '}
               <span className="font-numeric">{rankedEntries.length}</span>곳

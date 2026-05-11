@@ -39,7 +39,7 @@ export function RestaurantRankItem({ entry }: Props) {
         {isFirst ? (
           <span className="text-base leading-none">👑</span>
         ) : (
-          <span className={cn('text-base font-bold', rankColor)}>{rank}</span>
+          <span className={cn('text-title-1', rankColor)}>{rank}</span>
         )}
       </div>
 
@@ -50,13 +50,13 @@ export function RestaurantRankItem({ entry }: Props) {
 
       {/* 본문 */}
       <div className="flex-1 min-w-0 space-y-0.5">
-        <p className="text-sm font-semibold truncate">{name}</p>
+        <p className="text-title-2 truncate">{name}</p>
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className={cn('text-xs rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
+          <span className={cn('text-label-3 rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
             {category}
           </span>
-          <span className="text-xs text-muted-foreground">{region}</span>
-          <span className="text-xs text-muted-foreground" suppressHydrationWarning>
+          <span className="text-caption-2 text-muted-foreground">{region}</span>
+          <span className="text-caption-2 text-muted-foreground" suppressHydrationWarning>
             · {visitCount}번 · {lastVisited}
           </span>
         </div>
@@ -66,7 +66,7 @@ export function RestaurantRankItem({ entry }: Props) {
       <div className="shrink-0 flex items-center gap-2">
         <div className="flex items-center gap-1">
           <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
-          <span className="text-sm font-bold">{avgScore.toFixed(1)}</span>
+          <span className="text-title-2">{avgScore.toFixed(1)}</span>
         </div>
         {typeof trustScore === 'number' && <TrustScoreBadge score={trustScore} size="sm" showIcon={false} />}
       </div>

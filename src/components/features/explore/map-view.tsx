@@ -28,8 +28,8 @@ export function MapView(props: MapViewProps) {
     return (
       <div className="absolute inset-0 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground">
         <MapPin className="w-8 h-8" />
-        <p className="text-sm font-medium">지도를 불러올 수 없어요</p>
-        <p className="text-xs font-numeric">NEXT_PUBLIC_KAKAO_MAP_APP_KEY 미설정</p>
+        <p className="text-title-3">지도를 불러올 수 없어요</p>
+        <p className="text-caption-2 font-numeric">NEXT_PUBLIC_KAKAO_MAP_APP_KEY 미설정</p>
       </div>
     );
   }
@@ -60,7 +60,7 @@ function KakaoMap({
 
   if (error) {
     return (
-      <div className="absolute inset-0 bg-muted/30 flex items-center justify-center text-sm text-muted-foreground">
+      <div className="absolute inset-0 bg-muted/30 flex items-center justify-center text-title-3 text-muted-foreground">
         지도를 불러오는 중 문제가 생겼어요
       </div>
     );
@@ -68,7 +68,7 @@ function KakaoMap({
 
   if (loading) {
     return (
-      <div className="absolute inset-0 bg-muted/20 flex items-center justify-center text-sm text-muted-foreground">
+      <div className="absolute inset-0 bg-muted/20 flex items-center justify-center text-title-3 text-muted-foreground">
         지도를 불러오는 중…
       </div>
     );

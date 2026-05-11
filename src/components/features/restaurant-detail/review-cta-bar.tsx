@@ -16,22 +16,22 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
         <div className="min-w-0 leading-snug">
           {isRevisit && myReview ? (
             <>
-              <p className="text-base font-semibold text-foreground">또 다녀오셨나요?</p>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-title-1 text-foreground">또 다녀오셨나요?</p>
+              <p className="mt-1 text-caption-2 text-muted-foreground">
                 <span className="font-numeric font-semibold">{myReview.visitCount}번</span> 방문 · 최근{' '}
                 {myReview.lastVisitLabel} · 재방문 리뷰를 쓰면{' '}
                 <span className="font-semibold text-primary">+5pt</span>
               </p>
             </>
           ) : (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-caption-2 text-muted-foreground">
               리뷰를 쓰면 <span className="font-semibold text-primary">+5pt</span> 적립 · 내 신뢰도에 반영됩니다
             </p>
           )}
         </div>
         <Link
           href={`/restaurant/${restaurantId}/review/new`}
-          className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-base font-semibold text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-title-1 text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
         >
           <PencilLine className="w-4 h-4" />
           {isRevisit ? '재방문 리뷰 쓰기' : '리뷰 쓰기'}

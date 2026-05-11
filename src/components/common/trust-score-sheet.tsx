@@ -74,7 +74,7 @@ export function TrustScoreSheet({
             <span className="text-sm text-muted-foreground">종합 신뢰도</span>
             <span className={cn('text-3xl font-bold tabular-nums', tone.text)}>
               {Math.round(trustScore)}
-              <span className="text-base font-semibold">%</span>
+              <span className="text-title-1">%</span>
             </span>
           </div>
 
@@ -83,15 +83,15 @@ export function TrustScoreSheet({
               <div key={label} className="space-y-1.5">
                 <div className="flex items-center gap-2">
                   <Icon className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium text-foreground flex-1">{label}</span>
-                  <span className="text-xs text-muted-foreground tabular-nums">{desc}</span>
+                  <span className="text-title-3 text-foreground flex-1">{label}</span>
+                  <span className="text-caption-2 text-muted-foreground tabular-nums">{desc}</span>
                 </div>
                 <Progress value={ratio * 100} className="h-1.5" />
               </div>
             ))}
           </div>
 
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-caption-2 text-muted-foreground leading-relaxed">
             사진과 자세한 글이 있는 리뷰, 최근 활동이 많을수록 신뢰도가 올라가요.
           </p>
         </div>

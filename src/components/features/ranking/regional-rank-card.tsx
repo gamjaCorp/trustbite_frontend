@@ -26,10 +26,10 @@ export function RegionalRankCard({ entry, active = false }: Props) {
     comment,
     avgScore,
     communityAvgScore,
-    reviewCount,
     myStatus,
     trustScore,
     trustBreakdown,
+    reviewCount,
   } = entry;
 
   const [bookmarked, setBookmarked] = useState(false);
@@ -50,7 +50,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
         {/* ① 랭크 배지 — 1~3위는 primary 채움, 4위~는 옅은 톤 */}
         <div
           className={cn(
-            'shrink-0 self-center w-8 h-8 rounded-full flex items-center justify-center font-numeric font-bold text-sm',
+            'shrink-0 self-center w-8 h-8 rounded-full flex items-center justify-center font-numeric text-title-2',
             isTop3 ? 'bg-primary text-primary-foreground' : 'bg-paper-edge text-ink/70',
           )}
           aria-label={`${rank}위`}
@@ -76,7 +76,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
           <div className="flex items-center gap-1 text-sm text-ink/70">
             <span
               className={cn(
-                'rounded-chip px-2 py-0.5 text-xs font-medium',
+                'rounded-chip px-2 py-0.5 text-label-3',
                 CATEGORY_STYLE[category],
               )}
             >
@@ -87,7 +87,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
 
           <Link
             href={`/restaurant/${id}`}
-            className="font-bold text-base text-foreground truncate"
+            className="text-title-1 text-foreground truncate"
           >
             {name}
           </Link>
@@ -103,7 +103,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
             {myStatus !== 'reviewed' ? (
               <Link
                 href={`/restaurant/${id}/review/new`}
-                className="inline-flex items-center gap-1.5 rounded-chip border border-primary/40 bg-primary-subtle/40 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary-subtle hover:border-primary/60 active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 rounded-chip border border-primary/40 bg-primary-subtle/40 px-2.5 py-1 text-label-3 text-primary hover:bg-primary-subtle hover:border-primary/60 active:scale-95 transition-all"
               >
                 <PencilLine className="w-3.5 h-3.5" />
                 리뷰 쓰기
@@ -111,7 +111,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
             ) : (
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-chip border border-primary/40 bg-primary-subtle/40 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary-subtle hover:border-primary/60 active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 rounded-chip border border-primary/40 bg-primary-subtle/40 px-2.5 py-1 text-label-3 text-primary hover:bg-primary-subtle hover:border-primary/60 active:scale-95 transition-all"
               >
                 <Star className="w-3.5 h-3.5 fill-primary text-primary" />
                 <span>
@@ -129,7 +129,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
           <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-0.5">
               <Star className="w-4 h-4 fill-grade-s text-grade-s" />
-              <span className="font-numeric text-base font-bold text-foreground">
+              <span className="font-numeric text-title-1 text-foreground">
                 {communityAvgScore.toFixed(1)}
               </span>
             </div>

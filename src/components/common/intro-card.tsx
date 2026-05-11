@@ -37,17 +37,17 @@ export function IntroCard() {
           <Sparkles className="w-4 h-4 text-primary" />
         </div>
         <div className="space-y-1">
-          <p className="text-sm font-semibold text-foreground leading-snug">
+          <p className="text-title-2 text-foreground leading-snug">
             별점 4.5인데 맛없었던 적 있죠?
           </p>
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-caption-2 text-muted-foreground leading-relaxed">
             여기선 믿을 수 있는 리뷰만 점수에 반영돼요. 친구랑 함께 맛집을 모아보세요!
           </p>
           <Button
             variant="ghost"
             size="sm"
             onClick={dismiss}
-            className="mt-1 h-7 px-2 text-xs text-primary hover:bg-primary/10 hover:text-primary"
+            className="mt-1 h-7 px-2 text-label-3 text-primary hover:bg-primary/10 hover:text-primary"
           >
             알겠어요
           </Button>

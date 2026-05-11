@@ -14,7 +14,7 @@ const GRID_STYLE: React.CSSProperties = {
 export function LocationSection({ detail }: Props) {
   return (
     <section className="px-6 pt-10 pb-12">
-      <h2 className="flex items-center gap-1.5 text-xl font-bold text-foreground mb-3">
+      <h2 className="flex items-center gap-1.5 text-headline-2 text-foreground mb-3">
         <MapPin className="w-5 h-5 text-primary" />위치
       </h2>
 
@@ -33,7 +33,7 @@ export function LocationSection({ detail }: Props) {
               <span className="relative w-4 h-4 rounded-full bg-foreground ring-4 ring-background" />
             </span>
           </div>
-          <div className="absolute right-2 bottom-2 flex flex-col rounded-md overflow-hidden ring-1 ring-paper-edge/60 bg-background/90 text-sm font-numeric font-semibold text-ink/70">
+          <div className="absolute right-2 bottom-2 flex flex-col rounded-md overflow-hidden ring-1 ring-paper-edge/60 bg-background/90 font-numeric text-title-2 text-ink/70">
             <span className="w-7 h-7 flex items-center justify-center border-b border-paper-edge/60">+</span>
             <span className="w-7 h-7 flex items-center justify-center">−</span>
           </div>
@@ -41,7 +41,7 @@ export function LocationSection({ detail }: Props) {
 
         {/* 우측 — 주소·설명·CTA */}
         <div className="flex-1 min-w-0 flex flex-col">
-          <h3 className="text-base font-semibold text-foreground">{detail.address}</h3>
+          <h3 className="text-title-1 text-foreground">{detail.address}</h3>
           <p className="mt-1.5 inline-flex items-center gap-1 text-sm text-muted-foreground">
             <Clock className="w-3.5 h-3.5" />
             {detail.accessSummary}
@@ -53,7 +53,7 @@ export function LocationSection({ detail }: Props) {
           <div className="mt-auto pt-3 flex items-center gap-2 self-end">
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-muted active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-title-2 text-foreground hover:bg-muted active:scale-95 transition-all"
             >
               <Copy className="w-4 h-4" />
               복사

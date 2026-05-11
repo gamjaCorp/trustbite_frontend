@@ -33,16 +33,16 @@ export function UserProfileView({ profile }: Props) {
 
       <div className="mt-6 bg-card rounded-2xl shadow-card flex divide-x divide-border">
         <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-          <span className="text-2xl font-bold text-foreground font-numeric">{profile.visitCount}</span>
-          <span className="text-xs text-muted-foreground">방문한 곳</span>
+          <span className="text-headline-1 text-foreground font-numeric">{profile.visitCount}</span>
+          <span className="text-caption-2 text-muted-foreground">방문한 곳</span>
         </div>
         <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-          <span className="text-2xl font-bold text-foreground font-numeric">{profile.reviewCount}</span>
-          <span className="text-xs text-muted-foreground">리뷰</span>
+          <span className="text-headline-1 text-foreground font-numeric">{profile.reviewCount}</span>
+          <span className="text-caption-2 text-muted-foreground">리뷰</span>
         </div>
         <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-          <span className={`text-2xl font-bold font-numeric ${trustTone.text}`}>{profile.trustScore}</span>
-          <span className="text-xs text-muted-foreground">신뢰도</span>
+          <span className={`text-headline-1 font-numeric ${trustTone.text}`}>{profile.trustScore}</span>
+          <span className="text-caption-2 text-muted-foreground">신뢰도</span>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export function UserProfileView({ profile }: Props) {
       </div>
 
       <section className="mt-8 space-y-3">
-        <h2 className="text-base font-semibold text-foreground px-1">
+        <h2 className="text-title-1 text-foreground px-1">
           {profile.name}님의 인생 맛집 TOP 3
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -67,7 +67,7 @@ export function UserProfileView({ profile }: Props) {
 
       {isFollowing ? (
         <section className="mt-8 space-y-3">
-          <h2 className="text-base font-semibold text-foreground px-1">
+          <h2 className="text-title-1 text-foreground px-1">
             전체 랭킹 {profile.totalRankCount}곳
           </h2>
           <div className="space-y-1">

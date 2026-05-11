@@ -51,12 +51,12 @@ export default async function RestaurantDetailPage({
           <div className="px-6 pt-4">
             <button
               type="button"
-              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-3 text-title-3 text-foreground hover:bg-muted transition-colors"
             >
               리뷰 <span className="font-numeric">{remainingReviews}</span>개 더 보기
               <ChevronDown className="w-4 h-4" />
             </button>
-            <p className="mt-2 text-center text-xs text-muted-foreground">
+            <p className="mt-2 text-center text-caption-2 text-muted-foreground">
               {visibleReviews.length} / {othersReviewCount}개 표시 중 · 신뢰도순
             </p>
           </div>

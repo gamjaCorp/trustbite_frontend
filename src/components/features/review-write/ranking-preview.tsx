@@ -40,8 +40,8 @@ export function RankingPreview({ myTopRestaurants }: Props) {
   return (
     <div className="rounded-2xl bg-card ring-1 ring-paper-edge/40 p-4 shadow-card">
       <header className="mb-3">
-        <h3 className="text-sm font-semibold text-foreground">내 랭킹 미리보기</h3>
-        <p className="text-xs text-muted-foreground mt-0.5">
+        <h3 className="text-title-2 text-foreground">내 랭킹 미리보기</h3>
+        <p className="text-caption-2 text-muted-foreground mt-0.5">
           별점 입력하면 위치가 바뀌어요
         </p>
       </header>
@@ -59,7 +59,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
             >
               <span
                 className={cn(
-                  'w-5 text-center text-sm font-numeric font-semibold shrink-0',
+                  'w-5 text-center text-title-2 font-numeric shrink-0',
                   row.isNew ? 'text-primary' : 'text-muted-foreground',
                 )}
               >
@@ -75,12 +75,12 @@ export function RankingPreview({ myTopRestaurants }: Props) {
                 {row.name}
               </span>
 
-              <span className="font-numeric text-sm font-semibold text-foreground shrink-0">
+              <span className="font-numeric text-title-2 text-foreground shrink-0">
                 {row.avgScore.toFixed(1)}
               </span>
 
               {row.isNew && (
-                <span className="shrink-0 rounded-chip bg-primary px-1.5 py-0.5 text-xs font-bold text-primary-foreground tracking-wider">
+                <span className="shrink-0 rounded-chip bg-primary px-1.5 py-0.5 text-label-3 text-primary-foreground tracking-wider">
                   NEW
                 </span>
               )}

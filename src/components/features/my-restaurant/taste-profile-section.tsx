@@ -50,7 +50,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
 
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-bold text-foreground">
+      <h2 className="text-headline-3 text-foreground">
         🧠 {subjectName ? `${subjectName}님의` : '나의'} 미식 성향
       </h2>
 
@@ -93,12 +93,12 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
           {/* 오른쪽: 카테고리 + 지역 */}
           <div className="flex-1 p-5 space-y-4">
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-muted-foreground">자주 먹는 카테고리</p>
+              <p className="text-label-3 text-muted-foreground">자주 먹는 카테고리</p>
               <div className="flex flex-wrap gap-1.5">
                 {topCategories.map(({ label, count }) => (
                   <span
                     key={label}
-                    className={cn('text-xs rounded-chip px-2.5 py-1 font-medium', CATEGORY_STYLE[label as Category])}
+                    className={cn('text-label-3 rounded-chip px-2.5 py-1 font-medium', CATEGORY_STYLE[label as Category])}
                   >
                     {label} ({count})
                   </span>
@@ -106,12 +106,12 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-muted-foreground">주로 찾는 지역</p>
+              <p className="text-label-3 text-muted-foreground">주로 찾는 지역</p>
               <div className="flex flex-wrap gap-1.5">
                 {topRegions.map(({ label, count }) => (
                   <span
                     key={label}
-                    className="text-xs rounded-chip px-2.5 py-1 font-medium bg-muted text-muted-foreground"
+                    className="text-label-3 rounded-chip px-2.5 py-1 font-medium bg-muted text-muted-foreground"
                   >
                     {label} ({count})
                   </span>
@@ -123,7 +123,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
 
         {/* 하단: AI 분석 풀 너비 */}
         <div className="border-t border-border px-5 py-4 bg-primary/5 space-y-1">
-          <p className="text-xs text-primary font-semibold">✨ AI 미식 성향 분석</p>
+          <p className="text-label-3 text-primary font-semibold">✨ AI 미식 성향 분석</p>
           <p className="text-sm text-foreground leading-relaxed">
             {aiPersonaText ?? (
               <>

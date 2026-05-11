@@ -21,21 +21,21 @@ export function TargetRestaurantCard() {
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-foreground truncate">{selected.name}</p>
+        <p className="text-title-2 text-foreground truncate">{selected.name}</p>
         <div className="mt-1 flex items-center gap-1.5">
           <span
             className={cn(
-              'rounded-chip px-1.5 py-0.5 text-xs',
+              'rounded-chip px-1.5 py-0.5 text-label-3',
               CATEGORY_STYLE[selected.category],
             )}
           >
             {selected.category}
           </span>
-          <span className="text-xs text-muted-foreground truncate">{selected.subtitle}</span>
+          <span className="text-caption-2 text-muted-foreground truncate">{selected.subtitle}</span>
         </div>
       </div>
 
-      <span className="shrink-0 rounded-chip bg-primary-subtle px-2.5 py-1 text-xs font-semibold text-primary">
+      <span className="shrink-0 rounded-chip bg-primary-subtle px-2.5 py-1 text-label-3 text-primary">
         <span className="font-numeric">{visitOrdinal}</span>번째 방문
       </span>
 

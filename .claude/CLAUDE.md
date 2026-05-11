@@ -2,7 +2,23 @@
 
 ## 프로젝트 개요
 
-**TrustBite** — 신뢰도 기반 맛집 평가 서비스의 프론트엔드. 기획 전문은 `docs/PRD.md`에 있다.
+**TrustBite** — 신뢰도 기반 맛집 지도 서비스의 프론트엔드.
+"나만의 맛집 지도를 만들고, 믿을 수 있는 사람들과 함께 완성하는 플랫폼"
+기획 전문은 `docs/PRD.md`에 있다.
+
+### 핵심 가치 (우선순위 순)
+
+1. **내 맛집 지도 만들기** — 내 기준으로 기록하고 순위를 매기는 경험
+2. **신뢰도 기반 평가** — trustScore가 높을수록 리뷰 영향력 증가
+3. **함께 만드는 맛집 지도** — 친구·동료와 공유 지도
+
+### 디자인 톤
+
+토스·당근마켓 스타일 — 둥글고 친근하게. 컬러·타이포는 **스타일 규칙** 섹션의 토큰을 따른다.
+
+## Git 커밋 규칙
+
+**사용자의 명시적 요청 없이 커밋하지 않는다.** 코드를 수정하거나 파일을 생성한 뒤에도 커밋은 사용자가 직접 요청할 때만 수행한다.
 
 ## 개발 커맨드
 
@@ -27,8 +43,14 @@ npx tsc --noEmit       # 타입 검사 (스크립트 없음 — 수동 실행)
   - **shadcn/ui** (new-york, `baseColor: neutral`) — 기본 셋 전량 37개를 `src/components/ui/`에 소스로 가져왔다. shadcn CLI가 `src/app/globals.css`를 토큰 소스로 참조한다.
   - 작성 규칙은 **스타일 규칙** 섹션 참조.
 - **상태/데이터** — React Query 5 (+ devtools, react-table), Zustand 5
+- **지도** — Kakao Maps JS SDK (`NEXT_PUBLIC_KAKAO_MAP_KEY` env, `next/script` 동적 로드)
+- **차트** — Recharts (레이더 차트, 바 차트)
+- **폼** — React Hook Form + Zod + `@hookform/resolvers/zod` + shadcn `form.tsx` (W2 Day 2 도입)
 - **UX 유틸** — next-themes(다크모드), sonner(toast), date-fns + react-day-picker, embla-carousel, react-resizable-panels
 - **인증** — NextAuth v5 (`src/auth.ts`, 미들웨어 alias `src/proxy.ts`)
+- **번들러** — Turbopack (Next 16 기본, dev/build 모두). webpack 설정 추가 금지
+- **테스팅 인프라** — vitest 4 + Storybook addon-vitest + browser-playwright (`vitest.config.ts` 셋업만 유지). 테스트 코드 작성은 2차 MVP 이후
+- **PWA** — 2차 MVP (W5+) 스코프. 1차 MVP에서 manifest, service worker 미포함
 - **Path alias** — `@/*` → `./src/*`
 
 ## 디렉터리 구조
@@ -55,6 +77,15 @@ src/
 ```
 
 **재사용 우선순위**: 무언가 만들기 전에 `core/` → `ui/` → 신규 생성 순서로 탐색한다. 리뷰어 에이전트가 이 순서를 체크한다.
+
+## 폼 작성 규칙 (W2 Day 2부터 적용)
+
+- 입력 폼은 **`react-hook-form` + `zod` + `@hookform/resolvers/zod` (`zodResolver`) + shadcn `Form`** 조합으로 구현한다.
+- zod 스키마는 `src/lib/types/<feature>/schema.ts`에 정의한다.
+- 에러 메시지는 한국어로 zod 스키마 안에 직접 명시한다.
+- **단순 폼** (`/onboarding` 등): 전체 RHF로 구현 (`useForm` + `handleSubmit`).
+- **다단계·복합 폼** (`/review/new`): **hybrid** — 단계 전이·선택 상태는 Zustand store가, 필드 검증은 RHF `Controller`가 담당. `handleSubmit(onValid)` → mutation 호출.
+- `any` 제거 금지. 검증 실패 메시지는 shadcn `<FormMessage>`로 표시한다.
 
 ## 스타일 규칙
 
