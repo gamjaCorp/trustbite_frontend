@@ -12,7 +12,7 @@ interface Props {
 
 export function ProfileSummaryCard({ profile }: Props) {
   return (
-    <section className="rounded-2xl bg-card shadow-card p-5">
+    <section className="rounded-2xl bg-card border border-border px-8 py-6">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
           <Avatar className="h-12 w-12 shrink-0">
@@ -25,7 +25,7 @@ export function ProfileSummaryCard({ profile }: Props) {
               <span className="text-title-1 text-foreground truncate">
                 {profile.name}
               </span>
-              <GradeBadge grade={profile.currentGrade} />
+              <GradeBadge level={profile.level} />
             </div>
             <p className="text-caption-2 text-muted-foreground mt-1 truncate">
               {profile.email} · {profile.joinedAt}
@@ -37,8 +37,8 @@ export function ProfileSummaryCard({ profile }: Props) {
         </Button>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-border flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-4 text-sm">
+      <div className="mt-7 flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-4 text-label-2">
           <button
             type="button"
             className="inline-flex items-center gap-1 text-foreground hover:text-primary transition-colors"
@@ -58,7 +58,7 @@ export function ProfileSummaryCard({ profile }: Props) {
         </div>
         <Link
           href="/my-places"
-          className="inline-flex items-center gap-1 text-caption-2 text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
         >
           <Eye className="w-3.5 h-3.5" />
           <span>내 미식 가이드 보기</span>

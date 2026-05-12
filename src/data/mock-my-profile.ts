@@ -1,21 +1,19 @@
+import type { GradeLevel } from '@/lib/grade-levels';
 import type { MyProfile } from '@/types/user';
 
 const myProfile: MyProfile = {
   id: 'hamzee',
-  name: '함사먹은 햄찌',
+  name: '감자먹은 햄찌',
   avatarInitial: '햄',
   email: 'hamzee@gmail.com',
   joinedAt: '2026.02 가입',
-  currentGrade: 'C',
-  nextGrade: 'B',
+  level: 3 as GradeLevel,
   followerCount: 142,
   followingCount: 38,
   reviewCount: 11,
-  reviewsToNextGrade: 30,
   trustScore: 77,
   trustScoreThreshold: 60,
   trustScoreMet: true,
-  badgeLevel: 3,
   points: 82,
   recentPointDelta: 8,
   recentPointReason: '리뷰 1개',

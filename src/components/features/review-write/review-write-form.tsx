@@ -15,7 +15,8 @@ import ReviewWriteProvider, {
   useReviewText,
   useSelectedRestaurant,
 } from '@/stores/review-write-store';
-import type { Grade, RegionalRankEntry } from '@/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
+import type { GradeLevel } from '@/lib/grade-levels';
 import { ReviewResultDialog } from '@/components/features/review-result/review-result-dialog';
 
 import { TargetRestaurantCard } from './target-restaurant-card';
@@ -34,7 +35,7 @@ interface Props {
   baseTrustScore: number;
   remainingReviewsForNextGrade: number;
   nextGradeName: string;
-  currentGrade: Grade;
+  currentLevel: GradeLevel;
   currentGradeReviewCount: number;
   currentGradeReviewTarget: number;
 }
@@ -55,7 +56,7 @@ function ReviewWriteFormInner({
   baseTrustScore,
   remainingReviewsForNextGrade,
   nextGradeName,
-  currentGrade,
+  currentLevel,
   currentGradeReviewCount,
   currentGradeReviewTarget,
 }: InnerProps) {
@@ -91,7 +92,7 @@ function ReviewWriteFormInner({
       nextTrustScore,
       breakdown,
       photoCount: photos.length,
-      currentGrade,
+      currentLevel,
       currentGradeReviewCount: currentGradeReviewCount + 1,
       currentGradeReviewTarget,
       nextGradeName,
@@ -115,11 +116,14 @@ function ReviewWriteFormInner({
     reset();
   };
 
-  const handleViewRanking = () => {
+  const handleViewMyReview = () => {
+    const restaurantId = resultSnapshot?.restaurantId;
     setResultOpen(false);
     setResultSnapshot(null);
     reset();
-    router.push('/profile');
+    if (restaurantId) {
+      router.push(`/restaurant/${restaurantId}`);
+    }
   };
 
   return (
@@ -172,7 +176,7 @@ function ReviewWriteFormInner({
           open={resultOpen}
           snapshot={resultSnapshot}
           onWriteMore={handleWriteMore}
-          onViewRanking={handleViewRanking}
+          onViewMyReview={handleViewMyReview}
         />
       )}
     </>

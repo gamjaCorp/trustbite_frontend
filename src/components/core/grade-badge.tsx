@@ -1,28 +1,30 @@
+import { getLevelDef } from '@/lib/grade-levels';
+import type { GradeLevel } from '@/lib/grade-levels';
 import { cn } from '@/lib/utils';
-import { GRADE_LABEL, getGradeToneClass } from '@/lib/trust-score';
-import type { Grade } from '@/types/restaurant';
+
+import { GradeIcon } from './grade-icon';
 
 interface Props {
-  grade: Grade;
+  level: GradeLevel;
   size?: 'sm' | 'md';
   showLabel?: boolean;
   className?: string;
 }
 
-export function GradeBadge({ grade, size = 'sm', showLabel = true, className }: Props) {
-  const tone = getGradeToneClass(grade);
+export function GradeBadge({ level, size = 'sm', showLabel = true, className }: Props) {
+  const def = getLevelDef(level);
   return (
     <span
       className={cn(
         'inline-flex items-center gap-1 rounded-chip font-semibold',
-        tone.text,
-        tone.bg,
+        def.toneClass.text,
+        def.toneClass.bg,
         size === 'sm' ? 'text-label-3 px-1.5 py-0.5' : 'text-sm px-2 py-0.5',
         className,
       )}
     >
-      <span className="font-bold">{grade}</span>
-      {showLabel && <span>{GRADE_LABEL[grade]}</span>}
+      <GradeIcon level={level} size="xs" variant="inline" />
+      {showLabel && <span>{def.label}</span>}
     </span>
   );
 }

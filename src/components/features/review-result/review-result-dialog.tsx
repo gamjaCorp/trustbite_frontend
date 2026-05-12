@@ -25,10 +25,10 @@ interface Props {
   open: boolean;
   snapshot: ReviewResultSnapshot;
   onWriteMore: () => void;
-  onViewRanking: () => void;
+  onViewMyReview: () => void;
 }
 
-export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewRanking }: Props) {
+export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview }: Props) {
   return (
     <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onWriteMore(); }}>
       <DialogContent className="max-w-sm p-0 gap-0 rounded-3xl overflow-hidden">
@@ -64,7 +64,7 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewRanking 
           />
 
           <GradeProgressCard
-            currentGrade={snapshot.currentGrade}
+            currentLevel={snapshot.currentLevel}
             currentGradeReviewCount={snapshot.currentGradeReviewCount}
             currentGradeReviewTarget={snapshot.currentGradeReviewTarget}
             nextGradeName={snapshot.nextGradeName}
@@ -87,9 +87,9 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewRanking 
             </Button>
             <Button
               className="flex-1 h-12 text-title-2 rounded-xl"
-              onClick={onViewRanking}
+              onClick={onViewMyReview}
             >
-              내 랭킹 확인
+              내가 쓴 리뷰 확인하기
             </Button>
           </div>
         </div>

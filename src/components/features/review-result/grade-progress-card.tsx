@@ -1,11 +1,14 @@
-import { Award } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
 import { Progress } from '@/components/ui/progress';
-import { GRADE_LABEL } from '@/lib/trust-score';
-import type { Grade } from '@/types/restaurant';
+import { getLevelDef } from '@/lib/grade-levels';
+import type { GradeLevel } from '@/lib/grade-levels';
+
+import { GradeIcon } from '@/components/core/grade-icon';
 
 interface Props {
-  currentGrade: Grade;
+  currentLevel: GradeLevel;
   currentGradeReviewCount: number;
   currentGradeReviewTarget: number;
   nextGradeName: string;
@@ -13,24 +16,28 @@ interface Props {
 }
 
 export function GradeProgressCard({
-  currentGrade,
+  currentLevel,
   currentGradeReviewCount,
   currentGradeReviewTarget,
   nextGradeName,
   remainingReviewsForNextGrade,
 }: Props) {
+  const def = getLevelDef(currentLevel);
   const progressPct = Math.min(
     100,
     Math.round((currentGradeReviewCount / currentGradeReviewTarget) * 100),
   );
 
   return (
-    <div className="border-t border-border/40 pt-4">
-      <p className="text-label-2 text-muted-foreground mb-3">현재 등급</p>
+    <Link href="/profile" className="block border-t border-border/40 pt-4 hover:opacity-80 transition-opacity">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-label-2 text-muted-foreground">현재 등급</p>
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+      </div>
       <div className="flex items-center justify-between mb-2.5">
         <div className="flex items-center gap-2">
-          <Award className="w-4 h-4 text-palette-amber shrink-0" />
-          <span className="text-title-2 text-foreground">{GRADE_LABEL[currentGrade]}</span>
+          <GradeIcon level={currentLevel} size="sm" variant="inline" />
+          <span className="text-title-2 text-foreground">{def.label}</span>
         </div>
         <span className="font-numeric text-label-2 text-muted-foreground">
           {currentGradeReviewCount}/{currentGradeReviewTarget}
@@ -49,6 +56,6 @@ export function GradeProgressCard({
         </span>
         개 남았어요
       </p>
-    </div>
+    </Link>
   );
 }

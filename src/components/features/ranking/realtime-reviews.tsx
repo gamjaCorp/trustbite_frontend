@@ -55,7 +55,7 @@ export function RealtimeReviews({ reviews }: Props) {
                 >
                   {review.reviewerName}
                 </Link>
-                <GradeBadge grade={review.reviewerGrade} size="sm" showLabel={false} />
+                <GradeBadge level={review.reviewerLevel} size="sm" showLabel={false} />
               </div>
             </div>
 

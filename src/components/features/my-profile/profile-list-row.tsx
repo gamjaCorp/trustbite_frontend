@@ -29,7 +29,7 @@ export function ProfileListRow({ label, value, href, tone = 'default' }: Props) 
   );
 
   const className =
-    'flex items-center justify-between w-full px-5 py-3.5 hover:bg-muted/30 transition-colors';
+    'flex items-center justify-between w-full px-8 py-4 hover:bg-muted/30 transition-colors';
 
   return (
     <li>

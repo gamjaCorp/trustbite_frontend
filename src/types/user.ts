@@ -1,4 +1,5 @@
-import type { Grade, MyRestaurantEntry } from './restaurant';
+import type { MyRestaurantEntry } from './restaurant';
+import type { GradeLevel } from '@/lib/grade-levels';
 
 export interface MutualFollowing {
   displayName: string;
@@ -28,16 +29,13 @@ export interface MyProfile {
   avatarInitial: string;
   email: string;
   joinedAt: string;
-  currentGrade: Grade;
-  nextGrade: Grade;
+  level: GradeLevel;
   followerCount: number;
   followingCount: number;
   reviewCount: number;
-  reviewsToNextGrade: number;
   trustScore: number;
   trustScoreThreshold: number;
   trustScoreMet: boolean;
-  badgeLevel: number;
   points: number;
   recentPointDelta: number;
   recentPointReason: string;

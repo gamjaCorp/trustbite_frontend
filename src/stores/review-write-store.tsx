@@ -4,7 +4,8 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, Grade, SceneTag } from '@/types/restaurant';
+import type { Category, SceneTag } from '@/types/restaurant';
+import type { GradeLevel } from '@/lib/grade-levels';
 
 export const LONG_TEXT_THRESHOLD = 100;
 export const TRUST_DELTA = {
@@ -26,7 +27,7 @@ export type ReviewResultSnapshot = {
   nextTrustScore: number;
   breakdown: TrustBreakdown;
   photoCount: number;
-  currentGrade: Grade;
+  currentLevel: GradeLevel;
   currentGradeReviewCount: number;
   currentGradeReviewTarget: number;
   nextGradeName: string;

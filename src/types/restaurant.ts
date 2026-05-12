@@ -1,3 +1,5 @@
+import type { GradeLevel } from '@/lib/grade-levels';
+
 export type Category = '한식' | '일식' | '중식' | '양식' | '카페' | '술집' | '기타';
 
 export interface TopRestaurant {
@@ -52,7 +54,6 @@ export type MyRestaurantEntry = RestaurantBase & {
 
 export type VisitStatus = 'none' | 'visited' | 'reviewed';
 
-export type Grade = 'S' | 'A' | 'B' | 'C' | 'D';
 
 /** 가게 단위 신뢰도 구성 요소 (0~1 비율) */
 export interface TrustBreakdown {
@@ -78,7 +79,7 @@ export interface RealtimeReview {
   restaurantName: string;
   reviewerId: string;
   reviewerName: string;
-  reviewerGrade: Grade;
+  reviewerLevel: GradeLevel;
   reviewerTrustScore: number;
   reviewerVisitCount: number;
   score: number;
@@ -104,8 +105,7 @@ export interface DetailedReview {
   reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;
-  reviewerGrade: Grade;
-  reviewerLevel: number;
+  reviewerLevel: GradeLevel;
   reviewerTitle: string;
   reviewerTrustScore: number;
   visitOrdinal: number;
@@ -141,8 +141,7 @@ export interface RepeatVisitReview {
   reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;
-  reviewerGrade: Grade;
-  reviewerLevel: number;
+  reviewerLevel: GradeLevel;
   reviewerTitle: string;
   reviewerTrustScore: number;
   visitCount: number;

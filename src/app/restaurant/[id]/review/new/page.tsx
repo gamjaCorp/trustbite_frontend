@@ -4,16 +4,16 @@ import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { mockRankList } from '@/data/mock-restaurant';
 import { DetailHeader } from '@/components/features/restaurant-detail/detail-header';
 import { ReviewWriteForm } from '@/components/features/review-write/review-write-form';
-import { getGradeReviewTarget } from '@/lib/trust-score';
+import { getLevelDef, getNextLevelDef } from '@/lib/grade-levels';
+import type { GradeLevel } from '@/lib/grade-levels';
 import type { SelectedRestaurant } from '@/stores/review-write-store';
-import type { Grade } from '@/types/restaurant';
 
+const CURRENT_LEVEL: GradeLevel = 3;
 const BASE_TRUST_SCORE = 72;
-const NEXT_GRADE_NAME = '맛집 헌터';
 const REMAINING_REVIEWS_FOR_NEXT_GRADE = 19;
-const CURRENT_GRADE: Grade = 'C';
 const CURRENT_GRADE_REVIEW_COUNT = 11;
-const CURRENT_GRADE_REVIEW_TARGET = getGradeReviewTarget(CURRENT_GRADE);
+const CURRENT_GRADE_REVIEW_TARGET = getNextLevelDef(CURRENT_LEVEL)?.reviewMin ?? getLevelDef(CURRENT_LEVEL).reviewMin;
+const NEXT_GRADE_NAME = getNextLevelDef(CURRENT_LEVEL)?.label ?? '';
 
 export default async function ReviewWritePage({
   params,
@@ -48,7 +48,7 @@ export default async function ReviewWritePage({
         baseTrustScore={BASE_TRUST_SCORE}
         remainingReviewsForNextGrade={REMAINING_REVIEWS_FOR_NEXT_GRADE}
         nextGradeName={NEXT_GRADE_NAME}
-        currentGrade={CURRENT_GRADE}
+        currentLevel={CURRENT_LEVEL}
         currentGradeReviewCount={CURRENT_GRADE_REVIEW_COUNT}
         currentGradeReviewTarget={CURRENT_GRADE_REVIEW_TARGET}
       />
