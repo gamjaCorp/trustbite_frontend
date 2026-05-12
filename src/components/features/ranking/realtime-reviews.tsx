@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { RealtimeReview } from '@/types/restaurant';
-import { GradeBadge } from '@/components/common/grade-badge';
+import { GradeBadge } from '@/components/core/grade-badge';
 
 interface Props {
   reviews: RealtimeReview[];

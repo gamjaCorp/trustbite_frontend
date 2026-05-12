@@ -4,7 +4,7 @@ import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CATEGORY_STYLE } from '@/lib/category';
 import { MyRestaurantEntry } from '@/types/restaurant';
-import { TrustScoreBadge } from '@/components/common/trust-score-badge';
+import { TrustScoreBadge } from '@/components/core/trust-score-badge';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 

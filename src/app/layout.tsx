@@ -3,7 +3,7 @@ import { JetBrains_Mono } from 'next/font/google';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
 import { Providers } from '@/components/core/providers';
-import { Header } from '@/components/common/Header';
+import { Header } from '@/components/core/header';
 
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',

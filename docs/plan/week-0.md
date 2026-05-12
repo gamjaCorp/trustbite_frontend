@@ -16,7 +16,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 | Day | 날짜 | 목표                                                       | 주요 산출물                                                               | 완료 |
 | --- | ---- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ---- |
 | Thu | 5/8  | 라우트 구조 정리 + 타이포 시맨틱 + 컬러 토큰 체크           | route rename + 타이포 시맨틱화 + arbitrary hex 0 (Google 로고 예외)        | ☑    |
-| Fri | 5/9  | `core/` 정착 + 카드 패턴 통일 + hex/shadow 토큰화          | `core/header/*`, `core/grade-badge/*` 등, hex 7→0                         | ☐    |
+| Fri | 5/9  | `core/` 정착 + 카드 패턴 통일 + hex/shadow 토큰화          | `core/header.tsx` 등 단일 파일, import 7건, restaurant-pin Day 3 이월     | ☑    |
 | Sat | 5/10 | 레퍼런스 화면 (홈 `/`) + `pnpm design:check` 자동화        | 표준 적용 페이지 1개, 위반 검출 그린                                      | ☐    |
 | Sun | 5/11 | 버퍼 — 시각 보정 + W1 진입 준비                            | `pnpm lint && npx tsc --noEmit && pnpm build` 그린                        | ☐    |
 
@@ -118,7 +118,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 - [x] `src/components/features/restaurant-detail/**` — 타이포 + 컬러
 - [x] `src/components/features/review-write/**` — 타이포 + 컬러
 - [x] `src/components/features/my-profile/**` — 타이포 + 컬러
-- [x] `src/components/features/my-restaurant/**` — 타이포 + 컬러 (+ text-[var(--score-*)] → text-score-* 교체)
+- [x] `src/components/features/my-restaurant/**` — 타이포 + 컬러 (+ `var(--score-*)` 직접 참조 → `text-score-*` 시맨틱 교체)
 - [x] `src/components/features/user-profile/**` — 타이포 + 컬러
 - [x] `src/components/features/auth/**` — text-xs 0건, 컬러 위반 없음
 - [x] `src/app/**` 페이지 레벨 타이포 (login, my-places, onboarding, restaurant/[id], signin)
@@ -138,30 +138,30 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 
 > **원칙**: 프로토타입(W1 끝)이 안 끝났으므로 카드 베이스를 새로 추출하지 않는다. 진짜 공통 패턴은 신규 화면 4개가 추가된 뒤에야 보임. Day 2는 **이미 공용으로 쓰이는 것의 위치만** CLAUDE.md 컨벤션에 맞추고, **명백한 토큰 위반만** 청소한다.
 
-**`common/` → `core/` 마이그레이션** (단순 위치 이동 + kebab-case + index.tsx barrel)
-- [ ] `common/Header.tsx` → `core/header/index.tsx`
-- [ ] `common/grade-badge.tsx` → `core/grade-badge/index.tsx`
-- [ ] `common/intro-card.tsx` → `core/intro-card/index.tsx`
-- [ ] `common/rank-card-skeleton.tsx` → `core/rank-card-skeleton/index.tsx`
-- [ ] `common/trust-score-badge.tsx` → `core/trust-score-badge/index.tsx`
-- [ ] `common/trust-score-sheet.tsx` → `core/trust-score-sheet/index.tsx`
-- [ ] `@/components/common/*` import 전체 → `@/components/core/*/index`로 일괄 수정
-- [ ] 빈 `common/` 삭제
+**`common/` → `core/` 마이그레이션** (단순 위치 이동 + kebab-case 단일 파일)
+- [x] `common/Header.tsx` → `core/header.tsx`
+- [x] `common/grade-badge.tsx` → `core/grade-badge.tsx`
+- [x] `common/intro-card.tsx` → `core/intro-card.tsx`
+- [x] `common/rank-card-skeleton.tsx` → `core/rank-card-skeleton.tsx`
+- [x] `common/trust-score-badge.tsx` → `core/trust-score-badge.tsx`
+- [x] `common/trust-score-sheet.tsx` → `core/trust-score-sheet.tsx`
+- [x] `@/components/common/*` import 전체 → `@/components/core/*`로 일괄 수정
+- [x] 빈 `common/` 삭제
 
 **잔존 위반 정리**
-- [ ] `features/explore/restaurant-pin.tsx` SVG hex 3건(`#22C55E`, `#FF7A00`, `#fff`) → `currentColor` + 부모 `text-grade-*` / `text-score-*` 적용
-- [ ] `app/login/page.tsx` Google 로고 hex 4건 → **예외 유지** — `{/* 브랜드 고정 컬러 — 토큰 대체 금지 */}` 주석 추가
-- [ ] `map/page.tsx`, `explore-sheet.tsx`, `sidebar.tsx`의 `shadow-[…]` 3건 → `shadow-card` 또는 `shadow-md` 토큰으로 치환 (안 맞으면 `globals.css @theme inline`에 `--shadow-sheet` 추가)
+- [-] `features/explore/restaurant-pin.tsx` SVG hex — Kakao Maps 마커 innerHTML로 토큰 상속 불가, Day 3 이월 (사용자 결정)
+- [x] `app/login/page.tsx` Google 로고 hex 4건 → **예외 유지** — `// 브랜드 고정 컬러 — 토큰 대체 금지` 주석 추가
+- [-] `map/page.tsx`, `explore-sheet.tsx` — 파일 부재(이미 다른 구조로 재편됨) N/A. `sidebar.tsx`는 shadcn ui 수정 금지 대상
 
 **※ 이번 주 안 하는 것** (의도적 보류):
 - features/* 11개 카드를 베이스 컴포넌트로 추출 — W1 신규 화면 추가된 뒤 W2~W3에 자연 추출
 - 새 `core/cards/*` / `core/badges/*` 폴더 생성 — 추출할 만한 진짜 공통이 아직 안 보임
 
 **점검**
-- [ ] `grep -rn "components/common" src/` → 0건
-- [ ] `pnpm lint && npx tsc --noEmit`
+- [x] `grep -rn "components/common" src/` → 0건
+- [x] `pnpm lint && npx tsc --noEmit`
 
-> 산출물: `core/` 정착(위치 이동만). hex 위반 제로(Google 예외 제외).
+> 산출물: `core/` 단일 파일 정착 완료. import 7건 갱신. Google 로고 브랜드 주석 추가. restaurant-pin hex Day 3 이월.
 
 ---
 

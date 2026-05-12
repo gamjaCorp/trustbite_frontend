@@ -7,8 +7,8 @@ import { Star, Bookmark, PencilLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CATEGORY_STYLE } from '@/lib/category';
 import { RegionalRankEntry } from '@/types/restaurant';
-import { TrustScoreBadge } from '@/components/common/trust-score-badge';
-import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
+import { TrustScoreBadge } from '@/components/core/trust-score-badge';
+import { TrustScoreSheet } from '@/components/core/trust-score-sheet';
 
 interface Props {
   entry: RegionalRankEntry;

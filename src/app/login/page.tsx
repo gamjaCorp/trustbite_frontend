@@ -21,6 +21,7 @@ const FEATURES = [
   },
 ] as const;
 
+// 브랜드 고정 컬러 — 토큰 대체 금지
 function GoogleLogo({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 48" className={className} aria-hidden>
