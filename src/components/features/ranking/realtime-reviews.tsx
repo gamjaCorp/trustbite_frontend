@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { RealtimeReview } from '@/types/restaurant';
-import { GradeBadge } from '@/components/core/grade-badge';
+import { GradeIcon } from '@/components/core/grade-icon';
 
 interface Props {
   reviews: RealtimeReview[];
@@ -55,7 +55,7 @@ export function RealtimeReviews({ reviews }: Props) {
                 >
                   {review.reviewerName}
                 </Link>
-                <GradeBadge level={review.reviewerLevel} size="sm" showLabel={false} />
+                <GradeIcon level={review.reviewerLevel} size="xs" />
               </div>
             </div>
 

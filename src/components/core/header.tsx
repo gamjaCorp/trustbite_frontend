@@ -6,9 +6,10 @@ import { Bell, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { GradeIcon } from '@/components/core/grade-icon';
+import { getMyProfile } from '@/data/mock-my-profile';
 
 const NAV_TABS = [
   { label: '맛집 탐색', href: '/' },
@@ -43,6 +44,7 @@ function ThemeToggle() {
 
 export function Header() {
   const pathname = usePathname();
+  const profile = getMyProfile();
 
   // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다. 로그인/온보딩은 미니 랜딩.
   if (
@@ -71,9 +73,7 @@ export function Header() {
             className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
           >
             <span className="text-title-3 text-foreground">감자먹는 햄찌</span>
-            <Badge className="rounded-full bg-primary px-2 py-0.5 text-label-3 text-primary-foreground">
-              🏆
-            </Badge>
+            <GradeIcon level={profile.level} size="xs" />
             <Avatar className="h-8 w-8 ml-0.5">
               <AvatarImage src="" alt="프로필" />
               <AvatarFallback className="bg-primary-subtle text-primary text-label-3">

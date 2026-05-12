@@ -106,7 +106,6 @@ export interface DetailedReview {
   reviewerName: string;
   reviewerInitial: string;
   reviewerLevel: GradeLevel;
-  reviewerTitle: string;
   reviewerTrustScore: number;
   visitOrdinal: number;
   scores: RatingScores;
@@ -142,7 +141,6 @@ export interface RepeatVisitReview {
   reviewerName: string;
   reviewerInitial: string;
   reviewerLevel: GradeLevel;
-  reviewerTitle: string;
   reviewerTrustScore: number;
   visitCount: number;
   visits: RepeatVisitEntry[];

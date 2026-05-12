@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DetailedReview } from '@/types/restaurant';
+import { GradeIcon } from '@/components/core/grade-icon';
 
 interface Props {
   review: DetailedReview;
@@ -36,9 +37,7 @@ export function ReviewCard({ review }: Props) {
               >
                 {review.reviewerName}
               </Link>
-              <span className="rounded-chip bg-primary/10 text-primary px-1.5 py-0.5 text-label-3">
-                Lv.{review.reviewerLevel} {review.reviewerTitle}
-              </span>
+              <GradeIcon level={review.reviewerLevel} size="xs" />
               <span className="rounded-chip bg-blue-50 text-blue-700 px-1.5 py-0.5 text-label-3 dark:bg-blue-900/30 dark:text-blue-300">
                 {review.visitOrdinal}번째 방문
               </span>
