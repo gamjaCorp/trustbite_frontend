@@ -111,9 +111,14 @@ Tailwind 클래스와 `src/app/globals.css`의 토큰만으로 스타일링한�
 
 - 브랜드: `bg-primary`, `text-primary-foreground`, `bg-primary-subtle`
 - 시맨틱: `text-success`, `bg-warning`, `border-error`, `text-info`
-- 등급(S→D): `text-grade-s` ~ `text-grade-d`
-- TrustScore: `bg-score-high` ~ `bg-score-danger`
+- Palette: `bg-palette-red`, `text-palette-amber`, `bg-palette-blue-subtle` 등 6 hue (brand/green/amber/blue/red/gray)
 - 중립: `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border`
+
+### 디자인 토큰 사용 규약
+
+- **palette**(`bg-palette-red` 등)는 색 자체. UI 의미가 있으면 시맨틱 토큰(`bg-primary`, `text-success`/`error` 등) 우선.
+- **도메인 매핑**(카테고리·등급 → 색)은 `src/lib/category.ts`·`src/lib/trust-score.ts`에서만. 컴포넌트 className에 `text-grade-s` 같은 도메인 의미를 직접 박지 말 것.
+- `pnpm design:check`로 `.designcheckrc.json` include 영역의 raw hex/rgb를 자동 검출. PR 머지 전 그린이어야 함.
 
 ### 타이포그래피
 

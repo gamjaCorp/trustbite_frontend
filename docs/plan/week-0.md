@@ -17,8 +17,8 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 | --- | ---- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ---- |
 | Thu | 5/8  | 라우트 구조 정리 + 타이포 시맨틱 + 컬러 토큰 체크           | route rename + 타이포 시맨틱화 + arbitrary hex 0 (Google 로고 예외)        | ☑    |
 | Fri | 5/9  | `core/` 정착 + 카드 패턴 통일 + hex/shadow 토큰화          | `core/header.tsx` 등 단일 파일, import 7건, restaurant-pin Day 3 이월     | ☑    |
-| Sat | 5/10 | 레퍼런스 화면 (홈 `/`) + `pnpm design:check` 자동화        | 표준 적용 페이지 1개, 위반 검출 그린                                      | ☐    |
-| Sun | 5/11 | 버퍼 — 시각 보정 + W1 진입 준비                            | `pnpm lint && npx tsc --noEmit && pnpm build` 그린                        | ☐    |
+| Sat | 5/10 | 레퍼런스 화면 (홈 `/`) + `pnpm design:check` 자동화        | 표준 적용 페이지 1개, 위반 검출 그린                                      | ☑    |
+| Sun | 5/11 | 버퍼 — 시각 보정 + W1 진입 준비                            | `pnpm lint && npx tsc --noEmit && pnpm build` 그린                        | ☑    |
 
 ---
 
@@ -128,7 +128,7 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 - [x] `pnpm lint && npx tsc --noEmit` — 그린
 - [x] `grep -rn "#[0-9a-fA-F]\{3,6\}\b" src/components src/app --include="*.tsx" | grep -v "Google\|브랜드"` → restaurant-pin SVG 4건 잔존 (Day 2에서 currentColor 처리)
 - [x] `grep -rn "text-\[#\|bg-\[#\|border-\[#" src/` → 0건
-- [ ] 브라우저 — 홈 + `/profile` + 맛집 상세 시각 확인 (폰트 충분히 큰지, 컬러 톤 깨짐 없는지)
+- [x] 브라우저 — 홈 + `/profile` + 맛집 상세 시각 확인 (폰트 충분히 큰지, 컬러 톤 깨짐 없는지)
 
 > 산출물: raw `text-* font-*` 조합 ≤ 5건, `text-xs` 승격 완료, arbitrary hex 클래스 0, hex 직접 사용은 SVG 인라인 케이스만 잔존(Day 2에서 `currentColor`로 처리)
 
@@ -168,18 +168,18 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 ## Day 3 (토) — 레퍼런스 화면 + 자동화 — ≈ 4~5h
 
 **레퍼런스 화면 — 홈 `/`** (가장 자주 보이는 화면 → 톤 정렬 효과 즉시 체감)
-- [ ] `src/app/page.tsx` + 그 하위 트리(헤더, 인트로 카드, 1~3위 카드, 4위~ 리스트)를 W0 표준으로 완전 정렬:
+- [x] `src/app/page.tsx` + 그 하위 트리(헤더, 인트로 카드, 1~3위 카드, 4위~ 리스트)를 W0 표준으로 완전 정렬:
   - 시맨틱 타이포 100%
   - 카드 패딩·그림자·라운딩 토큰 통일 (`rounded-card`, `shadow-card`, `p-4` 등) — 베이스 컴포넌트 추출은 안 함, 클래스 조합으로 톤만 통일
   - 컬러 토큰 100%
-- [ ] 브라우저 Before/After 시각 비교 — 만족하지 않으면 타이포 매핑 보정
+- [x] 브라우저 Before/After 시각 비교 — 만족하지 않으면 타이포 매핑 보정
 
 **`pnpm design:check` 스크립트 추가**
-- [ ] `package.json` scripts에 추가:
+- [x] `package.json` scripts에 추가:
   ```json
   "design:check": "! grep -rnE 'text-\\[1[01]px\\]' src/ && ! (grep -rnE '#[0-9a-fA-F]{3,6}' src/components src/app --include='*.tsx' | grep -vE 'Google 로고|브랜드 고정' | grep .) && echo 'design:check passed'"
   ```
-- [ ] 실행 확인 — 위반 0
+- [x] 실행 확인 — 위반 0
 
 > 산출물: 홈 `/` 가 W1 신규 화면의 디자인 레퍼런스. 자동 검출 그린.
 
@@ -187,9 +187,9 @@ W1 시작(5/12) 전에 **이미 정의된 디자인 시스템에 코드를 정�
 
 ## Day 4 (일) — 버퍼
 
-- [ ] Day 1~3 잔여 보정 (시각 이상 발견 시)
-- [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 최종 그린
-- [ ] W1 5/12 시작 준비 확인
+- [x] Day 1~3 잔여 보정 (시각 이상 발견 시)
+- [x] `pnpm lint && npx tsc --noEmit && pnpm build` 최종 그린
+- [x] W1 5/12 시작 준비 확인
 
 ---
 

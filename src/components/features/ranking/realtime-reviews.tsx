@@ -25,10 +25,8 @@ export function RealtimeReviews({ reviews }: Props) {
 
   return (
     <section className="space-y-3 pt-6">
-      <h2 className="text-headline-3 text-foreground flex items-center gap-2">
-        💬 실시간 평가
-      </h2>
-      <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-1">
+      <h2 className="text-headline-3 text-foreground flex items-center gap-2">실시간 평가</h2>
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide py-3 -my-3">
         {reviews.map((review) => (
           <div
             key={review.id}

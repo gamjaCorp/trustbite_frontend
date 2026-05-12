@@ -9,5 +9,11 @@
   ],
   "exclude": [
     "src/components/features/explore/restaurant-pin.tsx"
-  ]
+  ],
+  "rules": {
+    "no-raw-color": {
+      "enabled": true,
+      "description": "raw hex(#rgb/#rrggbb/#rrggbbaa)·rgb()/rgba() 사용 금지. globals.css palette 토큰 사용."
+    }
+  }
 }
