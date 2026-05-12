@@ -38,7 +38,7 @@ export default function MyRestaurantPage() {
             <span className="text-caption-2 text-muted-foreground">리뷰</span>
           </div>
           <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-            <span className="text-headline-1 text-score-high">{trustScore}</span>
+            <span className="text-headline-1 text-palette-green">{trustScore}</span>
             <span className="text-caption-2 text-muted-foreground">신뢰도</span>
           </div>
         </div>

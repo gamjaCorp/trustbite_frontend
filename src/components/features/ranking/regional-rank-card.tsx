@@ -128,7 +128,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
         <div className="shrink-0 flex items-center gap-2 self-center">
           <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-0.5">
-              <Star className="w-4 h-4 fill-grade-s text-grade-s" />
+              <Star className="w-4 h-4 fill-palette-amber text-palette-amber" />
               <span className="font-numeric text-title-1 text-foreground">
                 {communityAvgScore.toFixed(1)}
               </span>

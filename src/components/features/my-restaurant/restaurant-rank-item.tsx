@@ -13,9 +13,9 @@ interface Props {
 }
 
 const RANK_COLORS: Record<number, string> = {
-  1: 'text-grade-s',
-  2: 'text-grade-a',
-  3: 'text-grade-b',
+  1: 'text-palette-amber',
+  2: 'text-palette-green',
+  3: 'text-palette-blue',
 };
 
 export function RestaurantRankItem({ entry }: Props) {
@@ -65,7 +65,7 @@ export function RestaurantRankItem({ entry }: Props) {
       {/* 평균 점수 + 신뢰도 */}
       <div className="shrink-0 flex items-center gap-2">
         <div className="flex items-center gap-1">
-          <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
+          <Star className="w-3.5 h-3.5 fill-palette-amber text-palette-amber" />
           <span className="text-title-2">{avgScore.toFixed(1)}</span>
         </div>
         {typeof trustScore === 'number' && <TrustScoreBadge score={trustScore} size="sm" showIcon={false} />}

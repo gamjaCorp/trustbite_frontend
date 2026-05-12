@@ -13,7 +13,7 @@ function StarRow({ score }: { score: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`w-3 h-3 ${i < score ? 'fill-grade-s text-grade-s' : 'text-muted-foreground/30'}`}
+          className={`w-3 h-3 ${i < score ? 'fill-palette-amber text-palette-amber' : 'text-muted-foreground/30'}`}
         />
       ))}
     </div>

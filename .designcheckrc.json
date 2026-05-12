@@ -1,0 +1,13 @@
+{
+  "include": [
+    "src/app/page.tsx",
+    "src/app/layout.tsx",
+    "src/components/core/**/*.tsx",
+    "src/components/features/ranking/**/*.tsx",
+    "src/components/features/explore/**/*.tsx",
+    "src/lib/category.ts"
+  ],
+  "exclude": [
+    "src/components/features/explore/restaurant-pin.tsx"
+  ]
+}

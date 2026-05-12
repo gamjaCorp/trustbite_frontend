@@ -47,7 +47,7 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
       </div>
 
       <div className="shrink-0 flex items-center gap-1">
-        <Star className="w-3.5 h-3.5 fill-grade-s text-grade-s" />
+        <Star className="w-3.5 h-3.5 fill-palette-amber text-palette-amber" />
         <span className="text-title-2">{avgScore.toFixed(1)}</span>
       </div>
     </Link>

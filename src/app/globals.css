@@ -50,19 +50,19 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
-  /* ── TrustBite: 등급 색상 ── */
-  --color-grade-s: var(--grade-s);
-  --color-grade-a: var(--grade-a);
-  --color-grade-b: var(--grade-b);
-  --color-grade-c: var(--grade-c);
-  --color-grade-d: var(--grade-d);
-
-  /* ── TrustBite: TrustScore 게이지 색상 ── */
-  --color-score-high: var(--score-high);
-  --color-score-good: var(--score-good);
-  --color-score-mid: var(--score-mid);
-  --color-score-low: var(--score-low);
-  --color-score-danger: var(--score-danger);
+  /* ── TrustBite: Primitive Palette ── */
+  --color-palette-brand: var(--palette-brand);
+  --color-palette-brand-subtle: var(--palette-brand-subtle);
+  --color-palette-green: var(--palette-green);
+  --color-palette-green-subtle: var(--palette-green-subtle);
+  --color-palette-amber: var(--palette-amber);
+  --color-palette-amber-subtle: var(--palette-amber-subtle);
+  --color-palette-blue: var(--palette-blue);
+  --color-palette-blue-subtle: var(--palette-blue-subtle);
+  --color-palette-red: var(--palette-red);
+  --color-palette-red-subtle: var(--palette-red-subtle);
+  --color-palette-gray: var(--palette-gray);
+  --color-palette-gray-subtle: var(--palette-gray-subtle);
 
   /* ── 라운딩 ── */
   --radius-sm: calc(var(--radius) - 4px);
@@ -100,20 +100,38 @@
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
   --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.04), 0 2px 8px 0 rgb(0 0 0 / 0.06);
 
-  /* ── TrustBite: 등급 색상 (S → A → B → C → D) ── */
-  /* subtle 배경 필요 시 bg-grade-s/10 처럼 opacity 조합 사용 */
-  --grade-s: #f59e0b; /* Gold  — 최상위 신뢰 */
-  --grade-a: #22c55e; /* Green — 우수 */
-  --grade-b: #3b82f6; /* Blue  — 양호 */
-  --grade-c: #9ca3af; /* Gray  — 보통 */
-  --grade-d: #ef4444; /* Red   — 주의 */
+  /* ── 레이아웃 상수 ── */
+  --header-height: 91px; /* Header 컴포넌트 고정 높이 — sticky offset용 */
 
-  /* ── TrustBite: TrustScore 게이지 색상 (0~100점) ── */
-  --score-high: #22c55e; /* 80~100: 안전 */
-  --score-good: #84cc16; /* 60~79:  양호 */
-  --score-mid: #f59e0b; /* 40~59:  보통 */
-  --score-low: #f97316; /* 20~39:  주의 */
-  --score-danger: #ef4444; /* 0~19:   위험 */
+  /* ───────────────────────────────────────────
+   * Tier 1 — Primitive Palette (SSOT)
+   * 색 자체만 정의. 라이트/다크는 여기서만 변경.
+   * Tier 2 토큰(semantic)은 이 값을 var()로만 참조.
+   * 도메인 매핑(카테고리·등급)은 src/lib/*에서 직접 palette 클래스 참조.
+   * ─────────────────────────────────────────── */
+  --palette-brand: #ff7a00;
+  --palette-brand-subtle: #fff3e6;
+  --palette-green: #22c55e;
+  --palette-green-subtle: #ecfdf5;
+  --palette-amber: #f59e0b;
+  --palette-amber-subtle: oklch(0.965 0.02 75);
+  --palette-blue: #3b82f6;
+  --palette-blue-subtle: oklch(0.965 0.015 245);
+  --palette-red: #ef4444;
+  --palette-red-subtle: oklch(0.965 0.015 22);
+  --palette-gray: #9ca3af;
+  --palette-gray-subtle: oklch(0.955 0 0);
+
+  /* ───────────────────────────────────────────
+   * Tier 2 — Semantic (의미 기반 토큰)
+   * ─────────────────────────────────────────── */
+  --primary: var(--palette-brand);
+  --primary-subtle: var(--palette-brand-subtle);
+  --success: var(--palette-green);
+  --success-subtle: var(--palette-green-subtle);
+  --warning: var(--palette-amber);
+  --info: var(--palette-blue);
+  --error: var(--palette-red);
 
   /* ── Field Book: 종이톤 사이드바/시트 배경 ── */
   --paper: oklch(0.987 0.008 80); /* warm off-white */
@@ -127,14 +145,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #ff7a00;
   --primary-foreground: oklch(0.985 0 0);
-  --primary-subtle: #fff3e6;
-  --success: #22c55e;
-  --success-subtle: #ecfdf5;
-  --warning: #f59e0b;
-  --info: #3b82f6;
-  --error: #ef4444;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -161,6 +172,15 @@
 }
 
 .dark {
+  /* ── Primitive Palette (다크 — 어두운 배경 가독성 확보) ── */
+  --palette-brand: #ff8c1a;
+  --palette-green: #4ade80;
+  --palette-amber: #fbb740;
+  --palette-blue: #60a5fa;
+  --palette-red: #f87171;
+  --palette-gray: #d1d5db;
+  /* subtle 값들은 라이트와 동일하게 유지 (다크 배경에서 사용처 발생 시 별도 정의) */
+
   /* ── shadcn 기본 색상 (다크) ── */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -168,6 +188,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -192,10 +213,6 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* ── Primary: 다크에서도 오렌지 유지 ── */
-  --primary: #ff8c1a;
-  --primary-foreground: oklch(0.145 0 0);
-
   /* ── Field Book: 다크 paper tone ── */
   --paper: oklch(0.22 0.01 60);
   --paper-edge: oklch(0.32 0.015 60);
@@ -208,20 +225,6 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.2);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.2);
   --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.06), 0 2px 8px 0 rgb(0 0 0 / 0.3);
-
-  /* ── TrustBite: 등급 색상 (다크 — 어두운 배경 가독성 확보) ── */
-  --grade-s: #fbb740;
-  --grade-a: #4ade80;
-  --grade-b: #60a5fa;
-  --grade-c: #d1d5db;
-  --grade-d: #f87171;
-
-  /* ── TrustBite: TrustScore 게이지 색상 (다크) ── */
-  --score-high: #4ade80;
-  --score-good: #a3e635;
-  --score-mid: #fbb740;
-  --score-low: #fb923c;
-  --score-danger: #f87171;
 }
 
 @layer base {
@@ -379,4 +382,9 @@
   line-height: 1rem; /* 16px */
   font-weight: 400;
   letter-spacing: -0.02em;
+}
+
+/* 0.5px hairline 구분선 — Tailwind 스케일에 없는 값, 토큰화 */
+@utility border-hairline {
+  border-width: 0.5px;
 }

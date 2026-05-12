@@ -131,8 +131,8 @@ export function RegionRankList({ entries }: Props) {
 
   return (
     <div className="space-y-4">
-      {/* sticky 블록 — 필터 바 + 지도가 함께 헤더(top-[91px]) 아래에 고정 */}
-      <div className="sticky top-[91px] z-10 bg-background space-y-3 pt-3 pb-4">
+      {/* sticky 블록 — 필터 바 + 지도가 함께 헤더 아래에 고정 */}
+      <div className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4">
         {/* 검색 */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -209,13 +209,13 @@ export function RegionRankList({ entries }: Props) {
               <span className="font-numeric">{rankedEntries.length}</span>곳
             </p>
           </div>
-          {/* 0.5px 분리선 — Tailwind 스케일에 없어 arbitrary value 사용 */}
-          <ul className="border-y-[0.5px] border-border/60">
+          {/* 0.5px 분리선 — border-hairline 유틸리티 사용 */}
+          <ul className="border-hairline border-y border-border/60">
             {rankedEntries.map((entry, i) => (
               <li
                 key={entry.id}
                 className={cn(
-                  i > 0 && 'border-t-[0.5px] border-border/60',
+                  i > 0 && 'border-hairline border-t border-border/60',
                 )}
               >
                 <RegionalRankCard

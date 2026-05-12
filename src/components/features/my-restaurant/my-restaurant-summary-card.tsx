@@ -9,14 +9,12 @@ interface Props {
   onWriteReview?: () => void;
 }
 
-const RANK_COLORS = ['text-grade-s', 'text-grade-a', 'text-grade-b'];
+const RANK_COLORS = ['text-palette-amber', 'text-palette-green', 'text-palette-blue'];
 
 function getTrustScoreColor(score: number) {
-  if (score >= 80) return 'text-score-high';
-  if (score >= 60) return 'text-score-good';
-  if (score >= 40) return 'text-score-mid';
-  if (score >= 20) return 'text-score-low';
-  return 'text-score-danger';
+  if (score >= 60) return 'text-palette-green';
+  if (score >= 30) return 'text-palette-amber';
+  return 'text-palette-red';
 }
 
 export function MyRestaurantSummaryCard({ stats, onWriteReview }: Props) {
@@ -117,7 +115,7 @@ function FullState({
               </span>
               <span className="flex-1 text-title-3 truncate">{r.name}</span>
               <span className="flex items-center gap-0.5 text-caption-2 text-muted-foreground shrink-0">
-                <Star className="w-3 h-3 fill-grade-s text-grade-s" />
+                <Star className="w-3 h-3 fill-palette-amber text-palette-amber" />
                 {r.myRating}
               </span>
             </li>

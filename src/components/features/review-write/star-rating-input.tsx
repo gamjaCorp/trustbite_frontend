@@ -63,7 +63,7 @@ export function StarRatingInput({ value, onChange, ariaLabel, size = 'md' }: Pro
                 iconClass,
                 'transition-colors',
                 filled
-                  ? 'fill-grade-s text-grade-s'
+                  ? 'fill-palette-amber text-palette-amber'
                   : 'fill-transparent text-muted-foreground/40',
               )}
             />

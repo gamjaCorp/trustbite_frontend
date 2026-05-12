@@ -1,12 +1,10 @@
 import type { Grade } from '@/types/restaurant';
 
-export type TrustTone = 'high' | 'good' | 'mid' | 'low' | 'danger';
+export type TrustTone = 'high' | 'mid' | 'danger';
 
 export function getTrustTone(score: number): TrustTone {
-  if (score >= 80) return 'high';
-  if (score >= 60) return 'good';
-  if (score >= 40) return 'mid';
-  if (score >= 20) return 'low';
+  if (score >= 60) return 'high';
+  if (score >= 30) return 'mid';
   return 'danger';
 }
 
@@ -17,11 +15,9 @@ export function getTrustToneClass(score: number): {
 } {
   const tone = getTrustTone(score);
   return {
-    high: { text: 'text-score-high', bg: 'bg-score-high/10', ring: 'ring-score-high/30' },
-    good: { text: 'text-score-good', bg: 'bg-score-good/10', ring: 'ring-score-good/30' },
-    mid: { text: 'text-score-mid', bg: 'bg-score-mid/10', ring: 'ring-score-mid/30' },
-    low: { text: 'text-score-low', bg: 'bg-score-low/10', ring: 'ring-score-low/30' },
-    danger: { text: 'text-score-danger', bg: 'bg-score-danger/10', ring: 'ring-score-danger/30' },
+    high:   { text: 'text-palette-green', bg: 'bg-palette-green/10', ring: 'ring-palette-green/30' },
+    mid:    { text: 'text-palette-amber', bg: 'bg-palette-amber/10', ring: 'ring-palette-amber/30' },
+    danger: { text: 'text-palette-red',   bg: 'bg-palette-red/10',   ring: 'ring-palette-red/30' },
   }[tone];
 }
 
@@ -30,11 +26,11 @@ export function getGradeToneClass(grade: Grade): {
   bg: string;
 } {
   return {
-    S: { text: 'text-grade-s', bg: 'bg-grade-s/10' },
-    A: { text: 'text-grade-a', bg: 'bg-grade-a/10' },
-    B: { text: 'text-grade-b', bg: 'bg-grade-b/10' },
-    C: { text: 'text-grade-c', bg: 'bg-grade-c/10' },
-    D: { text: 'text-grade-d', bg: 'bg-grade-d/10' },
+    S: { text: 'text-palette-amber', bg: 'bg-palette-amber/10' },
+    A: { text: 'text-palette-green', bg: 'bg-palette-green/10' },
+    B: { text: 'text-palette-blue',  bg: 'bg-palette-blue/10' },
+    C: { text: 'text-palette-gray',  bg: 'bg-palette-gray/10' },
+    D: { text: 'text-palette-red',   bg: 'bg-palette-red/10' },
   }[grade];
 }
 
