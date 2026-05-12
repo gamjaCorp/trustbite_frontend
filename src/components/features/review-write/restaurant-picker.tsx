@@ -3,8 +3,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
-import { CATEGORY_STYLE } from '@/lib/category';
-import { cn } from '@/lib/utils';
+import { CategoryBadge } from '@/components/core/category-badge';
 import { useReviewActions } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
@@ -73,14 +72,7 @@ export function RestaurantPicker({ candidates }: Props) {
                     {entry.name}
                   </p>
                   <div className="mt-0.5 flex items-center gap-1.5">
-                    <span
-                      className={cn(
-                        'rounded-chip px-1.5 py-0.5 text-label-3',
-                        CATEGORY_STYLE[entry.category],
-                      )}
-                    >
-                      {entry.category}
-                    </span>
+                    <CategoryBadge category={entry.category} />
                     <span className="text-caption-2 text-muted-foreground truncate">
                       {entry.region}
                     </span>

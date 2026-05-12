@@ -5,10 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Star, Bookmark, PencilLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { CATEGORY_STYLE } from '@/lib/category';
 import { RegionalRankEntry } from '@/types/restaurant';
 import { TrustScoreBadge } from '@/components/core/trust-score-badge';
 import { TrustScoreSheet } from '@/components/core/trust-score-sheet';
+import { CategoryBadge } from '@/components/core/category-badge';
 
 interface Props {
   entry: RegionalRankEntry;
@@ -74,14 +74,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
         {/* ③ 가운데 — meta / 이름 / 코멘트 / CTA */}
         <div className="flex-1 min-w-0 flex flex-col gap-2">
           <div className="flex items-center gap-1 text-sm text-ink/70">
-            <span
-              className={cn(
-                'rounded-chip px-2 py-0.5 text-label-3',
-                CATEGORY_STYLE[category],
-              )}
-            >
-              {category}
-            </span>
+            <CategoryBadge category={category} />
             <span>· {region}</span>
           </div>
 

@@ -2,8 +2,7 @@
 
 import Image from 'next/image';
 import { Pencil } from 'lucide-react';
-import { CATEGORY_STYLE } from '@/lib/category';
-import { cn } from '@/lib/utils';
+import { CategoryBadge } from '@/components/core/category-badge';
 import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
 
 export function TargetRestaurantCard() {
@@ -23,14 +22,7 @@ export function TargetRestaurantCard() {
       <div className="flex-1 min-w-0">
         <p className="text-title-2 text-foreground truncate">{selected.name}</p>
         <div className="mt-1 flex items-center gap-1.5">
-          <span
-            className={cn(
-              'rounded-chip px-1.5 py-0.5 text-label-3',
-              CATEGORY_STYLE[selected.category],
-            )}
-          >
-            {selected.category}
-          </span>
+          <CategoryBadge category={selected.category} />
           <span className="text-caption-2 text-muted-foreground truncate">{selected.subtitle}</span>
         </div>
       </div>

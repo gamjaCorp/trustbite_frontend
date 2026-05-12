@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { CATEGORY_STYLE } from '@/lib/category';
 import { MyRestaurantEntry } from '@/types/restaurant';
 import { TrustScoreBadge } from '@/components/core/trust-score-badge';
+import { CategoryBadge } from '@/components/core/category-badge';
 
 interface Props {
   entry: MyRestaurantEntry & { trustScore?: number };
@@ -35,9 +34,7 @@ export function RestaurantTop3Card({ entry, displayRank }: Props) {
       <div className="flex-1 min-w-0 space-y-1">
         <p className="text-title-2 truncate">{name}</p>
         <div className="flex items-center gap-1 text-caption-2 text-muted-foreground">
-          <span className={cn('rounded-chip px-1.5 py-0.5', CATEGORY_STYLE[category])}>
-            {category}
-          </span>
+          <CategoryBadge category={category} />
           <span>·</span>
           <span>{region}</span>
         </div>
