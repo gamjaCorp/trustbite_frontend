@@ -20,7 +20,7 @@
 
 | Day | 날짜   | 목표                           | 주요 산출물                                        | 완료  |
 | --- | ---- | ---------------------------- | --------------------------------------------- | --- |
-| Mon | 5/12 | 리뷰 제출 결과 화면                  | `/review/new/result` + 게이지/체크리스트/등급바          | ☐   |
+| Mon | 5/12 | 리뷰 제출 결과 화면                  | `/review/new/result` + 게이지/체크리스트/등급바          | ☑   |
 | Tue | 5/13 | 등급 안내 화면                     | `/profile/grade` + 현재등급/체크리스트/타임라인            | ☐   |
 | Wed | 5/14 | 홈 탐색 탭 UI                    | `/` 검색/지역/정렬/카테고리/상황 칩, IntroCard 연결          | ☐   |
 | Thu | 5/15 | `/profile` 보강 + 비로그인 상세 미리보기 | 뱃지 컬렉션 + 레이더 + TOP3 + 비로그인 분기                 | ☐   |
@@ -55,6 +55,8 @@ PRD 6.4 / 8.8(#9). TrustBite 핵심 루프의 마지막 조각.
 - 결과 페이지에서 `searchParams.reviewId`로 mock 결과 읽기
 
 > 산출물: 리뷰 작성 → 결과 화면이 자연스럽게 이어짐
+>
+> **완료 (2026-05-12)** — 별도 페이지 라우트 대신 Dialog 오버레이로 구현 (UX상 페이지 이탈 없이 결과 노출). 컴포넌트: `review-result-dialog`, `trust-score-change-card`, `contribution-checklist`, `grade-progress-card`. 포인트 적립(`PointsEarnedCard`)은 3차 MVP 제외 주석 처리.
 
 ---
 

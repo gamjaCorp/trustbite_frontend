@@ -41,3 +41,23 @@ export const GRADE_LABEL: Record<Grade, string> = {
   C: '맛집 수집가',
   D: '새싹',
 };
+
+export const GRADE_REVIEW_TARGET: Record<Grade, number> = {
+  D: 5,
+  C: 30,
+  B: 80,
+  A: 150,
+  S: 300,
+};
+
+export const NEXT_GRADE: Record<Grade, Grade | null> = {
+  D: 'C',
+  C: 'B',
+  B: 'A',
+  A: 'S',
+  S: null,
+};
+
+export function getGradeReviewTarget(grade: Grade): number {
+  return GRADE_REVIEW_TARGET[grade];
+}

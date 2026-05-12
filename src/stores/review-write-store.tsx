@@ -4,14 +4,37 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, SceneTag } from '@/types/restaurant';
+import type { Category, Grade, SceneTag } from '@/types/restaurant';
 
 export const LONG_TEXT_THRESHOLD = 100;
 export const TRUST_DELTA = {
-  base: 1.7,
+  consistency: 1.5,
   photo: 2.1,
   longText: 1.4,
 } as const;
+
+export type TrustBreakdown = {
+  consistency: number;
+  photo: number | null;
+  longText: number | null;
+  total: number;
+};
+
+export type ReviewResultSnapshot = {
+  restaurantId: string;
+  baseTrustScore: number;
+  nextTrustScore: number;
+  breakdown: TrustBreakdown;
+  photoCount: number;
+  currentGrade: Grade;
+  currentGradeReviewCount: number;
+  currentGradeReviewTarget: number;
+  nextGradeName: string;
+  remainingReviewsForNextGrade: number;
+  // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
+  // pointsEarned: number;
+  // pointReasons: Array<{ label: string; value: number }>;
+};
 
 export interface SelectedRestaurant {
   id: string;
@@ -128,7 +151,7 @@ export const useReviewIsValid = () =>
 
 export const useReviewTrustDelta = () =>
   useReviewWriteStore((s) => {
-    let delta = TRUST_DELTA.base;
+    let delta = TRUST_DELTA.consistency;
     if (s.photos.length > 0) delta += TRUST_DELTA.photo;
     if (s.text.length >= LONG_TEXT_THRESHOLD) delta += TRUST_DELTA.longText;
     return delta;
