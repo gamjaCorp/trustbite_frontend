@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Pencil } from 'lucide-react';
-import { CategoryBadge } from '@/components/core/category-badge';
+import { CategoryBadge } from '@/components/common/category-badge';
 import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
 
 export function TargetRestaurantCard() {

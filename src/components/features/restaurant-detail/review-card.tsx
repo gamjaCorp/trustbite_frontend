@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DetailedReview } from '@/types/restaurant';
-import { GradeIcon } from '@/components/core/grade-icon';
+import { GradeIcon } from '@/components/common/grade-icon';
 
 interface Props {
   review: DetailedReview;

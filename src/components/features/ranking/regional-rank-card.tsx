@@ -6,9 +6,9 @@ import Image from 'next/image';
 import { Star, Bookmark, PencilLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RegionalRankEntry } from '@/types/restaurant';
-import { TrustScoreBadge } from '@/components/core/trust-score-badge';
-import { TrustScoreSheet } from '@/components/core/trust-score-sheet';
-import { CategoryBadge } from '@/components/core/category-badge';
+import { TrustScoreBadge } from '@/components/common/trust-score-badge';
+import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
+import { CategoryBadge } from '@/components/common/category-badge';
 
 interface Props {
   entry: RegionalRankEntry;

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
-import { CategoryBadge } from '@/components/core/category-badge';
+import { CategoryBadge } from '@/components/common/category-badge';
 import { useReviewActions } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 

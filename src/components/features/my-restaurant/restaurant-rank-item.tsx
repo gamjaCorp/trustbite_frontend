@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MyRestaurantEntry } from '@/types/restaurant';
-import { TrustScoreBadge } from '@/components/core/trust-score-badge';
-import { CategoryBadge } from '@/components/core/category-badge';
+import { TrustScoreBadge } from '@/components/common/trust-score-badge';
+import { CategoryBadge } from '@/components/common/category-badge';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 

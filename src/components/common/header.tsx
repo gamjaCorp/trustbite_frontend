@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { GradeIcon } from '@/components/core/grade-icon';
+import { GradeIcon } from '@/components/common/grade-icon';
 import { getMyProfile } from '@/data/mock-my-profile';
 
 const NAV_TABS = [

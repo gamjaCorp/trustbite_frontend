@@ -1,7 +1,7 @@
 import { getLevelDef } from '@/lib/grade-levels';
 import type { GradeLevel } from '@/lib/grade-levels';
 
-import { GradeIcon } from '@/components/core/grade-icon';
+import { GradeIcon } from '@/components/common/grade-icon';
 
 interface Props {
   level: GradeLevel;

@@ -21,8 +21,8 @@
 | Day | 날짜   | 목표                           | 주요 산출물                                        | 완료  |
 | --- | ---- | ---------------------------- | --------------------------------------------- | --- |
 | Mon | 5/12 | 리뷰 제출 결과 화면                  | `/review/new/result` + 게이지/체크리스트/등급바          | ☑   |
-| Tue | 5/13 | 등급 안내 화면                     | `/profile/grade` + 현재등급/체크리스트/타임라인            | ☐   |
-| Wed | 5/14 | 홈 탐색 탭 UI                    | `/` 검색/지역/정렬/카테고리/상황 칩, IntroCard 연결          | ☐   |
+| Tue | 5/13 | 등급 안내 화면                     | `/profile/grade` + 현재등급/체크리스트/타임라인            | ☑   |
+| Wed | 5/14 | 홈 탐색 탭 UI                    | `/` 검색/지역/정렬/카테고리/상황 칩, IntroCard 연결          | ☑   |
 | Thu | 5/15 | `/profile` 보강 + 비로그인 상세 미리보기 | 뱃지 컬렉션 + 레이더 + TOP3 + 비로그인 분기                 | ☐   |
 | Fri | 5/16 | "가고 싶은" 서브탭 + 통합 동선 QA       | `/my-places?tab=wishlist` + 폴리싱 + 핵심 루프 완주 확인 | ☐   |
 
@@ -86,6 +86,8 @@ PRD 3.2 / 8.8(#8). Day 1 결과 화면에서 진입할 다음 화면.
 - (선택) `/profile`의 `MyProfileView`에서 등급 부분 클릭 시 진입
 
 > 산출물: 등급/뱃지 동기 부여 동선 완성
+>
+> **완료 (2026-05-13)** — 별도 `/profile/grade` 라우트 대신 `/profile` 내 `GradeGuideCard`로 인라인 임베드. 컴포넌트: `current-grade-panel`(현재 등급 + 리뷰/신뢰도 수치), `next-stage-panel`(다음 등급 조건 체크리스트), `all-grades-timeline`(Lv.1~6 전체 달성 타임라인 + 요건 텍스트 + pulse 애니메이션), `grade-tip-banner`. 등급 시스템 표준화 추가 완료: `GradeLevel`(1~6) 단일 진실 소스 + `GradeIcon` 프리미티브 추출 → legacy `Grade`(S/A/B/C/D) 타입 및 브릿지 헬퍼 전면 제거. 리뷰 카드/헤더/실시간 리뷰 등 전체 등급 표시처 아이콘으로 통일.
 
 ---
 
@@ -112,6 +114,8 @@ PRD 7.1, 7.2. 홈은 탐색 전용 단일 콘텐츠. 탐색 탭에 PRD가 명시
 - 1~~3위 카드와 4위~~ 리스트 분리 표시 (PRD 7.2)
 
 > 산출물: 홈에 들어오면 PRD 탐색 탭 UI가 다 보임 (지도/검색 동작은 mock)
+>
+> **완료 (2026-05-14)** — 별도 `explore-home/` 폴더 대신 기존 `RegionRankList` 안에 검색/지역/정렬/카테고리/상황 칩을 모두 통합. `SearchInput` + `ChipSelect` 공통 컴포넌트 재사용. IntroCard(`localStorage` 'introSeen' 게이트 내장). 계획보다 앞서 임베드 `MapView` + `SearchThisArea`(영역 재검색) 선구현 (Week 3 예정이었으나 Day 3에 포함). PRD 7.2의 1~3위 카드 / 4위~ 리스트 시각적 분리는 미반영 — Day 5 폴리싱 또는 Week 2로 이관.
 
 ---
 
@@ -208,7 +212,7 @@ PRD 7.3 탭 2 "가고 싶은" 서브탭 + 한 주 결과 검수.
 | 레이더 차트        | `recharts` `RadarChart` (이미 설치)                                                       |
 | 인트로 카드        | `src/components/core/intro-card/index.tsx`                                            |
 | TrustScore 표시 | `src/components/core/trust-score-badge/index.tsx`, `core/trust-score-sheet/index.tsx` |
-| 등급 표시         | `src/components/core/grade-badge/index.tsx`                                           |
+| 등급 표시         | `src/components/core/grade-badge.tsx`, `src/components/core/grade-icon.tsx`           |
 | TOP 3 카드      | `src/components/features/my-restaurant/restaurant-top3-card.tsx`                      |
 
 

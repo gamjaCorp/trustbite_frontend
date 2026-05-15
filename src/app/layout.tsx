@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
-import { Providers } from '@/components/core/providers';
-import { Header } from '@/components/core/header';
+import { Providers } from '@/components/common/providers';
+import { Header } from '@/components/common/header';
 
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',

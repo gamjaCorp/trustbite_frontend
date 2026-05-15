@@ -1,4 +1,4 @@
-import { GradeIcon } from '@/components/core/grade-icon';
+import { GradeIcon } from '@/components/common/grade-icon';
 import { GRADE_LEVELS } from '@/lib/grade-levels';
 import type { GradeLevel } from '@/lib/grade-levels';
 import { cn } from '@/lib/utils';

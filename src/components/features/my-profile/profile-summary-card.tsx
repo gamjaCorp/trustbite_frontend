@@ -3,7 +3,7 @@ import { ChevronRight, Eye } from 'lucide-react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { GradeBadge } from '@/components/core/grade-badge';
+import { GradeBadge } from '@/components/common/grade-badge';
 import type { MyProfile } from '@/types/user';
 
 interface Props {
