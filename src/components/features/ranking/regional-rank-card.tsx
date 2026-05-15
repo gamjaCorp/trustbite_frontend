@@ -6,9 +6,11 @@ import Image from 'next/image';
 import { Star, Bookmark, PencilLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RegionalRankEntry } from '@/types/restaurant';
+import { useAuthMock } from '@/stores/auth-mock-store';
 import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
 import { CategoryBadge } from '@/components/common/category-badge';
+import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
 
 interface Props {
   entry: RegionalRankEntry;
@@ -32,8 +34,10 @@ export function RegionalRankCard({ entry, active = false }: Props) {
     reviewCount,
   } = entry;
 
+  const { isAuthed } = useAuthMock();
   const [bookmarked, setBookmarked] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const isTop3 = rank <= 3;
 
@@ -134,16 +138,20 @@ export function RegionalRankCard({ entry, active = false }: Props) {
           </div>
 
           <button
-            onClick={() => setBookmarked((v) => !v)}
+            type="button"
+            onClick={() => {
+              if (!isAuthed) { setDialogOpen(true); return; }
+              setBookmarked((v) => !v);
+            }}
             className={cn(
               'shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90',
-              bookmarked
+              bookmarked && isAuthed
                 ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'bg-muted text-ink/50 hover:bg-muted/80 hover:text-ink/80',
             )}
             aria-label="북마크"
           >
-            <Bookmark className={cn('w-5 h-5', bookmarked && 'fill-current')} />
+            <Bookmark className={cn('w-5 h-5', bookmarked && isAuthed && 'fill-current')} />
           </button>
         </div>
       </div>
@@ -155,6 +163,12 @@ export function RegionalRankCard({ entry, active = false }: Props) {
         trustScore={trustScore}
         breakdown={trustBreakdown}
         reviewCount={reviewCount}
+      />
+      <LoginCtaDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        callbackPath={`/restaurant/${id}`}
+        description="로그인하면 맛집을 저장할 수 있어요"
       />
     </>
   );

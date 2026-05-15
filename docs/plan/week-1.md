@@ -23,7 +23,7 @@
 | Mon | 5/12 | 리뷰 제출 결과 화면                  | `/review/new/result` + 게이지/체크리스트/등급바          | ☑   |
 | Tue | 5/13 | 등급 안내 화면                     | `/profile/grade` + 현재등급/체크리스트/타임라인            | ☑   |
 | Wed | 5/14 | 홈 탐색 탭 UI                    | `/` 검색/지역/정렬/카테고리/상황 칩, IntroCard 연결          | ☑   |
-| Thu | 5/15 | `/profile` 보강 + 비로그인 상세 미리보기 | 뱃지 컬렉션 + 레이더 + TOP3 + 비로그인 분기                 | ☐   |
+| Thu | 5/15 | `/profile` 보강 + 비로그인 상세 미리보기 | 뱃지 컬렉션 + 레이더 + TOP3 + 비로그인 분기                 | ☑   |
 | Fri | 5/16 | "가고 싶은" 서브탭 + 통합 동선 QA       | `/my-places?tab=wishlist` + 폴리싱 + 핵심 루프 완주 확인 | ☐   |
 
 
@@ -152,6 +152,8 @@ PRD 7.1, 7.2. 홈은 탐색 전용 단일 콘텐츠. 탐색 탭에 PRD가 명시
 - 로그인: 기존 전체 리뷰 표시
 
 > 산출물: `/profile`이 PRD 8.6 충족 + 비로그인 유입 → 로그인 유도 흐름 완성
+>
+> **완료 (2026-05-15)** — `/profile` 부분은 PRD 8.6 사양 대부분이 이미 구현되어 있어 별도 작업 없이 마무리 (미식 성향·TOP3는 도메인 분담 원칙에 따라 `/my-places`에 위치). 비로그인 상세 미리보기만 추가: `auth-mock-store`(zustand+persist) + `LoggedOutReviewGate`(리뷰 2개 노출 → '더 보기' 클릭 시 CTA Dialog) + `LoginCtaDialog` + dev 토글 플로팅 버튼. 북마크 클릭 시도 같은 Dialog 연동. `/signin?callbackUrl` 로 라우팅.
 
 ---
 

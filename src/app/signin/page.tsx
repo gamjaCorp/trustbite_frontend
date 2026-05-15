@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { signIn, providerMap } from '@/auth';
 import { AuthError } from 'next-auth';
 import { Button } from '@/components/ui/button';
+import { CutleryRain } from '@/components/features/auth/cutlery-rain';
 
 const SIGNIN_ERROR_URL = '/error';
 
@@ -9,8 +10,9 @@ export default async function SignInPage(props: {
   searchParams: { callbackUrl: string | undefined };
 }) {
   return (
-    <div className="min-h-[calc(100vh-97px)] bg-gradient-to-b from-primary-subtle/60 via-background to-background flex flex-col items-center justify-center px-6 py-16">
-      <div className="w-full max-w-sm space-y-10">
+    <div className="relative overflow-hidden min-h-[calc(100vh-97px)] bg-gradient-to-b from-primary-subtle/60 via-background to-background flex flex-col items-center justify-center px-6 py-16">
+      <CutleryRain />
+      <div className="relative z-10 w-full max-w-sm space-y-10">
         <div className="text-center space-y-3">
           <h1 className="text-3xl font-bold text-primary tracking-tight">TrustBite</h1>
           <p className="text-sm text-muted-foreground leading-relaxed">

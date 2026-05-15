@@ -4,6 +4,7 @@ import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
 import { Providers } from '@/components/common/providers';
 import { Header } from '@/components/common/header';
+import { AuthMockToggle } from '@/components/common/auth-mock-toggle';
 
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main className="min-h-screen bg-background">{children}</main>
+          <AuthMockToggle />
         </Providers>
       </body>
     </html>

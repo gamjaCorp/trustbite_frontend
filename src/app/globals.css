@@ -303,6 +303,18 @@
   100% { transform: translateY(18px); opacity: 0; }
 }
 
+/* /signin 배경 포크/나이프/스푼 비 이펙트 */
+@utility animate-cutlery-fall {
+  animation: cutlery-fall 7s linear infinite;
+}
+
+@keyframes cutlery-fall {
+  0%   { transform: translateY(-10vh) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
 /* 오른쪽 별 윙크: CTA 클릭 보상 */
 @utility animate-star-wink {
   animation: star-wink 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

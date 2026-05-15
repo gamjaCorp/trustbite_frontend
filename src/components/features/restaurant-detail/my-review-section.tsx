@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MyReview, MyReviewEntry } from '@/types/restaurant';
+import { useAuthMock } from '@/stores/auth-mock-store';
 
 interface Props {
   review: MyReview;
@@ -124,6 +125,9 @@ function MyReviewVisit({
 }
 
 export function MyReviewSection({ review }: Props) {
+  const { isAuthed } = useAuthMock();
+  if (!isAuthed) return null;
+
   const hasMultiple = review.visits.length >= 2;
 
   return (
