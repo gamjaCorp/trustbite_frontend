@@ -7,6 +7,7 @@ import { Star, Bookmark, PencilLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RegionalRankEntry } from '@/types/restaurant';
 import { useAuthMock } from '@/stores/auth-mock-store';
+import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
 import { CategoryBadge } from '@/components/common/category-badge';
@@ -35,7 +36,8 @@ export function RegionalRankCard({ entry, active = false }: Props) {
   } = entry;
 
   const { isAuthed } = useAuthMock();
-  const [bookmarked, setBookmarked] = useState(false);
+  const bookmarked = useWishlistMock((s) => s.isBookmarked(id));
+  const toggleWishlist = useWishlistMock((s) => s.toggle);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -141,7 +143,7 @@ export function RegionalRankCard({ entry, active = false }: Props) {
             type="button"
             onClick={() => {
               if (!isAuthed) { setDialogOpen(true); return; }
-              setBookmarked((v) => !v);
+              toggleWishlist(id);
             }}
             className={cn(
               'shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90',

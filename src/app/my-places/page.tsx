@@ -1,11 +1,15 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { PencilLine, Share2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { RestaurantRankList } from '@/components/features/my-restaurant/restaurant-rank-list';
-import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
+import { MyPlacesTabs } from '@/components/features/my-restaurant/my-places-tabs';
 import { mockStats5, mockRankList } from '@/data/mock-restaurant';
 
-export default function MyRestaurantPage() {
+type Props = { searchParams: Promise<{ tab?: string }> };
+
+export default async function MyRestaurantPage({ searchParams }: Props) {
+  const { tab } = await searchParams;
+  const activeTab = tab === 'wishlist' ? 'wishlist' : 'ranking';
   const { visitCount, reviewCount, trustScore } = mockStats5;
 
   return (
@@ -43,13 +47,9 @@ export default function MyRestaurantPage() {
           </div>
         </div>
 
-        <div className="mt-5">
-          <TasteProfileSection entries={mockRankList} />
-        </div>
-
-        <div className="mt-12">
-          <RestaurantRankList entries={mockRankList} />
-        </div>
+        <Suspense>
+          <MyPlacesTabs initialTab={activeTab} entries={mockRankList} />
+        </Suspense>
       </div>
 
       <Button

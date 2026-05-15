@@ -5,16 +5,19 @@ import { Bookmark, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RestaurantDetail } from '@/types/restaurant';
 import { useAuthMock } from '@/stores/auth-mock-store';
+import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
 
 interface Props {
   detail: RestaurantDetail;
 }
 
+// 식당 상세 페이지 헤더 요약 — 이름, 카테고리, 공유/북마크 버튼
 export function RestaurantSummary({ detail }: Props) {
-  const [bookmarked, setBookmarked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const { isAuthed } = useAuthMock();
+  const bookmarked = useWishlistMock((s) => s.isBookmarked(detail.id));
+  const toggle = useWishlistMock((s) => s.toggle);
 
   return (
     <>
@@ -45,7 +48,7 @@ export function RestaurantSummary({ detail }: Props) {
               if (!isAuthed) {
                 setDialogOpen(true);
               } else {
-                setBookmarked((v) => !v);
+                toggle(detail.id);
               }
             }}
             className={cn(
