@@ -1,11 +1,11 @@
 import { Lock, UserPlus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { RestaurantRankItem } from '@/components/features/my-restaurant/restaurant-rank-item';
-import type { MyRestaurantEntry } from '@/types/restaurant';
+import { RegionalRankCard } from '@/components/features/ranking/regional-rank-card';
+import type { RegionalRankEntry } from '@/types/restaurant';
 
 interface Props {
-  previewItem?: MyRestaurantEntry;
+  previewItem?: RegionalRankEntry;
   totalCount: number;
   targetName: string;
   onFollow: () => void;
@@ -20,8 +20,8 @@ export function LockedRankingsSection({ previewItem, totalCount, targetName, onF
       </div>
 
       {previewItem && (
-        <div className="opacity-60 pointer-events-none">
-          <RestaurantRankItem entry={previewItem} />
+        <div className="opacity-60 pointer-events-none border-hairline border border-border/60 rounded-2xl overflow-hidden">
+          <RegionalRankCard entry={previewItem} showVisitStats hideBookmark />
         </div>
       )}
 

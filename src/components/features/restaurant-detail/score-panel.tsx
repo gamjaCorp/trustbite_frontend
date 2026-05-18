@@ -22,7 +22,7 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="w-7 text-right font-numeric text-label-3 text-foreground">
+      <span className="w-7 text-right text-label-3 text-foreground">
         {score.toFixed(1)}
       </span>
     </div>
@@ -37,7 +37,7 @@ export function ScorePanel({ detail }: Props) {
           {/* 좌측 ── 평점/신뢰도 */}
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-0.5">
-              <span className="font-numeric text-3xl font-bold text-foreground">
+              <span className="text-3xl font-bold text-foreground">
                 {detail.communityAvgScore.toFixed(1)}
               </span>
               <span className="text-sm text-muted-foreground">/ 5</span>
@@ -69,7 +69,7 @@ export function ScorePanel({ detail }: Props) {
               className="inline-flex items-center gap-1.5 rounded-chip bg-muted px-3 py-1.5 text-label-3"
             >
               <span className="text-ink/70">#{s.tag}</span>
-              <span className="font-numeric font-semibold text-foreground">
+              <span className="font-semibold text-foreground">
                 {s.score.toFixed(1)}
               </span>
             </span>

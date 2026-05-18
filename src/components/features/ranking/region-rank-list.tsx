@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { Check, MapPin, Sparkles } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
-import { CATEGORY_STYLE } from '@/lib/category';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
 import { MapView, type MapBounds } from '@/components/features/explore/map-view';
@@ -12,21 +11,11 @@ import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
 import { ChipSelect } from '@/components/core/chip-select';
 import { RegionalRankCard } from './regional-rank-card';
+import { CategoryChipRow, CATEGORIES } from './rank-filter-bar';
 
 interface Props {
   entries: RegionalRankEntry[];
 }
-
-const CATEGORIES: Array<Category | 'all'> = [
-  'all',
-  '한식',
-  '일식',
-  '중식',
-  '양식',
-  '카페',
-  '술집',
-  '기타',
-];
 
 const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식'];
 
@@ -180,30 +169,11 @@ export function RegionRankList({ entries }: Props) {
 
         {/* row 3: 카테고리 + 상황 묶음 */}
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5">
-            {CATEGORIES.map((c) => {
-              const active = category === c;
-              return (
-                <button
-                  key={c}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => setCategory(c)}
-                  className={cn(
-                    'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
-                    active
-                      ? c === 'all'
-                        ? 'bg-foreground text-background'
-                        : CATEGORY_STYLE[c as Category]
-                      : 'bg-muted text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  {active && <Check aria-hidden className="w-3.5 h-3.5" />}
-                  {c === 'all' ? '전체' : c}
-                </button>
-              );
-            })}
-          </div>
+          <CategoryChipRow
+            category={category}
+            onCategoryChange={setCategory}
+            categories={CATEGORIES}
+          />
 
           <div className="border-t border-dashed border-border/60" />
 
@@ -260,7 +230,7 @@ export function RegionRankList({ entries }: Props) {
                 <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
                 <span className="truncate">
                   이번 주 신뢰도 80%+ 리뷰만 반영 ·{' '}
-                  <span className="font-numeric">{rankedEntries.length}</span>곳
+                  <span className="">{rankedEntries.length}</span>곳
                 </span>
               </p>
               <ChipSelect

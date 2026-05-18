@@ -45,7 +45,7 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview
             <h2 className="text-headline-2 text-foreground text-center">리뷰 잘 올라갔어요</h2>
             <p className="text-body-2 text-muted-foreground text-center">
               신뢰도가{' '}
-              <span className="font-numeric font-semibold text-success">
+              <span className="font-semibold text-success">
                 {formatDelta(snapshot.breakdown.total)}%P
               </span>{' '}
               올랐어요

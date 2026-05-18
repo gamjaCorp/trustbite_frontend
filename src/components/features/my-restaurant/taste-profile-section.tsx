@@ -51,7 +51,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
   return (
     <section className="space-y-3">
       <h2 className="text-headline-3 text-foreground">
-        🧠 {subjectName ? `${subjectName}님의` : '나의'} 미식 성향
+        {subjectName ? `${subjectName}님의` : '나의'} 미식 성향
       </h2>
 
       <div className="bg-card rounded-2xl shadow-card overflow-hidden">
@@ -123,7 +123,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText }: Pro
 
         {/* 하단: AI 분석 풀 너비 */}
         <div className="border-t border-border px-5 py-4 bg-primary/5 space-y-1">
-          <p className="text-label-3 text-primary font-semibold">✨ AI 미식 성향 분석</p>
+          <p className="text-label-3 text-primary font-semibold">AI 미식 성향 분석</p>
           <p className="text-sm text-foreground leading-relaxed">
             {aiPersonaText ?? (
               <>

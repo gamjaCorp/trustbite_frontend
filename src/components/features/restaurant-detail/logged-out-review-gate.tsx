@@ -42,7 +42,7 @@ export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }
             }}
             className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-3 text-title-3 text-foreground hover:bg-muted transition-colors"
           >
-            리뷰 <span className="font-numeric">{remainingReviews}</span>개 더 보기
+            리뷰 <span className="">{remainingReviews}</span>개 더 보기
             {isAuthed && <ChevronDown className="w-4 h-4" />}
           </button>
           <p className="mt-2 text-center text-caption-2 text-muted-foreground">

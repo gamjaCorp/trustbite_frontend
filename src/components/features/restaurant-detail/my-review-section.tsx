@@ -69,19 +69,19 @@ function MyReviewVisit({
       <div className="flex items-center gap-3 text-body-2 text-ink/70 mb-2">
         <span>
           맛{' '}
-          <span className="font-numeric font-semibold text-foreground">
+          <span className="font-semibold text-foreground">
             {visit.scores.taste.toFixed(1)}
           </span>
         </span>
         <span>
           가성비{' '}
-          <span className="font-numeric font-semibold text-foreground">
+          <span className="font-semibold text-foreground">
             {visit.scores.value.toFixed(1)}
           </span>
         </span>
         <span>
           분위기{' '}
-          <span className="font-numeric font-semibold text-foreground">
+          <span className="font-semibold text-foreground">
             {visit.scores.vibe.toFixed(1)}
           </span>
         </span>

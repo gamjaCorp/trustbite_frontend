@@ -1,10 +1,19 @@
-import type { MyRestaurantEntry } from '@/types/restaurant';
+import type { MyRestaurantEntry, RegionalRankEntry } from '@/types/restaurant';
 import type { UserProfile } from '@/types/user';
 
 const unsplash = (id: string) =>
   `https://images.unsplash.com/${id}?w=400&h=300&fit=crop&auto=format`;
 
-const minseoRankings: MyRestaurantEntry[] = [
+const toRanked = (entry: MyRestaurantEntry): RegionalRankEntry => ({
+  ...entry,
+  communityAvgScore: entry.avgScore,
+  myStatus: 'reviewed',
+  reviewCount: entry.visitCount,
+  trustScore: 72 + Math.round((entry.avgScore - 3) * 10),
+  trustBreakdown: { photoRatio: 0.6, longTextRatio: 0.5, recentActivityRatio: 0.7 },
+});
+
+const minseoRankingsRaw: MyRestaurantEntry[] = [
   {
     id: 'm1',
     rank: 1,
@@ -300,6 +309,8 @@ const minseoRankings: MyRestaurantEntry[] = [
     lastVisitedAt: new Date('2026-01-20'),
   },
 ];
+
+const minseoRankings: RegionalRankEntry[] = minseoRankingsRaw.map(toRanked);
 
 const minseoProfile: UserProfile = {
   id: 'minseo',

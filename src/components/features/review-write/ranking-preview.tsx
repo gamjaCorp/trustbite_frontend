@@ -59,7 +59,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
             >
               <span
                 className={cn(
-                  'w-5 text-center text-title-2 font-numeric shrink-0',
+                  'w-5 text-center text-title-2 shrink-0',
                   row.isNew ? 'text-primary' : 'text-muted-foreground',
                 )}
               >
@@ -75,7 +75,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
                 {row.name}
               </span>
 
-              <span className="font-numeric text-title-2 text-foreground shrink-0">
+              <span className="text-title-2 text-foreground shrink-0">
                 {row.avgScore.toFixed(1)}
               </span>
 

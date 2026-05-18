@@ -43,7 +43,7 @@ export function ProfileSummaryCard({ profile }: Props) {
             type="button"
             className="inline-flex items-center gap-1 text-foreground hover:text-primary transition-colors"
           >
-            <span className="font-numeric font-bold">{profile.followerCount}</span>
+            <span className="font-bold">{profile.followerCount}</span>
             <span className="text-muted-foreground">팔로워</span>
             <ChevronRight className="w-3 h-3 text-muted-foreground" />
           </button>
@@ -51,7 +51,7 @@ export function ProfileSummaryCard({ profile }: Props) {
             type="button"
             className="inline-flex items-center gap-1 text-foreground hover:text-primary transition-colors"
           >
-            <span className="font-numeric font-bold">{profile.followingCount}</span>
+            <span className="font-bold">{profile.followingCount}</span>
             <span className="text-muted-foreground">팔로잉</span>
             <ChevronRight className="w-3 h-3 text-muted-foreground" />
           </button>

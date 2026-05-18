@@ -1,4 +1,4 @@
-import type { MyRestaurantEntry } from './restaurant';
+import type { RegionalRankEntry } from './restaurant';
 import type { GradeLevel } from '@/lib/grade-levels';
 
 export interface MutualFollowing {
@@ -19,7 +19,7 @@ export interface UserProfile {
   reviewCount: number;
   trustScore: number;
   aiTastePersona: string;
-  rankings: MyRestaurantEntry[];
+  rankings: RegionalRankEntry[];
   totalRankCount: number;
 }
 

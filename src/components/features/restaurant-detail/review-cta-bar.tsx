@@ -28,7 +28,7 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
             <>
               <p className="text-title-1 text-foreground">또 다녀오셨나요?</p>
               <p className="mt-1 text-caption-2 text-muted-foreground">
-                <span className="font-numeric font-semibold">{myReview.visitCount}번</span> 방문 · 최근{' '}
+                <span className="font-semibold">{myReview.visitCount}번</span> 방문 · 최근{' '}
                 {myReview.lastVisitLabel} · 재방문 리뷰를 쓰면{' '}
                 <span className="font-semibold text-primary">+5pt</span>
               </p>

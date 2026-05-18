@@ -66,10 +66,10 @@ export function AllGradesTimeline({ currentLevel }: Props) {
                 ) : (
                   <>
                     <span className="text-caption-2 text-muted-foreground">
-                      리뷰 <span className="font-numeric">{lvl.reviewMin}</span>개
+                      리뷰 <span className="">{lvl.reviewMin}</span>개
                     </span>
                     <span className="text-caption-2 text-muted-foreground">
-                      신뢰도 <span className="font-numeric">{lvl.trustMin}</span>%
+                      신뢰도 <span className="">{lvl.trustMin}</span>%
                     </span>
                   </>
                 )}

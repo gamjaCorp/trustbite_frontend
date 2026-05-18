@@ -15,7 +15,7 @@ export function FollowStatsRow({ profile }: Props) {
           type="button"
           className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
         >
-          <span className="font-numeric font-semibold text-foreground">{profile.followerCount}</span>
+          <span className="font-semibold text-foreground">{profile.followerCount}</span>
           <span>팔로워</span>
           <ChevronRight className="w-3 h-3" />
         </button>
@@ -23,7 +23,7 @@ export function FollowStatsRow({ profile }: Props) {
           type="button"
           className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
         >
-          <span className="font-numeric font-semibold text-foreground">{profile.followingCount}</span>
+          <span className="font-semibold text-foreground">{profile.followingCount}</span>
           <span>팔로잉</span>
           <ChevronRight className="w-3 h-3" />
         </button>
@@ -39,7 +39,7 @@ export function FollowStatsRow({ profile }: Props) {
           <span className="text-caption-2 text-muted-foreground">
             <span className="font-semibold text-foreground">{profile.mutualFollowing.displayName}</span>
             {' 외 내 팔로잉 '}
-            <span className="font-numeric font-semibold text-foreground">{profile.mutualFollowing.extraCount}</span>
+            <span className="font-semibold text-foreground">{profile.mutualFollowing.extraCount}</span>
             명도 팔로우 중
           </span>
         </div>

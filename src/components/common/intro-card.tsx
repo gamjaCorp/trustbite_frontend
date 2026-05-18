@@ -72,7 +72,7 @@ export function IntroCard() {
             <span className="absolute -bottom-0.5 left-[52%] w-[3px] h-[5px] rounded-full bg-info/60 animate-tear-fall" />
           </div>
           <p className="text-label-3 text-muted-foreground">기존 별점</p>
-          <p className="font-numeric text-headline-2 text-muted-foreground/60 leading-none">4.5</p>
+          <p className="text-headline-2 text-muted-foreground/60 leading-none">4.5</p>
           <p className="text-caption-2 text-muted-foreground/50">신뢰도 ?</p>
         </div>
 
@@ -88,7 +88,7 @@ export function IntroCard() {
             )}
           />
           <p className="text-label-3 text-primary font-semibold tracking-widest">TRUSTBITE</p>
-          <p className="font-numeric text-headline-2 text-primary leading-none">4.5</p>
+          <p className="text-headline-2 text-primary leading-none">4.5</p>
           <p className="text-caption-2 text-success flex items-center justify-center gap-0.5">
             신뢰도 88%
             <Check className="w-3 h-3" />

@@ -15,7 +15,7 @@ export function PointsEarnedCard({ pointsEarned, pointReasons }: Props) {
         <span className="text-label-2 text-foreground font-semibold">포인트 적립</span>
         <span className="text-caption-1 text-muted-foreground">{reasonText}</span>
       </div>
-      <span className="font-numeric text-lg font-bold text-palette-blue shrink-0">
+      <span className="text-lg font-bold text-palette-blue shrink-0">
         +{pointsEarned}P
       </span>
     </div>

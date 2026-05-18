@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 
-import { RestaurantRankItem } from '@/components/features/my-restaurant/restaurant-rank-item';
-import { RestaurantTop3Card } from '@/components/features/my-restaurant/restaurant-top3-card';
+import { RegionalRankCard } from '@/components/features/ranking/regional-rank-card';
 import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
 import { getTrustToneClass } from '@/lib/trust-score';
 import type { UserProfile } from '@/types/user';
@@ -33,15 +32,15 @@ export function UserProfileView({ profile }: Props) {
 
       <div className="mt-6 bg-card rounded-2xl shadow-card flex divide-x divide-border">
         <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-          <span className="text-headline-1 text-foreground font-numeric">{profile.visitCount}</span>
+          <span className="text-headline-1 text-foreground">{profile.visitCount}</span>
           <span className="text-caption-2 text-muted-foreground">방문한 곳</span>
         </div>
         <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-          <span className="text-headline-1 text-foreground font-numeric">{profile.reviewCount}</span>
+          <span className="text-headline-1 text-foreground">{profile.reviewCount}</span>
           <span className="text-caption-2 text-muted-foreground">리뷰</span>
         </div>
         <div className="flex-1 flex flex-col items-center py-4 gap-0.5">
-          <span className={`text-headline-1 font-numeric ${trustTone.text}`}>{profile.trustScore}</span>
+          <span className={`text-headline-1 ${trustTone.text}`}>{profile.trustScore}</span>
           <span className="text-caption-2 text-muted-foreground">신뢰도</span>
         </div>
       </div>
@@ -58,11 +57,13 @@ export function UserProfileView({ profile }: Props) {
         <h2 className="text-title-1 text-foreground px-1">
           {profile.name}님의 인생 맛집 TOP 3
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <ul className="border-hairline border-y border-border/60">
           {top3.map((entry, i) => (
-            <RestaurantTop3Card key={entry.id} entry={entry} displayRank={i + 1} />
+            <li key={entry.id} className={i > 0 ? 'border-hairline border-t border-border/60' : undefined}>
+              <RegionalRankCard entry={{ ...entry, rank: i + 1 }} showVisitStats hideBookmark />
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {isFollowing ? (
@@ -70,11 +71,13 @@ export function UserProfileView({ profile }: Props) {
           <h2 className="text-title-1 text-foreground px-1">
             전체 랭킹 {profile.totalRankCount}곳
           </h2>
-          <div className="space-y-1">
+          <ul className="border-hairline border-y border-border/60">
             {profile.rankings.map((entry, i) => (
-              <RestaurantRankItem key={entry.id} entry={{ ...entry, rank: i + 1 }} />
+              <li key={entry.id} className={i > 0 ? 'border-hairline border-t border-border/60' : undefined}>
+                <RegionalRankCard entry={{ ...entry, rank: i + 1 }} showVisitStats hideBookmark />
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       ) : (
         <LockedRankingsSection

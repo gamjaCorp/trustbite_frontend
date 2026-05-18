@@ -56,7 +56,7 @@ npx tsc --noEmit       # 타입 검사 (스크립트 없음 — 수동 실행)
 
 ```
 src/app                          Next App Router
-src/components/{core,ui}         core는 도메인 컴포넌트, ui는 shadcn (직접 수정 금지)
+src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 features/(가까운 도메인) 또는 common/에 둔다. ui는 shadcn (직접 수정 금지)
 src/api/<feature>/<feature>.ts   axios 래퍼 (feature별 하위 폴더)
 src/hooks/<feature>/use-*.ts     React Query 훅 (feature별 하위 폴더)
 src/stores/<name>-store.tsx      Zustand + Context 스토어
@@ -98,7 +98,6 @@ Tailwind 클래스와 `src/app/globals.css`의 토큰만으로 스타일링한�
 ### 타이포그래피
 
 - **본문**: `font-sans` (Pretendard Variable) — body에 기본 적용.
-- **숫자**: `font-numeric` — 점수·좌표·거리처럼 자릿수 정렬이 필요한 곳.
 - 임의 조합(`text-[18px] font-bold tracking-tight` 등) 금지. 반복되는 타이포 조합은 `globals.css`의 `@utility` 블록에 시맨틱 이름(`text-title-h5`, `text-body-md` 등)으로 승격하고 컴포넌트는 이름만 참조한다.
 
 ## 네이밍·Import 컨벤션

@@ -33,7 +33,7 @@ export function LocationSection({ detail }: Props) {
               <span className="relative w-4 h-4 rounded-full bg-foreground ring-4 ring-background" />
             </span>
           </div>
-          <div className="absolute right-2 bottom-2 flex flex-col rounded-md overflow-hidden ring-1 ring-paper-edge/60 bg-background/90 font-numeric text-title-2 text-ink/70">
+          <div className="absolute right-2 bottom-2 flex flex-col rounded-md overflow-hidden ring-1 ring-paper-edge/60 bg-background/90 text-title-2 text-ink/70">
             <span className="w-7 h-7 flex items-center justify-center border-b border-paper-edge/60">+</span>
             <span className="w-7 h-7 flex items-center justify-center">−</span>
           </div>

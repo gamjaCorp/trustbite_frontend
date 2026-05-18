@@ -29,7 +29,7 @@ export function MapView(props: MapViewProps) {
       <div className="absolute inset-0 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground">
         <MapPin className="w-8 h-8" />
         <p className="text-title-3">지도를 불러올 수 없어요</p>
-        <p className="text-caption-2 font-numeric">NEXT_PUBLIC_KAKAO_MAP_APP_KEY 미설정</p>
+        <p className="text-caption-2">NEXT_PUBLIC_KAKAO_MAP_APP_KEY 미설정</p>
       </div>
     );
   }

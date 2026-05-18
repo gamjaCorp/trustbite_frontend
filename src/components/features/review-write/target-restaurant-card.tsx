@@ -28,7 +28,7 @@ export function TargetRestaurantCard() {
       </div>
 
       <span className="shrink-0 rounded-chip bg-primary-subtle px-2.5 py-1 text-label-3 text-primary">
-        <span className="font-numeric">{visitOrdinal}</span>번째 방문
+        <span className="">{visitOrdinal}</span>번째 방문
       </span>
 
       <button

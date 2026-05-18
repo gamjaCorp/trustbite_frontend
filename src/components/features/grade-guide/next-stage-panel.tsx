@@ -57,7 +57,7 @@ export function NextStagePanel({ level, reviewCount, trustScore }: Props) {
             {progress.reviewMet ? (
               <Check className="w-4 h-4 text-success" strokeWidth={2.5} />
             ) : (
-              <span className="font-numeric text-label-3 text-muted-foreground">
+              <span className="text-label-3 text-muted-foreground">
                 {reviewRemaining}개 남음
               </span>
             )}
@@ -77,7 +77,7 @@ export function NextStagePanel({ level, reviewCount, trustScore }: Props) {
             {progress.trustMet ? (
               <Check className="w-4 h-4 text-success" strokeWidth={2.5} />
             ) : (
-              <span className="font-numeric text-label-3 text-muted-foreground">
+              <span className="text-label-3 text-muted-foreground">
                 {trustRemaining}%P 남음
               </span>
             )}

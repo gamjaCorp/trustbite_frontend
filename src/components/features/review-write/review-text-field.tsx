@@ -21,7 +21,7 @@ export function ReviewTextField() {
     <div>
       <div className="mb-2 flex items-center justify-between">
         <span className="text-caption-2 text-muted-foreground">
-          <span className="font-numeric">{length}</span>자
+          <span className="">{length}</span>자
         </span>
         <span
           className={cn(
@@ -30,8 +30,8 @@ export function ReviewTextField() {
           )}
         >
           {reached && <Check className="w-3.5 h-3.5" />}
-          <span className="font-numeric">{LONG_TEXT_THRESHOLD}</span>자 돌파 +
-          <span className="font-numeric">{TRUST_DELTA.longText}</span>%
+          <span className="">{LONG_TEXT_THRESHOLD}</span>자 돌파 +
+          <span className="">{TRUST_DELTA.longText}</span>%
         </span>
       </div>
       <Textarea

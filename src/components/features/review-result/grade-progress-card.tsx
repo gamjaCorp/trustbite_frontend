@@ -39,7 +39,7 @@ export function GradeProgressCard({
           <GradeIcon level={currentLevel} size="sm" variant="inline" />
           <span className="text-title-2 text-foreground">{def.label}</span>
         </div>
-        <span className="font-numeric text-label-2 text-muted-foreground">
+        <span className="text-label-2 text-muted-foreground">
           {currentGradeReviewCount}/{currentGradeReviewTarget}
         </span>
       </div>
@@ -51,7 +51,7 @@ export function GradeProgressCard({
 
       <p className="mt-2.5 text-caption-1 text-muted-foreground">
         <span className="font-semibold text-foreground">{nextGradeName}</span>까지 리뷰{' '}
-        <span className="font-numeric font-semibold text-palette-amber">
+        <span className="font-semibold text-palette-amber">
           {remainingReviewsForNextGrade}
         </span>
         개 남았어요

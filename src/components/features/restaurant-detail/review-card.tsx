@@ -52,13 +52,13 @@ export function ReviewCard({ review }: Props) {
 
       <div className="mt-2.5 flex items-center gap-3 text-body-2 text-ink/70">
         <span>
-          맛 <span className="font-numeric font-semibold text-foreground">{review.scores.taste.toFixed(1)}</span>
+          맛 <span className="font-semibold text-foreground">{review.scores.taste.toFixed(1)}</span>
         </span>
         <span>
-          가성비 <span className="font-numeric font-semibold text-foreground">{review.scores.value.toFixed(1)}</span>
+          가성비 <span className="font-semibold text-foreground">{review.scores.value.toFixed(1)}</span>
         </span>
         <span>
-          분위기 <span className="font-numeric font-semibold text-foreground">{review.scores.vibe.toFixed(1)}</span>
+          분위기 <span className="font-semibold text-foreground">{review.scores.vibe.toFixed(1)}</span>
         </span>
       </div>
 
@@ -114,7 +114,7 @@ export function ReviewCard({ review }: Props) {
           className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-label-3 text-ink/70 hover:bg-muted transition-colors"
         >
           <ThumbsUp className="w-3 h-3" />
-          도움됐어요 <span className="font-numeric">{review.helpfulCount}</span>
+          도움됐어요 <span className="">{review.helpfulCount}</span>
         </button>
       </div>
     </article>

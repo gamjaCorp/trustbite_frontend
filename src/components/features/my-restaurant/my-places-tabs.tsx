@@ -6,11 +6,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { RestaurantRankList } from '@/components/features/my-restaurant/restaurant-rank-list';
 import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
 import { WishlistSection } from '@/components/features/my-restaurant/wishlist-section';
-import { MyRestaurantEntry } from '@/types/restaurant';
+import { RegionalRankEntry } from '@/types/restaurant';
 
 interface Props {
   initialTab: 'ranking' | 'wishlist';
-  entries: MyRestaurantEntry[];
+  entries: RegionalRankEntry[];
 }
 
 export function MyPlacesTabs({ initialTab, entries }: Props) {

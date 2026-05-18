@@ -61,7 +61,7 @@ export function PhotoUploadGrid({ maxSlots = 4 }: Props) {
           )}
         >
           {reached && <Check className="w-3.5 h-3.5" />}
-          사진 첨부 +<span className="font-numeric">{TRUST_DELTA.photo}</span>%
+          사진 첨부 +<span className="">{TRUST_DELTA.photo}</span>%
         </span>
       </div>
 

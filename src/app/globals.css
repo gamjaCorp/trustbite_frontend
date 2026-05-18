@@ -243,14 +243,6 @@
   }
 }
 
-@utility font-numeric {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings:
-    'tnum' 1,
-    'ss01' 1;
-}
-
 @utility topographic-lines {
   background-image: repeating-radial-gradient(
     ellipse at 30% 50%,
@@ -337,7 +329,6 @@
  *   text-sm  font-semibold/bold → text-title-2     (14px/600)
  *   text-sm  font-medium        → text-title-3     (14px/500)
  *   text-xs  font-semibold/medium/bold → text-label-3 (12px/500)
- *   숫자 자릿수 정렬이 필요한 곳: font-numeric text-{시맨틱}
  */
 
 /* Headline — 페이지/주요 영역 제목 */

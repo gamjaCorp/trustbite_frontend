@@ -50,6 +50,7 @@ export type MyRestaurantEntry = RestaurantBase & {
   avgScore: number;
   visitCount: number;
   lastVisitedAt: Date;
+  myLatestScene?: SceneTag;
 };
 
 export type VisitStatus = 'none' | 'visited' | 'reviewed';
@@ -151,6 +152,8 @@ export interface RestaurantDetail {
   name: string;
   category: Category;
   subCategory?: string;
+  region: string;
+  tagline?: string;
   address: string;
   accessSummary: string;
   hours: OpeningHours;

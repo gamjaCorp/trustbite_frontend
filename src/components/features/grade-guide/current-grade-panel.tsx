@@ -27,14 +27,14 @@ export function CurrentGradePanel({ level, reviewCount, trustScore }: Props) {
       <div className="grid grid-cols-2 gap-3 pt-2">
         <div className="text-center">
           <p className="text-caption-1 text-muted-foreground mb-1">리뷰</p>
-          <p className="font-numeric text-title-1 text-foreground">
+          <p className="text-title-1 text-foreground">
             {reviewCount}
             <span className="text-caption-2 text-muted-foreground font-sans"> 개</span>
           </p>
         </div>
         <div className="text-center">
           <p className="text-caption-1 text-muted-foreground mb-1">신뢰도</p>
-          <p className="font-numeric text-title-1 text-foreground">
+          <p className="text-title-1 text-foreground">
             {trustScore}
             <span className="text-caption-2 text-muted-foreground font-sans"> %</span>
           </p>
