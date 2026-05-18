@@ -63,6 +63,12 @@
   --color-palette-red-subtle: var(--palette-red-subtle);
   --color-palette-gray: var(--palette-gray);
   --color-palette-gray-subtle: var(--palette-gray-subtle);
+  --color-palette-gold: var(--palette-gold);
+  --color-palette-gold-subtle: var(--palette-gold-subtle);
+  --color-palette-silver: var(--palette-silver);
+  --color-palette-silver-subtle: var(--palette-silver-subtle);
+  --color-palette-bronze: var(--palette-bronze);
+  --color-palette-bronze-subtle: var(--palette-bronze-subtle);
 
   /* ── 라운딩 ── */
   --radius-sm: calc(var(--radius) - 4px);
@@ -121,6 +127,12 @@
   --palette-red-subtle: oklch(0.965 0.015 22);
   --palette-gray: #9ca3af;
   --palette-gray-subtle: oklch(0.955 0 0);
+  --palette-gold: #f5b800;
+  --palette-gold-subtle: oklch(0.965 0.025 85);
+  --palette-silver: #a8b2bf;
+  --palette-silver-subtle: oklch(0.965 0.005 250);
+  --palette-bronze: #c47a3d;
+  --palette-bronze-subtle: oklch(0.965 0.025 55);
 
   /* ───────────────────────────────────────────
    * Tier 2 — Semantic (의미 기반 토큰)
@@ -179,6 +191,9 @@
   --palette-blue: #60a5fa;
   --palette-red: #f87171;
   --palette-gray: #d1d5db;
+  --palette-gold: #fbcb47;
+  --palette-silver: #c8d0db;
+  --palette-bronze: #d9925a;
   /* subtle 값들은 라이트와 동일하게 유지 (다크 배경에서 사용처 발생 시 별도 정의) */
 
   /* ── shadcn 기본 색상 (다크) ── */
@@ -428,4 +443,31 @@
 /* 0.5px hairline 구분선 — Tailwind 스케일에 없는 값, 토큰화 */
 @utility border-hairline {
   border-width: 0.5px;
+}
+
+/* 랭크 배지 금은동 shine 효과 — 주기적인 대각선 빛 스위프 */
+@utility badge-shine {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 65%
+    );
+    background-size: 200% 100%;
+    animation: badge-shine-sweep 2.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes badge-shine-sweep {
+  0% { background-position: -100% center; }
+  55%, 100% { background-position: 260% center; }
 }

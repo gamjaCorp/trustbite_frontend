@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Check, MapPin, Sparkles } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
@@ -34,19 +34,12 @@ export function RegionRankList({ entries }: Props) {
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [query, setQuery] = useState('');
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [region, setRegion] = useState<string>('all');
   const [sort, setSort] = useState<ExploreSort>('rank');
   const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
 
   // 지도 bounds 상태 — applied: 마지막 "재검색" 시점, pending: 현재 지도 상태
   const [appliedBounds, setAppliedBounds] = useState<MapBounds | null>(null);
   const [pendingBounds, setPendingBounds] = useState<MapBounds | null>(null);
-
-  // 지역 옵션 — entries에서 동적 추출
-  const regions = useMemo(
-    () => Array.from(new Set(entries.map((e) => e.region))).sort(),
-    [entries],
-  );
 
   const areaMoved = useMemo(() => {
     if (!pendingBounds || !appliedBounds) return false;
@@ -87,7 +80,6 @@ export function RegionRankList({ entries }: Props) {
     let list = appliedBounds
       ? entries.filter((e) => isInsideBounds(e.coordinates, appliedBounds))
       : entries;
-    if (region !== 'all') list = list.filter((e) => e.region === region);
     if (category !== 'all') list = list.filter((e) => e.category === category);
     if (query.trim()) {
       const q = query.trim().toLowerCase();
@@ -108,7 +100,7 @@ export function RegionRankList({ entries }: Props) {
       sorted.sort((a, b) => b.communityAvgScore - a.communityAvgScore || a.rank - b.rank);
     }
     return sorted;
-  }, [entries, appliedBounds, region, category, query, sort]);
+  }, [entries, appliedBounds, category, query, sort]);
 
   // 핀 표시용: 현재 보이는 영역의 결과 전체에 1~N 랭크 부여
   const rankedEntries = useMemo(
@@ -147,25 +139,13 @@ export function RegionRankList({ entries }: Props) {
 
       {/* sticky 블록 — 깔때기 구조: 능동→공간→콘텐츠1→콘텐츠2→지도 */}
       <div className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4">
-        {/* row 1: 검색 + 지역 */}
-        <div className="flex gap-2">
-          <SearchInput
-            value={query}
-            onValueChange={setQuery}
-            placeholder="맛집, 지역, 메뉴 검색"
-            className="flex-1"
-          />
-          <ChipSelect
-            value={region}
-            onValueChange={setRegion}
-            icon={MapPin}
-            placeholder="전체 지역"
-            items={[
-              { value: 'all', label: '전체 지역' },
-              ...regions.map((r) => ({ value: r, label: r })),
-            ]}
-          />
-        </div>
+        {/* row 1: 검색 */}
+        <SearchInput
+          value={query}
+          onValueChange={setQuery}
+          placeholder="맛집, 지역, 메뉴 검색"
+          className="w-full mb-4"
+        />
 
         {/* row 3: 카테고리 + 상황 묶음 */}
         <div className="flex flex-col gap-2">
@@ -222,17 +202,10 @@ export function RegionRankList({ entries }: Props) {
       ) : (
         <section className="space-y-3">
           <div className="space-y-1">
-            <h2 className="text-headline-2 text-foreground truncate">
-              {dominantRegion ? `${dominantRegion} 일대 맛집` : '이 지역 맛집'}
-            </h2>
             <div className="flex items-center justify-between gap-2">
-              <p className="inline-flex items-center gap-1 text-caption-2 text-muted-foreground min-w-0">
-                <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span className="truncate">
-                  이번 주 신뢰도 80%+ 리뷰만 반영 ·{' '}
-                  <span className="">{rankedEntries.length}</span>곳
-                </span>
-              </p>
+              <h2 className="text-headline-2 text-foreground truncate">
+                {dominantRegion ? `${dominantRegion} 일대 맛집` : '이 지역 맛집'}
+              </h2>
               <ChipSelect
                 value={sort}
                 onValueChange={(v) => setSort(v as ExploreSort)}
@@ -243,6 +216,13 @@ export function RegionRankList({ entries }: Props) {
                 ]}
               />
             </div>
+            <p className="inline-flex items-center gap-1 text-caption-2 text-muted-foreground min-w-0">
+              <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
+              <span className="truncate">
+                이번 주 신뢰도 80%+ 리뷰만 반영 ·{' '}
+                <span className="">{rankedEntries.length}</span>곳
+              </span>
+            </p>
           </div>
           {/* 0.5px 분리선 — border-hairline 유틸리티 사용 */}
           <ul className="border-hairline border-y border-border/60">

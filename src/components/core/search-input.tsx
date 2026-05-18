@@ -17,7 +17,7 @@ interface Props extends Omit<React.ComponentProps<'input'>, 'value' | 'onChange'
 
 export function SearchInput({ value, onValueChange, placeholder, className, ...rest }: Props) {
   return (
-    <InputGroup className={cn('h-9', className)}>
+    <InputGroup className={cn('h-10', className)}>
       <InputGroupAddon>
         <Search className="text-muted-foreground" />
       </InputGroupAddon>

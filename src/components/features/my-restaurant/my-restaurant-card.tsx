@@ -7,6 +7,7 @@ import { Star, Calendar, Repeat, Users, SquarePen } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
+import { getRankMedalClasses } from '@/lib/rank';
 import { CategoryBadge } from '@/components/common/category-badge';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
@@ -37,18 +38,16 @@ export function MyRestaurantCard({ entry }: Props) {
     myLatestScene,
   } = entry;
 
-  const isTop3 = rank <= 3;
-
   return (
     <div
       data-restaurant-id={id}
-      className="group relative flex items-center gap-4 px-2 py-4 scroll-mt-[180px] transition-colors hover:bg-muted/30"
+      className="group relative flex items-center gap-4 pl-4 pr-2 py-4 scroll-mt-[180px] transition-colors hover:bg-muted/30"
     >
-      {/* ① 랭크 배지 */}
+      {/* ① 랭크 배지 — 1=금/2=은/3=동, 4위~는 옅은 톤 */}
       <div
         className={cn(
           'shrink-0 self-center w-8 h-8 rounded-full flex items-center justify-center text-title-2',
-          isTop3 ? 'bg-primary text-primary-foreground' : 'bg-paper-edge text-ink/70',
+          getRankMedalClasses(rank) ?? 'bg-paper-edge text-ink/70',
         )}
         aria-label={`${rank}위`}
       >

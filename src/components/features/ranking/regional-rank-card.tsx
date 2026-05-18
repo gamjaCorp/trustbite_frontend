@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, Bookmark, PencilLine } from 'lucide-react';
+import { Star, Bookmark, PencilLine, MessageSquare } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
+import { getRankMedalClasses } from '@/lib/rank';
 import { RegionalRankEntry } from '@/types/restaurant';
 import { useAuthMock } from '@/stores/auth-mock-store';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
@@ -49,41 +50,60 @@ export function RegionalRankCard({ entry, active = false, showVisitStats = false
   const [sheetOpen, setSheetOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const isTop3 = rank <= 3;
-
   return (
     <>
       <div
         data-restaurant-id={id}
         className={cn(
-          'group relative flex items-stretch gap-4 pl-2 pr-4 py-4 scroll-mt-[180px] transition-colors',
+          'group relative flex items-center gap-4 pl-4 pr-4 py-4 scroll-mt-[180px] transition-colors',
           'hover:bg-muted/30',
           active && 'bg-primary-subtle/40',
         )}
       >
-        {/* ① 랭크 배지 — 1~3위는 primary 채움, 4위~는 옅은 톤 */}
+        {/* ① 랭크 배지 — 1=금/2=은/3=동, 4위~는 옅은 톤 */}
         <div
           className={cn(
             'shrink-0 self-center w-8 h-8 rounded-full flex items-center justify-center text-title-2',
-            isTop3 ? 'bg-primary text-primary-foreground' : 'bg-paper-edge text-ink/70',
+            getRankMedalClasses(rank) ?? 'bg-paper-edge text-ink/70',
           )}
           aria-label={`${rank}위`}
         >
           {rank}
         </div>
 
-        {/* ② 이미지 */}
-        <Link
-          href={`/restaurant/${id}`}
-          className="relative w-24 h-24 shrink-0 overflow-hidden rounded-xl"
-        >
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </Link>
+        {/* ② 이미지 + 북마크 오버레이 */}
+        <div className="relative w-24 h-24 shrink-0">
+          <Link
+            href={`/restaurant/${id}`}
+            className="relative block w-full h-full overflow-hidden rounded-xl"
+          >
+            <Image
+              src={imageUrl}
+              alt={name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </Link>
+
+          {!hideBookmark && (
+            <button
+              type="button"
+              onClick={() => {
+                if (!isAuthed) { setDialogOpen(true); return; }
+                toggleWishlist(id);
+              }}
+              className={cn(
+                'absolute top-1.5 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
+                bookmarked && isAuthed
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-white/85 text-ink/70 hover:bg-white',
+              )}
+              aria-label="북마크"
+            >
+              <Bookmark className={cn('w-4 h-4', bookmarked && isAuthed && 'fill-current')} />
+            </button>
+          )}
+        </div>
 
         {/* ③ 가운데 — meta / 이름 / 코멘트 / CTA */}
         <div className="flex-1 min-w-0 flex flex-col gap-2">
@@ -110,69 +130,53 @@ export function RegionalRankCard({ entry, active = false, showVisitStats = false
             </p>
           )}
 
-          {/* 리뷰 CTA — primary 아웃라인 칩 */}
+          {/* 댓글 수 + 리뷰 CTA 한 줄 */}
           {!hideReviewCta && (
-            <div className="pt-1">
+            <div className="flex items-center justify-between gap-2 pt-1">
+              <div className="flex items-center gap-1 text-caption-2 text-muted-foreground">
+                <MessageSquare className="w-3.5 h-3.5" aria-hidden />
+                <span>{reviewCount}</span>
+              </div>
+
               {myStatus !== 'reviewed' ? (
                 <Link
                   href={`/restaurant/${id}/review/new`}
-                  className="inline-flex items-center gap-1.5 rounded-chip border border-primary/40 bg-primary-subtle/40 px-2.5 py-1 text-label-3 text-primary hover:bg-primary-subtle hover:border-primary/60 active:scale-95 transition-all"
+                  className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
                 >
-                  <PencilLine className="w-3.5 h-3.5" />
+                  <PencilLine className="w-3 h-3" aria-hidden />
                   리뷰 쓰기
                 </Link>
               ) : (
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1.5 rounded-chip border border-primary/40 bg-primary-subtle/40 px-2.5 py-1 text-label-3 text-primary hover:bg-primary-subtle hover:border-primary/60 active:scale-95 transition-all"
+                <Link
+                  href={`/restaurant/${id}/review/new`}
+                  className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
                 >
-                  <Star className="w-3.5 h-3.5 fill-primary text-primary" />
-                  <span>
-                    내 평점 <span className="">{avgScore.toFixed(1)}</span>
-                  </span>
-                  <span className="text-primary/50">·</span>
-                  <span>수정</span>
-                </button>
+                  <Star className="w-3 h-3 fill-primary text-primary" aria-hidden />
+                  내 평점 {avgScore.toFixed(1)} · 수정
+                </Link>
               )}
             </div>
           )}
         </div>
 
-        {/* ④ 우측 — 평점/(선택)신뢰도 + (선택)북마크 */}
-        <div className="shrink-0 flex items-center gap-2 self-center">
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center gap-0.5">
-              <Star className="w-4 h-4 fill-palette-amber text-palette-amber" />
-              <span className="text-title-1 text-foreground">
-                {communityAvgScore.toFixed(1)}
-              </span>
-            </div>
-            {!hideTrustScore && (
-              <TrustScoreBadge
-                score={trustScore}
-                size="sm"
-                onClick={() => setSheetOpen(true)}
-              />
-            )}
-          </div>
+        {/* 수직 구분선 */}
+        <div className="self-stretch w-px bg-border/60" />
 
-          {!hideBookmark && (
-            <button
-              type="button"
-              onClick={() => {
-                if (!isAuthed) { setDialogOpen(true); return; }
-                toggleWishlist(id);
-              }}
-              className={cn(
-                'shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90',
-                bookmarked && isAuthed
-                  ? 'bg-primary text-primary-foreground shadow-sm'
-                  : 'bg-muted text-ink/50 hover:bg-muted/80 hover:text-ink/80',
-              )}
-              aria-label="북마크"
-            >
-              <Bookmark className={cn('w-5 h-5', bookmarked && isAuthed && 'fill-current')} />
-            </button>
+        {/* ④ 우측 — 평균 라벨 + 평점 + (선택)신뢰도 */}
+        <div className="shrink-0 flex flex-col items-end gap-0.5 self-center px-4">
+          <span className="text-caption-2 text-muted-foreground">평균</span>
+          <div className="flex items-center gap-1">
+            <Star className="w-4 h-4 fill-palette-amber text-palette-amber" />
+            <span className="text-headline-2 text-foreground">
+              {communityAvgScore.toFixed(1)}
+            </span>
+          </div>
+          {!hideTrustScore && (
+            <TrustScoreBadge
+              score={trustScore}
+              size="sm"
+              onClick={() => setSheetOpen(true)}
+            />
           )}
         </div>
       </div>
