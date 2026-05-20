@@ -24,14 +24,14 @@ export function RestaurantPicker({ candidates }: Props) {
   }, [query, candidates]);
 
   return (
-    <div className="rounded-2xl bg-card ring-1 ring-paper-edge/40 p-3 shadow-card">
+    <div className="rounded-2xl bg-card ring-1 ring-border p-3 shadow-card">
       <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-muted">
         <Search className="w-4 h-4 text-muted-foreground shrink-0" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="음식점 이름 또는 지역을 검색해주세요"
-          className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
+          className="flex-1 bg-transparent outline-none text-label-1 placeholder:text-muted-foreground"
           aria-label="음식점 검색"
         />
       </div>
@@ -41,7 +41,7 @@ export function RestaurantPicker({ candidates }: Props) {
       </p>
 
       {filtered.length === 0 ? (
-        <p className="px-3 py-6 text-center text-sm text-muted-foreground">
+        <p className="px-3 py-6 text-center text-body-2 text-muted-foreground">
           검색 결과가 없어요
         </p>
       ) : (

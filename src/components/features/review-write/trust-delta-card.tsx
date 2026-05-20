@@ -37,7 +37,7 @@ export function TrustDeltaCard({
   const hasPhoto = photoCount > 0;
 
   return (
-    <div className="rounded-2xl bg-card ring-1 ring-paper-edge/40 p-4 shadow-card">
+    <div className="rounded-2xl bg-card ring-1 ring-border p-4 shadow-card">
       <header className="flex items-center justify-between">
         <h3 className="text-title-2 text-foreground">내 신뢰도</h3>
         <span className={cn('inline-flex items-center gap-0.5 text-label-3', tone.text)}>
@@ -51,7 +51,7 @@ export function TrustDeltaCard({
           {baseScore}%
         </span>
         <span className="text-muted-foreground">→</span>
-        <span className={cn('text-3xl font-bold', tone.text)}>
+        <span className={cn('text-display-1', tone.text)}>
           {next.toFixed(0)}%
         </span>
       </div>
@@ -72,16 +72,16 @@ export function TrustDeltaCard({
         onClick={onSubmit}
         disabled={!isValid}
         className={cn(
-          'mt-4 w-full rounded-xl py-3.5 text-title-2 transition-colors',
+          'mt-4 hidden w-full rounded-xl py-3.5 text-label-1 transition-colors lg:block',
           isValid
-            ? 'bg-foreground text-background hover:bg-foreground/90 active:scale-[0.99]'
+            ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
             : 'bg-muted text-muted-foreground cursor-not-allowed',
         )}
       >
         리뷰 등록하기
       </button>
 
-      <p className="mt-2 text-center text-caption-2 text-muted-foreground">
+      <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">
         {nextGradeName}까지 리뷰{' '}
         <span className="font-semibold text-foreground">
           {remainingReviewsForNextGrade}

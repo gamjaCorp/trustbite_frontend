@@ -13,7 +13,7 @@ const NEXT_GRADE_NAME = getNextLevelDef(CURRENT_LEVEL)?.label ?? '';
 export default function NewReviewPage() {
   const myTopRestaurants = [...mockRankList]
     .sort((a, b) => b.avgScore - a.avgScore)
-    .slice(0, 5);
+    .slice(0, 10);
 
   return (
     <ReviewWriteForm

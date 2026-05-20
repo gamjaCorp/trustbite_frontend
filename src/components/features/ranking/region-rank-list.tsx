@@ -17,7 +17,7 @@ interface Props {
   entries: RegionalRankEntry[];
 }
 
-const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식'];
+const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '다이어트'];
 
 type ExploreSort = 'rank' | 'trust' | 'recent';
 
@@ -155,7 +155,7 @@ export function RegionRankList({ entries }: Props) {
             categories={CATEGORIES}
           />
 
-          <div className="border-t border-dashed border-border/60" />
+          <div className="border-t border-dashed border-border" />
 
           {/* 상황 태그 (다중 선택) — UI만, Week 2 데이터 연결 시 필터 적용 */}
           <div className="flex items-center gap-2">
@@ -224,12 +224,11 @@ export function RegionRankList({ entries }: Props) {
               </span>
             </p>
           </div>
-          {/* 0.5px 분리선 — border-hairline 유틸리티 사용 */}
-          <ul className="border-hairline border-y border-border/60">
+          <ul className="border-y border-border">
             {rankedEntries.map((entry, i) => (
               <li
                 key={entry.id}
-                className={cn(i > 0 && 'border-hairline border-t border-border/60')}
+                className={cn(i > 0 && 'border-t border-border')}
               >
                 <RegionalRankCard entry={entry} active={effectiveActiveId === entry.id} />
               </li>

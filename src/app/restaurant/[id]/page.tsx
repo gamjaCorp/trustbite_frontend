@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
-import { DetailHeader } from '@/components/features/restaurant-detail/detail-header';
+import { BackHeader } from '@/components/common/back-header';
 import { PhotoGallery } from '@/components/features/restaurant-detail/photo-gallery';
 import { RestaurantSummary } from '@/components/features/restaurant-detail/restaurant-summary';
 import { ScorePanel } from '@/components/features/restaurant-detail/score-panel';
@@ -27,7 +27,7 @@ export default async function RestaurantDetailPage({
 
   return (
     <>
-      <DetailHeader />
+      <BackHeader />
       <main className="max-w-5xl mx-auto pb-28">
         <PhotoGallery photos={detail.photos} totalCount={detail.totalPhotoCount} />
         <RestaurantSummary detail={detail} />

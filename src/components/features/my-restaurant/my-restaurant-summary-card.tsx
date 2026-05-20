@@ -74,7 +74,7 @@ function EmptyState({ onWriteReview }: { onWriteReview?: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 py-4 text-center">
       <UtensilsCrossed className="w-10 h-10 text-muted-foreground/40" />
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="text-body-2 text-muted-foreground leading-relaxed">
         첫 리뷰를 남기고
         <br />내 맛집 지도를 시작해보세요 🎉
       </p>
@@ -87,7 +87,7 @@ function EmptyState({ onWriteReview }: { onWriteReview?: () => void }) {
 
 function InProgressState({ reviewCount }: { reviewCount: number }) {
   return (
-    <div className="rounded-(--radius) bg-muted px-4 py-3 text-sm text-muted-foreground text-center leading-relaxed">
+    <div className="rounded-(--radius) bg-muted px-4 py-3 text-body-2 text-muted-foreground text-center leading-relaxed">
       리뷰 {reviewCount}개 작성 완료!
       <br />
       <span className="text-foreground font-medium">

@@ -1,16 +1,17 @@
 'use client';
 
+// 뒤로가기 + TrustBite 로고 + 우측 내 프로필을 표시하는 페이지 헤더
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { GradeIcon } from '@/components/common/grade-icon';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthMock } from '@/stores/auth-mock-store';
 
-// 식당 상세 페이지 전용 헤더 — 이전 화면으로 돌아가는 뒤로가기 + 공통 사용자 정보
-export function DetailHeader() {
+export function BackHeader() {
   const router = useRouter();
   const { isAuthed } = useAuthMock();
   const profile = getMyProfile();
@@ -21,7 +22,7 @@ export function DetailHeader() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="inline-flex items-center gap-0.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-0.5 text-caption-1 text-muted-foreground hover:text-foreground transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
           이전으로

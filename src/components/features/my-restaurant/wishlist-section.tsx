@@ -2,7 +2,7 @@
 
 // 가고 싶은 맛집 위시리스트 섹션 — 안내 배너·헤더·정렬 + 카드 리스트
 import { useMemo, useState } from 'react';
-import { Bookmark, Share2 } from 'lucide-react';
+import { Bookmark, Share2, X } from 'lucide-react';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { ChipSelect } from '@/components/core/chip-select';
@@ -22,6 +22,7 @@ export function WishlistSection() {
   const items = useWishlistMock((s) => s.items);
   const remove = useWishlistMock((s) => s.remove);
   const [sort, setSort] = useState<WishlistSortKey>('recent');
+  const [showBanner, setShowBanner] = useState(true);
 
   const resolved = useMemo(
     () =>
@@ -59,18 +60,28 @@ export function WishlistSection() {
   return (
     <div>
       {/* 안내 배너 */}
-      <div className="mt-4 flex items-start gap-3 rounded-2xl bg-primary-subtle/50 border border-primary/15 p-4">
-        <Bookmark className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-        <div className="flex-1 space-y-0.5">
-          <p className="text-label-2 text-foreground">
-            가고 싶은 곳{' '}
-            <span className="text-primary">{resolved.length}</span>개를 모았어요
-          </p>
-          <p className="text-caption-2 text-muted-foreground">
-            다녀와서 리뷰를 쓰면 자동으로 &apos;나의 랭킹&apos;으로 옮겨져요
-          </p>
+      {showBanner && (
+        <div className="mt-4 flex items-start gap-4 rounded-2xl bg-primary-subtle/50 border border-primary/15 p-5">
+          <Bookmark className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <div className="flex-1 space-y-1.5">
+            <p className="text-body-2 text-foreground">
+              가고 싶은 곳{' '}
+              <span className="text-primary">{resolved.length}</span>개를 모았어요
+            </p>
+            <p className="text-body-3 text-muted-foreground">
+              다녀와서 리뷰를 쓰면 자동으로 &apos;나의 랭킹&apos;으로 옮겨져요
+            </p>
+          </div>
+          <button
+            type="button"
+            aria-label="배너 닫기"
+            onClick={() => setShowBanner(false)}
+            className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
-      </div>
+      )}
 
       {/* 헤더 행 */}
       <div className="mt-6 flex items-center justify-between gap-3 px-1">
@@ -93,11 +104,11 @@ export function WishlistSection() {
       </div>
 
       {/* 카드 리스트 */}
-      <ul className="mt-6 border-hairline border-b border-border/60">
+      <ul className="mt-6 border-b border-border">
         {sortedList.map(({ item, detail }, i) => (
           <li
             key={item.restaurantId}
-            className={i > 0 ? 'border-hairline border-t border-border/60' : undefined}
+            className={i > 0 ? 'border-t border-border' : undefined}
           >
             <WishlistItemCard detail={detail} addedAt={item.addedAt} onRemove={remove} />
           </li>

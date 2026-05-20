@@ -44,10 +44,10 @@ export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown
   }, [baseTrustScore, nextTrustScore]);
 
   return (
-    <div className="rounded-2xl bg-success/8 p-5">
+    <div className="rounded-2xl bg-success-subtle p-5">
       <div className="flex items-center justify-between mb-2">
         <span className="text-label-2 text-muted-foreground">내 신뢰도</span>
-        <span className="inline-flex items-center rounded-chip bg-success text-white px-2.5 py-0.5 text-label-3">
+        <span className="inline-flex items-center rounded-chip bg-success text-background px-2.5 py-0.5 text-label-3">
           +<span className="">{formatDelta(breakdown.total)}</span>%P
         </span>
       </div>
@@ -56,9 +56,9 @@ export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown
         <span className="text-label-1 text-muted-foreground line-through">
           {baseTrustScore}%
         </span>
-        <span className={cn('text-4xl font-bold text-success')}>
+        <span className={cn('text-display-1 text-success')}>
           {displayScore}
-          <span className="text-2xl">%</span>
+          <span className="text-headline-1">%</span>
         </span>
       </div>
 

@@ -316,6 +316,7 @@ const minseoProfile: UserProfile = {
   id: 'minseo',
   name: '민서',
   handle: 'minseo_eats',
+  level: 4,
   gradeName: '맛집 헌터',
   curatedCount: 24,
   followerCount: 142,

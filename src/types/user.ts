@@ -10,6 +10,7 @@ export interface UserProfile {
   id: string;
   name: string;
   handle: string;
+  level: GradeLevel;
   gradeName: string;
   curatedCount: number;
   followerCount: number;

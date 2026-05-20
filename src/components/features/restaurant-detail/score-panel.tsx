@@ -15,10 +15,10 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
   const pct = Math.min(100, (score / 5) * 100);
   return (
     <div className="flex items-center gap-2.5">
-      <span className="w-10 text-caption-2 text-ink/70 shrink-0">{label}</span>
+      <span className="w-10 text-label-3 text-ink/80 shrink-0">{label}</span>
       <div className="flex-1 h-1 rounded-full bg-muted overflow-hidden">
         <div
-          className="h-full rounded-full bg-foreground"
+          className="h-full rounded-full bg-primary"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -32,15 +32,15 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
 export function ScorePanel({ detail }: Props) {
   return (
     <section className="px-6 pt-4">
-      <div className="bg-card rounded-2xl p-5 ring-1 ring-paper-edge/40 shadow-card">
-        <div className="flex gap-5">
+      <div className="bg-card rounded-2xl p-5 ring-1 ring-border">
+        <div className="flex flex-col sm:flex-row gap-5">
           {/* 좌측 ── 평점/신뢰도 */}
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-0.5">
-              <span className="text-3xl font-bold text-foreground">
+              <span className="text-display-1 text-foreground">
                 {detail.communityAvgScore.toFixed(1)}
               </span>
-              <span className="text-sm text-muted-foreground">/ 5</span>
+              <span className="text-caption-1 text-muted-foreground">/ 5</span>
             </div>
             <p className="mt-0.5 text-caption-2 text-muted-foreground">
               리뷰 {detail.reviewCount}개 · 신뢰도 가중 평균
@@ -62,7 +62,7 @@ export function ScorePanel({ detail }: Props) {
         </div>
 
         {/* Scene 태그 점수 */}
-        <div className="mt-4 pt-4 border-t border-border/60 flex flex-wrap gap-2">
+        <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
           {detail.sceneScores.map((s) => (
             <span
               key={s.tag}

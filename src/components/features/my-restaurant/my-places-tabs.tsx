@@ -11,9 +11,10 @@ import { RegionalRankEntry } from '@/types/restaurant';
 interface Props {
   initialTab: 'ranking' | 'wishlist';
   entries: RegionalRankEntry[];
+  reviewCount?: number;
 }
 
-export function MyPlacesTabs({ initialTab, entries }: Props) {
+export function MyPlacesTabs({ initialTab, entries, reviewCount }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = (searchParams.get('tab') ?? initialTab) as 'ranking' | 'wishlist';
@@ -25,25 +26,19 @@ export function MyPlacesTabs({ initialTab, entries }: Props) {
   }
 
   return (
-    <Tabs value={tab} onValueChange={handleTabChange} className="mt-8">
-      <TabsList variant="line" className="w-full gap-0">
-        <TabsTrigger
-          value="ranking"
-          className="flex-1 before:content-[''] before:absolute before:inset-x-0 before:bottom-[-5px] before:h-px before:bg-border/60"
-        >
+    <Tabs value={tab} onValueChange={handleTabChange} className="mt-6">
+      <TabsList>
+        <TabsTrigger value="ranking" className="px-4">
           나의 랭킹
         </TabsTrigger>
-        <TabsTrigger
-          value="wishlist"
-          className="flex-1 before:content-[''] before:absolute before:inset-x-0 before:bottom-[-5px] before:h-px before:bg-border/60"
-        >
+        <TabsTrigger value="wishlist" className="px-4">
           가고 싶은 맛집
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="ranking">
         <div className="mt-5">
-          <TasteProfileSection entries={entries} />
+          <TasteProfileSection entries={entries} reviewCount={reviewCount} />
         </div>
         <div className="mt-12">
           <RestaurantRankList entries={entries} />

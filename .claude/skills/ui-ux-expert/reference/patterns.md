@@ -2,19 +2,28 @@
 
 ---
 
-## Layout patterns
+## Layout patterns (Toss·당근 기준)
 
-```
-페이지 컨테이너  max-w-5xl mx-auto px-6
-하단 여백        pb-24 ~ pb-28  (fixed CTA 버튼 공간 확보)
-수직 간격        space-y-4 / space-y-5 / space-y-6
-sticky 섹션      sticky top-[var(--header-height)] z-10
-사이드바 레이아웃  grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6
-```
+| 슬롯 | 기본값 | 레퍼런스 비교 |
+|---|---|---|
+| 페이지 가로 패딩 | `px-5` (모바일), `lg:px-6` | Toss 16px / 당근 16-20px |
+| 페이지 컨테이너 | `max-w-5xl mx-auto px-5 lg:px-6` | — |
+| 리스트 행 세로 패딩 | `py-4` (최소), 큰 행은 `py-5` | 당근 리스트 행 16-20px |
+| 리스트 행 최소 높이 | `min-h-[56px]` | Toss/당근 터치 타깃 ≥56px |
+| 카드 내부 패딩 | `p-5` (기본), 헤더+본문 분리 카드는 `p-6` | Toss 카드 20-24px |
+| 섹션 수직 간격 | `space-y-5` 기본, 메이저 섹션 `space-y-6` | Toss 섹션 24-32px |
+| 1차 CTA 높이 | `h-12` (모바일 전폭) | Toss "송금하기" 48px |
+| 보조 버튼 높이 | `h-10` | 당근 보조 버튼 ~40px |
+| 칩/태그 높이 | `h-8` 또는 `h-9` | — |
+| sticky 섹션 offset | `top-[var(--header-height)]` | (변경 없음) |
+| 하단 fixed CTA 여백 | `pb-24` ~ `pb-28` | (변경 없음) |
+| 사이드바 레이아웃 | `grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6` | — |
 
 - **모바일 우선**. 브레이크포인트는 `lg:` 가끔만 사용 (사이드바 split 등). `sm:`은 갤러리 고정 높이 같은 예외 케이스에만.
 - 햄버거 메뉴 없음 — 상단 탭 스트립이 모든 뷰포트에서 공유됨.
 - floating CTA: `fixed bottom-8 right-8 rounded-chip shadow-lg`.
+
+> `py-3` / `space-y-3` / `h-9` 1차 CTA는 모두 "tight defaults" 위반. 캡션 줄·태그 줄·보조 칸 한정으로만 허용.
 
 ---
 
@@ -35,6 +44,22 @@ flex items-center gap-4 px-4 py-4
 - **hover/active**: `hover:bg-muted/30` → `active:bg-primary-subtle/40`.
 - **`<article>` 구분선**: `border-t border-border first:border-t-0` (reference: `review-card.tsx`).
 - 이미지가 없는 텍스트 리스트는 `divide-y divide-border` 또는 `border-t` 패턴 통일.
+
+---
+
+## 사이즈 체크리스트 (UX Reference Check 7항목)
+
+UX Reference Check의 `사이즈/패딩` 라인을 채울 때 1회 점검한다.
+
+1. 본문 텍스트가 `text-body-1` (16px) 이상인가? (캡션·메타·타임스탬프 제외)
+2. 리스트 행 세로 패딩이 `py-4` 이상이며 행 높이 ≥56px인가?
+3. 카드 내부 패딩이 `p-5` 이상인가? (헤더+본문 분리 카드는 `p-6`)
+4. 페이지 좌우 패딩이 `px-5` (모바일) / `lg:px-6` 인가?
+5. 섹션 사이 간격이 `space-y-5` 이상인가? (작은 그룹은 `space-y-3` 허용)
+6. 1차 CTA가 모바일에서 `h-12` 전폭(`w-full`)인가?
+7. `text-caption-2` / `text-label-3`이 본문·리스트 제목·버튼 라벨 자리에 들어가지 않았는가?
+
+미달 항목 수: 0=😀 / 1-2=😐 / 3+=😟.
 
 ---
 

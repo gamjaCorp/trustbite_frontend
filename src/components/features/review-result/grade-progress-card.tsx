@@ -29,7 +29,7 @@ export function GradeProgressCard({
   );
 
   return (
-    <Link href="/profile" className="block border-t border-border/40 pt-4 hover:opacity-80 transition-opacity">
+    <Link href="/profile" className="block border-t border-border pt-4 hover:opacity-80 transition-opacity">
       <div className="flex items-center justify-between mb-3">
         <p className="text-label-2 text-muted-foreground">현재 등급</p>
         <ChevronRight className="w-4 h-4 text-muted-foreground" />

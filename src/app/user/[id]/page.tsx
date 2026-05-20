@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { BackHeader } from '@/components/features/user-profile/back-header';
+import { BackHeader } from '@/components/common/back-header';
 import { UserProfileView } from '@/components/features/user-profile/user-profile-view';
 import { getUserProfile } from '@/data/mock-other-user';
 

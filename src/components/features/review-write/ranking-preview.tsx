@@ -1,6 +1,8 @@
 'use client';
 
+import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getRankMedalClasses } from '@/lib/rank';
 import { useReviewAvgScore, useSelectedRestaurant } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
@@ -14,7 +16,7 @@ interface PreviewRow {
   avgScore: number;
 }
 
-const VISIBLE_COUNT = 5;
+const VISIBLE_COUNT = 10;
 
 export function RankingPreview({ myTopRestaurants }: Props) {
   const avgScore = useReviewAvgScore();
@@ -25,26 +27,35 @@ export function RankingPreview({ myTopRestaurants }: Props) {
     .slice(0, VISIBLE_COUNT)
     .map((r) => ({ isNew: false, name: r.name, avgScore: r.avgScore }));
 
-  const rows: PreviewRow[] =
+  const allWithNew =
     avgScore > 0
-      ? [...baseRows, { isNew: true, name: targetName, avgScore }]
-          .sort((a, b) => {
-            if (b.avgScore !== a.avgScore) return b.avgScore - a.avgScore;
-            if (a.isNew) return -1;
-            if (b.isNew) return 1;
-            return 0;
-          })
-          .slice(0, VISIBLE_COUNT)
+      ? [...baseRows, { isNew: true, name: targetName, avgScore }].sort((a, b) => {
+          if (b.avgScore !== a.avgScore) return b.avgScore - a.avgScore;
+          if (a.isNew) return -1;
+          if (b.isNew) return 1;
+          return 0;
+        })
       : baseRows;
 
+  const rows = allWithNew.slice(0, VISIBLE_COUNT);
+  const newRank =
+    avgScore > 0 ? allWithNew.findIndex((r) => r.isNew) + 1 : null;
+  const newVisible = newRank !== null && newRank <= VISIBLE_COUNT;
+
   return (
-    <div className="rounded-2xl bg-card ring-1 ring-paper-edge/40 p-4 shadow-card">
+    <div className="rounded-2xl bg-card ring-1 ring-border p-4 shadow-card">
       <header className="mb-3">
         <h3 className="text-title-2 text-foreground">내 랭킹 미리보기</h3>
         <p className="text-caption-2 text-muted-foreground mt-0.5">
           별점 입력하면 위치가 바뀌어요
         </p>
       </header>
+
+      {newRank !== null && !newVisible && (
+        <p className="mb-2 rounded-xl bg-primary/5 px-3 py-2 text-caption-2 text-primary">
+          별점 입력 시 <span className="font-semibold">{newRank}위</span>로 진입해요
+        </p>
+      )}
 
       <ol className="space-y-1">
         {rows.map((row, idx) => {
@@ -59,8 +70,8 @@ export function RankingPreview({ myTopRestaurants }: Props) {
             >
               <span
                 className={cn(
-                  'w-5 text-center text-title-2 shrink-0',
-                  row.isNew ? 'text-primary' : 'text-muted-foreground',
+                  'shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-title-3',
+                  getRankMedalClasses(rank) ?? 'bg-paper-edge text-ink/70',
                 )}
               >
                 {rank}
@@ -68,15 +79,16 @@ export function RankingPreview({ myTopRestaurants }: Props) {
 
               <span
                 className={cn(
-                  'flex-1 min-w-0 text-sm truncate',
-                  row.isNew ? 'text-foreground font-semibold' : 'text-foreground',
+                  'flex-1 min-w-0 truncate',
+                  row.isNew ? 'text-title-2 text-foreground' : 'text-body-2 text-foreground',
                 )}
               >
                 {row.name}
               </span>
 
-              <span className="text-title-2 text-foreground shrink-0">
-                {row.avgScore.toFixed(1)}
+              <span className="flex items-center gap-1 shrink-0">
+                <Star className="w-3.5 h-3.5 fill-palette-amber text-palette-amber" aria-hidden />
+                <span className="text-title-2 text-foreground">{row.avgScore.toFixed(1)}</span>
               </span>
 
               {row.isNew && (

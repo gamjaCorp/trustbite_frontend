@@ -90,7 +90,7 @@ export interface RealtimeReview {
 
 /* ── 상세 페이지용 타입 ── */
 
-export type SceneTag = '데이트' | '회식' | '혼밥';
+export type SceneTag = '데이트' | '회식' | '혼밥' | '다이어트';
 
 export interface OpeningHours {
   weekday: string;

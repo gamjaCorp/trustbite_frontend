@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { mockRankList } from '@/data/mock-restaurant';
-import { DetailHeader } from '@/components/features/restaurant-detail/detail-header';
+import { BackHeader } from '@/components/common/back-header';
 import { ReviewWriteForm } from '@/components/features/review-write/review-write-form';
 import { getLevelDef, getNextLevelDef } from '@/lib/grade-levels';
 import type { GradeLevel } from '@/lib/grade-levels';
@@ -40,7 +40,7 @@ export default async function ReviewWritePage({
 
   return (
     <>
-      <DetailHeader />
+      <BackHeader />
       <ReviewWriteForm
         initialSelectedRestaurant={initialSelectedRestaurant}
         candidates={mockRankList}

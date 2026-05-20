@@ -14,8 +14,13 @@ function RatingRow({ dim, label }: { dim: 'taste' | 'value' | 'vibe'; label: str
   const { setRating } = useReviewActions();
 
   return (
-    <div className="flex items-center justify-between rounded-xl bg-card ring-1 ring-paper-edge/40 px-4 py-3">
-      <span className="text-title-3 text-foreground">{label}</span>
+    <div className="flex items-center justify-between rounded-xl bg-card ring-1 ring-border px-4 py-3">
+      <span className="flex items-baseline gap-1.5">
+        <span className="text-title-2 text-foreground">{label}</span>
+        {value > 0 && (
+          <span className="text-caption-1 text-primary font-semibold">{value.toFixed(1)}점</span>
+        )}
+      </span>
       <StarRatingInput
         value={value}
         onChange={(n) => setRating(dim, n)}

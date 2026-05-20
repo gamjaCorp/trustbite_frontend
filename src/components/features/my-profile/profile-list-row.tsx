@@ -8,9 +8,11 @@ interface Props {
   value?: string;
   href?: string;
   tone?: 'default' | 'danger';
+  rightSlot?: React.ReactNode;
+  onClick?: () => void;
 }
 
-export function ProfileListRow({ label, value, href, tone = 'default' }: Props) {
+export function ProfileListRow({ label, value, href, tone = 'default', rightSlot, onClick }: Props) {
   const content = (
     <>
       <span
@@ -21,10 +23,12 @@ export function ProfileListRow({ label, value, href, tone = 'default' }: Props) 
       >
         {label}
       </span>
-      <span className="inline-flex items-center gap-2">
-        {value && <span className="text-caption-2 text-muted-foreground">{value}</span>}
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      </span>
+      {rightSlot ?? (
+        <span className="inline-flex items-center gap-2">
+          {value && <span className="text-caption-2 text-muted-foreground">{value}</span>}
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        </span>
+      )}
     </>
   );
 
@@ -38,7 +42,7 @@ export function ProfileListRow({ label, value, href, tone = 'default' }: Props) 
           {content}
         </Link>
       ) : (
-        <button type="button" className={className}>
+        <button type="button" className={className} onClick={onClick}>
           {content}
         </button>
       )}

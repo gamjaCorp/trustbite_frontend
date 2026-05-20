@@ -17,9 +17,9 @@ function AuthMockToggleInner() {
     <button
       type="button"
       onClick={toggle}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-medium text-background shadow-lg transition-opacity hover:opacity-80"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-label-3 text-background shadow-lg transition-opacity hover:opacity-80"
     >
-      <span className={isAuthed ? 'text-green-400' : 'text-red-400'}>●</span>
+      <span className={isAuthed ? 'text-success' : 'text-error'}>●</span>
       {isAuthed ? '로그인 ON' : '로그인 OFF'}
     </button>
   );

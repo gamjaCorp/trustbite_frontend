@@ -31,7 +31,7 @@ function MyReviewPhotos({ photos }: { photos: string[] }) {
               sizes="(min-width: 768px) 150px, 30vw"
             />
             {isOverlay && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+              <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
                 <span className="text-background text-headline-2">+{hiddenCount}</span>
               </div>
             )}
@@ -56,7 +56,7 @@ function MyReviewVisit({
   return (
     <div className="rounded-xl bg-background p-3">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-label-3 text-foreground">{visit.label}</p>
+        <p className="text-caption-2 text-muted-foreground">{visit.label}</p>
         <button
           type="button"
           className="shrink-0 w-7 h-7 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
@@ -89,7 +89,7 @@ function MyReviewVisit({
 
       <p
         className={cn(
-          'whitespace-pre-line text-sm text-foreground leading-relaxed',
+          'whitespace-pre-line text-body-2 text-foreground/85 leading-relaxed',
           isClamped && 'line-clamp-3',
         )}
       >

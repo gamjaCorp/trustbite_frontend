@@ -7,6 +7,9 @@ interface Props {
   currentLevel: GradeLevel;
 }
 
+// chip-slot(24px) + gap(4px) + icon-center(24px)
+const CONNECTOR_TOP_PX = 52;
+
 export function AllGradesTimeline({ currentLevel }: Props) {
   const nextLevel = currentLevel < 6 ? ((currentLevel + 1) as GradeLevel) : null;
 
@@ -37,13 +40,13 @@ export function AllGradesTimeline({ currentLevel }: Props) {
                 )}
               </div>
 
-              {/* 연결선 — 칩 슬롯(24px) + gap(4px) + 아이콘 반지름(24px) = 52px */}
               {i < GRADE_LEVELS.length - 1 && (
                 <span
                   className={cn(
-                    'absolute top-[52px] h-px left-[calc(50%+24px)] right-[calc(-50%+24px)]',
+                    'absolute h-px left-[calc(50%+24px)] right-[calc(-50%+24px)]',
                     connectorActive ? 'bg-primary' : 'bg-border',
                   )}
+                  style={{ top: CONNECTOR_TOP_PX }}
                 />
               )}
 

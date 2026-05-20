@@ -4,6 +4,7 @@ import { ChevronRight, Eye } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { GradeBadge } from '@/components/common/grade-badge';
+import { FollowStatsRow } from '@/components/common/follow-stats-row';
 import type { MyProfile } from '@/types/user';
 
 interface Props {
@@ -38,24 +39,11 @@ export function ProfileSummaryCard({ profile }: Props) {
       </div>
 
       <div className="mt-7 flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-4 text-label-2">
-          <button
-            type="button"
-            className="inline-flex items-center gap-1 text-foreground hover:text-primary transition-colors"
-          >
-            <span className="font-bold">{profile.followerCount}</span>
-            <span className="text-muted-foreground">팔로워</span>
-            <ChevronRight className="w-3 h-3 text-muted-foreground" />
-          </button>
-          <button
-            type="button"
-            className="inline-flex items-center gap-1 text-foreground hover:text-primary transition-colors"
-          >
-            <span className="font-bold">{profile.followingCount}</span>
-            <span className="text-muted-foreground">팔로잉</span>
-            <ChevronRight className="w-3 h-3 text-muted-foreground" />
-          </button>
-        </div>
+        <FollowStatsRow
+          followerCount={profile.followerCount}
+          followingCount={profile.followingCount}
+          size="md"
+        />
         <Link
           href="/my-places"
           className="inline-flex items-center gap-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"

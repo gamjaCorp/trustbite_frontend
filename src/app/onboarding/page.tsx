@@ -60,10 +60,10 @@ export default function OnboardingPage() {
         <div className="flex-1 flex flex-col w-full max-w-md mx-auto">
           <div className="flex-1 flex flex-col justify-center space-y-8">
             <div className="space-y-4">
-              <h1 className="text-3xl md:text-4xl font-bold leading-tight tracking-tight text-foreground">
+              <h1 className="text-display-1 text-foreground">
                 잘 오셨어요, 햄찌님
               </h1>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-caption-1 text-muted-foreground leading-relaxed">
                 마지막 한 단계만 남았어요.
                 <br />
                 곧 만나볼 수 있어요.
@@ -71,7 +71,7 @@ export default function OnboardingPage() {
             </div>
 
             <blockquote className="pl-4 border-l-2 border-primary">
-              <p className="text-sm text-foreground leading-relaxed">
+              <p className="text-body-2 text-foreground leading-relaxed">
                 &ldquo;리뷰는 단순한 평가가 아니라,
                 <br />
                 다른 사람의 신중한 선택을 만드는 거예요.&rdquo;
@@ -82,11 +82,11 @@ export default function OnboardingPage() {
             </blockquote>
           </div>
 
-          <div className="pt-8 border-t border-foreground/10 flex items-center gap-2">
+          <div className="pt-8 border-t border-border flex items-center gap-2">
             <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground text-background">
               <Check className="w-3 h-3" strokeWidth={3} />
             </span>
-            <span className="text-sm text-muted-foreground">Google 인증 완료</span>
+            <span className="text-caption-1 text-muted-foreground">Google 인증 완료</span>
           </div>
         </div>
       }
@@ -97,7 +97,7 @@ export default function OnboardingPage() {
               <h2 className="text-headline-1 tracking-tight text-foreground">
                 두 가지만 알려주시면 시작해요
               </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-caption-1 text-muted-foreground">
                 언제든 나중에 변경할 수 있어요
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function OnboardingPage() {
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 maxLength={NICKNAME_MAX}
-                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-label-1 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
               />
               <p className="text-caption-2 text-muted-foreground">
                 {NICKNAME_MIN}~{NICKNAME_MAX}자 · 나중에 변경 가능
@@ -136,10 +136,10 @@ export default function OnboardingPage() {
                       onClick={() => toggleRegion(region)}
                       disabled={disabled}
                       className={cn(
-                        'inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm transition-colors',
+                        'inline-flex items-center gap-1 rounded-full border px-3 py-1.5 transition-colors',
                         selected
-                          ? 'bg-primary-subtle text-primary border-primary/40 font-semibold'
-                          : 'bg-card text-foreground border-border hover:bg-muted/40',
+                          ? 'bg-primary-subtle text-primary border-primary/40 text-title-3'
+                          : 'text-body-2 bg-card text-foreground border-border hover:bg-muted/40',
                         disabled && 'opacity-40 cursor-not-allowed hover:bg-card',
                       )}
                     >
@@ -154,7 +154,7 @@ export default function OnboardingPage() {
                   <button
                     type="button"
                     onClick={() => setShowMore(true)}
-                    className="inline-flex items-center rounded-full border border-dashed border-border px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
+                    className="inline-flex items-center rounded-full border border-dashed border-border px-3 py-1.5 text-label-2 text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                   >
                     + 더보기
                   </button>

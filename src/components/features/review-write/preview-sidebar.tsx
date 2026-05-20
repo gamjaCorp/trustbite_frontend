@@ -18,14 +18,14 @@ export function PreviewSidebar({
   onSubmit,
 }: Props) {
   return (
-    <aside className="space-y-4 lg:sticky lg:top-16">
-      <RankingPreview myTopRestaurants={myTopRestaurants} />
+    <aside className="space-y-4 lg:sticky lg:top-[var(--header-height)]">
       <TrustDeltaCard
         baseScore={baseScore}
         remainingReviewsForNextGrade={remainingReviewsForNextGrade}
         nextGradeName={nextGradeName}
         onSubmit={onSubmit}
       />
+      <RankingPreview myTopRestaurants={myTopRestaurants} />
     </aside>
   );
 }

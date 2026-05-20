@@ -14,7 +14,7 @@ export function TargetRestaurantCard() {
   const visitOrdinal = selected.visitCount + 1;
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl bg-card ring-1 ring-paper-edge/40 p-3 shadow-card">
+    <div className="flex items-center gap-3 rounded-2xl bg-card ring-1 ring-border p-3 shadow-card">
       <div className="relative w-14 h-14 shrink-0 overflow-hidden rounded-xl bg-muted">
         <Image src={selected.imageUrl} alt={selected.name} fill className="object-cover" />
       </div>

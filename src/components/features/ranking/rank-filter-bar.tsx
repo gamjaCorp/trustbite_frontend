@@ -18,7 +18,7 @@ export const CATEGORIES: Array<Category | 'all'> = [
   '기타',
 ];
 
-export const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식'];
+export const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '다이어트'];
 
 interface CategoryChipRowProps {
   category: Category | 'all';
@@ -96,7 +96,7 @@ export function RankFilterBar({
         onCategoryChange={onCategoryChange}
         categories={categories}
       />
-      {showOccasions && <div className="border-t border-dashed border-border/60" />}
+      {showOccasions && <div className="border-t border-dashed border-border" />}
       <div className="flex items-center justify-between gap-2">
         {/* 좌측: 상황 칩 */}
         {showOccasions ? (

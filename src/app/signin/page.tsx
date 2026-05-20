@@ -10,12 +10,12 @@ export default async function SignInPage(props: {
   searchParams: { callbackUrl: string | undefined };
 }) {
   return (
-    <div className="relative overflow-hidden min-h-[calc(100vh-97px)] bg-gradient-to-b from-primary-subtle/60 via-background to-background flex flex-col items-center justify-center px-6 py-16">
+    <div className="relative overflow-hidden min-h-[calc(100vh-var(--header-height))] bg-gradient-to-b from-primary-subtle/60 via-background to-background flex flex-col items-center justify-center px-6 py-16">
       <CutleryRain />
       <div className="relative z-10 w-full max-w-sm space-y-10">
         <div className="text-center space-y-3">
-          <h1 className="text-3xl font-bold text-primary tracking-tight">TrustBite</h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <h1 className="text-display-1 text-primary">TrustBite</h1>
+          <p className="text-caption-1 text-muted-foreground leading-relaxed">
             믿을 수 있는 별점,
             <br />
             같이 모으는 맛집

@@ -16,6 +16,7 @@ interface Props {
   onRemove: (id: string) => void;
 }
 
+// 위시리스트 항목 카드 — 북마크 토글·썸네일·카테고리·태그라인·메타·커뮤니티 평점 표시
 export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
   const {
     id,
@@ -34,7 +35,7 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
     'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&auto=format';
 
   return (
-    <div className="flex items-stretch gap-4 px-3 py-4 group hover:bg-muted/30 transition-colors">
+    <div className="flex items-stretch gap-3 px-3 py-4 group hover:bg-muted/30 transition-colors sm:gap-4">
       {/* 북마크 토글 — 클릭하면 위시리스트에서 해제 */}
       <button
         type="button"
@@ -48,7 +49,7 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
       {/* 썸네일 */}
       <Link
         href={`/restaurant/${id}`}
-        className="relative w-24 h-24 shrink-0 overflow-hidden rounded-xl"
+        className="relative w-20 h-20 shrink-0 overflow-hidden rounded-xl sm:w-24 sm:h-24"
       >
         <Image
           src={thumbnail}
@@ -60,9 +61,15 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
 
       {/* 중앙 컬럼 */}
       <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-        <div className="flex items-center gap-1 text-caption-1 text-ink/70">
-          <CategoryBadge category={category} />
-          <span>· {region}</span>
+        <div className="flex items-center justify-between gap-1 text-caption-1 text-ink/70">
+          <div className="flex items-center gap-1 min-w-0">
+            <CategoryBadge category={category} />
+            <span className="truncate">· {region}</span>
+          </div>
+          <span className="sm:hidden flex items-center gap-0.5 shrink-0">
+            <Star className="w-3 h-3 fill-palette-amber text-palette-amber" aria-hidden />
+            <span>{communityAvgScore.toFixed(1)}</span>
+          </span>
         </div>
 
         <Link href={`/restaurant/${id}`} className="text-title-1 text-foreground truncate">
@@ -74,9 +81,9 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
         )}
 
         {/* 메타 행 */}
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-2 min-w-0">
           <div
-            className="flex items-center gap-2.5 text-caption-2 text-muted-foreground"
+            className="flex items-center gap-2.5 text-caption-2 text-muted-foreground min-w-0"
             suppressHydrationWarning
           >
             <span className="flex items-center gap-1">
@@ -99,10 +106,10 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
       </div>
 
       {/* 수직 구분선 */}
-      <div className="self-stretch w-px bg-border/60" />
+      <div className="hidden sm:block self-stretch w-px bg-border" />
 
       {/* 우측 — 커뮤니티 평점 + 신뢰도 */}
-      <div className="shrink-0 flex flex-col items-end gap-1 px-4 self-center">
+      <div className="hidden sm:flex shrink-0 flex-col items-end gap-1 px-3 sm:px-4 self-center">
         <span className="text-caption-2 text-muted-foreground">평균</span>
         <div className="flex items-center gap-1">
           <Star className="w-4 h-4 fill-palette-amber text-palette-amber" />

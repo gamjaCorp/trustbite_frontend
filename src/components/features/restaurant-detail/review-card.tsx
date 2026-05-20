@@ -38,7 +38,7 @@ export function ReviewCard({ review }: Props) {
                 {review.reviewerName}
               </Link>
               <GradeIcon level={review.reviewerLevel} size="xs" />
-              <span className="rounded-chip bg-blue-50 text-blue-700 px-1.5 py-0.5 text-label-3 dark:bg-blue-900/30 dark:text-blue-300">
+              <span className="rounded-chip bg-palette-blue-subtle text-info px-1.5 py-0.5 text-label-3">
                 {review.visitOrdinal}번째 방문
               </span>
             </div>
@@ -64,7 +64,7 @@ export function ReviewCard({ review }: Props) {
 
       <p
         className={cn(
-          'mt-2.5 whitespace-pre-line text-sm text-foreground leading-relaxed',
+          'mt-2.5 whitespace-pre-line text-body-2 text-foreground/85 leading-relaxed',
           isClamped && 'line-clamp-3',
         )}
       >

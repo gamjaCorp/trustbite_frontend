@@ -6,6 +6,7 @@ import { ProfileFooter } from './profile-footer';
 import { ProfileListRow } from './profile-list-row';
 import { ProfileSection } from './profile-section';
 import { ProfileSummaryCard } from './profile-summary-card';
+import { ThemeSettingRow } from './theme-setting-row';
 
 interface Props {
   profile: MyProfile;
@@ -32,6 +33,7 @@ export function MyProfileView({ profile }: Props) {
         </div>
         <div className="border-t border-border">
           <ProfileSection title="설정">
+            <ThemeSettingRow />
             <ProfileListRow label="활동 지역" value={profile.activityRegion} />
             <ProfileListRow label="알림 설정" />
             <ProfileListRow label="계정 관리" />

@@ -69,7 +69,7 @@ export function RestaurantRankList({ entries }: Props) {
     <div>
       {/* 섹션 헤더 */}
       <div className="flex items-start justify-between gap-3 px-1">
-        <div className="space-y-0.5">
+        <div className="space-y-1.5">
           <h2 className="text-headline-2 text-foreground truncate">전체 랭킹</h2>
           <p className="text-caption-2 text-muted-foreground">
             내가 쓴 리뷰 <span className="">{reviewedCount}</span>개 ·{' '}
@@ -111,7 +111,7 @@ export function RestaurantRankList({ entries }: Props) {
           categories={CATEGORIES}
         />
 
-        <div className="mt-2 border-t border-dashed border-border/60" />
+        <div className="mt-2 border-t border-dashed border-border" />
 
         {/* 상황 칩 행 */}
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
@@ -158,11 +158,11 @@ export function RestaurantRankList({ entries }: Props) {
           </EmptyContent>
         </Empty>
       ) : (
-        <ul className="mt-6 border-hairline border-b border-border/60">
+        <ul className="mt-6 border-b border-border">
           {filteredList.map((entry, i) => (
             <li
               key={entry.id}
-              className={cn(i > 0 && 'border-hairline border-t border-border/60')}
+              className={cn(i > 0 && 'border-t border-border')}
             >
               <MyRestaurantCard entry={{ ...entry, rank: i + 1 }} />
             </li>

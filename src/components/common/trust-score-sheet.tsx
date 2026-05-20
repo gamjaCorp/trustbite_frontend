@@ -71,8 +71,8 @@ export function TrustScoreSheet({
               tone.ring,
             )}
           >
-            <span className="text-sm text-muted-foreground">종합 신뢰도</span>
-            <span className={cn('text-3xl font-bold tabular-nums', tone.text)}>
+            <span className="text-caption-1 text-muted-foreground">종합 신뢰도</span>
+            <span className={cn('text-display-1 tabular-nums', tone.text)}>
               {Math.round(trustScore)}
               <span className="text-title-1">%</span>
             </span>

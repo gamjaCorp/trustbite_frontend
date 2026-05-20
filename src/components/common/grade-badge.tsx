@@ -19,7 +19,7 @@ export function GradeBadge({ level, size = 'sm', showLabel = true, className }: 
         'inline-flex items-center gap-1 rounded-chip font-semibold',
         def.toneClass.text,
         def.toneClass.bg,
-        size === 'sm' ? 'text-label-3 px-1.5 py-0.5' : 'text-sm px-2 py-0.5',
+        size === 'sm' ? 'text-label-3 px-1.5 py-0.5' : 'text-label-2 px-2 py-0.5',
         className,
       )}
     >

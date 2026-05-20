@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -17,32 +16,6 @@ const NAV_TABS = [
   { label: '맛집 탐색', href: '/', requiresAuth: false },
   { label: '나의 맛집', href: '/my-places', requiresAuth: true },
 ] as const;
-
-function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setMounted(true), []);
-
-  const toggle = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="rounded-full"
-      aria-label="테마 토글"
-      onClick={toggle}
-    >
-      {mounted && resolvedTheme === 'dark' ? (
-        <Sun className="w-4 h-4" />
-      ) : (
-        <Moon className="w-4 h-4" />
-      )}
-    </Button>
-  );
-}
 
 export function Header() {
   const pathname = usePathname();
@@ -67,7 +40,6 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <Button variant="ghost" size="icon" className="rounded-full">
               <Bell className="w-4 h-4" />
             </Button>
@@ -106,7 +78,7 @@ export function Header() {
                   type="button"
                   onClick={() => setMyPlacesDialogOpen(true)}
                   className={cn(
-                    'px-4 pb-2.5 pt-1 text-sm transition-colors font-medium text-muted-foreground hover:text-foreground',
+                    'px-4 pb-2.5 pt-1 text-title-3 transition-colors text-muted-foreground hover:text-foreground',
                   )}
                 >
                   {tab.label}
@@ -119,10 +91,10 @@ export function Header() {
                 key={tab.href}
                 href={tab.href}
                 className={cn(
-                  'px-4 pb-2.5 pt-1 text-sm transition-colors',
+                  'px-4 pb-2.5 pt-1 transition-colors',
                   isActive
-                    ? 'border-b-2 border-primary font-semibold text-primary'
-                    : 'font-medium text-muted-foreground hover:text-foreground',
+                    ? 'border-b-2 border-primary text-title-2 text-primary'
+                    : 'text-body-2 text-muted-foreground hover:text-foreground',
                 )}
               >
                 {tab.label}
