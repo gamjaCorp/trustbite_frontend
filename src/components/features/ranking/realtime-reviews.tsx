@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { RealtimeReview } from '@/types/restaurant';
-import { GradeIcon } from '@/components/common/grade-icon';
+import { UserGradeMark } from '@/components/common/user-grade-mark';
 
 interface Props {
   reviews: RealtimeReview[];
@@ -55,7 +55,7 @@ export function RealtimeReviews({ reviews }: Props) {
                 >
                   {review.reviewerName}
                 </Link>
-                <GradeIcon level={review.reviewerLevel} size="xs" />
+                <UserGradeMark level={review.reviewerLevel} size="sm" />
               </div>
             </div>
 

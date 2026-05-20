@@ -2,6 +2,7 @@ import { getLevelDef } from '@/lib/grade-levels';
 import type { GradeLevel } from '@/lib/grade-levels';
 
 import { GradeIcon } from '@/components/common/grade-icon';
+import { cn } from '@/lib/utils';
 
 interface Props {
   level: GradeLevel;
@@ -20,7 +21,7 @@ export function CurrentGradePanel({ level, reviewCount, trustScore }: Props) {
         <GradeIcon level={level} size="lg" />
         <div className="text-center">
           <p className="text-label-3 text-muted-foreground mb-1">Lv.{level}</p>
-          <p className="text-title-1 text-foreground">{def.label}</p>
+          <p className={cn('text-title-1', def.toneClass.text)}>{def.label}</p>
         </div>
       </div>
 

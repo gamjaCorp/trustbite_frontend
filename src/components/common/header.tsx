@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { GradeIcon } from '@/components/common/grade-icon';
+import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthMock } from '@/stores/auth-mock-store';
+import { useMyProfileMock } from '@/stores/my-profile-mock-store';
 import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
 
 const NAV_TABS = [
@@ -21,6 +21,7 @@ export function Header() {
   const pathname = usePathname();
   const profile = getMyProfile();
   const { isAuthed } = useAuthMock();
+  const { nickname } = useMyProfileMock();
   const [myPlacesDialogOpen, setMyPlacesDialogOpen] = useState(false);
 
   // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다. 로그인/온보딩은 미니 랜딩.
@@ -40,23 +41,19 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Bell className="w-4 h-4" />
-            </Button>
-
             {isAuthed ? (
               <Link
                 href="/profile"
                 className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
               >
-                <span className="text-title-3 text-foreground">감자먹는 햄찌</span>
-                <GradeIcon level={profile.level} size="xs" />
-                <Avatar className="h-8 w-8 ml-0.5">
+                <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="프로필" />
                   <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
                     햄
                   </AvatarFallback>
                 </Avatar>
+                <span className="text-title-3 text-foreground">{nickname}</span>
+                <UserGradeMark level={profile.level} size="sm" />
               </Link>
             ) : (
               <Button asChild size="sm" variant="outline" className="rounded-full">

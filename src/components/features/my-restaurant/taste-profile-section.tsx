@@ -13,14 +13,12 @@ import {
 } from 'recharts';
 import { Category, MyRestaurantEntry } from '@/types/restaurant';
 import { CATEGORY_TEXT_STYLE } from '@/lib/category';
-import { cn } from '@/lib/utils';
 
 interface Props {
   entries: MyRestaurantEntry[];
   subjectName?: string;
   aiPersonaText?: string;
   reviewCount?: number;
-  variant?: 'shadow' | 'bordered';
 }
 
 interface StatCardProps {
@@ -80,7 +78,7 @@ function buildInsightBadge(data: { subject: string; score: number }[]): string |
 }
 
 // 나의 미식 성향 분석 섹션 — PRD §8.6 레이더 차트(맛/가성비/분위기) + §12.1 AI 취향 요약 4카드
-export function TasteProfileSection({ entries, subjectName, aiPersonaText, reviewCount, variant = 'shadow' }: Props) {
+export function TasteProfileSection({ entries, subjectName, aiPersonaText, reviewCount }: Props) {
   const radarData = useMemo(() => {
     if (entries.length === 0) return [];
     return [
@@ -152,7 +150,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
 
   return (
     <section>
-      <div className={cn('bg-card rounded-2xl overflow-hidden', variant === 'bordered' ? 'border border-border' : 'shadow-card')}>
+      <div className="bg-card rounded-2xl overflow-hidden shadow-card">
         {/* 헤더 — 박스 내부 상단 */}
         <div className="flex items-center justify-between px-5 pt-5 pb-2">
           <h2 className="text-headline-3 text-foreground flex items-center gap-2">

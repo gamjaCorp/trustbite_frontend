@@ -1,9 +1,10 @@
 // 다른 사용자 프로필 상단 카드 — 이름·등급·팔로워/팔로잉·팔로우 버튼
+import { useRouter } from 'next/navigation';
 import { MoreHorizontal, UserCheck, UserPlus } from 'lucide-react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { GradeBadge } from '@/components/common/grade-badge';
+import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { FollowStatsRow } from '@/components/common/follow-stats-row';
 import { cn } from '@/lib/utils';
 import type { UserProfile } from '@/types/user';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Props) {
+  const router = useRouter();
   return (
     <div className="bg-card rounded-2xl border border-border p-4">
       <div className="flex items-start gap-3">
@@ -29,7 +31,7 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
             <h1 className="text-title-1 text-foreground truncate">
               {profile.name}님의 미식 가이드
             </h1>
-            <GradeBadge level={profile.level} />
+            <UserGradeMark level={profile.level} size="sm" />
           </div>
           <p className="mt-1 text-caption-2 text-muted-foreground truncate">
             @{profile.handle} · 검증된 맛집 {profile.curatedCount}곳
@@ -74,6 +76,8 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
           followerCount={profile.followerCount}
           followingCount={profile.followingCount}
           size="sm"
+          onClickFollowers={() => router.push(`/user/${profile.id}/followers`)}
+          onClickFollowing={() => router.push(`/user/${profile.id}/following`)}
         />
 
         {profile.mutualFollowing && (

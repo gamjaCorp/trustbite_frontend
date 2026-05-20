@@ -21,23 +21,26 @@ export function MyProfileView({ profile }: Props) {
         <div className="border-t border-border">
           <PointsAndListsRow profile={profile} />
         </div>
+        {/* TODO: 1차 MVP 제외 — 활동 섹션 전체 (내 리뷰 목록·잠금 해제·도움됐어요 2·3차 MVP) */}
         <div className="border-t border-border">
           <ProfileSection title="활동">
-            <ProfileListRow label="내가 쓴 리뷰" value={`${profile.myReviewCount}개`} />
+            <ProfileListRow label="내가 쓴 리뷰" value={`${profile.myReviewCount}개`} disabled />
             <ProfileListRow
               label="잠금 해제한 미식 가이드"
               value={`${profile.unlockedGuideUserCount}명 · ${profile.unlockedGuideTier}차`}
+              disabled
             />
-            <ProfileListRow label="도움됐어요 누른 리뷰" value={`${profile.helpfulVoteTier}차`} />
+            <ProfileListRow label="도움됐어요 누른 리뷰" value={`${profile.helpfulVoteTier}차`} disabled />
           </ProfileSection>
         </div>
         <div className="border-t border-border">
           <ProfileSection title="설정">
             <ThemeSettingRow />
-            <ProfileListRow label="활동 지역" value={profile.activityRegion} />
-            <ProfileListRow label="알림 설정" />
-            <ProfileListRow label="계정 관리" />
-            <ProfileListRow label="로그아웃" tone="danger" />
+            {/* TODO: 1차 MVP 제외 — 설정 하위 항목 (PRD 미정의) */}
+            <ProfileListRow label="활동 지역" value={profile.activityRegion} disabled />
+            <ProfileListRow label="알림 설정" disabled />
+            <ProfileListRow label="계정 관리" disabled />
+            <ProfileListRow label="로그아웃" tone="danger" disabled />
           </ProfileSection>
         </div>
       </section>

@@ -1,12 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-
 import { RegionalRankCard } from '@/components/features/ranking/regional-rank-card';
 import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
 import { StatsStrip } from '@/components/common/stats-strip';
 import { getLevelDef } from '@/lib/grade-levels';
 import { getTrustToneClass } from '@/lib/trust-score';
+import { useFollowMock } from '@/stores/follow-mock-store';
 import type { UserProfile } from '@/types/user';
 
 import { LockedRankingsSection } from './locked-rankings-section';
@@ -17,7 +16,8 @@ interface Props {
 }
 
 export function UserProfileView({ profile }: Props) {
-  const [isFollowing, setFollowing] = useState(false);
+  const isFollowing = useFollowMock((s) => s.isFollowing(profile.id));
+  const toggle = useFollowMock((s) => s.toggle);
   const topPick = profile.rankings[0];
   const trustTone = getTrustToneClass(profile.trustScore);
   const levelDef = getLevelDef(profile.level);
@@ -27,12 +27,11 @@ export function UserProfileView({ profile }: Props) {
       <UserProfileHeader
         profile={profile}
         isFollowing={isFollowing}
-        onToggleFollow={() => setFollowing((v) => !v)}
+        onToggleFollow={() => toggle(profile.id)}
       />
 
       <div className="mt-6">
         <StatsStrip
-          variant="bordered"
           items={[
             { label: '리뷰', value: `${profile.reviewCount}개` },
             {
@@ -58,7 +57,6 @@ export function UserProfileView({ profile }: Props) {
 
       <div className="mt-5">
         <TasteProfileSection
-          variant="bordered"
           entries={profile.rankings}
           subjectName={profile.name}
           aiPersonaText={profile.aiTastePersona}
@@ -95,7 +93,7 @@ export function UserProfileView({ profile }: Props) {
         <LockedRankingsSection
           totalCount={profile.totalRankCount}
           targetName={profile.name}
-          onFollow={() => setFollowing(true)}
+          onFollow={() => toggle(profile.id)}
         />
       )}
     </div>

@@ -13,12 +13,11 @@ interface StatsStripItem {
 
 interface Props {
   items: StatsStripItem[];
-  variant?: 'shadow' | 'bordered';
 }
 
-export function StatsStrip({ items, variant = 'shadow' }: Props) {
+export function StatsStrip({ items }: Props) {
   return (
-    <div className={cn('bg-card rounded-2xl flex divide-x divide-border overflow-hidden', variant === 'bordered' ? 'border border-border' : 'shadow-card')}>
+    <div className="bg-card rounded-2xl shadow-card flex divide-x divide-border overflow-hidden">
       {items.map((item, i) => {
         const inner = (
           <>

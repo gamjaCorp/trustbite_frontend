@@ -12,12 +12,10 @@ export function ThemeSettingRow() {
   return (
     <ProfileListRow
       label="다크 모드"
-      onClick={() => setTheme(isDark ? 'light' : 'dark')}
       rightSlot={
         <Switch
           checked={isDark}
           onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-          onClick={(e) => e.stopPropagation()}
           aria-label="다크 모드 토글"
         />
       }

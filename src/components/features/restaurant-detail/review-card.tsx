@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DetailedReview } from '@/types/restaurant';
-import { GradeIcon } from '@/components/common/grade-icon';
+import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { useHelpfulMock } from '@/stores/helpful-mock-store';
 
 interface Props {
@@ -42,7 +42,7 @@ export function ReviewCard({ review }: Props) {
               >
                 {review.reviewerName}
               </Link>
-              <GradeIcon level={review.reviewerLevel} size="xs" />
+              <UserGradeMark level={review.reviewerLevel} size="sm" />
               {review.visitOrdinal > 1 && (
                 <span className="rounded-chip bg-palette-blue-subtle text-info px-1.5 py-0.5 text-label-3">
                   {review.visitOrdinal}번째 방문
