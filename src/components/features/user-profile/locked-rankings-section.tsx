@@ -24,8 +24,9 @@ export function LockedRankingsSection({ totalCount, targetName, onFollow }: Prop
         <p className="text-title-2 text-foreground">
           팔로우하고 {targetName}님의 {totalCount}곳을 확인해보세요
         </p>
+        {/* TODO: 1차 MVP 제외 — 포인트 차감 카피 (포인트 시스템 3차 MVP) */}
         <p className="text-caption-2 text-muted-foreground">
-          팔로우는 무료, 리스트 열람은 10P가 들어요
+          팔로우하면 전체 랭킹이 공개돼요
         </p>
         <Button
           size="sm"

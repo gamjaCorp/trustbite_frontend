@@ -1,4 +1,7 @@
+'use client';
+
 import { Clock, Copy, MapPin } from 'lucide-react';
+import { toast } from 'sonner';
 import { RestaurantDetail } from '@/types/restaurant';
 
 interface Props {
@@ -12,6 +15,11 @@ const GRID_STYLE: React.CSSProperties = {
 };
 
 export function LocationSection({ detail }: Props) {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(detail.address);
+    toast.success('주소가 복사되었어요');
+  };
+
   return (
     <section className="px-6 pt-10 pb-12">
       <h2 className="flex items-center gap-1.5 text-headline-2 text-foreground mb-3">
@@ -33,10 +41,7 @@ export function LocationSection({ detail }: Props) {
               <span className="relative w-4 h-4 rounded-full bg-foreground ring-4 ring-background" />
             </span>
           </div>
-          <div className="absolute right-2 bottom-2 flex flex-col rounded-md overflow-hidden ring-1 ring-border bg-background/90 text-title-2 text-ink/70">
-            <span className="w-7 h-7 flex items-center justify-center border-b border-border">+</span>
-            <span className="w-7 h-7 flex items-center justify-center">−</span>
-          </div>
+          {/* TODO: 1차 MVP 제외 — 지도 줌 컨트롤 (실제 지도 SDK 연동 시 구현) */}
         </div>
 
         {/* 우측 — 주소·설명·CTA */}
@@ -53,6 +58,7 @@ export function LocationSection({ detail }: Props) {
           <div className="mt-auto pt-3 flex items-center gap-2 self-end">
             <button
               type="button"
+              onClick={handleCopy}
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-title-2 text-foreground hover:bg-muted transition-colors"
             >
               <Copy className="w-4 h-4" />

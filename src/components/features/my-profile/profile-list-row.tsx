@@ -18,7 +18,7 @@ interface Props {
 export function ProfileListRow({ label, value, href, tone = 'default', rightSlot, onClick, disabled }: Props) {
   const content = (
     <>
-      <span className={cn('text-title-3', !disabled && tone === 'danger' ? 'text-error' : 'text-foreground')}>
+      <span className={cn('text-title-3', disabled ? 'opacity-35 text-foreground' : tone === 'danger' ? 'text-error' : 'text-foreground')}>
         {label}
       </span>
       {disabled ? (
@@ -34,7 +34,7 @@ export function ProfileListRow({ label, value, href, tone = 'default', rightSlot
 
   const baseClassName = 'flex items-center justify-between w-full px-8 py-4 transition-colors';
   const activeClassName = cn(baseClassName, 'hover:bg-muted/30');
-  const disabledClassName = cn(baseClassName, 'opacity-35 cursor-not-allowed');
+  const disabledClassName = cn(baseClassName, 'cursor-not-allowed');
 
   return (
     <li>

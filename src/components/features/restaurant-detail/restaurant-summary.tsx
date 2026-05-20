@@ -35,13 +35,13 @@ export function RestaurantSummary({ detail }: Props) {
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <button
-            type="button"
-            className="w-9 h-9 rounded-full bg-muted text-ink/70 hover:bg-muted/80 flex items-center justify-center transition-colors"
-            aria-label="공유"
+          {/* TODO: 1차 MVP 제외 — 공유 기능 */}
+          <div
+            aria-disabled="true"
+            className="w-9 h-9 rounded-full bg-muted text-ink/70 flex items-center justify-center opacity-35 cursor-not-allowed"
           >
             <Share2 className="w-4 h-4" />
-          </button>
+          </div>
           <button
             type="button"
             onClick={() => {

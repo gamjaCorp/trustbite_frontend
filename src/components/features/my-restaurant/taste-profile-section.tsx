@@ -243,24 +243,29 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
           </div>
         </div>
 
-        {/* 하단: AI 분석 패널 */}
-        <div className="border-t border-border px-5 py-5 bg-gradient-to-br from-primary-subtle via-primary-subtle/40 to-info-subtle/60 space-y-1.5">
-          <div className="flex items-center justify-between">
-            <p className="text-label-2 text-primary flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 animate-pulse" />
+        {/* TODO: 1차 MVP 제외 — AI 미식 성향 분석 패널 (AI 취향 요약 2차 MVP) */}
+        <div
+          aria-disabled="true"
+          className="border-t border-border px-5 py-5 bg-gradient-to-br from-primary-subtle via-primary-subtle/40 to-info-subtle/60 cursor-not-allowed"
+        >
+          <div className="flex items-center justify-between mb-1.5">
+            <p className="opacity-35 text-label-2 text-primary flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4" />
               AI 미식 성향 분석
             </p>
-            <span className="text-caption-2 text-muted-foreground">실시간 분석</span>
+            <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-caption-2 text-muted-foreground">준비 중</span>
           </div>
-          <p className="text-body-2 text-foreground leading-relaxed">
-            {aiPersonaText ?? (
-              <>
-                가성비를 중시하면서도 맛에 대한 기준이 높은 <strong className="text-primary">실속파 미식가</strong>예요.
-                한 번 마음에 든 곳은 꾸준히 재방문하는 단골형 성향도 보여요.
-              </>
-            )}
-          </p>
-          <p className="text-caption-2 text-muted-foreground">리뷰 {basisCount}개를 분석해 자동 생성한 결과예요</p>
+          <div className="opacity-35 space-y-1.5">
+            <p className="text-body-2 text-foreground leading-relaxed">
+              {aiPersonaText ?? (
+                <>
+                  가성비를 중시하면서도 맛에 대한 기준이 높은 <strong className="text-primary">실속파 미식가</strong>예요.
+                  한 번 마음에 든 곳은 꾸준히 재방문하는 단골형 성향도 보여요.
+                </>
+              )}
+            </p>
+            <p className="text-caption-2 text-muted-foreground">리뷰 {basisCount}개를 분석해 자동 생성한 결과예요</p>
+          </div>
         </div>
       </div>
     </section>

@@ -24,18 +24,18 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background">
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-3 px-6 py-4">
         <div className="min-w-0 leading-snug">
+          {/* TODO: 1차 MVP 제외 — 포인트 카피 (+5pt) 제거 (포인트 시스템 3차 MVP) */}
           {isRevisit && myReview ? (
             <>
               <p className="text-title-1 text-foreground">또 다녀오셨나요?</p>
               <p className="mt-1 text-caption-2 text-muted-foreground">
                 <span className="font-semibold">{myReview.visitCount}번</span> 방문 · 최근{' '}
-                {myReview.lastVisitLabel} · 재방문 리뷰를 쓰면{' '}
-                <span className="font-semibold text-primary">+5pt</span>
+                {myReview.lastVisitLabel} · 재방문 리뷰는 신뢰도에 반영됩니다
               </p>
             </>
           ) : (
             <p className="text-caption-2 text-muted-foreground">
-              리뷰를 쓰면 <span className="font-semibold text-primary">+5pt</span> 적립 · 내 신뢰도에 반영됩니다
+              리뷰를 쓰면 내 신뢰도에 반영됩니다
             </p>
           )}
         </div>

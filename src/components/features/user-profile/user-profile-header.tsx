@@ -1,6 +1,6 @@
 // 다른 사용자 프로필 상단 카드 — 이름·등급·팔로워/팔로잉·팔로우 버튼
 import { useRouter } from 'next/navigation';
-import { MoreHorizontal, UserCheck, UserPlus } from 'lucide-react';
+import { UserCheck, UserPlus } from 'lucide-react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -61,13 +61,7 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
               </>
             )}
           </Button>
-          <button
-            type="button"
-            aria-label="더보기"
-            className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors"
-          >
-            <MoreHorizontal className="w-4 h-4" />
-          </button>
+          {/* TODO: 1차 MVP 제외 — 더보기(신고·차단 등) 액션 미정의 */}
         </div>
       </div>
 

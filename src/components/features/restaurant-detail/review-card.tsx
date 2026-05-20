@@ -7,7 +7,6 @@ import { ThumbsUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DetailedReview } from '@/types/restaurant';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
-import { useHelpfulMock } from '@/stores/helpful-mock-store';
 
 interface Props {
   review: DetailedReview;
@@ -19,10 +18,6 @@ export function ReviewCard({ review }: Props) {
   const [expanded, setExpanded] = useState(false);
   const needsClamp = review.content.length > CLAMP_THRESHOLD;
   const isClamped = needsClamp && !expanded;
-
-  const helpful = useHelpfulMock((s) => s.isHelpful(review.id));
-  const toggle = useHelpfulMock((s) => s.toggle);
-  const displayCount = review.helpfulCount + (helpful ? 1 : 0);
 
   return (
     <article className="px-6 py-4 border-t border-border first:border-t-0">
@@ -116,20 +111,14 @@ export function ReviewCard({ review }: Props) {
           ))}
         </div>
 
-        <button
-          type="button"
-          onClick={() => toggle(review.id)}
-          aria-pressed={helpful}
-          className={cn(
-            'shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-label-3 transition-colors',
-            helpful
-              ? 'border-primary/30 bg-primary-subtle text-primary'
-              : 'border-border text-ink/70 hover:bg-muted',
-          )}
+        {/* TODO: 1차 MVP 제외 — 도움됐어요 (커뮤니티 평판 2차 MVP) */}
+        <div
+          aria-disabled="true"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-label-3 opacity-35 cursor-not-allowed"
         >
-          <ThumbsUp className={cn('w-3 h-3', helpful && 'fill-current')} />
-          도움됐어요 <span>{displayCount}</span>
-        </button>
+          <ThumbsUp className="w-3 h-3" />
+          도움됐어요 <span>{review.helpfulCount}</span>
+        </div>
       </div>
     </article>
   );

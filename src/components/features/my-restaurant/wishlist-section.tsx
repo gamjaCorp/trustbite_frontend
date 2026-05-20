@@ -88,13 +88,12 @@ export function WishlistSection() {
         <h2 className="text-headline-2 text-foreground">위시리스트</h2>
         <div className="flex items-center gap-1.5 shrink-0">
           {/* TODO: 1차 MVP 제외 — 공유 기능 */}
-          <button
-            type="button"
-            aria-label="공유"
-            className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground hover:bg-muted/80 flex items-center justify-center transition-colors"
+          <div
+            aria-disabled="true"
+            className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
           >
             <Share2 className="w-4 h-4" />
-          </button>
+          </div>
           <ChipSelect
             value={sort}
             onValueChange={(v) => setSort(v as WishlistSortKey)}

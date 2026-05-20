@@ -5,11 +5,8 @@ import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import { getTrustToneClass } from '@/lib/trust-score';
 import {
-  LONG_TEXT_THRESHOLD,
   useReviewIsEditMode,
   useReviewIsValid,
-  useReviewPhotoCount,
-  useReviewTextLength,
   useReviewTrustDelta,
 } from '@/stores/review-write-store';
 
@@ -28,15 +25,10 @@ export function TrustDeltaCard({
 }: Props) {
   const delta = useReviewTrustDelta();
   const isValid = useReviewIsValid();
-  const photoCount = useReviewPhotoCount();
-  const textLength = useReviewTextLength();
   const isEditMode = useReviewIsEditMode();
 
   const next = Math.min(100, baseScore + delta);
   const tone = getTrustToneClass(next);
-
-  const reachedLongText = textLength >= LONG_TEXT_THRESHOLD;
-  const hasPhoto = photoCount > 0;
 
   return (
     <div className="rounded-2xl bg-card ring-1 ring-border p-4 shadow-card">
@@ -60,12 +52,13 @@ export function TrustDeltaCard({
 
       <Progress value={next} className={cn('mt-3 h-2', tone.bg)} />
 
-      <div className="mt-4">
-        <p className="text-caption-2 text-muted-foreground mb-2">획득 예정</p>
+      {/* TODO: 1차 MVP 제외 — 포인트 적립 칩 (포인트 시스템 3차 MVP) */}
+      <div aria-disabled="true" className="mt-4 opacity-35 cursor-not-allowed">
+        <p className="text-caption-2 text-muted-foreground mb-2">포인트 시스템 준비 중</p>
         <div className="flex flex-wrap gap-1.5">
-          <PointChip label="리뷰" points={5} active={isValid} />
-          <PointChip label="사진" points={3} active={hasPhoto} />
-          {reachedLongText && <PointChip label="100자" points={2} active />}
+          <PointChip label="리뷰" points={5} active={false} />
+          <PointChip label="사진" points={3} active={false} />
+          <PointChip label="100자" points={2} active={false} />
         </div>
       </div>
 
