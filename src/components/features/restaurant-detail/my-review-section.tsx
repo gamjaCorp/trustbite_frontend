@@ -2,13 +2,22 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MyReview, MyReviewEntry } from '@/types/restaurant';
 import { useAuthMock } from '@/stores/auth-mock-store';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { DeleteReviewDialog } from './delete-review-dialog';
 
 interface Props {
   review: MyReview;
+  restaurantId: string;
 }
 
 const CLAMP_THRESHOLD = 120;
@@ -45,25 +54,57 @@ function MyReviewPhotos({ photos }: { photos: string[] }) {
 function MyReviewVisit({
   visit,
   compact,
+  restaurantId,
 }: {
   visit: MyReviewEntry;
   compact: boolean;
+  restaurantId: string;
 }) {
+  const router = useRouter();
   const [expanded, setExpanded] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const needsClamp = compact && visit.content.length > CLAMP_THRESHOLD;
   const isClamped = needsClamp && !expanded;
+
+  const handleEdit = () => {
+    router.push(`/restaurant/${restaurantId}/review/new?mode=edit`);
+  };
 
   return (
     <div className="rounded-xl bg-background p-3">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-caption-2 text-muted-foreground">{visit.label}</p>
-        <button
-          type="button"
-          className="shrink-0 w-7 h-7 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
-          aria-label="수정/삭제"
-        >
-          <MoreHorizontal className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-1.5">
+          {visit.visitOrdinal > 1 && (
+            <span className="rounded-chip bg-palette-blue-subtle text-info px-1.5 py-0.5 text-label-3">
+              {visit.visitOrdinal}번째 방문
+            </span>
+          )}
+          <span className="text-caption-2 text-muted-foreground">{visit.dateLabel}</span>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="shrink-0 w-7 h-7 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
+              aria-label="수정/삭제"
+            >
+              <MoreHorizontal className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={handleEdit}>
+              <Pencil className="w-4 h-4" />
+              수정하기
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              variant="destructive"
+              onSelect={() => setConfirmOpen(true)}
+            >
+              <Trash2 className="w-4 h-4" />
+              삭제하기
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="flex items-center gap-3 text-body-2 text-ink/70 mb-2">
@@ -120,11 +161,13 @@ function MyReviewVisit({
           ))}
         </div>
       )}
+
+      <DeleteReviewDialog open={confirmOpen} onOpenChange={setConfirmOpen} />
     </div>
   );
 }
 
-export function MyReviewSection({ review }: Props) {
+export function MyReviewSection({ review, restaurantId }: Props) {
   const { isAuthed } = useAuthMock();
   if (!isAuthed) return null;
 
@@ -143,7 +186,12 @@ export function MyReviewSection({ review }: Props) {
         )}
       >
         {review.visits.map((visit) => (
-          <MyReviewVisit key={visit.label} visit={visit} compact={hasMultiple} />
+          <MyReviewVisit
+            key={`${visit.visitOrdinal}-${visit.dateLabel}`}
+            visit={visit}
+            compact={hasMultiple}
+            restaurantId={restaurantId}
+          />
         ))}
       </div>
     </section>

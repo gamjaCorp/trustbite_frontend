@@ -16,7 +16,7 @@ interface Props {
 
 export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Props) {
   return (
-    <div className="bg-card rounded-2xl shadow-card p-4">
+    <div className="bg-card rounded-2xl border border-border p-4">
       <div className="flex items-start gap-3">
         <Avatar className="h-11 w-11 shrink-0">
           <AvatarFallback className="bg-primary-subtle text-primary text-title-2">

@@ -124,7 +124,8 @@ export interface RepeatVisitEntry {
 }
 
 export interface MyReviewEntry {
-  label: string;
+  visitOrdinal: number;
+  dateLabel: string;
   scores: RatingScores;
   content: string;
   sceneTags: SceneTag[];
@@ -165,6 +166,7 @@ export interface RestaurantDetail {
   dimensionScores: RatingScores;
   sceneScores: SceneScore[];
   trustScore: number;
+  trustBreakdown: TrustBreakdown;
   reviewCount: number;
   myReview?: MyReview;
   repeatVisitReview?: RepeatVisitReview;

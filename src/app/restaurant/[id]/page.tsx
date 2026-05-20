@@ -33,7 +33,7 @@ export default async function RestaurantDetailPage({
         <RestaurantSummary detail={detail} />
         <ScorePanel detail={detail} />
 
-        {detail.myReview && <MyReviewSection review={detail.myReview} />}
+        {detail.myReview && <MyReviewSection review={detail.myReview} restaurantId={detail.id} />}
 
         <ReviewFilterBar title={othersTitle} />
 

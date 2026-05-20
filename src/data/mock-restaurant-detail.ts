@@ -33,13 +33,15 @@ const yangmiok: RestaurantDetail = {
     { tag: '혼밥', score: 4.2 },
   ],
   trustScore: 89,
+  trustBreakdown: { photoRatio: 0.72, longTextRatio: 0.64, recentActivityRatio: 0.81 },
   reviewCount: 142,
   myReview: {
     visitCount: 2,
     lastVisitLabel: '3월 15일',
     visits: [
       {
-        label: '1번째 방문 · 3월 15일',
+        visitOrdinal: 1,
+        dateLabel: '3월 15일',
         scores: { taste: 5.0, value: 4.5, vibe: 5.0 },
         content:
           '남자친구 생일이어서 미리 예약하고 방문했어요. 2주 전에 예약했는데도 원하는 시간대가 거의 없어서 당황했네요.\n\n입구부터 한옥 분위기로 꾸며져 있어서 사진 찍기도 좋았고, 룸으로 안내받았는데 조용하고 프라이빗해서 기념일 분위기 내기 딱 좋았어요. 2인 코스로 시켰는데 전체적으로 정갈하고 맛있었습니다. 특히 간장게장이 시그니처답게 밥도둑이고, 전복죽은 고소함이 남달랐어요.\n\n다만 가격대가 있어서 자주 오기엔 부담이고, 정말 특별한 날에 오기 좋은 곳이라는 느낌. 다음엔 부모님 모시고 와야겠다 생각했어요.',
@@ -53,7 +55,8 @@ const yangmiok: RestaurantDetail = {
         ],
       },
       {
-        label: '2번째 방문 · 작년 12월',
+        visitOrdinal: 2,
+        dateLabel: '작년 12월',
         scores: { taste: 4.5, value: 4.0, vibe: 4.5 },
         content:
           '친구랑 기념일에 왔어요. 한정식 코스가 정성스럽고 분위기도 좋아서 만족했어요. 반찬 가짓수가 많아서 하나하나 맛보는 재미가 있더라구요. 가격은 조금 있음.',
@@ -182,6 +185,7 @@ const sushidoku: RestaurantDetail = {
     { tag: '혼밥', score: 4.5 },
   ],
   trustScore: 81,
+  trustBreakdown: { photoRatio: 0.65, longTextRatio: 0.55, recentActivityRatio: 0.75 },
   reviewCount: 58,
   reviews: [
     {
@@ -248,6 +252,7 @@ const onion: RestaurantDetail = {
     { tag: '혼밥', score: 4.0 },
   ],
   trustScore: 66,
+  trustBreakdown: { photoRatio: 0.58, longTextRatio: 0.42, recentActivityRatio: 0.69 },
   reviewCount: 521,
   reviews: [
     {

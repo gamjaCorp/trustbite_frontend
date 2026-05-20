@@ -28,9 +28,12 @@ export function BackHeader() {
           이전으로
         </button>
 
-        <span className="absolute left-1/2 -translate-x-1/2 text-title-1 text-primary tracking-tight">
+        <Link
+          href="/"
+          className="absolute left-1/2 -translate-x-1/2 text-title-1 text-primary tracking-tight hover:opacity-80 transition-opacity"
+        >
           TrustBite.
-        </span>
+        </Link>
 
         {isAuthed ? (
           <Link

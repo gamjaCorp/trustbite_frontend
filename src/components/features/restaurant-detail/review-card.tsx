@@ -7,6 +7,7 @@ import { ThumbsUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DetailedReview } from '@/types/restaurant';
 import { GradeIcon } from '@/components/common/grade-icon';
+import { useHelpfulMock } from '@/stores/helpful-mock-store';
 
 interface Props {
   review: DetailedReview;
@@ -18,6 +19,10 @@ export function ReviewCard({ review }: Props) {
   const [expanded, setExpanded] = useState(false);
   const needsClamp = review.content.length > CLAMP_THRESHOLD;
   const isClamped = needsClamp && !expanded;
+
+  const helpful = useHelpfulMock((s) => s.isHelpful(review.id));
+  const toggle = useHelpfulMock((s) => s.toggle);
+  const displayCount = review.helpfulCount + (helpful ? 1 : 0);
 
   return (
     <article className="px-6 py-4 border-t border-border first:border-t-0">
@@ -38,9 +43,11 @@ export function ReviewCard({ review }: Props) {
                 {review.reviewerName}
               </Link>
               <GradeIcon level={review.reviewerLevel} size="xs" />
-              <span className="rounded-chip bg-palette-blue-subtle text-info px-1.5 py-0.5 text-label-3">
-                {review.visitOrdinal}번째 방문
-              </span>
+              {review.visitOrdinal > 1 && (
+                <span className="rounded-chip bg-palette-blue-subtle text-info px-1.5 py-0.5 text-label-3">
+                  {review.visitOrdinal}번째 방문
+                </span>
+              )}
             </div>
             <p className="mt-0.5 text-caption-2 text-muted-foreground">
               신뢰도 {review.reviewerTrustScore}%
@@ -111,10 +118,17 @@ export function ReviewCard({ review }: Props) {
 
         <button
           type="button"
-          className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-label-3 text-ink/70 hover:bg-muted transition-colors"
+          onClick={() => toggle(review.id)}
+          aria-pressed={helpful}
+          className={cn(
+            'shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-label-3 transition-colors',
+            helpful
+              ? 'border-primary/30 bg-primary-subtle text-primary'
+              : 'border-border text-ink/70 hover:bg-muted',
+          )}
         >
-          <ThumbsUp className="w-3 h-3" />
-          도움됐어요 <span className="">{review.helpfulCount}</span>
+          <ThumbsUp className={cn('w-3 h-3', helpful && 'fill-current')} />
+          도움됐어요 <span>{displayCount}</span>
         </button>
       </div>
     </article>

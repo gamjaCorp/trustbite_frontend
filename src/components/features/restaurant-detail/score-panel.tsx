@@ -1,5 +1,9 @@
-import { ShieldCheck } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
 import { RestaurantDetail } from '@/types/restaurant';
+import { TrustScoreBadge } from '@/components/common/trust-score-badge';
+import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
 
 interface Props {
   detail: RestaurantDetail;
@@ -30,25 +34,30 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
 }
 
 export function ScorePanel({ detail }: Props) {
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   return (
     <section className="px-6 pt-4">
       <div className="bg-card rounded-2xl p-5 ring-1 ring-border">
         <div className="flex flex-col sm:flex-row gap-5">
           {/* 좌측 ── 평점/신뢰도 */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-baseline gap-0.5">
-              <span className="text-display-1 text-foreground">
-                {detail.communityAvgScore.toFixed(1)}
-              </span>
-              <span className="text-caption-1 text-muted-foreground">/ 5</span>
+            <div className="flex items-end gap-2">
+              <div className="flex items-baseline gap-0.5">
+                <span className="text-display-1 text-foreground">
+                  {detail.communityAvgScore.toFixed(1)}
+                </span>
+                <span className="text-caption-1 text-muted-foreground">/ 5</span>
+              </div>
+              <TrustScoreBadge
+                score={detail.trustScore}
+                size="sm"
+                onClick={() => setSheetOpen(true)}
+              />
             </div>
             <p className="mt-0.5 text-caption-2 text-muted-foreground">
               리뷰 {detail.reviewCount}개 · 신뢰도 가중 평균
             </p>
-            <span className="mt-2 inline-flex items-center gap-1 rounded-chip bg-primary/10 px-2 py-0.5 text-label-3 text-primary">
-              <ShieldCheck className="w-3 h-3" />
-              신뢰도 {detail.trustScore}%
-            </span>
             <p className="mt-1.5 text-label-3 text-foreground">검증된 평가</p>
             <p className="text-caption-2 text-muted-foreground">고신뢰도 리뷰어 비중이 높아요</p>
           </div>
@@ -76,6 +85,15 @@ export function ScorePanel({ detail }: Props) {
           ))}
         </div>
       </div>
+
+      <TrustScoreSheet
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+        restaurantName={detail.name}
+        trustScore={detail.trustScore}
+        breakdown={detail.trustBreakdown}
+        reviewCount={detail.reviewCount}
+      />
     </section>
   );
 }

@@ -2,50 +2,77 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { type SceneTag } from '@/types/restaurant';
+import { ChipSelect, type ChipSelectItem } from '@/components/core/chip-select';
 
-const FILTERS = [
-  { id: 'all', label: '전체' },
-  { id: 'trust', label: '신뢰도순' },
-  { id: 'recent', label: '최신순' },
-  { id: 'date', label: '#데이트' },
-  { id: 'work', label: '#회식' },
-  { id: 'solo', label: '#혼밥' },
-] as const;
+const SORT_OPTIONS: ChipSelectItem[] = [
+  { value: 'trust', label: '신뢰도순' },
+  { value: 'recent', label: '최신순' },
+  { value: 'score', label: '별점순' },
+];
 
-type FilterId = (typeof FILTERS)[number]['id'];
+const SORT_CAPTIONS: Record<string, string> = {
+  trust: '신뢰도 가중 평균으로 정렬돼요',
+  recent: '최신순으로 정렬돼요',
+  score: '별점이 높은 순으로 정렬돼요',
+};
+
+const SCENE_TAGS: SceneTag[] = ['데이트', '회식', '혼밥'];
 
 interface Props {
   title: string;
-  caption?: string;
 }
 
-export function ReviewFilterBar({
-  title,
-  caption = '신뢰도 가중 평균으로 정렬돼요',
-}: Props) {
-  const [active, setActive] = useState<FilterId>('all');
+// 다른 사람 리뷰의 정렬 + 상황 필터바
+export function ReviewFilterBar({ title }: Props) {
+  const [sort, setSort] = useState('trust');
+  const [scenes, setScenes] = useState<Set<SceneTag>>(new Set());
+
+  const toggleScene = (tag: SceneTag) => {
+    setScenes((prev) => {
+      const next = new Set(prev);
+      if (next.has(tag)) next.delete(tag);
+      else next.add(tag);
+      return next;
+    });
+  };
 
   return (
-    <div className="px-6 pt-10">
-      <h2 className="text-headline-2 text-foreground">{title}</h2>
-      <p className="mt-1 text-caption-2 text-muted-foreground">{caption}</p>
+    <div className="px-6 pt-10 space-y-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="text-headline-2 text-foreground">{title}</h2>
+          <p className="mt-0.5 text-caption-2 text-muted-foreground">
+            {SORT_CAPTIONS[sort]}
+          </p>
+        </div>
+        <ChipSelect
+          value={sort}
+          onValueChange={setSort}
+          items={SORT_OPTIONS}
+        />
+      </div>
 
-      <div className="mt-3 flex gap-2 overflow-x-auto scrollbar-hide -mx-6 px-6 pb-1">
-        {FILTERS.map((f) => {
-          const isActive = active === f.id;
+      <div className="border-t border-dashed border-border" />
+
+      <div className="flex items-center gap-2">
+        <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
+        {SCENE_TAGS.map((tag) => {
+          const active = scenes.has(tag);
           return (
             <button
-              key={f.id}
+              key={tag}
               type="button"
-              onClick={() => setActive(f.id)}
+              aria-pressed={active}
+              onClick={() => toggleScene(tag)}
               className={cn(
-                'shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
-                isActive
-                  ? 'bg-foreground text-background'
-                  : 'bg-muted text-ink/70 hover:bg-muted/80',
+                'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
+                active
+                  ? 'bg-primary-subtle text-primary'
+                  : 'bg-muted text-muted-foreground hover:text-foreground',
               )}
             >
-              {f.label}
+              #{tag}
             </button>
           );
         })}

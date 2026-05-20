@@ -32,6 +32,7 @@ export function UserProfileView({ profile }: Props) {
 
       <div className="mt-6">
         <StatsStrip
+          variant="bordered"
           items={[
             { label: '리뷰', value: `${profile.reviewCount}개` },
             {
@@ -57,6 +58,7 @@ export function UserProfileView({ profile }: Props) {
 
       <div className="mt-5">
         <TasteProfileSection
+          variant="bordered"
           entries={profile.rankings}
           subjectName={profile.name}
           aiPersonaText={profile.aiTastePersona}
