@@ -6,12 +6,14 @@ import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import ReviewWriteProvider, {
+  type ReviewDraft,
   type ReviewResultSnapshot,
   type SelectedRestaurant,
   type TrustBreakdown,
   LONG_TEXT_THRESHOLD,
   TRUST_DELTA,
   useReviewActions,
+  useReviewIsEditMode,
   useReviewIsValid,
   useReviewPhotoCount,
   useReviewPhotos,
@@ -35,6 +37,7 @@ import { PreviewSidebar } from './preview-sidebar';
 
 interface Props {
   initialSelectedRestaurant?: SelectedRestaurant | null;
+  initialDraft?: ReviewDraft | null;
   candidates: RegionalRankEntry[];
   myTopRestaurants: RegionalRankEntry[];
   baseTrustScore: number;
@@ -45,9 +48,12 @@ interface Props {
   currentGradeReviewTarget: number;
 }
 
-export function ReviewWriteForm({ initialSelectedRestaurant, ...rest }: Props) {
+export function ReviewWriteForm({ initialSelectedRestaurant, initialDraft, ...rest }: Props) {
   return (
-    <ReviewWriteProvider initialSelectedRestaurant={initialSelectedRestaurant ?? null}>
+    <ReviewWriteProvider
+      initialSelectedRestaurant={initialSelectedRestaurant ?? null}
+      initialDraft={initialDraft ?? null}
+    >
       <ReviewWriteFormInner {...rest} />
     </ReviewWriteProvider>
   );
@@ -70,6 +76,7 @@ function ReviewWriteFormInner({
   const { reset } = useReviewActions();
   const photos = useReviewPhotos();
   const text = useReviewText();
+  const isEditMode = useReviewIsEditMode();
   const isPicking = selected === null;
 
   const [resultSnapshot, setResultSnapshot] = useState<ReviewResultSnapshot | null>(null);
@@ -134,7 +141,7 @@ function ReviewWriteFormInner({
   return (
     <>
       <main className="max-w-5xl mx-auto px-6 py-6 pb-28 lg:pb-16">
-        <h1 className="text-headline-1 mb-4">리뷰 쓰기</h1>
+        <h1 className="text-headline-1 mb-4">{isEditMode ? '리뷰 수정' : '리뷰 쓰기'}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6">
           <section className="space-y-5">
@@ -284,6 +291,7 @@ function MobileSubmitBar({
   const isValid = useReviewIsValid();
   const delta = useReviewTrustDelta();
   const next = Math.min(100, baseTrustScore + delta);
+  const isEditMode = useReviewIsEditMode();
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-sm lg:hidden">
@@ -305,7 +313,7 @@ function MobileSubmitBar({
               : 'bg-muted text-muted-foreground cursor-not-allowed',
           )}
         >
-          리뷰 등록하기
+          {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
         </button>
       </div>
     </div>

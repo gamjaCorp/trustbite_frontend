@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { getTrustToneClass } from '@/lib/trust-score';
 import {
   LONG_TEXT_THRESHOLD,
+  useReviewIsEditMode,
   useReviewIsValid,
   useReviewPhotoCount,
   useReviewTextLength,
@@ -29,6 +30,7 @@ export function TrustDeltaCard({
   const isValid = useReviewIsValid();
   const photoCount = useReviewPhotoCount();
   const textLength = useReviewTextLength();
+  const isEditMode = useReviewIsEditMode();
 
   const next = Math.min(100, baseScore + delta);
   const tone = getTrustToneClass(next);
@@ -78,7 +80,7 @@ export function TrustDeltaCard({
             : 'bg-muted text-muted-foreground cursor-not-allowed',
         )}
       >
-        리뷰 등록하기
+        {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
       </button>
 
       <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">

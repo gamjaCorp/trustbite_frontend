@@ -7,6 +7,15 @@ import { StoreApi, createStore, useStore } from 'zustand';
 import type { Category, SceneTag } from '@/types/restaurant';
 import type { GradeLevel } from '@/lib/grade-levels';
 
+export interface ReviewDraft {
+  taste: number;
+  value: number;
+  vibe: number;
+  sceneTags: SceneTag[];
+  text: string;
+  photos: { previewUrl: string }[];
+}
+
 export const LONG_TEXT_THRESHOLD = 100;
 export const TRUST_DELTA = {
   consistency: 1.5,
@@ -59,6 +68,7 @@ interface ReviewWriteState {
   sceneTags: SceneTag[];
   text: string;
   photos: ReviewPhoto[];
+  isEditMode: boolean;
 }
 
 interface ReviewWriteActions {
@@ -76,7 +86,7 @@ type ReviewWriteStore = ReviewWriteState & { action: ReviewWriteActions };
 
 const ReviewWriteContext = createContext<StoreApi<ReviewWriteStore> | null>(null);
 
-const emptyState: Omit<ReviewWriteState, 'selectedRestaurant'> = {
+const emptyState: Omit<ReviewWriteState, 'selectedRestaurant' | 'isEditMode'> = {
   taste: 0,
   value: 0,
   vibe: 0,
@@ -88,16 +98,19 @@ const emptyState: Omit<ReviewWriteState, 'selectedRestaurant'> = {
 interface ProviderProps {
   children: ReactNode;
   initialSelectedRestaurant?: SelectedRestaurant | null;
+  initialDraft?: ReviewDraft | null;
 }
 
 export default function ReviewWriteProvider({
   children,
   initialSelectedRestaurant = null,
+  initialDraft = null,
 }: ProviderProps) {
   const [store] = useState(() =>
     createStore<ReviewWriteStore>((set) => ({
       selectedRestaurant: initialSelectedRestaurant,
-      ...emptyState,
+      ...(initialDraft ?? emptyState),
+      isEditMode: initialDraft != null,
       action: {
         setSelectedRestaurant: (r) => set({ selectedRestaurant: r }),
         clearSelectedRestaurant: () => set({ selectedRestaurant: null }),
@@ -115,7 +128,7 @@ export default function ReviewWriteProvider({
           })),
         removePhoto: (idx) =>
           set((s) => ({ photos: s.photos.filter((_, i) => i !== idx) })),
-        reset: () => set({ selectedRestaurant: null, ...emptyState }),
+        reset: () => set({ selectedRestaurant: null, isEditMode: false, ...emptyState }),
       },
     })),
   );
@@ -160,3 +173,4 @@ export const useReviewTrustDelta = () =>
 
 export const useReviewTextLength = () => useReviewWriteStore((s) => s.text.length);
 export const useReviewPhotoCount = () => useReviewWriteStore((s) => s.photos.length);
+export const useReviewIsEditMode = () => useReviewWriteStore((s) => s.isEditMode);

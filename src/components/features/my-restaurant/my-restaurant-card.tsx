@@ -116,7 +116,7 @@ export function MyRestaurantCard({ entry }: Props) {
             )}
           </div>
           <Link
-            href={`/restaurant/${id}/review/new`}
+            href={`/restaurant/${id}/review/new?mode=edit`}
             className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
           >
             <SquarePen className="w-3 h-3" aria-hidden />

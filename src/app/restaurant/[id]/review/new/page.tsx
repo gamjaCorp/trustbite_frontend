@@ -6,7 +6,7 @@ import { BackHeader } from '@/components/common/back-header';
 import { ReviewWriteForm } from '@/components/features/review-write/review-write-form';
 import { getLevelDef, getNextLevelDef } from '@/lib/grade-levels';
 import type { GradeLevel } from '@/lib/grade-levels';
-import type { SelectedRestaurant } from '@/stores/review-write-store';
+import type { ReviewDraft, SelectedRestaurant } from '@/stores/review-write-store';
 
 const CURRENT_LEVEL: GradeLevel = 3;
 const BASE_TRUST_SCORE = 72;
@@ -17,10 +17,12 @@ const NEXT_GRADE_NAME = getNextLevelDef(CURRENT_LEVEL)?.label ?? '';
 
 export default async function ReviewWritePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ mode?: string }>;
 }) {
-  const { id } = await params;
+  const [{ id }, { mode }] = await Promise.all([params, searchParams]);
   const detail = getRestaurantDetail(id);
   if (!detail) notFound();
 
@@ -38,11 +40,25 @@ export default async function ReviewWritePage({
     visitCount: detail.myReview?.visits.length ?? 0,
   };
 
+  const latest = detail.myReview?.visits[0];
+  const initialDraft: ReviewDraft | null =
+    mode === 'edit' && latest
+      ? {
+          taste: latest.scores.taste,
+          value: latest.scores.value,
+          vibe: latest.scores.vibe,
+          sceneTags: latest.sceneTags,
+          text: latest.content,
+          photos: (latest.photos ?? []).map((url) => ({ previewUrl: url })),
+        }
+      : null;
+
   return (
     <>
       <BackHeader />
       <ReviewWriteForm
         initialSelectedRestaurant={initialSelectedRestaurant}
+        initialDraft={initialDraft}
         candidates={mockRankList}
         myTopRestaurants={myTopRestaurants}
         baseTrustScore={BASE_TRUST_SCORE}
