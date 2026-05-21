@@ -1,6 +1,6 @@
 import { MapPin, Star, UtensilsCrossed } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { PlaceCard } from '@/components/core/place-card';
 import { cn } from '@/lib/utils';
 import { MyRestaurantStats } from '@/types/restaurant';
 
@@ -9,20 +9,20 @@ interface Props {
   onWriteReview?: () => void;
 }
 
-const RANK_COLORS = ['text-palette-amber', 'text-palette-green', 'text-palette-blue'];
+const RANK_COLORS = ['text-palette-gold', 'text-palette-silver', 'text-palette-bronze'];
 
 function getTrustScoreColor(score: number) {
-  if (score >= 60) return 'text-palette-green';
-  if (score >= 30) return 'text-palette-amber';
-  return 'text-palette-red';
+  if (score >= 60) return 'text-success';
+  if (score >= 30) return 'text-warning';
+  return 'text-error';
 }
 
+// 나의 맛집 요약 카드 — 방문·리뷰 수, 신뢰도, TOP3 맛집·지역 탐험 통계 표시
 export function MyRestaurantSummaryCard({ stats, onWriteReview }: Props) {
   const { visitCount, reviewCount, trustScore, topRestaurants, regionCounts, topCategory } = stats;
 
   return (
-    <Card className="rounded-card shadow-card border-0 bg-card">
-      <CardContent className="p-5 space-y-5">
+    <PlaceCard className="p-5 space-y-5">
         {/* 상단 스탯 */}
         <div className="flex gap-2">
           <StatChip label="방문" value={`${visitCount}곳`} />
@@ -46,8 +46,7 @@ export function MyRestaurantSummaryCard({ stats, onWriteReview }: Props) {
             topCategory={topCategory}
           />
         )}
-      </CardContent>
-    </Card>
+    </PlaceCard>
   );
 }
 
@@ -87,7 +86,7 @@ function EmptyState({ onWriteReview }: { onWriteReview?: () => void }) {
 
 function InProgressState({ reviewCount }: { reviewCount: number }) {
   return (
-    <div className="rounded-(--radius) bg-muted px-4 py-3 text-body-2 text-muted-foreground text-center leading-relaxed">
+    <div className="rounded-lg bg-muted px-4 py-3 text-body-2 text-muted-foreground text-center leading-relaxed">
       리뷰 {reviewCount}개 작성 완료!
       <br />
       <span className="text-foreground font-medium">

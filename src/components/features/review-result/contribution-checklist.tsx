@@ -1,5 +1,6 @@
 import { CheckCircle2 } from 'lucide-react';
 
+import { PlaceCard } from '@/components/core/place-card';
 import type { TrustBreakdown } from '@/stores/review-write-store';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   photoCount: number;
 }
 
+// 리뷰 제출 기여 체크리스트 — 신뢰도 상승 항목별 기여 포인트 표시
 export function ContributionChecklist({ breakdown, photoCount }: Props) {
   const items: Array<{ label: string; value: number }> = [
     { label: '최근 활동 꾸준함', value: breakdown.consistency },
@@ -19,7 +21,7 @@ export function ContributionChecklist({ breakdown, photoCount }: Props) {
   ];
 
   return (
-    <div className="pt-1">
+    <PlaceCard className="p-4">
       <p className="text-label-2 text-muted-foreground mb-3">이런 점이 좋았어요</p>
       <ul className="space-y-3">
         {items.map((item) => (
@@ -34,6 +36,6 @@ export function ContributionChecklist({ breakdown, photoCount }: Props) {
           </li>
         ))}
       </ul>
-    </div>
+    </PlaceCard>
   );
 }

@@ -293,6 +293,7 @@ function MobileSubmitBar({
   const next = Math.min(100, baseTrustScore + delta);
   const isEditMode = useReviewIsEditMode();
 
+  // 신뢰도 프리뷰(좌)와 CTA(우)를 한 행에 배치해 수직 공간을 절약
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-sm lg:hidden">
       <div className="mx-auto flex max-w-5xl items-center gap-3">
@@ -307,7 +308,7 @@ function MobileSubmitBar({
           onClick={onSubmit}
           disabled={!isValid}
           className={cn(
-            'ml-auto rounded-xl px-6 py-3 text-label-1 transition-colors',
+            'ml-auto h-12 rounded-xl px-6 text-label-1 transition-colors',
             isValid
               ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
               : 'bg-muted text-muted-foreground cursor-not-allowed',

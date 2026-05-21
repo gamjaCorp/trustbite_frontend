@@ -61,7 +61,7 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
 
       {/* 중앙 컬럼 */}
       <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-        <div className="flex items-center justify-between gap-1 text-caption-1 text-ink/70">
+        <div className="flex items-center justify-between gap-1 text-caption-1 text-muted-foreground">
           <div className="flex items-center gap-1 min-w-0">
             <CategoryBadge category={category} />
             <span className="truncate">· {region}</span>
@@ -77,7 +77,7 @@ export function WishlistItemCard({ detail, addedAt, onRemove }: Props) {
         </Link>
 
         {tagline && (
-          <p className="text-caption-1 text-ink/70 line-clamp-1 italic mb-1">&ldquo;{tagline}&rdquo;</p>
+          <p className="text-caption-1 text-muted-foreground line-clamp-1 italic mb-1">&ldquo;{tagline}&rdquo;</p>
         )}
 
         {/* 메타 행 */}

@@ -33,7 +33,7 @@ export function StatsStrip({ items }: Props) {
             <Link
               key={i}
               href={item.href}
-              className="flex-1 p-5 space-y-1.5 hover:bg-muted/30 transition-colors"
+              className="flex-1 p-6 space-y-1.5 hover:bg-muted/30 transition-colors"
             >
               {inner}
             </Link>
@@ -41,7 +41,7 @@ export function StatsStrip({ items }: Props) {
         }
 
         return (
-          <div key={i} className="flex-1 p-5 space-y-1.5">
+          <div key={i} className="flex-1 p-6 space-y-1.5">
             {inner}
           </div>
         );

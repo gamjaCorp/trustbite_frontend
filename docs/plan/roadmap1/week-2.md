@@ -14,8 +14,8 @@ W1에서 시각적 1차 MVP가 완성된 상태. 백엔드가 아직 준비되�
 
 | Day | 날짜 | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|---|
-| Mon | 5/18 | 3개 화면 디자인 점검 | 화면별 이슈 체크리스트 + 리팩토링 후보 목록 | ☐ |
-| Tue | 5/19 | 공통 컴포넌트 리팩토링 | 카드 셸·배지·로딩/빈 상태 통합, 리뷰 결과 카드 모듈화 | ☐ |
+| Mon | 5/18 | 3개 화면 디자인 점검 | 화면별 이슈 체크리스트 + 리팩토링 후보 목록 | ✅ |
+| Tue | 5/19 | 공통 컴포넌트 리팩토링 | 카드 셸·배지·로딩/빈 상태 통합, 리뷰 결과 카드 모듈화 | ✅ |
 | Wed | 5/20 | Vercel Preview 배포 — 백엔드 UI 공유 | Preview URL + 9개 화면 동선 QA | ☐ |
 | Thu | 5/21 | Kakao Maps SDK 통합 (지도 + 핀) | map-view 재작성, mock 핀 렌더 | ☐ |
 | Fri | 5/22 | 지도 시트 드래그·영역 재검색·미니카드 | 30%↔70% 시트, 핀 클릭 미니카드, 영역 재검색 | ☐ |
@@ -38,20 +38,20 @@ W1에서 시각적 1차 MVP가 완성된 상태. 백엔드가 아직 준비되�
 
 **점검 5축** (W1 Day 6 기준 재사용)
 
-- [ ] 카드 컨테이너 — 패딩/라운딩/그림자/보더 토큰 일관성
-- [ ] 시맨틱 타이포 위반 — `text-foreground`/`text-muted-foreground` 외 임의 색
-- [ ] 컬러 토큰 위반 — raw hex/oklch, `bg-white` 류 절대색
-- [ ] 여백 일관성 — 섹션 간 gap, 카드 내부 spacing
-- [ ] UX 적합성 — 클릭 영역, 정보 위계, 빈 상태 메시지
+- [x] 카드 컨테이너 — 패딩/라운딩/그림자/보더 토큰 일관성
+- [x] 시맨틱 타이포 위반 — `text-foreground`/`text-muted-foreground` 외 임의 색
+- [x] 컬러 토큰 위반 — raw hex/oklch, `bg-white` 류 절대색
+- [x] 여백 일관성 — 섹션 간 gap, 카드 내부 spacing
+- [x] UX 적합성 — 클릭 영역, 정보 위계, 빈 상태 메시지
 
 **산출물**
 
-- [ ] 3개 화면 × 5축 이슈 리스트를 Markdown 표로 정리
-- [ ] Day 2 리팩토링 후보 명시 — 카드/배지/스코어/로딩/빈 상태 중복 패턴
+- [x] 3개 화면 × 5축 이슈 리스트를 Markdown 표로 정리 → `week-2-day1-audit.md`
+- [x] Day 2 리팩토링 후보 명시 — 카드/배지/스코어/로딩/빈 상태 중복 패턴
 
 **종료 조건**
 
-- [ ] 이슈 체크리스트 작성 완료, 리팩토링 필요 패턴이 구체적으로 명시됨
+- [x] 이슈 체크리스트 작성 완료, 리팩토링 필요 패턴이 구체적으로 명시됨
 
 > 산출물: 3개 화면 점검 완료 + Day 2 작업 범위 확정
 
@@ -63,28 +63,33 @@ Day 1 점검 결과를 바탕으로 4축 리팩토링.
 
 **(1) 맛집 카드 컨테이너 통합**
 
-- [ ] `my-restaurant-card`, `wishlist-item-card`, `target-restaurant-card`, `review-card` 4종 비교
-- [ ] 공통 카드 셸 → `src/components/core/` 단일 `.tsx` 추출 (`ui/card.tsx` 위에 className override로 래핑)
-- [ ] 각 카드는 셸 + 도메인 콘텐츠 구조로 분리 (feature 코드는 `features/`에 유지)
+- [x] `my-restaurant-card`, `wishlist-item-card`, `target-restaurant-card`, `review-card` 4종 비교
+- [x] 공통 카드 셸 → `src/components/core/place-card.tsx` 단일 `.tsx` 추출
+- [x] 각 카드는 셸 + 도메인 콘텐츠 구조로 분리 (feature 코드는 `features/`에 유지)
 
 **(2) 점수/배지 류 정리**
 
-- [ ] `trust-score-badge`, `grade-badge`, `grade-icon`, `score-panel`, `trust-delta-card`, `trust-score-change-card` 시각·타입 일관화
-- [ ] 크기 토큰(sm/md/lg), 색 토큰, 등급→색 매핑이 `src/lib/grade-levels.ts`를 거치는지 확인 + 정리
+- [x] `trust-score-badge`, `grade-badge`, `grade-icon` 크기 토큰(sm/md) 이미 일관화 확인
+- [x] 색 토큰, 등급→색 매핑이 `src/lib/grade-levels.ts`를 거치는지 확인 ✅
+- [x] `text-ink/70` → `text-muted-foreground` 전체 통일 (7+건, my-restaurant-card·wishlist-item-card·review-card·my-review-section·ranking-preview)
+- [x] 리뷰 본문 `text-body-2 text-foreground/85` → `text-body-1 text-foreground` (review-card, my-review-section)
+- [x] CTA 버튼 `h-12` 교체 (MobileSubmitBar, trust-delta-card 데스크톱 CTA)
 
 **(3) 로딩/빈 상태 표준화**
 
-- [ ] 화면별 즉석 skeleton 사용 위치 목록화
-- [ ] `ui/skeleton` + `ui/empty` 위 래퍼로 통일 → `src/components/common/` 단일 `.tsx` 파일로 추출
+- [x] 화면별 즉석 skeleton 사용 위치 목록화 → `features/` 내 즉석 Skeleton 0건 확인
+- [x] `common/rank-card-skeleton.tsx` 이미 표준 역할. `ui/empty`는 my-places 사용 중 ✅ (추가 추출 불필요)
 
 **(4) 리뷰 결과 카드 모듈화**
 
-- [ ] `trust-score-change-card`, `grade-progress-card`, `contribution-checklist`를 공통 카드 셸 위로 정리
-- [ ] `points-earned-card` — `// TODO: 1차 MVP 제외` 주석 유지
+- [x] `contribution-checklist` → `PlaceCard p-4`로 감싸기 완료
+- [x] `trust-score-change-card` — 독자 배경(`bg-success-subtle`) 유지 (PlaceCard 부적합)
+- [x] `grade-progress-card` — Link 섹션 패턴 유지
+- [x] `points-earned-card` — `// TODO: 1차 MVP 제외` 주석 유지
 
 **종료 조건**
 
-- [ ] `pnpm lint && npx tsc --noEmit` 그린
+- [x] `pnpm lint && npx tsc --noEmit` 그린
 - [ ] Storybook으로 변경된 셸/배지 시각 확인, 새 컴포넌트 story 생성 (`generate-story` 스킬)
 - [ ] 3개 화면 브라우저에서 열어 회귀 없음 확인
 - [ ] `frontend-code-reviewer` 에이전트 호출해 리뷰

@@ -3,6 +3,7 @@
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { PlaceCard } from '@/components/core/place-card';
 import { getTrustToneClass } from '@/lib/trust-score';
 import {
   useReviewIsEditMode,
@@ -31,11 +32,11 @@ export function TrustDeltaCard({
   const tone = getTrustToneClass(next);
 
   return (
-    <div className="rounded-2xl bg-card ring-1 ring-border p-4 shadow-card">
+    <PlaceCard className="p-4">
       <header className="flex items-center justify-between">
         <h3 className="text-title-2 text-foreground">내 신뢰도</h3>
         <span className={cn('inline-flex items-center gap-0.5 text-label-3', tone.text)}>
-          +<span className="">{delta.toFixed(1)}</span>%
+          +{delta.toFixed(1)}%
           <ArrowUp className="w-3.5 h-3.5" />
         </span>
       </header>
@@ -67,7 +68,7 @@ export function TrustDeltaCard({
         onClick={onSubmit}
         disabled={!isValid}
         className={cn(
-          'mt-4 hidden w-full rounded-xl py-3.5 text-label-1 transition-colors lg:block',
+          'mt-4 hidden h-12 w-full rounded-xl text-label-1 transition-colors lg:block',
           isValid
             ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
             : 'bg-muted text-muted-foreground cursor-not-allowed',
@@ -76,14 +77,14 @@ export function TrustDeltaCard({
         {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
       </button>
 
-      <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">
+        <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">
         {nextGradeName}까지 리뷰{' '}
         <span className="font-semibold text-foreground">
           {remainingReviewsForNextGrade}
         </span>
         개 남음
       </p>
-    </div>
+    </PlaceCard>
   );
 }
 
@@ -105,7 +106,7 @@ function PointChip({
           : 'bg-muted text-muted-foreground',
       )}
     >
-      +<span className="">{points}</span> P {label}
+      +{points} P {label}
     </span>
   );
 }

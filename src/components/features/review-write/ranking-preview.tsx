@@ -2,6 +2,7 @@
 
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PlaceCard } from '@/components/core/place-card';
 import { getRankMedalClasses } from '@/lib/rank';
 import { useReviewAvgScore, useSelectedRestaurant } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
@@ -18,6 +19,7 @@ interface PreviewRow {
 
 const VISIBLE_COUNT = 10;
 
+// 리뷰 작성 중 내 랭킹 실시간 미리보기 — 별점 입력 시 순위 변동 시뮬레이션
 export function RankingPreview({ myTopRestaurants }: Props) {
   const avgScore = useReviewAvgScore();
   const selected = useSelectedRestaurant();
@@ -43,7 +45,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
   const newVisible = newRank !== null && newRank <= VISIBLE_COUNT;
 
   return (
-    <div className="rounded-2xl bg-card ring-1 ring-border p-4 shadow-card">
+    <PlaceCard className="p-4">
       <header className="mb-3">
         <h3 className="text-title-2 text-foreground">내 랭킹 미리보기</h3>
         <p className="text-caption-2 text-muted-foreground mt-0.5">
@@ -71,7 +73,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
               <span
                 className={cn(
                   'shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-title-3',
-                  getRankMedalClasses(rank) ?? 'bg-paper-edge text-ink/70',
+                  getRankMedalClasses(rank) ?? 'bg-muted text-muted-foreground',
                 )}
               >
                 {rank}
@@ -100,6 +102,6 @@ export function RankingPreview({ myTopRestaurants }: Props) {
           );
         })}
       </ol>
-    </div>
+    </PlaceCard>
   );
 }

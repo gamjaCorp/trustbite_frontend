@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
+import { PlaceCard } from '@/components/core/place-card';
 import { CategoryBadge } from '@/components/common/category-badge';
 import { useReviewActions } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
@@ -24,7 +25,7 @@ export function RestaurantPicker({ candidates }: Props) {
   }, [query, candidates]);
 
   return (
-    <div className="rounded-2xl bg-card ring-1 ring-border p-3 shadow-card">
+    <PlaceCard className="p-3">
       <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-muted">
         <Search className="w-4 h-4 text-muted-foreground shrink-0" />
         <input
@@ -83,6 +84,6 @@ export function RestaurantPicker({ candidates }: Props) {
           ))}
         </ul>
       )}
-    </div>
+    </PlaceCard>
   );
 }

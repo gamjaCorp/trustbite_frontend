@@ -52,7 +52,7 @@ export function ReviewCard({ review }: Props) {
         <span className="shrink-0 text-caption-2 text-muted-foreground">{review.postedAt}</span>
       </header>
 
-      <div className="mt-2.5 flex items-center gap-3 text-body-2 text-ink/70">
+      <div className="mt-2.5 flex items-center gap-3 text-body-2 text-muted-foreground">
         <span>
           맛 <span className="font-semibold text-foreground">{review.scores.taste.toFixed(1)}</span>
         </span>
@@ -66,7 +66,7 @@ export function ReviewCard({ review }: Props) {
 
       <p
         className={cn(
-          'mt-2.5 whitespace-pre-line text-body-2 text-foreground/85 leading-relaxed',
+          'mt-2.5 whitespace-pre-line text-body-1 text-foreground leading-relaxed',
           isClamped && 'line-clamp-3',
         )}
       >
@@ -104,7 +104,7 @@ export function ReviewCard({ review }: Props) {
           {review.sceneTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-ink/70"
+              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-muted-foreground"
             >
               #{tag}
             </span>

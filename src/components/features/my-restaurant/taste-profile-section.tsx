@@ -152,7 +152,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
     <section>
       <div className="bg-card rounded-2xl overflow-hidden shadow-card">
         {/* 헤더 — 박스 내부 상단 */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-2">
+        <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <h2 className="text-headline-3 text-foreground flex items-center gap-2">
             <Utensils className="w-5 h-5 text-primary" />
             {subjectName ? `${subjectName}님의` : '나의'} 미식 성향
@@ -162,7 +162,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
 
         <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 divide-border">
           {/* 왼쪽: 3축 레이더 + 인사이트 텍스트 — 우측 stat 그리드보다 좁게(40%) */}
-          <div className="sm:basis-2/5 sm:flex-none p-5 flex flex-col items-center">
+          <div className="sm:basis-2/5 sm:flex-none p-6 flex flex-col items-center">
             <ResponsiveContainer width="100%" height={200}>
               <RadarChart data={radarData} margin={{ top: 16, right: 28, bottom: 4, left: 28 }}>
                 <PolarGrid stroke="var(--border)" />
@@ -199,7 +199,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
 
           {/* 오른쪽: 2×2 통계 셀 그리드 — PRD §12.1 AI 취향 요약 입력값
               점선 구분선은 각 셀에 position-based border로 부여 (행 높이 가변 대응) */}
-          <div className="flex-1 p-5 grid grid-cols-2 content-start">
+          <div className="flex-1 p-6 grid grid-cols-2 content-start">
             <div className="pr-4 pb-3.5 border-r border-b border-dashed border-border/50">
               <StatCard
                 icon={Utensils}
@@ -246,7 +246,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
         {/* TODO: 1차 MVP 제외 — AI 미식 성향 분석 패널 (AI 취향 요약 2차 MVP) */}
         <div
           aria-disabled="true"
-          className="border-t border-border px-5 py-5 bg-gradient-to-br from-primary-subtle via-primary-subtle/40 to-info-subtle/60 cursor-not-allowed"
+          className="border-t border-border px-6 py-6 bg-gradient-to-br from-primary-subtle via-primary-subtle/40 to-info-subtle/60 cursor-not-allowed"
         >
           <div className="flex items-center justify-between mb-1.5">
             <p className="opacity-35 text-label-2 text-primary flex items-center gap-1.5">

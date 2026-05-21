@@ -17,13 +17,19 @@ interface Props {
 
 export function UserGradeMark({ level, showLabel = false, size = 'sm', className }: Props) {
   const def = getLevelDef(level);
+  const tooltip = `Lv.${level} · ${def.label}`;
 
   if (showLabel) {
     return (
-      <span className={cn('inline-flex items-center gap-1', className)}>
-        <GradeIcon level={level} size={size} variant="inline" />
-        <span className={cn('text-caption-2', def.toneClass.text)}>{def.label}</span>
-      </span>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className={cn('inline-flex items-center gap-1 cursor-default', className)}>
+            <GradeIcon level={level} size={size} variant="inline" />
+            <span className={cn('text-caption-2', def.toneClass.text)}>{def.label}</span>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent side="top">{tooltip}</TooltipContent>
+      </Tooltip>
     );
   }
 
@@ -34,7 +40,7 @@ export function UserGradeMark({ level, showLabel = false, size = 'sm', className
           <GradeIcon level={level} size={size} variant="inline" />
         </span>
       </TooltipTrigger>
-      <TooltipContent side="top">{def.label}</TooltipContent>
+      <TooltipContent side="top">{tooltip}</TooltipContent>
     </Tooltip>
   );
 }

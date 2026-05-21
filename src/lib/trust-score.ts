@@ -13,8 +13,8 @@ export function getTrustToneClass(score: number): {
 } {
   const tone = getTrustTone(score);
   return {
-    high:   { text: 'text-palette-green', bg: 'bg-palette-green/10', ring: 'ring-palette-green/30' },
-    mid:    { text: 'text-palette-amber', bg: 'bg-palette-amber/10', ring: 'ring-palette-amber/30' },
-    danger: { text: 'text-palette-red',   bg: 'bg-palette-red/10',   ring: 'ring-palette-red/30' },
+    high:   { text: 'text-success', bg: 'bg-success/10', ring: 'ring-success/30' },
+    mid:    { text: 'text-warning', bg: 'bg-warning/10', ring: 'ring-warning/30' },
+    danger: { text: 'text-error',   bg: 'bg-error/10',   ring: 'ring-error/30' },
   }[tone];
 }

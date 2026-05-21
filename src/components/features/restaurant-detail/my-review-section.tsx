@@ -85,7 +85,7 @@ function MyReviewVisit({
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="shrink-0 w-7 h-7 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
+              className="shrink-0 w-11 h-11 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
               aria-label="수정/삭제"
             >
               <MoreHorizontal className="w-4 h-4" />
@@ -107,7 +107,7 @@ function MyReviewVisit({
         </DropdownMenu>
       </div>
 
-      <div className="flex items-center gap-3 text-body-2 text-ink/70 mb-2">
+      <div className="flex items-center gap-3 text-body-2 text-muted-foreground mb-2">
         <span>
           맛{' '}
           <span className="font-semibold text-foreground">
@@ -130,7 +130,7 @@ function MyReviewVisit({
 
       <p
         className={cn(
-          'whitespace-pre-line text-body-2 text-foreground/85 leading-relaxed',
+          'whitespace-pre-line text-body-1 text-foreground leading-relaxed',
           isClamped && 'line-clamp-3',
         )}
       >
@@ -154,7 +154,7 @@ function MyReviewVisit({
           {visit.sceneTags.map((tag) => (
             <span
               key={tag}
-              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-ink/70"
+              className="rounded-chip bg-muted px-2 py-0.5 text-label-3 text-muted-foreground"
             >
               #{tag}
             </span>

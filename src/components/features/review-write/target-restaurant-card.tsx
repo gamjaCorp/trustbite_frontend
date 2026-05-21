@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Pencil } from 'lucide-react';
+import { PlaceCard } from '@/components/core/place-card';
 import { CategoryBadge } from '@/components/common/category-badge';
 import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
 
@@ -14,7 +15,7 @@ export function TargetRestaurantCard() {
   const visitOrdinal = selected.visitCount + 1;
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl bg-card ring-1 ring-border p-3 shadow-card">
+    <PlaceCard className="flex items-center gap-3 p-3">
       <div className="relative w-14 h-14 shrink-0 overflow-hidden rounded-xl bg-muted">
         <Image src={selected.imageUrl} alt={selected.name} fill className="object-cover" />
       </div>
@@ -28,7 +29,7 @@ export function TargetRestaurantCard() {
       </div>
 
       <span className="shrink-0 rounded-chip bg-primary-subtle px-2.5 py-1 text-label-3 text-primary">
-        <span className="">{visitOrdinal}</span>번째 방문
+        {visitOrdinal}번째 방문
       </span>
 
       <button
@@ -39,6 +40,6 @@ export function TargetRestaurantCard() {
       >
         <Pencil className="w-4 h-4" />
       </button>
-    </div>
+    </PlaceCard>
   );
 }

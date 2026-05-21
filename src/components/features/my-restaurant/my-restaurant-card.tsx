@@ -46,7 +46,7 @@ export function MyRestaurantCard({ entry }: Props) {
       <div
         className={cn(
           'shrink-0 self-center w-7 h-7 rounded-full flex items-center justify-center text-title-3 sm:w-8 sm:h-8 sm:text-title-2',
-          getRankMedalClasses(rank) ?? 'bg-paper-edge text-ink/70',
+          getRankMedalClasses(rank) ?? 'bg-muted text-muted-foreground',
         )}
         aria-label={`${rank}위`}
       >
@@ -68,7 +68,7 @@ export function MyRestaurantCard({ entry }: Props) {
 
       {/* ③ 중앙 컬럼 */}
       <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-        <div className="flex items-center justify-between gap-1 text-caption-1 text-ink/70">
+        <div className="flex items-center justify-between gap-1 text-caption-1 text-muted-foreground">
           <div className="flex items-center gap-1 min-w-0">
             <CategoryBadge category={category} />
             <span className="truncate">· {region}</span>
@@ -84,7 +84,7 @@ export function MyRestaurantCard({ entry }: Props) {
         </Link>
 
         {comment && (
-          <p className="text-caption-1 text-ink/70 line-clamp-1 mb-1">&ldquo;{comment}&rdquo;</p>
+          <p className="text-caption-1 text-muted-foreground line-clamp-1 mb-1">&ldquo;{comment}&rdquo;</p>
         )}
 
         {/* 세부 점수 행 */}
