@@ -102,6 +102,6 @@ TrustBite 프론트엔드의 디자인 표준 + 디자인 결과물 자체 점�
 | `src/app/globals.css`                                    | 전체 토큰 소스 (라인 7–243 토큰, 338–441 타이포) |
 | `src/components/features/ranking/regional-rank-card.tsx` | 카드 행 구조 표준                                |
 | `src/components/core/search-input.tsx`                   | core/ 래퍼 패턴 예시 (InputGroup)                |
-| `src/components/core/chip-select.tsx`                    | core/ 래퍼 패턴 예시 (Select)                    |
+| `src/components/core/select-list.tsx`                    | core/ 래퍼 패턴 예시 (Select)                    |
 | `src/components/common/header.tsx`                       | 헤더·탭 내비게이션 구조                          |
 | `src/app/layout.tsx`                                     | 폰트(Pretendard Variable) 로딩, 루트 레이아웃    |

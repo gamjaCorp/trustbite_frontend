@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
-import { Providers } from '@/components/common/providers';
-import { Header } from '@/components/common/header';
+import { Providers } from '@/components/common/layout/providers';
+import { Header } from '@/components/common/layout/header';
 import { AuthMockToggle } from '@/components/common/auth-mock-toggle';
 
 const jetbrainsMono = JetBrains_Mono({

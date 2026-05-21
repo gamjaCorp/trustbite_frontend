@@ -28,6 +28,7 @@ export interface MyProfile {
   id: string;
   name: string;
   avatarInitial: string;
+  avatarUrl?: string;
   email: string;
   joinedAt: string;
   level: GradeLevel;

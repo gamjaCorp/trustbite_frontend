@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { type SceneTag } from '@/types/restaurant';
-import { ChipSelect, type ChipSelectItem } from '@/components/core/chip-select';
+import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SectionHeader } from '@/components/common/section-header';
 
-const SORT_OPTIONS: ChipSelectItem[] = [
+const SORT_OPTIONS: SelectListItem[] = [
   { value: 'trust', label: '신뢰도순' },
   { value: 'recent', label: '최신순' },
   { value: 'score', label: '별점순' },
@@ -43,7 +43,7 @@ export function ReviewFilterBar({ title }: Props) {
       <SectionHeader
         title={title}
         subtitle={SORT_CAPTIONS[sort]}
-        rightAction={<ChipSelect value={sort} onValueChange={setSort} items={SORT_OPTIONS} />}
+        rightAction={<SelectList value={sort} onValueChange={setSort} items={SORT_OPTIONS} />}
       />
 
       <div className="border-t border-dashed border-border" />

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
-import { BackHeader } from '@/components/common/back-header';
+import { BackHeader } from '@/components/common/layout/back-header';
 import { PhotoGallery } from '@/components/features/restaurant-detail/photo-gallery';
 import { RestaurantSummary } from '@/components/features/restaurant-detail/restaurant-summary';
 import { ScorePanel } from '@/components/features/restaurant-detail/score-panel';

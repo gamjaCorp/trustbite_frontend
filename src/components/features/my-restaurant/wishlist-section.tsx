@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { Bookmark, Share2, X } from 'lucide-react';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
-import { ChipSelect } from '@/components/core/chip-select';
+import { SelectList } from '@/components/core/select-list';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
 import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/place-list-row';
 import { SectionHeader } from '@/components/common/section-header';
@@ -98,7 +98,7 @@ export function WishlistSection() {
             >
               <Share2 className="w-4 h-4" />
             </div>
-            <ChipSelect
+            <SelectList
               value={sort}
               onValueChange={(v) => setSort(v as WishlistSortKey)}
               items={SORT_ITEMS}

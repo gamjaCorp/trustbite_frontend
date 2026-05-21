@@ -7,6 +7,7 @@ import { ProfileListRow } from './profile-list-row';
 import { ProfileSection } from './profile-section';
 import { ProfileSummaryCard } from './profile-summary-card';
 import { ThemeSettingRow } from './theme-setting-row';
+import { LogoutRow } from './logout-row';
 
 interface Props {
   profile: MyProfile;
@@ -40,7 +41,7 @@ export function MyProfileView({ profile }: Props) {
             <ProfileListRow label="활동 지역" value={profile.activityRegion} disabled />
             <ProfileListRow label="알림 설정" disabled />
             <ProfileListRow label="계정 관리" disabled />
-            <ProfileListRow label="로그아웃" tone="danger" disabled />
+            <LogoutRow />
           </ProfileSection>
         </div>
       </section>

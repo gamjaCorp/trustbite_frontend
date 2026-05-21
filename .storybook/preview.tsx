@@ -1,7 +1,15 @@
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+import '../src/app/globals.css';
+
 import type { Preview } from '@storybook/nextjs-vite';
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: ['Foundation', 'Core', 'Common', '*'],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -16,6 +24,13 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+  decorators: [
+    (Story) => (
+      <div className="font-sans antialiased bg-background text-foreground">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;

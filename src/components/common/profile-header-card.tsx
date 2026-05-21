@@ -3,11 +3,12 @@
 // 프로필 헤더 카드 공통 셸 — /profile, /user/[id]에서 공유
 import type { ReactNode } from 'react';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FollowStatsRow } from './follow-stats-row';
 
 interface Props {
   avatarInitial: string;
+  avatarUrl?: string;
   title: ReactNode;
   subtitle?: ReactNode;
   rightAction?: ReactNode;
@@ -21,6 +22,7 @@ interface Props {
 
 export function ProfileHeaderCard({
   avatarInitial,
+  avatarUrl,
   title,
   subtitle,
   rightAction,
@@ -36,6 +38,7 @@ export function ProfileHeaderCard({
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
           <Avatar className="h-12 w-12 shrink-0">
+            {avatarUrl && <AvatarImage src={avatarUrl} alt="" />}
             <AvatarFallback className="bg-primary-subtle text-primary text-title-1">
               {avatarInitial}
             </AvatarFallback>

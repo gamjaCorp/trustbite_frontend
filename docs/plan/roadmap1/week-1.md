@@ -82,7 +82,7 @@ PRD 7.1, 7.2. 홈은 탐색 전용 단일 콘텐츠.
 **검색/필터 UI**
 
 - `search-bar`: `SearchInput` 컴포넌트 재사용
-- 지역/정렬 드롭다운: `ChipSelect` 컴포넌트 재사용
+- 지역/정렬 드롭다운: `SelectList` 컴포넌트 재사용
 - 카테고리 칩 (전체/한식/일식/중식/양식/카페/술집): `Toggle` 다중 선택
 - 상황 칩 (혼밥/데이트/회식): `Toggle` 다중 선택
 - `IntroCard`: `localStorage` 'introSeen' 게이트 내장, 1회만 노출
@@ -169,6 +169,6 @@ PRD 7.3.
 | 모달 | `src/components/ui/dialog.tsx` |
 | 레이더 차트 | `recharts` `RadarChart` |
 | 검색 인풋 | `src/components/core/search-input.tsx` |
-| 칩 셀렉트 | `src/components/core/chip-select.tsx` |
+| 칩 셀렉트 | `src/components/core/select-list.tsx` |
 | TrustScore | `src/components/common/trust-score-badge.tsx` |
 | 등급 표시 | `src/components/common/grade-badge.tsx`, `grade-icon.tsx` |

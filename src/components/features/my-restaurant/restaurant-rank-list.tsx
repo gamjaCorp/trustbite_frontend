@@ -17,7 +17,7 @@ import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
 import { CategoryChipRow, CATEGORIES, OCCASIONS } from '@/components/features/ranking/rank-filter-bar';
-import { ChipSelect } from '@/components/core/chip-select';
+import { SelectList } from '@/components/core/select-list';
 
 const SORT_ITEMS = [
   { value: 'score', label: '점수순' },
@@ -83,7 +83,7 @@ export function RestaurantRankList({ entries }: Props) {
             >
               <Share2 className="w-4 h-4" />
             </div>
-            <ChipSelect
+            <SelectList
               value={region}
               onValueChange={setRegion}
               icon={MapPin}
@@ -93,7 +93,7 @@ export function RestaurantRankList({ entries }: Props) {
                 ...regions.map((r) => ({ value: r, label: r })),
               ]}
             />
-            <ChipSelect
+            <SelectList
               value={sort}
               onValueChange={(v) => setSort(v as SortKey)}
               items={SORT_ITEMS}

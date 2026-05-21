@@ -80,7 +80,7 @@ UX Reference Check의 `사이즈/패딩` 라인을 채울 때 1회 점검한다.
 **`src/components/core/`**: `ui/` 프리미티브 위에 className override로 래핑하는 **단일 `.tsx` 파일**. 폴더+`index.tsx` 배럴 금지.
 
 ```tsx
-// ✅ core/chip-select.tsx — Select 위에 rounded-chip 고정 래핑
+// ✅ core/select-list.tsx — Select 위에 rounded-chip 고정 래핑
 <SelectTrigger className={cn('w-fit rounded-chip gap-2 shrink-0', className)}>
 
 // ✅ core/search-input.tsx — InputGroup 위에 h-10 + Search 아이콘 고정 래핑

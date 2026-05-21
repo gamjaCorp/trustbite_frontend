@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export interface ChipSelectItem {
+export interface SelectListItem {
   value: string;
   label: string;
 }
@@ -16,14 +16,14 @@ export interface ChipSelectItem {
 interface Props {
   value: string;
   onValueChange: (next: string) => void;
-  items: ChipSelectItem[];
+  items: SelectListItem[];
   placeholder?: string;
   icon?: LucideIcon;
   align?: 'start' | 'center' | 'end';
   className?: string;
 }
 
-export function ChipSelect({
+export function SelectList({
   value,
   onValueChange,
   items,

@@ -5,7 +5,7 @@ import { Check, MapPin } from 'lucide-react';
 import { Category, SceneTag } from '@/types/restaurant';
 import { CATEGORY_STYLE } from '@/lib/category';
 import { cn } from '@/lib/utils';
-import { ChipSelect, ChipSelectItem } from '@/components/core/chip-select';
+import { SelectList, SelectListItem } from '@/components/core/select-list';
 
 export const CATEGORIES: Array<Category | 'all'> = [
   'all',
@@ -60,10 +60,10 @@ interface RankFilterBarProps {
   category: Category | 'all';
   onCategoryChange: (c: Category | 'all') => void;
   categories: Array<Category | 'all'>;
-  // sort props — 미전달 시 정렬 ChipSelect 렌더 생략 (정렬이 외부 헤더에 있는 경우)
+  // sort props — 미전달 시 정렬 SelectList 렌더 생략 (정렬이 외부 헤더에 있는 경우)
   sort?: string;
   onSortChange?: (s: string) => void;
-  sortItems?: ChipSelectItem[];
+  sortItems?: SelectListItem[];
   region: string;
   onRegionChange: (r: string) => void;
   regions: string[];
@@ -72,7 +72,7 @@ interface RankFilterBarProps {
   onOccasionToggle?: (tag: SceneTag) => void;
 }
 
-// 카테고리 칩 / (상황 칩 좌 + 지역·정렬 ChipSelect 우) 2행 필터 바
+// 카테고리 칩 / (상황 칩 좌 + 지역·정렬 SelectList 우) 2행 필터 바
 export function RankFilterBar({
   category,
   onCategoryChange,
@@ -129,7 +129,7 @@ export function RankFilterBar({
 
         {/* 우측: 지역 + (선택)정렬 */}
         <div className="flex items-center gap-1.5 shrink-0">
-          <ChipSelect
+          <SelectList
             value={region}
             onValueChange={onRegionChange}
             icon={MapPin}
@@ -140,7 +140,7 @@ export function RankFilterBar({
             ]}
           />
           {showSort && (
-            <ChipSelect value={sort} onValueChange={onSortChange!} items={sortItems!} />
+            <SelectList value={sort} onValueChange={onSortChange!} items={sortItems!} />
           )}
         </div>
       </div>

@@ -9,7 +9,7 @@ import { MapView, type MapBounds } from '@/components/features/explore/map-view'
 import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
-import { ChipSelect } from '@/components/core/chip-select';
+import { SelectList } from '@/components/core/select-list';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
 
@@ -204,7 +204,7 @@ export function RegionRankList({ entries }: Props) {
               <h2 className="text-headline-2 text-foreground truncate">
                 {dominantRegion ? `${dominantRegion} 일대 맛집` : '이 지역 맛집'}
               </h2>
-              <ChipSelect
+              <SelectList
                 value={sort}
                 onValueChange={(v) => setSort(v as ExploreSort)}
                 items={[
