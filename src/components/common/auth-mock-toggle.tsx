@@ -3,10 +3,8 @@
 
 import { useAuthMock } from '@/stores/auth-mock-store';
 
-// 개발 환경에서 비로그인/로그인 상태를 토글하는 플로팅 버튼
+// 로그인/비로그인 상태를 토글하는 플로팅 버튼 (임시 데모용)
 export function AuthMockToggle() {
-  if (process.env.NODE_ENV !== 'development') return null;
-
   return <AuthMockToggleInner />;
 }
 
