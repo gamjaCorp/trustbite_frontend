@@ -2,7 +2,7 @@ import { Award, Bookmark, ChefHat, Coffee, Crosshair, Sprout } from 'lucide-reac
 import type { LucideIcon } from 'lucide-react';
 
 export type GradeLevel = 1 | 2 | 3 | 4 | 5 | 6;
-export type GradeCondition = 'INSTANT' | 'OR' | 'AND';
+type GradeCondition = 'INSTANT' | 'OR' | 'AND';
 
 export interface GradeLevelDef {
   level: GradeLevel;
@@ -80,7 +80,7 @@ export function getNextLevelDef(level: GradeLevel): GradeLevelDef | null {
   return GRADE_LEVELS[level] as GradeLevelDef;
 }
 
-export interface LevelProgress {
+interface LevelProgress {
   reviewPct: number;
   trustPct: number;
   reviewMet: boolean;

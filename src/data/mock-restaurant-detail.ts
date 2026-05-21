@@ -274,7 +274,7 @@ const onion: RestaurantDetail = {
   ],
 };
 
-export const mockRestaurantDetails: Record<string, RestaurantDetail> = {
+const mockRestaurantDetails: Record<string, RestaurantDetail> = {
   '1': yangmiok,
   '4': sushidoku,
   '5': onion,

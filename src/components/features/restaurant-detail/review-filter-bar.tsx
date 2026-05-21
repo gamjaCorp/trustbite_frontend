@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { type SceneTag } from '@/types/restaurant';
 import { ChipSelect, type ChipSelectItem } from '@/components/core/chip-select';
+import { SectionHeader } from '@/components/common/section-header';
 
 const SORT_OPTIONS: ChipSelectItem[] = [
   { value: 'trust', label: '신뢰도순' },
@@ -39,19 +40,11 @@ export function ReviewFilterBar({ title }: Props) {
 
   return (
     <div className="px-6 pt-10 space-y-3">
-      <div className="flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <h2 className="text-headline-2 text-foreground">{title}</h2>
-          <p className="mt-0.5 text-caption-2 text-muted-foreground">
-            {SORT_CAPTIONS[sort]}
-          </p>
-        </div>
-        <ChipSelect
-          value={sort}
-          onValueChange={setSort}
-          items={SORT_OPTIONS}
-        />
-      </div>
+      <SectionHeader
+        title={title}
+        subtitle={SORT_CAPTIONS[sort]}
+        rightAction={<ChipSelect value={sort} onValueChange={setSort} items={SORT_OPTIONS} />}
+      />
 
       <div className="border-t border-dashed border-border" />
 

@@ -1,6 +1,6 @@
 import { CheckCircle2 } from 'lucide-react';
 
-import { PlaceCard } from '@/components/core/place-card';
+import { Surface } from '@/components/common/surface';
 import type { TrustBreakdown } from '@/stores/review-write-store';
 
 interface Props {
@@ -21,7 +21,7 @@ export function ContributionChecklist({ breakdown, photoCount }: Props) {
   ];
 
   return (
-    <PlaceCard className="p-4">
+    <Surface variant="card" padding="md">
       <p className="text-label-2 text-muted-foreground mb-3">이런 점이 좋았어요</p>
       <ul className="space-y-3">
         {items.map((item) => (
@@ -36,6 +36,6 @@ export function ContributionChecklist({ breakdown, photoCount }: Props) {
           </li>
         ))}
       </ul>
-    </PlaceCard>
+    </Surface>
   );
 }

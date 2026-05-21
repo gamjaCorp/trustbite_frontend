@@ -1,14 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { ConfirmDialog } from '@/components/common/confirm-dialog';
 
 interface Props {
   open: boolean;
@@ -24,35 +17,17 @@ export function DeleteReviewDialog({ open, onOpenChange }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm p-0 gap-0 rounded-3xl overflow-hidden">
-        <DialogTitle className="sr-only">리뷰 삭제</DialogTitle>
-        <DialogDescription className="sr-only">리뷰를 삭제하시겠어요?</DialogDescription>
-
-        <div className="px-6 pt-8 pb-6 flex flex-col gap-6">
-          <div className="text-center space-y-1.5">
-            <p className="text-headline-3 text-foreground">리뷰를 삭제할까요?</p>
-            <p className="text-body-2 text-muted-foreground">삭제된 리뷰는 복구할 수 없어요.</p>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <Button
-              variant="destructive"
-              className="w-full h-12 text-title-2 rounded-xl"
-              onClick={handleDelete}
-            >
-              삭제하기
-            </Button>
-            <DialogClose asChild>
-              <Button
-                variant="ghost"
-                className="w-full h-12 text-title-2 rounded-xl text-muted-foreground"
-              >
-                취소
-              </Button>
-            </DialogClose>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+    <ConfirmDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="리뷰를 삭제할까요?"
+      description="삭제된 리뷰는 복구할 수 없어요."
+      primaryAction={{
+        label: '삭제하기',
+        onClick: handleDelete,
+        tone: 'destructive',
+      }}
+      secondaryAction={{ label: '취소' }}
+    />
   );
 }

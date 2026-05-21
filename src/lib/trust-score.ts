@@ -1,6 +1,6 @@
-export type TrustTone = 'high' | 'mid' | 'danger';
+type TrustTone = 'high' | 'mid' | 'danger';
 
-export function getTrustTone(score: number): TrustTone {
+function getTrustTone(score: number): TrustTone {
   if (score >= 60) return 'high';
   if (score >= 30) return 'mid';
   return 'danger';

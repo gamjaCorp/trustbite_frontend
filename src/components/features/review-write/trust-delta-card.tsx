@@ -3,7 +3,7 @@
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
-import { PlaceCard } from '@/components/core/place-card';
+import { Surface } from '@/components/common/surface';
 import { getTrustToneClass } from '@/lib/trust-score';
 import {
   useReviewIsEditMode,
@@ -18,6 +18,7 @@ interface Props {
   onSubmit: () => void;
 }
 
+// 리뷰 제출 전 신뢰도 변동 미리보기 카드
 export function TrustDeltaCard({
   baseScore,
   remainingReviewsForNextGrade,
@@ -32,7 +33,7 @@ export function TrustDeltaCard({
   const tone = getTrustToneClass(next);
 
   return (
-    <PlaceCard className="p-4">
+    <Surface variant="card" padding="md">
       <header className="flex items-center justify-between">
         <h3 className="text-title-2 text-foreground">내 신뢰도</h3>
         <span className={cn('inline-flex items-center gap-0.5 text-label-3', tone.text)}>
@@ -84,7 +85,7 @@ export function TrustDeltaCard({
         </span>
         개 남음
       </p>
-    </PlaceCard>
+    </Surface>
   );
 }
 

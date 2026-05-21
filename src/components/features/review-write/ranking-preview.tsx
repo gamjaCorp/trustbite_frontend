@@ -1,9 +1,9 @@
 'use client';
 
-import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { PlaceCard } from '@/components/core/place-card';
-import { getRankMedalClasses } from '@/lib/rank';
+import { Surface } from '@/components/common/surface';
+import { RankMedal } from '@/components/common/rank-medal';
+import { ScoreStars } from '@/components/common/score-stars';
 import { useReviewAvgScore, useSelectedRestaurant } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
@@ -45,7 +45,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
   const newVisible = newRank !== null && newRank <= VISIBLE_COUNT;
 
   return (
-    <PlaceCard className="p-4">
+    <Surface variant="card" padding="md">
       <header className="mb-3">
         <h3 className="text-title-2 text-foreground">내 랭킹 미리보기</h3>
         <p className="text-caption-2 text-muted-foreground mt-0.5">
@@ -70,14 +70,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
                 row.isNew && 'bg-primary/5 ring-1 ring-primary/30',
               )}
             >
-              <span
-                className={cn(
-                  'shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-title-3',
-                  getRankMedalClasses(rank) ?? 'bg-muted text-muted-foreground',
-                )}
-              >
-                {rank}
-              </span>
+              <RankMedal rank={rank} />
 
               <span
                 className={cn(
@@ -88,10 +81,7 @@ export function RankingPreview({ myTopRestaurants }: Props) {
                 {row.name}
               </span>
 
-              <span className="flex items-center gap-1 shrink-0">
-                <Star className="w-3.5 h-3.5 fill-palette-amber text-palette-amber" aria-hidden />
-                <span className="text-title-2 text-foreground">{row.avgScore.toFixed(1)}</span>
-              </span>
+              <ScoreStars score={row.avgScore} className="shrink-0" />
 
               {row.isNew && (
                 <span className="shrink-0 rounded-chip bg-primary px-1.5 py-0.5 text-label-3 text-primary-foreground tracking-wider">
@@ -102,6 +92,6 @@ export function RankingPreview({ myTopRestaurants }: Props) {
           );
         })}
       </ol>
-    </PlaceCard>
+    </Surface>
   );
 }

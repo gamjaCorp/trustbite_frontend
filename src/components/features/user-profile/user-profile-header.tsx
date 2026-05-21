@@ -24,7 +24,7 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
       title={
         <>
           <h1 className="text-title-1 text-foreground truncate">
-            {profile.name}님의 미식 가이드
+            {profile.name}
           </h1>
           <UserGradeMark level={profile.level} size="sm" showLabel />
         </>

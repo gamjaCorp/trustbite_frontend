@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { RealtimeReview } from '@/types/restaurant';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { Surface } from '@/components/common/surface';
+import { SectionHeader } from '@/components/common/section-header';
 
 interface Props {
   reviews: RealtimeReview[];
@@ -13,7 +15,7 @@ function StarRow({ score }: { score: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`w-3 h-3 ${i < score ? 'fill-palette-amber text-palette-amber' : 'text-muted-foreground/30'}`}
+          className={`w-3 h-3 ${i < score ? 'fill-warning text-warning' : 'text-muted-foreground/30'}`}
         />
       ))}
     </div>
@@ -25,12 +27,14 @@ export function RealtimeReviews({ reviews }: Props) {
 
   return (
     <section className="space-y-3 pt-6">
-      <h2 className="text-headline-3 text-foreground flex items-center gap-2">실시간 평가</h2>
+      <SectionHeader title="실시간 평가" size="h3" />
       <div className="flex gap-3 overflow-x-auto scrollbar-hide py-3 -my-3">
         {reviews.map((review) => (
-          <div
+          <Surface
             key={review.id}
-            className="w-52 shrink-0 bg-card rounded-2xl shadow-card p-4 flex flex-col gap-2"
+            variant="elevated"
+            padding="md"
+            className="w-52 shrink-0 flex flex-col gap-2"
           >
             {/* 식당명 + 시간 */}
             <div className="flex items-start justify-between gap-2">
@@ -68,7 +72,7 @@ export function RealtimeReviews({ reviews }: Props) {
             <p className="text-body-2 text-muted-foreground leading-relaxed line-clamp-2">
               {review.comment}
             </p>
-          </div>
+          </Surface>
         ))}
       </div>
     </section>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
+import { Surface } from './surface';
 
 interface StatsStripItem {
   label: ReactNode;
@@ -17,7 +18,7 @@ interface Props {
 
 export function StatsStrip({ items }: Props) {
   return (
-    <div className="bg-card rounded-2xl shadow-card flex divide-x divide-border overflow-hidden">
+    <Surface variant="elevated" padding="none" className="flex divide-x divide-border overflow-hidden">
       {items.map((item, i) => {
         const inner = (
           <>
@@ -46,6 +47,6 @@ export function StatsStrip({ items }: Props) {
           </div>
         );
       })}
-    </div>
+    </Surface>
   );
 }

@@ -1,8 +1,10 @@
 'use client';
 
-import { RegionalRankCard } from '@/components/features/ranking/regional-rank-card';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
 import { StatsStrip } from '@/components/common/stats-strip';
+import { SectionHeader } from '@/components/common/section-header';
+import { DividedList } from '@/components/common/divided-list';
 import { getLevelDef } from '@/lib/grade-levels';
 import { getTrustToneClass } from '@/lib/trust-score';
 import { useFollowMock } from '@/stores/follow-mock-store';
@@ -65,29 +67,29 @@ export function UserProfileView({ profile }: Props) {
 
       {topPick && !isFollowing && (
         <section className="mt-8 space-y-3">
-          <h2 className="text-title-1 text-foreground px-1">
-            {profile.name}님의 인생 맛집
-          </h2>
-          <ul className="border-y border-border">
-            <li>
-              <RegionalRankCard entry={{ ...topPick, rank: 1 }} showVisitStats hideBookmark />
-            </li>
-          </ul>
+          <SectionHeader title={`${profile.name}님의 인생 맛집`} className="px-1" />
+          <DividedList
+            items={[topPick]}
+            keyFn={(e) => e.id}
+            listClassName="border-y border-border"
+            renderItem={(entry) => (
+              <PlaceListRow variant="my" ownerName={profile.name} data={toPlaceListRowData({ ...entry, rank: 1 })} />
+            )}
+          />
         </section>
       )}
 
       {isFollowing ? (
         <section className="mt-8 space-y-3">
-          <h2 className="text-title-1 text-foreground px-1">
-            전체 랭킹 {profile.totalRankCount}곳
-          </h2>
-          <ul className="border-y border-border">
-            {profile.rankings.map((entry, i) => (
-              <li key={entry.id} className={i > 0 ? 'border-t border-border' : undefined}>
-                <RegionalRankCard entry={{ ...entry, rank: i + 1 }} showVisitStats hideBookmark />
-              </li>
-            ))}
-          </ul>
+          <SectionHeader title={`전체 랭킹 ${profile.totalRankCount}곳`} className="px-1" />
+          <DividedList
+            items={profile.rankings}
+            keyFn={(e) => e.id}
+            listClassName="border-y border-border"
+            renderItem={(entry, i) => (
+              <PlaceListRow variant="my" ownerName={profile.name} data={toPlaceListRowData({ ...entry, rank: i + 1 })} />
+            )}
+          />
         </section>
       ) : (
         <LockedRankingsSection

@@ -71,9 +71,12 @@ Day 1 점검 결과를 바탕으로 4축 리팩토링.
 
 - [x] `trust-score-badge`, `grade-badge`, `grade-icon` 크기 토큰(sm/md) 이미 일관화 확인
 - [x] 색 토큰, 등급→색 매핑이 `src/lib/grade-levels.ts`를 거치는지 확인 ✅
-- [x] `text-ink/70` → `text-muted-foreground` 전체 통일 (7+건, my-restaurant-card·wishlist-item-card·review-card·my-review-section·ranking-preview)
+- [x] `text-ink/70` → `text-muted-foreground` 전체 통일 (review-card·my-review-section·ranking-preview)
 - [x] 리뷰 본문 `text-body-2 text-foreground/85` → `text-body-1 text-foreground` (review-card, my-review-section)
 - [x] CTA 버튼 `h-12` 교체 (MobileSubmitBar, trust-delta-card 데스크톱 CTA)
+- [x] `ScoreStars` → `common/score-stars.tsx` 추출 (별점+점수 inline 4곳 → 표준화, `fill-warning` 시맨틱 토큰 사용)
+- [x] `RankMedal` → `common/rank-medal.tsx` 추출 (rank badge `place-list-row`·`ranking-preview` → 표준화)
+- [x] `DimensionScoreRow` → `features/restaurant-detail/dimension-score-row.tsx` 추출 (맛/가성비/분위기 inline 2곳 → 표준화)
 
 **(3) 로딩/빈 상태 표준화**
 
@@ -87,12 +90,47 @@ Day 1 점검 결과를 바탕으로 4축 리팩토링.
 - [x] `grade-progress-card` — Link 섹션 패턴 유지
 - [x] `points-earned-card` — `// TODO: 1차 MVP 제외` 주석 유지
 
+**(5) 추가 발견 — 페이지 전반 중복 (Day 1 점검 이후 보강)**
+
+탐색 결과 Day 1 5축으로는 잡히지 않은 페이지 레이아웃·atom 수준 중복이 추가로 발견됨. 우선순위 순으로 정리.
+
+_즉시 정리 (dead code)_
+
+- [x] `src/components/features/my-restaurant/my-restaurant-card.tsx` 삭제 — import 0회, stories만 참조 (이미 `PlaceListRow variant="my"`로 대체됨)
+- [x] `src/components/features/my-restaurant/wishlist-item-card.tsx` 삭제 — import 0회, stories만 참조
+- [x] 위 2개 파일의 `src/stories/*.stories.tsx` 동반 삭제
+- [x] `src/components/features/ranking/regional-rank-card.tsx` → `PlaceListRow variant="regional"`로 교체 후 파일 삭제 (`region-rank-list.tsx:233`의 사용처 한 곳)
+
+_공통 atom 추출_
+
+- [x] `common/section-header.tsx` 신규 — `title / subtitle? / rightAction? / size?: 'h1'|'h2'`. 적용 대상 8곳: `restaurant-rank-list`, `wishlist-section`, `review-filter-bar`, `follow-list-view`, `realtime-reviews`, `my-review-section`, `locked-rankings-section`, `user-profile-view`
+- [x] `common/surface.tsx` 신규 (CVA variant) — `variant: card | elevated | subtle | bordered`, `padding: sm | md | lg`. `bg-card rounded-2xl ...` 패턴 7곳 통일. 기존 `core/place-card.tsx` 흡수
+- [x] `common/divided-list.tsx` 신규 — `<ul border-y>` + `<li border-t i>0>` 패턴 5곳 통일 (`restaurant-rank-list`, `wishlist-section`, `user-profile-view`×2, `follow-list-view`×2)
+- [x] `common/confirm-dialog.tsx` 신규 — `icon / iconTone / title / description / primaryAction / secondaryAction?`. `login-cta-dialog`, `delete-review-dialog`, `review-result-dialog` 3곳 셸 통일
+
+_리뷰 카드 내부 분리_
+
+- [x] `VisitOrdinalChip` 추출 — `review-card.tsx`, `my-review-section.tsx`에 글자 단위로 복사된 칩
+- [x] `ReviewBodyClamp` 추출 — `CLAMP_THRESHOLD=120` + 더보기 토글 로직 중복 제거
+- [x] `ReviewPhotoGrid` 추출 — 3-grid + `+N` 오버레이 옵션
+- [x] `SceneTagsRow` 추출 — `rounded-chip bg-muted` 칩 묶음
+
+_상수 단일화_
+
+- [x] `SCORE_LABELS` (맛/가성비/분위기) 4중 선언 → `src/lib/score-labels.ts`로 일원화. 현재 위치: `place-list-row.tsx:63`, `dimension-score-row.tsx:10`, `score-panel.tsx:12`
+
+_보류/후순위_
+
+- [ ] `common/user-identity-row.tsx` — 아바타+이름+등급+신뢰도 4곳 통합 (`follow-user-row`, `review-card` 헤더, `header`/`back-header`). review-card가 Avatar primitive를 안 쓰는 불일치도 함께 해소
+- [ ] `useTabRoute` 훅 추출 — `follow-list-view`(path 기반)와 `my-places-tabs`(query 기반) 라우팅 로직만 통합. JSX는 그대로
+- [ ] `common/taste-radar-chart.tsx` 분리 — `taste-profile-section.tsx`가 `user-profile-view`에서도 import되는 이름 부정합 해소. recharts 의존성 1파일 격리
+
 **종료 조건**
 
 - [x] `pnpm lint && npx tsc --noEmit` 그린
-- [ ] Storybook으로 변경된 셸/배지 시각 확인, 새 컴포넌트 story 생성 (`generate-story` 스킬)
-- [ ] 3개 화면 브라우저에서 열어 회귀 없음 확인
-- [ ] `frontend-code-reviewer` 에이전트 호출해 리뷰
+- [x] `frontend-code-reviewer` 에이전트 호출해 리뷰 (punch list 수정 완료)
+- [ ] Storybook으로 변경된 셸/배지 시각 확인, 새 컴포넌트 story 생성 → **W2-6으로 이관** (스토리 일괄 처리)
+- [ ] 3개 화면 브라우저에서 열어 회귀 없음 확인 → **W2-3 Vercel Preview에서 묶어 처리**
 
 > 산출물: 카드/배지/로딩/리뷰결과 카드 공통화 완료. W3 데이터 레이어 연결 시 회귀 없이 분기 추가 가능한 상태
 

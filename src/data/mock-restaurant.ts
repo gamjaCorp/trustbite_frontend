@@ -1,23 +1,5 @@
 import { MyRestaurantStats, RealtimeReview, RegionalRankEntry } from '@/types/restaurant';
 
-export const mockStats0: MyRestaurantStats = {
-  visitCount: 0,
-  reviewCount: 0,
-  trustScore: 0,
-  topRestaurants: [],
-  regionCounts: [],
-  topCategory: null,
-};
-
-export const mockStats2: MyRestaurantStats = {
-  visitCount: 2,
-  reviewCount: 2,
-  trustScore: 42,
-  topRestaurants: [],
-  regionCounts: [{ region: '홍대', count: 2 }],
-  topCategory: '한식',
-};
-
 export const mockStats5: MyRestaurantStats = {
   visitCount: 12,
   reviewCount: 5,

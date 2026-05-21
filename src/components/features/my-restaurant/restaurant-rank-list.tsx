@@ -13,7 +13,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
-import { MyRestaurantCard } from '@/components/features/my-restaurant/my-restaurant-card';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
+import { SectionHeader } from '@/components/common/section-header';
+import { DividedList } from '@/components/common/divided-list';
 import { CategoryChipRow, CATEGORIES, OCCASIONS } from '@/components/features/ranking/rank-filter-bar';
 import { ChipSelect } from '@/components/core/chip-select';
 
@@ -68,39 +70,37 @@ export function RestaurantRankList({ entries }: Props) {
   return (
     <div>
       {/* 섹션 헤더 */}
-      <div className="flex items-start justify-between gap-3 px-1">
-        <div className="space-y-1.5">
-          <h2 className="text-headline-2 text-foreground truncate">전체 랭킹</h2>
-          <p className="text-caption-2 text-muted-foreground">
-            내가 쓴 리뷰 <span className="">{reviewedCount}</span>개 ·{' '}
-            <span className="">{entries.length}</span>곳 방문
-          </p>
-        </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* TODO: 1차 MVP 제외 — 공유 기능 */}
-          <div
-            aria-disabled="true"
-            className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
-          >
-            <Share2 className="w-4 h-4" />
-          </div>
-          <ChipSelect
-            value={region}
-            onValueChange={setRegion}
-            icon={MapPin}
-            placeholder="전체 지역"
-            items={[
-              { value: 'all', label: '전체 지역' },
-              ...regions.map((r) => ({ value: r, label: r })),
-            ]}
-          />
-          <ChipSelect
-            value={sort}
-            onValueChange={(v) => setSort(v as SortKey)}
-            items={SORT_ITEMS}
-          />
-        </div>
-      </div>
+      <SectionHeader
+        title="전체 랭킹"
+        subtitle={`내가 쓴 리뷰 ${reviewedCount}개 · ${entries.length}곳 방문`}
+        className="px-1"
+        rightAction={
+          <>
+            {/* TODO: 1차 MVP 제외 — 공유 기능 */}
+            <div
+              aria-disabled="true"
+              className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
+            >
+              <Share2 className="w-4 h-4" />
+            </div>
+            <ChipSelect
+              value={region}
+              onValueChange={setRegion}
+              icon={MapPin}
+              placeholder="전체 지역"
+              items={[
+                { value: 'all', label: '전체 지역' },
+                ...regions.map((r) => ({ value: r, label: r })),
+              ]}
+            />
+            <ChipSelect
+              value={sort}
+              onValueChange={(v) => setSort(v as SortKey)}
+              items={SORT_ITEMS}
+            />
+          </>
+        }
+      />
 
       {/* sticky 필터 */}
       <div className="sticky top-[var(--header-height)] z-10 bg-background py-3 mt-3 space-y-2">
@@ -157,16 +157,14 @@ export function RestaurantRankList({ entries }: Props) {
           </EmptyContent>
         </Empty>
       ) : (
-        <ul className="mt-6 border-b border-border">
-          {filteredList.map((entry, i) => (
-            <li
-              key={entry.id}
-              className={cn(i > 0 && 'border-t border-border')}
-            >
-              <MyRestaurantCard entry={{ ...entry, rank: i + 1 }} />
-            </li>
-          ))}
-        </ul>
+        <DividedList
+          items={filteredList}
+          keyFn={(e) => e.id}
+          listClassName="mt-6 border-b border-border"
+          renderItem={(entry, i) => (
+            <PlaceListRow variant="my" data={toPlaceListRowData({ ...entry, rank: i + 1 })} />
+          )}
+        />
       )}
     </div>
   );

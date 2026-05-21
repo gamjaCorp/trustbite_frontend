@@ -3,3 +3,6 @@
 - [trustScore 표시에 text-palette-green 직접 사용 반복 패턴](feedback_palette_direct_use.md) — text-success 시맨틱 토큰으로 대체 권장
 - [북마크 버튼 tap target: w-7 h-7 (28px) 반복 위반](feedback_tap_target_size.md) — 44px 이상 필수
 - [mock 시드 데이터와 스토어 initialItems 이중 정의 패턴](project_mock_data_duplication.md) — WISHLIST_SEED_IDS와 스토어 hardcode가 분리되어 데드코드 발생
+- [PlaceListRow 통합 리팩토링 아키텍처 결정](project_place_list_row_refactor.md) — 3개 카드 → 단일 variant 컴포넌트, 어댑터 함수 avgScore 매핑 등
+- [별점 Star에 fill-palette-amber 직접 사용 반복](feedback_palette_direct_star.md) — fill-warning/text-warning 시맨틱 토큰으로 대체 필요
+- [ConfirmDialog primaryAction onClick은 다이얼로그 자동 닫힘 없음](feedback_confirm_dialog_close.md) — 호출부가 onOpenChange(false) 직접 호출해야 하는 API 제약

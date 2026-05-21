@@ -4,7 +4,6 @@
 import type { ReactNode } from 'react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-
 import { FollowStatsRow } from './follow-stats-row';
 
 interface Props {

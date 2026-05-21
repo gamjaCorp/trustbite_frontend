@@ -5,7 +5,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { initialWishlistSeed } from '@/data/mock-wishlist';
 
-export type WishlistItem = { restaurantId: string; addedAt: string };
+type WishlistItem = { restaurantId: string; addedAt: string };
 
 type WishlistMockState = {
   items: WishlistItem[];

@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { Category, MyRestaurantEntry } from '@/types/restaurant';
 import { CATEGORY_TEXT_STYLE } from '@/lib/category';
+import { Surface } from '@/components/common/surface';
 
 interface Props {
   entries: MyRestaurantEntry[];
@@ -150,7 +151,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
 
   return (
     <section>
-      <div className="bg-card rounded-2xl overflow-hidden shadow-card">
+      <Surface variant="elevated" padding="none" className="overflow-hidden">
         {/* 헤더 — 박스 내부 상단 */}
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <h2 className="text-headline-3 text-foreground flex items-center gap-2">
@@ -267,7 +268,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
             <p className="text-caption-2 text-muted-foreground">리뷰 {basisCount}개를 분석해 자동 생성한 결과예요</p>
           </div>
         </div>
-      </div>
+      </Surface>
     </section>
   );
 }

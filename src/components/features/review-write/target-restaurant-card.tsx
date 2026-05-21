@@ -2,10 +2,11 @@
 
 import Image from 'next/image';
 import { Pencil } from 'lucide-react';
-import { PlaceCard } from '@/components/core/place-card';
+import { Surface } from '@/components/common/surface';
 import { CategoryBadge } from '@/components/common/category-badge';
 import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
 
+// 리뷰 작성 대상 음식점 선택 카드
 export function TargetRestaurantCard() {
   const selected = useSelectedRestaurant();
   const { clearSelectedRestaurant } = useReviewActions();
@@ -15,7 +16,7 @@ export function TargetRestaurantCard() {
   const visitOrdinal = selected.visitCount + 1;
 
   return (
-    <PlaceCard className="flex items-center gap-3 p-3">
+    <Surface variant="card" padding="sm" className="flex items-center gap-3">
       <div className="relative w-14 h-14 shrink-0 overflow-hidden rounded-xl bg-muted">
         <Image src={selected.imageUrl} alt={selected.name} fill className="object-cover" />
       </div>
@@ -36,10 +37,10 @@ export function TargetRestaurantCard() {
         type="button"
         onClick={clearSelectedRestaurant}
         aria-label="음식점 다시 선택"
-        className="shrink-0 w-8 h-8 rounded-full text-muted-foreground hover:bg-muted hover:text-foreground flex items-center justify-center transition-colors"
+        className="shrink-0 w-11 h-11 rounded-full text-muted-foreground hover:bg-muted hover:text-foreground flex items-center justify-center transition-colors"
       >
         <Pencil className="w-4 h-4" />
       </button>
-    </PlaceCard>
+    </Surface>
   );
 }

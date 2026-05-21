@@ -10,14 +10,12 @@ import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
 import { ChipSelect } from '@/components/core/chip-select';
-import { RegionalRankCard } from './regional-rank-card';
-import { CategoryChipRow, CATEGORIES } from './rank-filter-bar';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
+import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
 
 interface Props {
   entries: RegionalRankEntry[];
 }
-
-const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '다이어트'];
 
 type ExploreSort = 'rank' | 'trust' | 'recent';
 
@@ -94,7 +92,7 @@ export function RegionRankList({ entries }: Props) {
     if (sort === 'trust') {
       sorted.sort((a, b) => b.trustScore - a.trustScore);
     } else if (sort === 'recent') {
-      // mock에 createdAt 없음 — id 역순 임시 적용 (Week 2 데이터 레이어에서 교체)
+      // mock에 createdAt 없음 — id 역순 임시 적용 (Week 3 데이터 레이어에서 교체)
       sorted.sort((a, b) => b.id.localeCompare(a.id));
     } else {
       sorted.sort((a, b) => b.communityAvgScore - a.communityAvgScore || a.rank - b.rank);
@@ -157,7 +155,7 @@ export function RegionRankList({ entries }: Props) {
 
           <div className="border-t border-dashed border-border" />
 
-          {/* 상황 태그 (다중 선택) — UI만, Week 2 데이터 연결 시 필터 적용 */}
+          {/* 상황 태그 (다중 선택) — UI만, Week 3 데이터 연결 시 필터 적용 */}
           <div className="flex items-center gap-2">
             <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
             {OCCASIONS.map((tag) => {
@@ -230,7 +228,7 @@ export function RegionRankList({ entries }: Props) {
                 key={entry.id}
                 className={cn(i > 0 && 'border-t border-border')}
               >
-                <RegionalRankCard entry={entry} active={effectiveActiveId === entry.id} />
+                <PlaceListRow variant="regional" data={toPlaceListRowData(entry)} active={effectiveActiveId === entry.id} />
               </li>
             ))}
           </ul>

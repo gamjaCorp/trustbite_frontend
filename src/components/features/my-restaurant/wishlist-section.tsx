@@ -7,7 +7,9 @@ import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { ChipSelect } from '@/components/core/chip-select';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
-import { WishlistItemCard } from '@/components/features/my-restaurant/wishlist-item-card';
+import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/place-list-row';
+import { SectionHeader } from '@/components/common/section-header';
+import { DividedList } from '@/components/common/divided-list';
 import type { RestaurantDetail } from '@/types/restaurant';
 
 type WishlistSortKey = 'recent' | 'score' | 'trust';
@@ -84,35 +86,40 @@ export function WishlistSection() {
       )}
 
       {/* 헤더 행 */}
-      <div className="mt-6 flex items-center justify-between gap-3 px-1">
-        <h2 className="text-headline-2 text-foreground">위시리스트</h2>
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* TODO: 1차 MVP 제외 — 공유 기능 */}
-          <div
-            aria-disabled="true"
-            className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
-          >
-            <Share2 className="w-4 h-4" />
-          </div>
-          <ChipSelect
-            value={sort}
-            onValueChange={(v) => setSort(v as WishlistSortKey)}
-            items={SORT_ITEMS}
-          />
-        </div>
-      </div>
+      <SectionHeader
+        title="위시리스트"
+        className="mt-6 px-1"
+        rightAction={
+          <>
+            {/* TODO: 1차 MVP 제외 — 공유 기능 */}
+            <div
+              aria-disabled="true"
+              className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
+            >
+              <Share2 className="w-4 h-4" />
+            </div>
+            <ChipSelect
+              value={sort}
+              onValueChange={(v) => setSort(v as WishlistSortKey)}
+              items={SORT_ITEMS}
+            />
+          </>
+        }
+      />
 
       {/* 카드 리스트 */}
-      <ul className="mt-6 border-b border-border">
-        {sortedList.map(({ item, detail }, i) => (
-          <li
-            key={item.restaurantId}
-            className={i > 0 ? 'border-t border-border' : undefined}
-          >
-            <WishlistItemCard detail={detail} addedAt={item.addedAt} onRemove={remove} />
-          </li>
-        ))}
-      </ul>
+      <DividedList
+        items={sortedList}
+        keyFn={({ item }) => item.restaurantId}
+        listClassName="mt-6 border-b border-border"
+        renderItem={({ item, detail }) => (
+          <PlaceListRow
+            variant="wishlist"
+            data={toPlaceListRowDataFromDetail(detail, { addedAt: item.addedAt })}
+            onRemoveFromWishlist={remove}
+          />
+        )}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import type { RegionalRankEntry } from './restaurant';
 import type { GradeLevel } from '@/lib/grade-levels';
 
-export interface MutualFollowing {
+interface MutualFollowing {
   displayName: string;
   extraCount: number;
 }
