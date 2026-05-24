@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Circle, CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
-import { buildPinHtml } from './restaurant-pin';
+import { CategoryPin } from './category-pin';
 
 export interface MapBounds {
   sw: { lat: number; lng: number };
@@ -20,8 +20,14 @@ interface MapViewProps {
   entries: RegionalRankEntry[];
   activeId?: string | null;
   onPinClick?: (id: string) => void;
-  /** idle 시 현재 viewport에서 계산한 검색 영역(중심+반경)을 전달 */
+  /** 최초 타일 로드 시에만 검색 영역 전달 → 첫 자동 검색 트리거 */
   onAreaChanged?: (area: SearchArea) => void;
+  /** 드래그·줌 등 viewport 변경 시마다 현재 영역 전달 → 재검색 버튼 표시 용도 */
+  onViewportChange?: (area: SearchArea) => void;
+  /** 현재 적용된 검색 영역 — 원이 이 영역에 고정됨. null이면 내부 초기값 사용 */
+  appliedArea?: SearchArea | null;
+  /** appliedArea 중심의 행정구역명 전달 (재검색 시에만 발화) */
+  onRegionChange?: (region: string | null) => void;
 }
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
@@ -78,6 +84,9 @@ function KakaoMap({
   activeId,
   onPinClick,
   onAreaChanged,
+  onViewportChange,
+  appliedArea,
+  onRegionChange,
   appKey,
 }: MapViewProps & { appKey: string }) {
   const [loading, error] = useKakaoLoader({
@@ -92,9 +101,38 @@ function KakaoMap({
     return { lat: avgLat, lng: avgLng };
   });
 
-  // 원형 오버레이 상태 — 드래그/줌 시 실시간으로 갱신
-  const [circleCenter, setCircleCenter] = useState(initialCenter);
-  const [circleRadius, setCircleRadius] = useState(0);
+  // 첫 타일 로드 직후 부모 appliedArea가 전파되기 전까지만 사용하는 초기 원 상태
+  const [initialArea, setInitialArea] = useState<SearchArea | null>(null);
+  // onTileLoaded는 pan/zoom 시에도 재발화하므로 첫 발화에만 onAreaChanged를 호출
+  const firedInitial = useRef(false);
+
+  // onRegionChange를 ref로 안정화 — 부모가 매 렌더마다 새 함수를 넘겨도 effect 재실행 방지
+  const onRegionChangeRef = useRef(onRegionChange);
+  useEffect(() => {
+    onRegionChangeRef.current = onRegionChange;
+  });
+
+  // appliedArea 중심의 행정구역을 역지오코딩해 부모에 전달
+  useEffect(() => {
+    if (loading || !appliedArea) return;
+    const geocoder = new kakao.maps.services.Geocoder();
+    geocoder.coord2RegionCode(
+      appliedArea.center.lng,
+      appliedArea.center.lat,
+      (result, status) => {
+        if (status !== kakao.maps.services.Status.OK) {
+          onRegionChangeRef.current?.(null);
+          return;
+        }
+        const admin = result.find((r) => r.region_type === 'H');
+        const region = admin?.region_2depth_name ?? result[0]?.region_2depth_name ?? null;
+        onRegionChangeRef.current?.(region ?? null);
+      },
+    );
+  }, [appliedArea, loading]);
+
+  // 원은 항상 마지막 검색 영역(appliedArea)에 고정. 부모 전파 전 짧은 공백은 initialArea로 채움
+  const circleArea = appliedArea ?? initialArea;
 
   if (error) {
     return (
@@ -118,39 +156,31 @@ function KakaoMap({
       level={5}
       style={{ width: '100%', height: '100%' }}
       onTileLoaded={(target) => {
-        const c = target.getCenter();
-        const center = { lat: c.getLat(), lng: c.getLng() };
-        const radius = computeViewportRadius(target);
-        setCircleCenter(center);
-        setCircleRadius(radius);
-        onAreaChanged?.({ center, radius });
-      }}
-      onDrag={(target) => {
-        const c = target.getCenter();
-        setCircleCenter({ lat: c.getLat(), lng: c.getLng() });
-        setCircleRadius(computeViewportRadius(target));
-      }}
-      onZoomChanged={(target) => {
-        const c = target.getCenter();
-        setCircleCenter({ lat: c.getLat(), lng: c.getLng() });
-        setCircleRadius(computeViewportRadius(target));
+        if (!firedInitial.current) {
+          firedInitial.current = true;
+          const c = target.getCenter();
+          const area = {
+            center: { lat: c.getLat(), lng: c.getLng() },
+            radius: computeViewportRadius(target),
+          };
+          setInitialArea(area);
+          onAreaChanged?.(area);
+        }
       }}
       onIdle={(target) => {
         const c = target.getCenter();
         const center = { lat: c.getLat(), lng: c.getLng() };
         const radius = computeViewportRadius(target);
-        setCircleCenter(center);
-        setCircleRadius(radius);
-        onAreaChanged?.({ center, radius });
+        onViewportChange?.({ center, radius });
       }}
     >
-      {circleRadius > 0 && (
+      {circleArea && (
         <Circle
-          center={circleCenter}
-          radius={circleRadius}
+          center={circleArea.center}
+          radius={circleArea.radius}
           strokeWeight={0}
           fillColor={CIRCLE_COLOR}
-          fillOpacity={0.07}
+          fillOpacity={0.09}
         />
       )}
       {entries.map((entry) => (
@@ -159,18 +189,11 @@ function KakaoMap({
           position={{ lat: entry.coordinates.lat, lng: entry.coordinates.lng }}
           yAnchor={0.5}
           xAnchor={0.5}
-          zIndex={activeId === entry.id ? 10 : entry.rank <= 3 ? 5 : 1}
+          zIndex={activeId === entry.id ? 10 : 1}
         >
-          <div
-            onClick={() => onPinClick?.(entry.id)}
-            dangerouslySetInnerHTML={{
-              __html: buildPinHtml({
-                status: entry.myStatus,
-                active: activeId === entry.id,
-                rank: entry.rank,
-              }),
-            }}
-          />
+          <div onClick={() => onPinClick?.(entry.id)}>
+            <CategoryPin category={entry.category} active={activeId === entry.id} />
+          </div>
         </CustomOverlayMap>
       ))}
     </Map>

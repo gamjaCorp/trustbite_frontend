@@ -1,16 +1,17 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, MapPin } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
 import { MapView, type SearchArea } from '@/components/features/explore/map-view';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
-import { SelectList } from '@/components/core/select-list';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
+import { SelectList, type SelectListItem } from '@/components/core/select-list';
+import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { useNearbyPlaces } from '@/hooks/explore/use-nearby-places';
 
 interface Props {
@@ -18,24 +19,45 @@ interface Props {
   entries?: RegionalRankEntry[];
 }
 
-type ExploreSort = 'rank' | 'trust' | 'recent';
+// TODO: 1차 MVP 제외 — 백엔드 도착 시 sort state 연결 후 disabled 제거
+const SORT_ITEMS: SelectListItem[] = [
+  { value: 'rank', label: '랭킹순' },
+  { value: 'trust', label: '신뢰도순' },
+  { value: 'recent', label: '최신순' },
+];
 
 export function RegionRankList({ entries: entriesProp }: Props) {
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [query, setQuery] = useState('');
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [sort, setSort] = useState<ExploreSort>('rank');
   const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
+  const [currentRegion, setCurrentRegion] = useState<string | null>(null);
 
-  // 지도 idle 시 계산된 viewport 영역 (center + radius). 자동 재검색 트리거
+  // 실제 검색에 사용된 영역 (최초 타일 로드 시 + 재검색 버튼 클릭 시 갱신)
   const [appliedArea, setAppliedArea] = useState<SearchArea | null>(null);
+  // 현재 지도 viewport 영역 — 재검색 버튼 표시 여부에 사용
+  const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
 
-  // entriesProp 없으면 Kakao Local에서 area 기반으로 자동 fetch
+  // entriesProp 없으면 Kakao Local에서 area 기반으로 fetch
   const { data: kakaoEntries = [] } = useNearbyPlaces(entriesProp ? null : appliedArea);
   const entries = entriesProp ?? kakaoEntries;
 
+  // 최초 타일 로드 시 자동 검색
   const handleAreaChange = (area: SearchArea) => {
     setAppliedArea(area);
+  };
+
+  // 드래그·줌 시 viewport 변경 추적 → 재검색 버튼 표시
+  const handleViewportChange = (area: SearchArea) => {
+    setPendingArea(area);
+  };
+
+  // 재검색 버튼 클릭
+  const handleAreaSearch = () => {
+    if (pendingArea) {
+      setAppliedArea(pendingArea);
+      setPendingArea(null);
+    }
   };
 
   const toggleOccasion = (tag: SceneTag) => {
@@ -47,7 +69,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     });
   };
 
-  // category + query 필터 → sort 적용 (원형 필터는 Kakao 서버측에서 처리됨)
+  // category + query 필터 → Kakao 응답 순서 유지 (백엔드 도착 시 실제 랭킹 신호로 교체)
   const filteredList = useMemo(() => {
     let list = entries;
     if (category !== 'all') list = list.filter((e) => e.category === category);
@@ -60,32 +82,14 @@ export function RegionRankList({ entries: entriesProp }: Props) {
           e.category.toLowerCase().includes(q),
       );
     }
-    const sorted = [...list];
-    if (sort === 'trust') {
-      sorted.sort((a, b) => b.trustScore - a.trustScore);
-    } else if (sort === 'recent') {
-      // TODO: 백엔드 도착 시 실제 createdAt으로 교체 — 현재 id 역순 임시 적용
-      sorted.sort((a, b) => b.id.localeCompare(a.id));
-    } else {
-      // Kakao 응답 순서(인기·거리 휴리스틱)를 랭킹 신호로 사용
-      sorted.sort((a, b) => a.rank - b.rank);
-    }
-    return sorted;
-  }, [entries, category, query, sort]);
+    return [...list].sort((a, b) => a.rank - b.rank);
+  }, [entries, category, query]);
 
   // 핀 표시용: 현재 보이는 결과에 1~N 랭크 부여
   const rankedEntries = useMemo(
     () => filteredList.map((e, i) => ({ ...e, rank: i + 1 })),
     [filteredList],
   );
-
-  // 현재 결과의 대표 지역 — 가장 많이 등장한 region 한 곳
-  const dominantRegion = useMemo(() => {
-    if (rankedEntries.length === 0) return null;
-    const counts = new Map<string, number>();
-    rankedEntries.forEach((e) => counts.set(e.region, (counts.get(e.region) ?? 0) + 1));
-    return Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0][0];
-  }, [rankedEntries]);
 
   // 핀 클릭 → 해당 카드로 스크롤
   const handlePinClick = (id: string) => {
@@ -129,7 +133,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
           <div className="border-t border-dashed border-border" />
 
           {/* 상황 태그 (다중 선택) — UI만, Week 3 데이터 연결 시 필터 적용 */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
             {OCCASIONS.map((tag) => {
               const active = occasions.has(tag);
@@ -154,14 +158,23 @@ export function RegionRankList({ entries: entriesProp }: Props) {
           </div>
         </div>
 
-        {/* row 4: 임베드 지도 — 원이 viewport에 꽉 차게 표시되고 idle 시 자동 재검색 */}
+        {/* row 4: 임베드 지도 — 드래그/줌 후 버튼 클릭으로 재검색 */}
         <div className="relative h-80 rounded-2xl overflow-hidden border border-border">
           <MapView
             entries={rankedEntries}
             activeId={effectiveActiveId}
             onPinClick={handlePinClick}
             onAreaChanged={handleAreaChange}
+            onViewportChange={handleViewportChange}
+            appliedArea={appliedArea}
+            onRegionChange={setCurrentRegion}
           />
+          <div className="absolute top-3 left-0 right-0 flex justify-center pointer-events-none z-10">
+            <SearchThisArea
+              visible={!!pendingArea}
+              onClick={handleAreaSearch}
+            />
+          </div>
         </div>
       </div>
 
@@ -172,24 +185,19 @@ export function RegionRankList({ entries: entriesProp }: Props) {
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-headline-2 text-foreground truncate">
-                {dominantRegion ? `${dominantRegion} 일대 맛집` : '이 지역 맛집'}
+                {currentRegion ? `${currentRegion} 일대 맛집` : '이 지역 맛집'}
               </h2>
               <SelectList
-                value={sort}
-                onValueChange={(v) => setSort(v as ExploreSort)}
-                items={[
-                  { value: 'rank', label: '랭킹순' },
-                  { value: 'trust', label: '신뢰도순' },
-                  { value: 'recent', label: '최신순' },
-                ]}
+                value="rank"
+                onValueChange={() => {}}
+                items={SORT_ITEMS}
+                disabled
+                className="shrink-0"
               />
             </div>
             <p className="inline-flex items-center gap-1 text-caption-2 text-muted-foreground min-w-0">
-              <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
-              <span className="truncate">
-                이번 주 신뢰도 80%+ 리뷰만 반영 ·{' '}
-                <span className="">{rankedEntries.length}</span>곳
-              </span>
+              <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+              <span className="truncate">이 영역에 {rankedEntries.length}곳</span>
             </p>
           </div>
           <ul className="border-y border-border">
@@ -198,7 +206,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
                 key={entry.id}
                 className={cn(i > 0 && 'border-t border-border')}
               >
-                <PlaceListRow variant="regional" data={toPlaceListRowData(entry)} active={effectiveActiveId === entry.id} />
+                <PlaceListRow variant="regional" minimal data={toPlaceListRowData(entry)} active={effectiveActiveId === entry.id} />
               </li>
             ))}
           </ul>
