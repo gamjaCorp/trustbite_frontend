@@ -21,12 +21,13 @@ export function CategoryPin({ category, active = false }: Props) {
 
   return (
     <div
-      className="rounded-full bg-primary border-[3px] border-white flex items-center justify-center"
+      className="rounded-full bg-neutral-400 border-[3px] border-white flex items-center justify-center"
       style={{
         width: size,
         height: size,
+        opacity: 1,
         boxShadow: active
-          ? '0 0 0 3px rgba(255,122,0,0.25), 0 4px 8px rgba(0,0,0,0.2)'
+          ? '0 0 0 3px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.25)'
           : '0 2px 6px rgba(0,0,0,0.18)',
       }}
     >
