@@ -74,6 +74,8 @@ export type RegionalRankEntry = MyRestaurantEntry & {
   subCategory?: string;
   // TODO: 1차 MVP 제외 — Kakao 거리(m). 백엔드 도착 시 서버 거리 계산값으로 교체
   distanceMeters?: number;
+  // TODO: 1차 MVP 제외 — mock 상세 데이터가 있는 경우 true. 백엔드 도착 시 항상 true로 처리
+  hasRealData?: boolean;
 };
 
 export type SortKey = 'score' | 'recent';

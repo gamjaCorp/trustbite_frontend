@@ -25,13 +25,14 @@ export function RestaurantSummary({ detail }: Props) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="text-caption-2 text-muted-foreground">
-            {detail.category}
-            {detail.subCategory ? ` · ${detail.subCategory}` : ''}
+            {[detail.category, detail.subCategory, detail.region].filter(Boolean).join(' · ')}
           </p>
           <h1 className="mt-1 text-headline-1 text-foreground">{detail.name}</h1>
-          <p className="mt-1.5 text-caption-1 text-muted-foreground">
-            {detail.address} · {detail.accessSummary} · {detail.hours.weekday}
-          </p>
+          {(detail.address || detail.accessSummary || detail.hours.weekday) && (
+            <p className="mt-1.5 text-caption-1 text-muted-foreground">
+              {[detail.address, detail.accessSummary, detail.hours.weekday].filter(Boolean).join(' · ')}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">

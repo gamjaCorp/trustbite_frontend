@@ -274,10 +274,159 @@ const onion: RestaurantDetail = {
   ],
 };
 
+const karedang: RestaurantDetail = {
+  id: '1309119533',
+  name: '카레당',
+  category: '일식',
+  subCategory: '카레',
+  region: '을지로',
+  tagline: '카츠카레 한 그릇으로 점심시간이 살아나는 곳',
+  address: '서울 중구 을지로 24-1',
+  accessSummary: '을지로3가역 11번 출구 4분',
+  hours: { weekday: '평일 11:30 – 21:00 (토·일 휴무)' },
+  coordinates: { lat: 37.566, lng: 126.992 },
+  photos: [
+    unsplash('photo-1565557623262-b51c2513a641'),
+    unsplash('photo-1547573854-74d2a71d0826'),
+    unsplash('photo-1553621042-f6e147245754'),
+    unsplash('photo-1563612116625-3012372fccce'),
+    unsplash('photo-1574484284002-952d92456975'),
+    unsplash('photo-1626100134240-1c0b3437d65a'),
+  ],
+  totalPhotoCount: 37,
+  locationDescription:
+    '을지로3가역 11번 출구에서 도보 4분. 점심시간 줄이 길지만 회전이 빨라 10분 안에 자리가 납니다. 1인 카운터석도 있어서 혼밥하기 좋아요.',
+  communityAvgScore: 4.5,
+  dimensionScores: { taste: 4.7, value: 4.3, vibe: 3.9 },
+  sceneScores: [
+    { tag: '혼밥', score: 4.8 },
+    { tag: '데이트', score: 3.8 },
+    { tag: '회식', score: 3.5 },
+  ],
+  trustScore: 78,
+  trustBreakdown: { photoRatio: 0.66, longTextRatio: 0.58, recentActivityRatio: 0.74 },
+  reviewCount: 87,
+  myReview: {
+    visitCount: 2,
+    lastVisitLabel: '4월 8일',
+    visits: [
+      {
+        visitOrdinal: 1,
+        dateLabel: '2월 22일',
+        scores: { taste: 4.5, value: 4.5, vibe: 3.5 },
+        content:
+          '을지로에서 점심을 해결할 곳을 찾다가 지나가다 발견했어요. 들어가니 자리가 꽉 찼는데 카운터석이 있어서 혼자도 어색하지 않았습니다.\n\n카츠카레 주문했는데 소스가 진하고 고소하면서도 매콤하지 않아서 좋았어요. 돈카츠 튀김이 얇게 잘 튀겨져서 소스에 푹 적셔 먹으면 최고. 밥 양도 넉넉해서 배부르게 먹었습니다.\n\n가격도 점심 기준으로 착한 편이고, 조용히 혼자 먹기 딱 좋은 분위기예요. 근처 일하는 분들이 많이 오시는 것 같았어요.',
+        sceneTags: ['혼밥'],
+        photos: [
+          unsplash('photo-1565557623262-b51c2513a641'),
+          unsplash('photo-1547573854-74d2a71d0826'),
+        ],
+      },
+      {
+        visitOrdinal: 2,
+        dateLabel: '4월 8일',
+        scores: { taste: 5.0, value: 4.5, vibe: 4.0 },
+        content:
+          '이번엔 새우카레 시켜봤어요. 새우가 통통하고 소스가 카츠카레랑 또 달라서 좋았습니다. 두 번 왔는데 메뉴마다 맛이 다 훌륭하네요. 직원분들도 빠릿빠릿해서 점심시간에 빠르게 먹고 나올 수 있어서 특히 좋아요.',
+        sceneTags: ['혼밥'],
+      },
+    ],
+  },
+  repeatVisitReview: {
+    reviewerId: 'jiho_seo',
+    reviewerName: '서지호',
+    reviewerInitial: '서',
+    reviewerLevel: 5,
+    reviewerTrustScore: 82,
+    visitCount: 2,
+    visits: [
+      {
+        label: '최근 · 3월 30일',
+        scores: { taste: 5.0, value: 4.5, vibe: 4.0 },
+        content:
+          '이번엔 새우카레로 바꿔봤는데 전보다 더 좋았어요. 첫 방문 때보다 소스가 더 짙게 느껴졌고, 덮밥 형식이라 먹기 편했습니다. 카운터 자리에 앉아서 혼자 먹는 분위기가 도쿄 카레집 같아서 좋아요.',
+      },
+      {
+        label: '첫 방문 · 작년 10월',
+        scores: { taste: 4.5, value: 4.5, vibe: 3.5 },
+        content:
+          '카츠카레가 맛있는데 소스가 진하고 카츠가 바삭해서 식감이 좋아요. 분위기는 좀 좁고 북적이는 편이지만 점심 한 끼로는 완벽한 곳.',
+      },
+    ],
+  },
+  reviews: [
+    {
+      id: 'kr1',
+      reviewerId: 'jihun_kim',
+      reviewerName: '김지훈',
+      reviewerInitial: '김',
+      reviewerLevel: 6,
+      reviewerTrustScore: 88,
+      visitOrdinal: 3,
+      scores: { taste: 5.0, value: 4.5, vibe: 4.0 },
+      content:
+        '카츠카레가 시그니처인데 소스가 진하고 카츠가 얇게 잘 튀겨져서 밥이랑 비벼 먹으면 진짜 맛있어요. 을지로 점심 픽으로 항상 추천하는 곳입니다. 줄이 길어도 기다릴 가치 있어요.',
+      photos: [
+        unsplash('photo-1565557623262-b51c2513a641'),
+        unsplash('photo-1553621042-f6e147245754'),
+      ],
+      sceneTags: ['혼밥'],
+      helpfulCount: 21,
+      postedAt: '1주 전',
+    },
+    {
+      id: 'kr2',
+      reviewerId: 'sumin_lee',
+      reviewerName: '이수민',
+      reviewerInitial: '이',
+      reviewerLevel: 4,
+      reviewerTrustScore: 71,
+      visitOrdinal: 1,
+      scores: { taste: 4.5, value: 4.5, vibe: 3.5 },
+      content:
+        '점심 피크 때는 웨이팅이 좀 있지만 회전이 빠른 편이라 오래 기다리지 않았어요. 카운터석이 있어서 1인 방문도 편하고, 음식이 빨리 나와서 바쁜 점심시간에 딱입니다.',
+      sceneTags: ['혼밥'],
+      helpfulCount: 9,
+      postedAt: '2주 전',
+    },
+    {
+      id: 'kr3',
+      reviewerId: 'jaehyun_park',
+      reviewerName: '박재현',
+      reviewerInitial: '박',
+      reviewerLevel: 5,
+      reviewerTrustScore: 80,
+      visitOrdinal: 2,
+      scores: { taste: 4.5, value: 4.0, vibe: 4.0 },
+      content:
+        '카운터석에 앉아서 혼자 먹었는데 도쿄 카레 전문점 같은 느낌이 나서 좋았어요. 카레 자체가 향신료 향이 강하지 않고 부드러운 편이라 자극적인 게 싫은 분께도 추천할 수 있어요.',
+      sceneTags: ['혼밥'],
+      helpfulCount: 14,
+      postedAt: '1개월 전',
+    },
+    {
+      id: 'kr4',
+      reviewerId: 'yuna_jung',
+      reviewerName: '정유나',
+      reviewerInitial: '정',
+      reviewerLevel: 3,
+      reviewerTrustScore: 65,
+      visitOrdinal: 1,
+      scores: { taste: 4.0, value: 5.0, vibe: 3.5 },
+      content:
+        '을지로에서 이 가격에 이 맛이면 가성비 최고예요. 메뉴가 심플해서 고민 없이 주문할 수 있고, 양도 많아서 만족스러웠습니다. 분위기가 좀 협소하긴 하지만 맛으로 커버됩니다.',
+      sceneTags: ['혼밥', '데이트'],
+      helpfulCount: 6,
+      postedAt: '1개월 전',
+    },
+  ],
+};
+
 const mockRestaurantDetails: Record<string, RestaurantDetail> = {
   '1': yangmiok,
   '4': sushidoku,
   '5': onion,
+  '1309119533': karedang,
 };
 
 export function getRestaurantDetail(id: string): RestaurantDetail | undefined {

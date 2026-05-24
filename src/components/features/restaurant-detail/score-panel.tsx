@@ -32,6 +32,23 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
 export function ScorePanel({ detail }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  if (detail.reviewCount === 0) {
+    return (
+      <section className="px-6 pt-4">
+        <Surface variant="ring" padding="lg">
+          <div className="flex flex-col items-center justify-center gap-2 py-6">
+            <span className="inline-flex items-center justify-center px-3 py-1 rounded-chip bg-muted text-muted-foreground text-caption-2">
+              리뷰 부족
+            </span>
+            <p className="text-caption-2 text-muted-foreground text-center">
+              아직 등록된 리뷰가 없어요. 첫 리뷰를 남겨보세요.
+            </p>
+          </div>
+        </Surface>
+      </section>
+    );
+  }
+
   return (
     <section className="px-6 pt-4">
       <Surface variant="ring" padding="lg">

@@ -139,5 +139,20 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
     trustBreakdown: { photoRatio, longTextRatio, recentActivityRatio },
     subCategory,
     distanceMeters,
+    ...MOCK_ENTRY_OVERRIDES[place.id],
   };
 }
+
+// TODO: 1차 MVP 제외 — 실제 mock 상세 데이터가 있는 place ID에 대해 카드 필드 덮어쓰기
+const MOCK_ENTRY_OVERRIDES: Record<string, Partial<import('@/types/restaurant').RegionalRankEntry>> = {
+  '1309119533': {
+    name: '카레당',
+    category: '일식',
+    subCategory: '카레',
+    communityAvgScore: 4.5,
+    trustScore: 78,
+    reviewCount: 87,
+    imageUrl: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop&auto=format',
+    hasRealData: true,
+  },
+};

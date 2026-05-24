@@ -30,7 +30,7 @@ export function PhotoGallery({ photos, totalCount }: Props) {
           className="relative row-span-2 col-span-1 cursor-pointer"
           onClick={() => openAt(0)}
         >
-          {main && (
+          {main ? (
             <Image
               src={main}
               alt="대표 사진"
@@ -39,6 +39,10 @@ export function PhotoGallery({ photos, totalCount }: Props) {
               sizes="(min-width: 768px) 33vw, 40vw"
               priority
             />
+          ) : (
+            <div className="absolute inset-0 bg-muted flex items-center justify-center text-caption-2 text-muted-foreground">
+              사진 없음
+            </div>
           )}
         </div>
 

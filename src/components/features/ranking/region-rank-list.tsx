@@ -260,7 +260,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
                 key={entry.id}
                 className={cn(i > 0 && 'border-t border-border')}
               >
-                <PlaceListRow variant="regional" minimal data={toPlaceListRowData(entry)} active={effectiveActiveId === entry.id} />
+                <PlaceListRow variant="regional" minimal={!entry.hasRealData} data={toPlaceListRowData(entry)} active={effectiveActiveId === entry.id} />
               </li>
             ))}
           </ul>
