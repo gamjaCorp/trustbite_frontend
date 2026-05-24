@@ -94,12 +94,38 @@ function KakaoMap({
     libraries: ['services', 'clusterer'],
   });
 
-  const [initialCenter] = useState(() => {
-    if (entries.length === 0) return DEFAULT_CENTER;
-    const avgLat = entries.reduce((s, e) => s + e.coordinates.lat, 0) / entries.length;
-    const avgLng = entries.reduce((s, e) => s + e.coordinates.lng, 0) / entries.length;
-    return { lat: avgLat, lng: avgLng };
+  const [resolvedCenter, setResolvedCenter] = useState<{ lat: number; lng: number } | null>(() => {
+    if (entries.length > 0) {
+      const avgLat = entries.reduce((s, e) => s + e.coordinates.lat, 0) / entries.length;
+      const avgLng = entries.reduce((s, e) => s + e.coordinates.lng, 0) / entries.length;
+      return { lat: avgLat, lng: avgLng };
+    }
+    return null;
   });
+
+  useEffect(() => {
+    if (resolvedCenter) return;
+
+    let cancelled = false;
+    const promise = new Promise<{ lat: number; lng: number }>((resolve) => {
+      if (typeof navigator === 'undefined' || !navigator.geolocation) {
+        resolve(DEFAULT_CENTER);
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+        () => resolve(DEFAULT_CENTER),
+        { timeout: 5000, maximumAge: 5 * 60 * 1000 },
+      );
+    });
+    promise.then((center) => {
+      if (!cancelled) setResolvedCenter(center);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [resolvedCenter]);
 
   // 첫 타일 로드 직후 부모 appliedArea가 전파되기 전까지만 사용하는 초기 원 상태
   const [initialArea, setInitialArea] = useState<SearchArea | null>(null);
@@ -124,9 +150,13 @@ function KakaoMap({
           onRegionChangeRef.current?.(null);
           return;
         }
+        const legal = result.find((r) => r.region_type === 'B');
         const admin = result.find((r) => r.region_type === 'H');
-        const region = admin?.region_2depth_name ?? result[0]?.region_2depth_name ?? null;
-        onRegionChangeRef.current?.(region ?? null);
+        // 동 우선(법정동 → 행정동) → 없으면 구로 fallback
+        const dong = legal?.region_3depth_name || admin?.region_3depth_name;
+        const gu =
+          admin?.region_2depth_name ?? legal?.region_2depth_name ?? result[0]?.region_2depth_name;
+        onRegionChangeRef.current?.(dong || gu || null);
       },
     );
   }, [appliedArea, loading]);
@@ -142,7 +172,7 @@ function KakaoMap({
     );
   }
 
-  if (loading) {
+  if (loading || !resolvedCenter) {
     return (
       <div className="absolute inset-0 bg-muted/20 flex items-center justify-center text-title-3 text-muted-foreground">
         지도를 불러오는 중…
@@ -152,7 +182,7 @@ function KakaoMap({
 
   return (
     <Map
-      center={initialCenter}
+      center={resolvedCenter}
       level={5}
       style={{ width: '100%', height: '100%' }}
       onTileLoaded={(target) => {

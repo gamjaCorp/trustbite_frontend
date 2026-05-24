@@ -5,6 +5,7 @@ import { Check, MapPin } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
+import { RegionRankSkeleton } from './region-rank-skeleton';
 import { MapView, type SearchArea } from '@/components/features/explore/map-view';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
@@ -39,7 +40,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
 
   // entriesProp 없으면 Kakao Local에서 area 기반으로 fetch
-  const { data: kakaoEntries = [] } = useNearbyPlaces(entriesProp ? null : appliedArea);
+  const { data: kakaoEntries = [], isFetching } = useNearbyPlaces(entriesProp ? null : appliedArea);
   const entries = entriesProp ?? kakaoEntries;
 
   // 최초 타일 로드 시 자동 검색
@@ -179,7 +180,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
       </div>
 
       {rankedEntries.length === 0 ? (
-        <RegionRankEmpty />
+        isFetching ? <RegionRankSkeleton /> : <RegionRankEmpty />
       ) : (
         <section className="space-y-3">
           <div className="space-y-1">

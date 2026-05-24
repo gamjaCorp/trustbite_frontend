@@ -2,7 +2,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { searchRestaurantsByRadius } from '@/api/kakao-local';
+import { searchPlacesByRadius } from '@/api/kakao-local';
 import { synthesizeEntry } from '@/lib/synthesize-restaurant';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import type { SearchArea } from '@/components/features/explore/map-view';
@@ -14,7 +14,7 @@ export function useNearbyPlaces(area: SearchArea | null) {
     queryKey: ['nearby-places', area],
     queryFn: async () => {
       if (!area) return [];
-      const places = await searchRestaurantsByRadius(area.center, area.radius);
+      const places = await searchPlacesByRadius(area.center, area.radius);
       return places.map((place, index) => synthesizeEntry(place, index));
     },
     enabled:

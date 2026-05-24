@@ -16,19 +16,18 @@ export interface KakaoPlace {
 
 const MAX_PAGES = 3;
 
-export function searchRestaurantsByRadius(
-  center: { lat: number; lng: number },
+function fetchCategory(
+  code: 'FD6' | 'CE7',
+  places: kakao.maps.services.Places,
+  location: kakao.maps.LatLng,
   radius: number,
 ): Promise<KakaoPlace[]> {
   return new Promise((resolve, reject) => {
-    const places = new window.kakao.maps.services.Places();
-    const location = new window.kakao.maps.LatLng(center.lat, center.lng);
-
     const results: KakaoPlace[] = [];
 
     const fetchPage = (page: number) => {
       places.categorySearch(
-        'FD6',
+        code,
         (data, status, pagination) => {
           if (status === window.kakao.maps.services.Status.OK) {
             results.push(...(data as unknown as KakaoPlace[]));
@@ -40,7 +39,7 @@ export function searchRestaurantsByRadius(
           } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
             resolve(results);
           } else {
-            reject(new Error('Kakao Places 검색 실패'));
+            reject(new Error(`Kakao Places 검색 실패 (${code})`));
           }
         },
         { location, radius, page },
@@ -49,4 +48,24 @@ export function searchRestaurantsByRadius(
 
     fetchPage(1);
   });
+}
+
+export async function searchPlacesByRadius(
+  center: { lat: number; lng: number },
+  radius: number,
+): Promise<KakaoPlace[]> {
+  const places = new window.kakao.maps.services.Places();
+  const location = new window.kakao.maps.LatLng(center.lat, center.lng);
+
+  const [food, cafe] = await Promise.all([
+    fetchCategory('FD6', places, location, radius),
+    fetchCategory('CE7', places, location, radius),
+  ]);
+
+  const dedupe = new Map<string, KakaoPlace>();
+  for (const p of [...food, ...cafe]) dedupe.set(p.id, p);
+
+  return Array.from(dedupe.values()).sort(
+    (a, b) => parseInt(a.distance, 10) - parseInt(b.distance, 10),
+  );
 }

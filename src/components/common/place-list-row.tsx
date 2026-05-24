@@ -159,7 +159,7 @@ export function PlaceListRow({
                 toggleWishlist(id);
               }}
               className={cn(
-                'absolute top-0.5 right-0 w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
+                'absolute top-0.5 right-0 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
                 bookmarked && isAuthed
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-background/85 text-ink/70 hover:bg-background',
@@ -328,7 +328,10 @@ export function PlaceListRow({
             {variant === 'my' ? (ownerName ? `${ownerName}의 평점` : '내 평점') : '평균'}
           </span>
           {minimal ? (
-            <span className="text-title-1 text-muted-foreground">—</span>
+            <span className="inline-flex items-center gap-1">
+              <Star className="w-4 h-4 text-muted-foreground" aria-hidden />
+              <span className="text-title-3 text-muted-foreground tabular-nums">–</span>
+            </span>
           ) : (variant === 'my' ? myAvgScore : communityAvgScore) != null ? (
             <ScoreStars score={(variant === 'my' ? myAvgScore : communityAvgScore)!} size="lg" />
           ) : null}
