@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
+import { Circle, CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { buildPinHtml } from './restaurant-pin';
@@ -11,19 +11,54 @@ export interface MapBounds {
   ne: { lat: number; lng: number };
 }
 
+export interface SearchArea {
+  center: { lat: number; lng: number };
+  radius: number;
+}
+
 interface MapViewProps {
   entries: RegionalRankEntry[];
   activeId?: string | null;
   onPinClick?: (id: string) => void;
-  onBoundsChange?: (bounds: MapBounds) => void;
+  /** idle 시 현재 viewport에서 계산한 검색 영역(중심+반경)을 전달 */
+  onAreaChanged?: (area: SearchArea) => void;
 }
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
+const CIRCLE_COLOR = '#ff7a00';
+// Kakao Places radius 최대값
+const MAX_RADIUS_M = 20000;
+
+// Haversine 거리(m) 계산
+function haversine(
+  a: { lat: number; lng: number },
+  b: { lat: number; lng: number },
+): number {
+  const R = 6371000;
+  const φ1 = (a.lat * Math.PI) / 180;
+  const φ2 = (b.lat * Math.PI) / 180;
+  const Δφ = ((b.lat - a.lat) * Math.PI) / 180;
+  const Δλ = ((b.lng - a.lng) * Math.PI) / 180;
+  const x =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
+
+// 현재 viewport의 inscribed 반경 — 짧은 축에 접하는 원
+function computeViewportRadius(map: kakao.maps.Map): number {
+  const c = map.getCenter();
+  const ne = map.getBounds().getNorthEast();
+  const lat = c.getLat();
+  const lng = c.getLng();
+  const northM = haversine({ lat, lng }, { lat: ne.getLat(), lng });
+  const eastM = haversine({ lat, lng }, { lat, lng: ne.getLng() });
+  return Math.min(Math.min(northM, eastM) * 0.9, MAX_RADIUS_M);
+}
 
 export function MapView(props: MapViewProps) {
   const appKey = process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY;
 
-  // appKey 없으면 SDK 로더를 아예 호출하지 않는다 (콘솔 retry 로그 방지).
   if (!appKey) {
     return (
       <div className="absolute inset-0 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground">
@@ -37,11 +72,12 @@ export function MapView(props: MapViewProps) {
   return <KakaoMap {...props} appKey={appKey} />;
 }
 
+// 지도 SDK 로딩 + 렌더링 담당 내부 컴포넌트
 function KakaoMap({
   entries,
   activeId,
   onPinClick,
-  onBoundsChange,
+  onAreaChanged,
   appKey,
 }: MapViewProps & { appKey: string }) {
   const [loading, error] = useKakaoLoader({
@@ -49,14 +85,16 @@ function KakaoMap({
     libraries: ['services', 'clusterer'],
   });
 
-  // 초기 1회만 계산. 이후엔 사용자 조작(드래그/줌)에 맡긴다.
-  // entries가 필터로 줄어들 때마다 지도가 튕기는 걸 방지하기 위함.
   const [initialCenter] = useState(() => {
     if (entries.length === 0) return DEFAULT_CENTER;
     const avgLat = entries.reduce((s, e) => s + e.coordinates.lat, 0) / entries.length;
     const avgLng = entries.reduce((s, e) => s + e.coordinates.lng, 0) / entries.length;
     return { lat: avgLat, lng: avgLng };
   });
+
+  // 원형 오버레이 상태 — 드래그/줌 시 실시간으로 갱신
+  const [circleCenter, setCircleCenter] = useState(initialCenter);
+  const [circleRadius, setCircleRadius] = useState(0);
 
   if (error) {
     return (
@@ -80,22 +118,41 @@ function KakaoMap({
       level={5}
       style={{ width: '100%', height: '100%' }}
       onTileLoaded={(target) => {
-        if (!onBoundsChange) return;
-        const b = target.getBounds();
-        onBoundsChange({
-          sw: { lat: b.getSouthWest().getLat(), lng: b.getSouthWest().getLng() },
-          ne: { lat: b.getNorthEast().getLat(), lng: b.getNorthEast().getLng() },
-        });
+        const c = target.getCenter();
+        const center = { lat: c.getLat(), lng: c.getLng() };
+        const radius = computeViewportRadius(target);
+        setCircleCenter(center);
+        setCircleRadius(radius);
+        onAreaChanged?.({ center, radius });
+      }}
+      onDrag={(target) => {
+        const c = target.getCenter();
+        setCircleCenter({ lat: c.getLat(), lng: c.getLng() });
+        setCircleRadius(computeViewportRadius(target));
+      }}
+      onZoomChanged={(target) => {
+        const c = target.getCenter();
+        setCircleCenter({ lat: c.getLat(), lng: c.getLng() });
+        setCircleRadius(computeViewportRadius(target));
       }}
       onIdle={(target) => {
-        if (!onBoundsChange) return;
-        const b = target.getBounds();
-        onBoundsChange({
-          sw: { lat: b.getSouthWest().getLat(), lng: b.getSouthWest().getLng() },
-          ne: { lat: b.getNorthEast().getLat(), lng: b.getNorthEast().getLng() },
-        });
+        const c = target.getCenter();
+        const center = { lat: c.getLat(), lng: c.getLng() };
+        const radius = computeViewportRadius(target);
+        setCircleCenter(center);
+        setCircleRadius(radius);
+        onAreaChanged?.({ center, radius });
       }}
     >
+      {circleRadius > 0 && (
+        <Circle
+          center={circleCenter}
+          radius={circleRadius}
+          strokeWeight={0}
+          fillColor={CIRCLE_COLOR}
+          fillOpacity={0.07}
+        />
+      )}
       {entries.map((entry) => (
         <CustomOverlayMap
           key={entry.id}

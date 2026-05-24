@@ -5,63 +5,37 @@ import { Check, Sparkles } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
-import { MapView, type MapBounds } from '@/components/features/explore/map-view';
-import { SearchThisArea } from '@/components/features/explore/search-this-area';
+import { MapView, type SearchArea } from '@/components/features/explore/map-view';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
 import { SelectList } from '@/components/core/select-list';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
+import { useNearbyPlaces } from '@/hooks/explore/use-nearby-places';
 
 interface Props {
-  entries: RegionalRankEntry[];
+  // entries가 없으면 Kakao Local API에서 자동으로 가져옴 (Storybook·테스트는 직접 주입 가능)
+  entries?: RegionalRankEntry[];
 }
 
 type ExploreSort = 'rank' | 'trust' | 'recent';
 
-function isInsideBounds(coords: { lat: number; lng: number }, bounds: MapBounds): boolean {
-  return (
-    coords.lat >= bounds.sw.lat &&
-    coords.lat <= bounds.ne.lat &&
-    coords.lng >= bounds.sw.lng &&
-    coords.lng <= bounds.ne.lng
-  );
-}
-
-export function RegionRankList({ entries }: Props) {
+export function RegionRankList({ entries: entriesProp }: Props) {
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [query, setQuery] = useState('');
   const [activeId, setActiveId] = useState<string | null>(null);
   const [sort, setSort] = useState<ExploreSort>('rank');
   const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
 
-  // 지도 bounds 상태 — applied: 마지막 "재검색" 시점, pending: 현재 지도 상태
-  const [appliedBounds, setAppliedBounds] = useState<MapBounds | null>(null);
-  const [pendingBounds, setPendingBounds] = useState<MapBounds | null>(null);
+  // 지도 idle 시 계산된 viewport 영역 (center + radius). 자동 재검색 트리거
+  const [appliedArea, setAppliedArea] = useState<SearchArea | null>(null);
 
-  const areaMoved = useMemo(() => {
-    if (!pendingBounds || !appliedBounds) return false;
-    const sw1 = appliedBounds.sw;
-    const ne1 = appliedBounds.ne;
-    const sw2 = pendingBounds.sw;
-    const ne2 = pendingBounds.ne;
-    const eps = 1e-5;
-    return (
-      Math.abs(sw1.lat - sw2.lat) > eps ||
-      Math.abs(sw1.lng - sw2.lng) > eps ||
-      Math.abs(ne1.lat - ne2.lat) > eps ||
-      Math.abs(ne1.lng - ne2.lng) > eps
-    );
-  }, [appliedBounds, pendingBounds]);
+  // entriesProp 없으면 Kakao Local에서 area 기반으로 자동 fetch
+  const { data: kakaoEntries = [] } = useNearbyPlaces(entriesProp ? null : appliedArea);
+  const entries = entriesProp ?? kakaoEntries;
 
-  const handleBoundsChange = (bounds: MapBounds) => {
-    setPendingBounds(bounds);
-    // 첫 로드 시 자동으로 적용 (사용자 입력 없이도 화면을 보여주기 위해)
-    setAppliedBounds((prev) => prev ?? bounds);
-  };
-
-  const handleAreaSearch = () => {
-    if (pendingBounds) setAppliedBounds(pendingBounds);
+  const handleAreaChange = (area: SearchArea) => {
+    setAppliedArea(area);
   };
 
   const toggleOccasion = (tag: SceneTag) => {
@@ -73,11 +47,9 @@ export function RegionRankList({ entries }: Props) {
     });
   };
 
-  // 지도 bounds + region + category + query 필터 → sort 적용
+  // category + query 필터 → sort 적용 (원형 필터는 Kakao 서버측에서 처리됨)
   const filteredList = useMemo(() => {
-    let list = appliedBounds
-      ? entries.filter((e) => isInsideBounds(e.coordinates, appliedBounds))
-      : entries;
+    let list = entries;
     if (category !== 'all') list = list.filter((e) => e.category === category);
     if (query.trim()) {
       const q = query.trim().toLowerCase();
@@ -92,15 +64,16 @@ export function RegionRankList({ entries }: Props) {
     if (sort === 'trust') {
       sorted.sort((a, b) => b.trustScore - a.trustScore);
     } else if (sort === 'recent') {
-      // mock에 createdAt 없음 — id 역순 임시 적용 (Week 3 데이터 레이어에서 교체)
+      // TODO: 백엔드 도착 시 실제 createdAt으로 교체 — 현재 id 역순 임시 적용
       sorted.sort((a, b) => b.id.localeCompare(a.id));
     } else {
-      sorted.sort((a, b) => b.communityAvgScore - a.communityAvgScore || a.rank - b.rank);
+      // Kakao 응답 순서(인기·거리 휴리스틱)를 랭킹 신호로 사용
+      sorted.sort((a, b) => a.rank - b.rank);
     }
     return sorted;
-  }, [entries, appliedBounds, category, query, sort]);
+  }, [entries, category, query, sort]);
 
-  // 핀 표시용: 현재 보이는 영역의 결과 전체에 1~N 랭크 부여
+  // 핀 표시용: 현재 보이는 결과에 1~N 랭크 부여
   const rankedEntries = useMemo(
     () => filteredList.map((e, i) => ({ ...e, rank: i + 1 })),
     [filteredList],
@@ -181,17 +154,14 @@ export function RegionRankList({ entries }: Props) {
           </div>
         </div>
 
-        {/* row 4: 임베드 지도 */}
+        {/* row 4: 임베드 지도 — 원이 viewport에 꽉 차게 표시되고 idle 시 자동 재검색 */}
         <div className="relative h-80 rounded-2xl overflow-hidden border border-border">
           <MapView
             entries={rankedEntries}
             activeId={effectiveActiveId}
             onPinClick={handlePinClick}
-            onBoundsChange={handleBoundsChange}
+            onAreaChanged={handleAreaChange}
           />
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20">
-            <SearchThisArea visible={areaMoved} onClick={handleAreaSearch} />
-          </div>
         </div>
       </div>
 
