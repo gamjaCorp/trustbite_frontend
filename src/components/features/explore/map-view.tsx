@@ -224,7 +224,7 @@ function KakaoMap({
           radius={circleArea.radius}
           strokeWeight={0}
           fillColor={CIRCLE_COLOR}
-          fillOpacity={0.09}
+          fillOpacity={0.13}
         />
       )}
       {entries.map((entry) => (

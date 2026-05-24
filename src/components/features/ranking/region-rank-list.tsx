@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Check, MapPin } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
@@ -14,7 +14,6 @@ import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { useNearbyPlaces } from '@/hooks/explore/use-nearby-places';
-import { useKeywordCenter } from '@/hooks/explore/use-keyword-center';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
 interface Props {
@@ -32,7 +31,7 @@ const SORT_ITEMS: SelectListItem[] = [
 export function RegionRankList({ entries: entriesProp }: Props) {
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [query, setQuery] = useState('');
-  const debouncedQuery = useDebouncedValue(query.trim(), 300);
+  const debouncedQuery = useDebouncedValue(query.trim(), 500);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
   const [currentRegion, setCurrentRegion] = useState<string | null>(null);
@@ -41,18 +40,68 @@ export function RegionRankList({ entries: entriesProp }: Props) {
   const [appliedArea, setAppliedArea] = useState<SearchArea | null>(null);
   // 현재 지도 viewport 영역 — 재검색 버튼 표시 여부에 사용
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
+  // 휴리스틱 판정 결과 — query + 판정된 keyword를 쌍으로 저장해 stale 판별
+  const [resolvedKeyword, setResolvedKeyword] = useState<{ query: string; keyword: string | undefined } | null>(null);
+  // debouncedQuery가 바뀌면 이전 resolvedKeyword는 무효 → undefined로 파생
+  const searchKeyword = debouncedQuery && resolvedKeyword?.query === debouncedQuery
+    ? resolvedKeyword.keyword
+    : undefined;
 
-  // keyword → 첫 매칭 좌표 → effectiveArea로 지도·검색 영역 결정
-  const { data: keywordCenter } = useKeywordCenter(debouncedQuery || undefined);
-  const effectiveArea = useMemo<SearchArea | null>(() => {
-    if (!keywordCenter) return appliedArea;
-    return { center: keywordCenter, radius: appliedArea?.radius ?? 1000 };
-  }, [keywordCenter, appliedArea]);
+  // 지명은 지도 이동 + 검색창 비우기 / 음식·가게명은 keyword 필터로 분기
+  useEffect(() => {
+    if (!debouncedQuery) return;
+    if (typeof window === 'undefined' || !window.kakao?.maps?.services) return;
+    let cancelled = false;
+
+    const navigate = (latStr: string, lngStr: string) => {
+      if (cancelled) return;
+      const center = { lat: parseFloat(latStr), lng: parseFloat(lngStr) };
+      setAppliedArea((prev) =>
+        prev ? { center, radius: prev.radius } : { center, radius: 1000 },
+      );
+      setResolvedKeyword({ query: debouncedQuery, keyword: undefined });
+      setQuery('');
+    };
+
+    const applyAsFilter = () => {
+      if (cancelled) return;
+      setResolvedKeyword({ query: debouncedQuery, keyword: debouncedQuery });
+    };
+
+    // 1차: 주소(행정구역) 매칭 — 동·구·시는 곧장 이동
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    geocoder.addressSearch(debouncedQuery, (addrResult, addrStatus) => {
+      if (cancelled) return;
+      if (addrStatus === window.kakao.maps.services.Status.OK && addrResult[0]) {
+        navigate(addrResult[0].y, addrResult[0].x);
+        return;
+      }
+      // 2차: 지하철역(SW8)·관광명소(AT4)만 이동 — 그 외는 keyword 필터
+      const places = new window.kakao.maps.services.Places();
+      places.keywordSearch(debouncedQuery, (kwResult, kwStatus) => {
+        if (cancelled) return;
+        if (kwStatus !== window.kakao.maps.services.Status.OK || !kwResult[0]) {
+          applyAsFilter();
+          return;
+        }
+        const code = kwResult[0].category_group_code;
+        if (code === 'SW8' || code === 'AT4') {
+          navigate(kwResult[0].y, kwResult[0].x);
+        } else {
+          applyAsFilter();
+        }
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery]);
 
   // entriesProp 없으면 Kakao Local에서 area + keyword 기반으로 fetch
   const { data: kakaoEntries = [], isFetching } = useNearbyPlaces({
-    area: entriesProp ? null : effectiveArea,
-    keyword: debouncedQuery || undefined,
+    area: entriesProp ? null : appliedArea,
+    keyword: searchKeyword,
   });
   const entries = entriesProp ?? kakaoEntries;
 
@@ -66,7 +115,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     setPendingArea(area);
   };
 
-  // 재검색 버튼 클릭
+  // 재검색 버튼 클릭 — 현재 viewport를 새 검색 영역으로 적용
   const handleAreaSearch = () => {
     if (pendingArea) {
       setAppliedArea(pendingArea);
@@ -171,7 +220,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
             onPinClick={handlePinClick}
             onAreaChanged={handleAreaChange}
             onViewportChange={handleViewportChange}
-            appliedArea={effectiveArea}
+            appliedArea={appliedArea}
             onRegionChange={setCurrentRegion}
           />
           <div className="absolute top-3 left-0 right-0 flex justify-center pointer-events-none z-10">

@@ -40,13 +40,26 @@ function mapCategory(kakaoCategory: string): Category {
   return '기타';
 }
 
-function parseRegion(address: string): string {
-  // "광진구 자양동" 형태 우선 추출
-  const guDong = address.match(/[가-힣]+(구|시|군)\s+[가-힣\d]+동/);
-  if (guDong) return guDong[0];
-  const gu = address.match(/[가-힣]+(구|시|군)/);
-  if (gu) return gu[0];
-  return address.split(' ').slice(0, 2).join(' ');
+// 광역 시·도 접두 제거 정규식
+const SI_DO_PREFIX = new RegExp(
+  '^(서울특별시|부산광역시|대구광역시|인천광역시|광주광역시|대전광역시|울산광역시|' +
+  '세종특별자치시|경기도|강원특별자치도|강원도|충청북도|충청남도|전라북도|전라남도|' +
+  '경상북도|경상남도|제주특별자치도|' +
+  '서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)\\s+',
+);
+
+function compactRegion(s: string): string {
+  if (!s) return '';
+  const stripped = s.replace(SI_DO_PREFIX, '');
+  const tokens = stripped.split(/\s+/).filter(Boolean);
+  // 끝에서 번지·도로명 번호(숫자 포함) 토큰 제거
+  while (tokens.length && /\d/.test(tokens[tokens.length - 1])) tokens.pop();
+  return tokens.join(' ');
+}
+
+function parseRegion(address: string, roadAddress: string): string {
+  // 지번 주소 우선(동까지 포함) → 도로명 fallback → 원본
+  return compactRegion(address) || compactRegion(roadAddress) || address || roadAddress;
 }
 
 function parseSubCategory(category: string): string {
@@ -98,7 +111,6 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
   const communityAvgScore = 3 + r() * 2;
   const reviewCount = 5 + Math.floor(r() * 200);
 
-  const address = place.road_address_name || place.address_name;
   const subCategory = parseSubCategory(place.category_name);
   const distanceRaw = parseInt(place.distance, 10);
   const distanceMeters = Number.isFinite(distanceRaw) && distanceRaw >= 0 ? distanceRaw : undefined;
@@ -107,8 +119,8 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
     id: place.id,
     name: place.place_name,
     category: mapCategory(place.category_name),
-    region: parseRegion(address),
-    imageUrl: `https://picsum.photos/seed/${place.id}/400/300`,
+    region: parseRegion(place.address_name, place.road_address_name),
+    imageUrl: `https://loremflickr.com/400/300/food,restaurant?lock=${hash(place.id)}`,
     coordinates: {
       lat: parseFloat(place.y),
       lng: parseFloat(place.x),
