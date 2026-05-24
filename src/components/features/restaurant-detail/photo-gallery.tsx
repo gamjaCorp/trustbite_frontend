@@ -24,7 +24,7 @@ export function PhotoGallery({ photos, totalCount }: Props) {
   };
 
   return (
-    <div className="relative px-6 pt-3">
+    <div className="relative px-6 pt-6">
       <div className="grid grid-cols-3 grid-rows-2 gap-1.5 h-[220px] sm:h-[240px] rounded-2xl overflow-hidden">
         <div
           className="relative row-span-2 col-span-1 cursor-pointer"

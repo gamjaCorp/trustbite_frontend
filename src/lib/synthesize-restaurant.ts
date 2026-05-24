@@ -139,6 +139,11 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
     trustBreakdown: { photoRatio, longTextRatio, recentActivityRatio },
     subCategory,
     distanceMeters,
+    phone: place.phone || undefined,
+    roadAddress: place.road_address_name || undefined,
+    placeUrl: place.place_url || undefined,
+    categoryGroupName: place.category_group_name || undefined,
+    categoryPath: place.category_name || undefined,
     ...MOCK_ENTRY_OVERRIDES[place.id],
   };
 }

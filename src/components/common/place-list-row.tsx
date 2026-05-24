@@ -174,6 +174,7 @@ export function PlaceListRow({
               <Bookmark className={cn('w-4 h-4', bookmarked && isAuthed && 'fill-current')} />
             </button>
           )}
+
         </div>
 
         {/* ③ 중앙 컬럼 */}

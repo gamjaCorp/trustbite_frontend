@@ -12,7 +12,7 @@ export function synthesizeDetailFromEntry(
     category: entry?.category ?? '기타',
     subCategory: entry?.subCategory,
     region: entry?.region ?? '',
-    address: '',
+    address: entry?.roadAddress || entry?.region || '',
     accessSummary: '',
     hours: { weekday: '' },
     coordinates: entry?.coordinates ?? { lat: 37.555, lng: 126.97 },
@@ -26,5 +26,10 @@ export function synthesizeDetailFromEntry(
     trustBreakdown: { photoRatio: 0, longTextRatio: 0, recentActivityRatio: 0 },
     reviewCount: 0,
     reviews: [],
+    phone: entry?.phone,
+    roadAddress: entry?.roadAddress,
+    placeUrl: entry?.placeUrl,
+    categoryGroupName: entry?.categoryGroupName,
+    categoryPath: entry?.categoryPath,
   };
 }

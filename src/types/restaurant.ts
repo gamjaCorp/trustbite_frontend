@@ -76,6 +76,12 @@ export type RegionalRankEntry = MyRestaurantEntry & {
   distanceMeters?: number;
   // TODO: 1차 MVP 제외 — mock 상세 데이터가 있는 경우 true. 백엔드 도착 시 항상 true로 처리
   hasRealData?: boolean;
+  // TODO: 1차 MVP 제외 — Kakao 원본 메타. 백엔드 도착 시 삭제
+  phone?: string;
+  roadAddress?: string;
+  placeUrl?: string;
+  categoryGroupName?: string;
+  categoryPath?: string;
 };
 
 export type SortKey = 'score' | 'recent';
@@ -177,4 +183,13 @@ export interface RestaurantDetail {
   myReview?: MyReview;
   repeatVisitReview?: RepeatVisitReview;
   reviews: DetailedReview[];
+  // TODO: 1차 MVP 제외 — Kakao 원본 메타. 백엔드 도착 시 교체
+  phone?: string;
+  roadAddress?: string;
+  buildingName?: string;
+  placeUrl?: string;
+  categoryGroupName?: string;
+  categoryPath?: string;
+  administrativeArea?: string;
+  nearestStation?: { name: string; walkMinutes: number };
 }
