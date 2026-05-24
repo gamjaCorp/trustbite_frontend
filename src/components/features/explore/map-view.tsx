@@ -131,6 +131,8 @@ function KakaoMap({
   const [initialArea, setInitialArea] = useState<SearchArea | null>(null);
   // onTileLoaded는 pan/zoom 시에도 재발화하므로 첫 발화에만 onAreaChanged를 호출
   const firedInitial = useRef(false);
+  // Map 인스턴스 ref — appliedArea 변경 시 panTo에 사용
+  const mapRef = useRef<kakao.maps.Map | null>(null);
 
   // onRegionChange를 ref로 안정화 — 부모가 매 렌더마다 새 함수를 넘겨도 effect 재실행 방지
   const onRegionChangeRef = useRef(onRegionChange);
@@ -161,6 +163,17 @@ function KakaoMap({
     );
   }, [appliedArea, loading]);
 
+  // appliedArea 변경 시 지도 중심 이동 — 현재 위치와 같으면 skip (드래그 후 재검색 케이스)
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !appliedArea) return;
+    const cur = map.getCenter();
+    const dx = Math.abs(cur.getLat() - appliedArea.center.lat);
+    const dy = Math.abs(cur.getLng() - appliedArea.center.lng);
+    if (dx < 1e-6 && dy < 1e-6) return;
+    map.panTo(new kakao.maps.LatLng(appliedArea.center.lat, appliedArea.center.lng));
+  }, [appliedArea]);
+
   // 원은 항상 마지막 검색 영역(appliedArea)에 고정. 부모 전파 전 짧은 공백은 initialArea로 채움
   const circleArea = appliedArea ?? initialArea;
 
@@ -185,6 +198,7 @@ function KakaoMap({
       center={resolvedCenter}
       level={5}
       style={{ width: '100%', height: '100%' }}
+      onCreate={(map) => { mapRef.current = map; }}
       onTileLoaded={(target) => {
         if (!firedInitial.current) {
           firedInitial.current = true;

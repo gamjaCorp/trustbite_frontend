@@ -70,6 +70,10 @@ export type RegionalRankEntry = MyRestaurantEntry & {
   myStatus: VisitStatus;
   trustScore: number;
   trustBreakdown: TrustBreakdown;
+  // TODO: 1차 MVP 제외 — Kakao 원본 세부 카테고리. 백엔드 도착 시 별도 필드로 교체 가능
+  subCategory?: string;
+  // TODO: 1차 MVP 제외 — Kakao 거리(m). 백엔드 도착 시 서버 거리 계산값으로 교체
+  distanceMeters?: number;
 };
 
 export type SortKey = 'score' | 'recent';

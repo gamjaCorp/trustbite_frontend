@@ -26,6 +26,7 @@ import type {
   RestaurantDetail,
 } from '@/types/restaurant';
 import { SCORE_LABELS } from '@/lib/score-labels';
+import { formatDistance } from '@/lib/format-distance';
 
 export interface PlaceListRowData {
   id: string;
@@ -47,6 +48,8 @@ export interface PlaceListRowData {
   myLatestScene?: SceneTag;
   myStatus?: VisitStatus;
   addedAt?: string;
+  subCategory?: string;
+  distanceMeters?: number;
 }
 
 export type PlaceListRowVariant = 'regional' | 'my' | 'wishlist';
@@ -98,6 +101,8 @@ export function PlaceListRow({
     myLatestScene,
     myStatus,
     addedAt,
+    subCategory,
+    distanceMeters,
   } = data;
 
   const { isAuthed } = useAuthMock();
@@ -159,7 +164,7 @@ export function PlaceListRow({
                 toggleWishlist(id);
               }}
               className={cn(
-                'absolute top-0.5 right-0 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
+                'absolute top-1 right-1 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
                 bookmarked && isAuthed
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-background/85 text-ink/70 hover:bg-background',
@@ -193,6 +198,15 @@ export function PlaceListRow({
           <Link href={`/restaurant/${id}`} className="text-title-1 text-foreground truncate">
             {name}
           </Link>
+
+          {/* minimal 시 세부 카테고리 + 거리 (Kakao 원본 데이터) */}
+          {minimal && variant === 'regional' && (subCategory || distanceMeters != null) && (
+            <span className="text-caption-2 text-muted-foreground -mt-0.5 truncate">
+              {[subCategory, distanceMeters != null ? formatDistance(distanceMeters) : null]
+                .filter(Boolean)
+                .join(' · ')}
+            </span>
+          )}
 
           {/* regional: 방문 통계 */}
           {variant === 'regional' && showVisitStats && visitCount != null && lastVisitedAt != null && (
@@ -329,14 +343,14 @@ export function PlaceListRow({
           </span>
           {minimal ? (
             <span className="inline-flex items-center gap-1">
-              <Star className="w-4 h-4 text-muted-foreground" aria-hidden />
+              <Star className="w-4 h-4 fill-warning text-warning" aria-hidden />
               <span className="text-title-3 text-muted-foreground tabular-nums">–</span>
             </span>
           ) : (variant === 'my' ? myAvgScore : communityAvgScore) != null ? (
             <ScoreStars score={(variant === 'my' ? myAvgScore : communityAvgScore)!} size="lg" />
           ) : null}
           {minimal ? (
-            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2">리뷰 부족</span>
+            <span className="mt-2 inline-flex items-center justify-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2">리뷰 부족</span>
           ) : showTrustScore && trustScore != null ? (
             <TrustScoreBadge
               score={trustScore}
@@ -395,6 +409,8 @@ export function toPlaceListRowData(entry: RegionalRankEntry): PlaceListRowData {
     lastVisitedAt: entry.lastVisitedAt,
     myLatestScene: entry.myLatestScene,
     myStatus: entry.myStatus,
+    subCategory: entry.subCategory,
+    distanceMeters: entry.distanceMeters,
   };
 }
 

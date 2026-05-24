@@ -41,10 +41,18 @@ function mapCategory(kakaoCategory: string): Category {
 }
 
 function parseRegion(address: string): string {
-  const m = address.match(/[가-힣]+(구|시|군)/);
-  if (m) return m[0];
-  const parts = address.split(' ');
-  return parts.slice(0, 2).join(' ');
+  // "광진구 자양동" 형태 우선 추출
+  const guDong = address.match(/[가-힣]+(구|시|군)\s+[가-힣\d]+동/);
+  if (guDong) return guDong[0];
+  const gu = address.match(/[가-힣]+(구|시|군)/);
+  if (gu) return gu[0];
+  return address.split(' ').slice(0, 2).join(' ');
+}
+
+function parseSubCategory(category: string): string {
+  // "음식점 > 한식 > 국밥/돼지국밥" → "국밥/돼지국밥"
+  const parts = category.split(' > ').map((s) => s.trim()).filter(Boolean);
+  return parts.at(-1) ?? category;
 }
 
 const COMMENTS = [
@@ -91,6 +99,9 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
   const reviewCount = 5 + Math.floor(r() * 200);
 
   const address = place.road_address_name || place.address_name;
+  const subCategory = parseSubCategory(place.category_name);
+  const distanceRaw = parseInt(place.distance, 10);
+  const distanceMeters = Number.isFinite(distanceRaw) && distanceRaw >= 0 ? distanceRaw : undefined;
 
   return {
     id: place.id,
@@ -114,5 +125,7 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
     myStatus: VISIT_STATUSES[statusIndex],
     trustScore,
     trustBreakdown: { photoRatio, longTextRatio, recentActivityRatio },
+    subCategory,
+    distanceMeters,
   };
 }

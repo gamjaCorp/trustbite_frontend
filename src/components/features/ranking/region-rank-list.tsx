@@ -14,6 +14,8 @@ import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { useNearbyPlaces } from '@/hooks/explore/use-nearby-places';
+import { useKeywordCenter } from '@/hooks/explore/use-keyword-center';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
 interface Props {
   // entries가 없으면 Kakao Local API에서 자동으로 가져옴 (Storybook·테스트는 직접 주입 가능)
@@ -30,6 +32,7 @@ const SORT_ITEMS: SelectListItem[] = [
 export function RegionRankList({ entries: entriesProp }: Props) {
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [query, setQuery] = useState('');
+  const debouncedQuery = useDebouncedValue(query.trim(), 300);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
   const [currentRegion, setCurrentRegion] = useState<string | null>(null);
@@ -39,8 +42,18 @@ export function RegionRankList({ entries: entriesProp }: Props) {
   // 현재 지도 viewport 영역 — 재검색 버튼 표시 여부에 사용
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
 
-  // entriesProp 없으면 Kakao Local에서 area 기반으로 fetch
-  const { data: kakaoEntries = [], isFetching } = useNearbyPlaces(entriesProp ? null : appliedArea);
+  // keyword → 첫 매칭 좌표 → effectiveArea로 지도·검색 영역 결정
+  const { data: keywordCenter } = useKeywordCenter(debouncedQuery || undefined);
+  const effectiveArea = useMemo<SearchArea | null>(() => {
+    if (!keywordCenter) return appliedArea;
+    return { center: keywordCenter, radius: appliedArea?.radius ?? 1000 };
+  }, [keywordCenter, appliedArea]);
+
+  // entriesProp 없으면 Kakao Local에서 area + keyword 기반으로 fetch
+  const { data: kakaoEntries = [], isFetching } = useNearbyPlaces({
+    area: entriesProp ? null : effectiveArea,
+    keyword: debouncedQuery || undefined,
+  });
   const entries = entriesProp ?? kakaoEntries;
 
   // 최초 타일 로드 시 자동 검색
@@ -70,21 +83,12 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     });
   };
 
-  // category + query 필터 → Kakao 응답 순서 유지 (백엔드 도착 시 실제 랭킹 신호로 교체)
+  // category 필터 → keyword는 서버(Kakao keywordSearch)에서 이미 처리됨
   const filteredList = useMemo(() => {
     let list = entries;
     if (category !== 'all') list = list.filter((e) => e.category === category);
-    if (query.trim()) {
-      const q = query.trim().toLowerCase();
-      list = list.filter(
-        (e) =>
-          e.name.toLowerCase().includes(q) ||
-          e.region.toLowerCase().includes(q) ||
-          e.category.toLowerCase().includes(q),
-      );
-    }
     return [...list].sort((a, b) => a.rank - b.rank);
-  }, [entries, category, query]);
+  }, [entries, category]);
 
   // 핀 표시용: 현재 보이는 결과에 1~N 랭크 부여
   const rankedEntries = useMemo(
@@ -167,7 +171,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
             onPinClick={handlePinClick}
             onAreaChanged={handleAreaChange}
             onViewportChange={handleViewportChange}
-            appliedArea={appliedArea}
+            appliedArea={effectiveArea}
             onRegionChange={setCurrentRegion}
           />
           <div className="absolute top-3 left-0 right-0 flex justify-center pointer-events-none z-10">
