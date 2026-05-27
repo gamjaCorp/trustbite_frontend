@@ -1,4 +1,4 @@
-import { MyProfileView } from '@/components/features/my-profile/my-profile-view';
+import { MyProfileView } from '@/components/features/my-profile/index';
 import { getMyProfile } from '@/data/mock-my-profile';
 
 export default function MyProfilePage() {

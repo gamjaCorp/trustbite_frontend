@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { BackHeader } from '@/components/common/layout/back-header';
-import { FollowListView } from '@/components/features/follow/follow-list-view';
+import { FollowListView } from '@/components/features/follow/index';
 import { getFollowers, getFollowing } from '@/data/mock-follow';
 import { getUserProfile } from '@/data/mock-other-user';
 

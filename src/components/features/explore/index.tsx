@@ -6,11 +6,6 @@ import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { CategoryPin } from './category-pin';
 
-export interface MapBounds {
-  sw: { lat: number; lng: number };
-  ne: { lat: number; lng: number };
-}
-
 export interface SearchArea {
   center: { lat: number; lng: number };
   radius: number;
@@ -34,6 +29,8 @@ const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
 const CIRCLE_COLOR = '#ff7a00';
 // Kakao Places radius 최대값
 const MAX_RADIUS_M = 20000;
+// onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
+const VIEWPORT_MOVE_RATIO = 0.3;
 
 // Haversine 거리(m) 계산
 function haversine(
@@ -133,6 +130,8 @@ function KakaoMap({
   const firedInitial = useRef(false);
   // Map 인스턴스 ref — appliedArea 변경 시 panTo에 사용
   const mapRef = useRef<kakao.maps.Map | null>(null);
+  // 마지막으로 검색한 중심 — onIdle 오발화 가드에 사용 (동기 갱신, React 배치 무관)
+  const searchedCenterRef = useRef<{ lat: number; lng: number } | null>(null);
 
   // onRegionChange를 ref로 안정화 — 부모가 매 렌더마다 새 함수를 넘겨도 effect 재실행 방지
   const onRegionChangeRef = useRef(onRegionChange);
@@ -163,10 +162,11 @@ function KakaoMap({
     );
   }, [appliedArea, loading]);
 
-  // appliedArea 변경 시 지도 중심 이동 — 현재 위치와 같으면 skip (드래그 후 재검색 케이스)
+  // appliedArea 변경 시 지도 중심 이동 + 검색 기준점 갱신
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !appliedArea) return;
+    searchedCenterRef.current = appliedArea.center;
     const cur = map.getCenter();
     const dx = Math.abs(cur.getLat() - appliedArea.center.lat);
     const dy = Math.abs(cur.getLng() - appliedArea.center.lng);
@@ -208,6 +208,7 @@ function KakaoMap({
             radius: computeViewportRadius(target),
           };
           setInitialArea(area);
+          searchedCenterRef.current = area.center;
           onAreaChanged?.(area);
         }
       }}
@@ -215,6 +216,8 @@ function KakaoMap({
         const c = target.getCenter();
         const center = { lat: c.getLat(), lng: c.getLng() };
         const radius = computeViewportRadius(target);
+        const searched = searchedCenterRef.current;
+        if (searched && haversine(center, searched) < radius * VIEWPORT_MOVE_RATIO) return;
         onViewportChange?.({ center, radius });
       }}
     >
@@ -235,9 +238,14 @@ function KakaoMap({
           xAnchor={0.5}
           zIndex={activeId === entry.id ? 10 : 1}
         >
-          <div onClick={() => onPinClick?.(entry.id)}>
+          <button
+            type="button"
+            aria-label={`${entry.name} 지도 핀`}
+            onClick={() => onPinClick?.(entry.id)}
+            className="bg-transparent p-0 border-0 cursor-pointer"
+          >
             <CategoryPin category={entry.category} active={activeId === entry.id} />
-          </div>
+          </button>
         </CustomOverlayMap>
       ))}
     </Map>

@@ -1,6 +1,6 @@
 import type { MyProfile } from '@/types/user';
 
-import { GradeGuideCard } from '@/components/features/grade-guide/grade-guide-card';
+import { GradeGuideCard } from '@/components/features/grade-guide/index';
 import { PointsAndListsRow } from './points-and-lists-row';
 import { ProfileFooter } from './profile-footer';
 import { ProfileListRow } from './profile-list-row';

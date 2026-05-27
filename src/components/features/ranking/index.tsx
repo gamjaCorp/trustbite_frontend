@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, MapPin } from 'lucide-react';
 import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
 import { RegionRankSkeleton } from './region-rank-skeleton';
-import { MapView, type SearchArea } from '@/components/features/explore/map-view';
+import { MapView, type SearchArea } from '@/components/features/explore/index';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
@@ -40,6 +40,8 @@ export function RegionRankList({ entries: entriesProp }: Props) {
   const [appliedArea, setAppliedArea] = useState<SearchArea | null>(null);
   // 현재 지도 viewport 영역 — 재검색 버튼 표시 여부에 사용
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
+  // sticky 필터+지도 블록 — 핀 클릭 스크롤 오프셋 실측용
+  const stickyRef = useRef<HTMLDivElement>(null);
   // 휴리스틱 판정 결과 — query + 판정된 keyword를 쌍으로 저장해 stale 판별
   const [resolvedKeyword, setResolvedKeyword] = useState<{ query: string; keyword: string | undefined } | null>(null);
   // debouncedQuery가 바뀌면 이전 resolvedKeyword는 무효 → undefined로 파생
@@ -59,6 +61,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
       setAppliedArea((prev) =>
         prev ? { center, radius: prev.radius } : { center, radius: 1000 },
       );
+      setPendingArea(null);
       setResolvedKeyword({ query: debouncedQuery, keyword: undefined });
       setQuery('');
     };
@@ -145,13 +148,15 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     [filteredList],
   );
 
-  // 핀 클릭 → 해당 카드로 스크롤
+  // 핀 클릭 → 해당 카드로 스크롤 (sticky 블록 아래 12px에 행 상단을 맞춤)
   const handlePinClick = (id: string) => {
     setActiveId(id);
     requestAnimationFrame(() => {
-      document
-        .querySelector(`[data-restaurant-id="${id}"]`)
-        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const row = document.querySelector(`[data-restaurant-id="${id}"]`);
+      if (!row) return;
+      const stickyBottom = stickyRef.current?.getBoundingClientRect().bottom ?? 0;
+      const rowTop = row.getBoundingClientRect().top;
+      window.scrollBy({ top: rowTop - stickyBottom - 12, behavior: 'smooth' });
     });
   };
 
@@ -167,7 +172,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
       <IntroCard />
 
       {/* sticky 블록 — 깔때기 구조: 능동→공간→콘텐츠1→콘텐츠2→지도 */}
-      <div className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4">
+      <div ref={stickyRef} className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4">
         {/* row 1: 검색 */}
         <SearchInput
           value={query}

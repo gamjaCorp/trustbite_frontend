@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { searchPlacesByRadius, searchPlacesByKeyword } from '@/api/kakao-local';
 import { synthesizeEntry } from '@/lib/synthesize-restaurant';
 import type { RegionalRankEntry } from '@/types/restaurant';
-import type { SearchArea } from '@/components/features/explore/map-view';
+import type { SearchArea } from '@/components/features/explore/index';
 
 export type { SearchArea };
 

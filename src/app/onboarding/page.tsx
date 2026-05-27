@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check } from 'lucide-react';
 
-import { AuthLayout } from '@/components/features/auth/auth-layout';
+import { AuthLayout } from '@/components/features/auth/index';
 import { cn } from '@/lib/utils';
 
 const PRIMARY_REGIONS = ['강남', '홍대', '을지로', '성수', '한남'] as const;

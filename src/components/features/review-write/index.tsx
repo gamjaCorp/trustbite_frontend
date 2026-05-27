@@ -24,7 +24,7 @@ import ReviewWriteProvider, {
 } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import type { GradeLevel } from '@/lib/grade-levels';
-import { ReviewResultDialog } from '@/components/features/review-result/review-result-dialog';
+import { ReviewResultDialog } from '@/components/features/review-result/index';
 
 import { TargetRestaurantCard } from './target-restaurant-card';
 import { RestaurantPicker } from './restaurant-picker';

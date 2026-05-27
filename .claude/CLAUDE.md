@@ -38,7 +38,7 @@ npx tsc --noEmit       # 타입 검사 (스크립트 없음 — 수동 실행)
 - **Framework** — Next.js (App Router) + React + TypeScript (strict)
 - **스타일** — Tailwind CSS v4 (토큰: `src/app/globals.css` `@theme inline` + OKLCH CSS 변수). shadcn/ui new-york, `baseColor: neutral` (`src/components/ui/` — 직접 수정 금지). 작성 규칙은 **`ui-ux-expert` 스킬** 참조.
 - **상태/데이터** — React Query 5 (+ devtools, react-table), Zustand 5. **서버 읽기는 native fetch + Next 데이터 캐시(`next:{tags,revalidate}`), React Query는 검색·낙관적 토글·Kakao SDK 등 클라이언트 인터랙션 한정**. axios 미사용.
-- **지도** — Kakao Maps JS SDK (`NEXT_PUBLIC_KAKAO_MAP_KEY` env, `next/script` 동적 로드)
+- **지도** — Kakao Maps JS SDK (`NEXT_PUBLIC_KAKAO_MAP_APP_KEY` env, `react-kakao-maps-sdk` `useKakaoLoader` 동적 로드)
 - **차트** — Recharts (레이더 차트, 바 차트)
 - **폼** — React Hook Form + Zod + `@hookform/resolvers/zod` + shadcn `form.tsx` (`form.tsx`는 신규 폼 시 `pnpm dlx shadcn@latest add form`)
 - **UX 유틸** — next-themes(다크모드), sonner(toast), date-fns + react-day-picker, embla-carousel, react-resizable-panels
@@ -52,6 +52,7 @@ npx tsc --noEmit       # 타입 검사 (스크립트 없음 — 수동 실행)
 ```
 src/app                          Next App Router
 src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 features/(가까운 도메인) 또는 common/에 둔다. ui는 shadcn (직접 수정 금지)
+src/components/features/<feat>/  feature 폴더의 진입점 파일은 반드시 index.tsx. 예: explore/index.tsx
 src/api/<feature>/<feature>.ts   fetch 기반 API 함수 (publicFetch/authedFetch/Server Action, feature별 하위 폴더)
 src/hooks/<feature>/use-*.ts     React Query 훅 — 클라 인터랙션 한정 (검색·낙관적 토글·Kakao SDK)
 src/stores/<name>-store.tsx      Zustand + Context 스토어
@@ -67,6 +68,7 @@ src/auth.ts + src/proxy.ts       NextAuth v5 (proxy는 middleware alias)
 깨면 frontend-code-reviewer가 지적한다.
 
 - **파일/폴더명 kebab-case**. 컴포넌트 폴더는 `index.tsx` barrel. 배럴에서 import할 때는 `/index` suffix를 명시.
+- **feature 폴더 진입점은 `index.tsx`**. `src/components/features/<feat>/`의 첫 번째 파일은 반드시 `index.tsx`로 생성한다. `feat-name.tsx` 같은 이름 금지.
 - **훅/함수는 named export**. default export는 React 컴포넌트나 Next.js 규약(`page.tsx`, `layout.tsx`)이 요구할 때만.
 - **Import 순서**: React → 3rd-party → `@/*` → 상대경로.
 - **주석/스토리 설명/toast 문구는 한국어**.
@@ -128,6 +130,13 @@ task/step 종료 후 반드시 다음 순서를 지킨다:
 
 태스크를 완료하면 사용자 확인 후 `docs/plan/roadmap1/week-{N}.md` 내 해당 항목을 `- [x]`로 체크한다.
 
+**Day 완료 체크:** Day의 마지막 task까지 끝나고 사용자가 검토·확인하면, 일별 요약 테이블의 해당 Day 행 `완료` 열도 `[x]`로 체크한다.
+
 ### 이슈 기록
 
 작업 중 발생한 이슈는 `docs/plan/roadmap1/week-{N}-issues.md`에 기록한다. `week-{N}.md` 본문에는 적지 않는다.
+
+기록 형식: 표 금지, `-` 나열형. 각 항목은 "발견 → 처리" 한 줄. 예:
+```
+- 핀 클릭이 `<div onClick>` — 키보드 접근 없음 → `<button aria-label>` 로 교체
+```
