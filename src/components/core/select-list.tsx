@@ -21,6 +21,7 @@ interface Props {
   icon?: LucideIcon;
   align?: 'start' | 'center' | 'end';
   className?: string;
+  disabled?: boolean;
 }
 
 export function SelectList({
@@ -31,9 +32,10 @@ export function SelectList({
   icon: Icon,
   align = 'end',
   className,
+  disabled,
 }: Props) {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={value} onValueChange={onValueChange} disabled={disabled}>
       <SelectTrigger className={cn('w-fit rounded-chip gap-2 shrink-0', className)}>
         {Icon ? <Icon className="w-4 h-4 text-muted-foreground" /> : null}
         <SelectValue placeholder={placeholder} />

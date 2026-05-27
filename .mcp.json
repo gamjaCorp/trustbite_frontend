@@ -6,7 +6,7 @@
     },
     "shrimp-task-manager": {
       "command": "node",
-      "args": ["/Users/goyoai/Documents/personal/mcp-shrimp-task-manager/dist/index.js"],
+      "args": ["/Users/boram/dev/study/mcp-shrimp-task-manager/dist/index.js"],
       "env": {
         "DATA_DIR": "./shrimp_data",
         "TEMPLATES_USE": "en",

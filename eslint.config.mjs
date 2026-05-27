@@ -27,6 +27,7 @@ const eslintConfig = defineConfig([
       'react/jsx-key': 'warn',
 
       'no-console': 'warn',
+      '@next/next/no-img-element': 'off',
     },
   },
   ...storybook.configs["flat/recommended"]

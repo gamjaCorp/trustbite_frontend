@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MyReview, MyReviewEntry } from '@/types/restaurant';
-import { useAuthMock } from '@/stores/auth-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,7 +89,7 @@ function MyReviewVisit({
 }
 
 export function MyReviewSection({ review, restaurantId }: Props) {
-  const { isAuthed } = useAuthMock();
+  const { isAuthed } = useAuthStatus();
   if (!isAuthed) return null;
 
   const hasMultiple = review.visits.length >= 2;

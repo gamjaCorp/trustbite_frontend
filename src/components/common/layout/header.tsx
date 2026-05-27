@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { getMyProfile } from '@/data/mock-my-profile';
-import { useAuthMock } from '@/stores/auth-mock-store';
-import { useMyProfileMock } from '@/stores/my-profile-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
 
 const NAV_TABS = [
@@ -20,8 +19,7 @@ const NAV_TABS = [
 export function Header() {
   const pathname = usePathname();
   const profile = getMyProfile();
-  const { isAuthed } = useAuthMock();
-  const { nickname } = useMyProfileMock();
+  const { isAuthed, user } = useAuthStatus();
   const [myPlacesDialogOpen, setMyPlacesDialogOpen] = useState(false);
 
   // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다. 로그인/온보딩은 미니 랜딩.
@@ -47,12 +45,12 @@ export function Header() {
                 className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="" alt="프로필" />
+                  <AvatarImage src={user?.image ?? ''} alt="프로필" />
                   <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
-                    햄
+                    {user?.name?.slice(0, 1) ?? '?'}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-title-3 text-foreground">{nickname}</span>
+                <span className="text-title-3 text-foreground">{user?.name}</span>
                 <UserGradeMark level={profile.level} size="sm" />
               </Link>
             ) : (

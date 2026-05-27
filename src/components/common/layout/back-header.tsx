@@ -9,13 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { getMyProfile } from '@/data/mock-my-profile';
-import { useAuthMock } from '@/stores/auth-mock-store';
-import { useMyProfileMock } from '@/stores/my-profile-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 
 export function BackHeader() {
   const router = useRouter();
-  const { isAuthed } = useAuthMock();
-  const { nickname } = useMyProfileMock();
+  const { isAuthed, user } = useAuthStatus();
   const profile = getMyProfile();
 
   return (
@@ -42,12 +40,12 @@ export function BackHeader() {
             href="/profile"
             className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
           >
-            <span className="text-title-3 text-foreground">{nickname}</span>
+            <span className="text-title-3 text-foreground">{user?.name}</span>
             <UserGradeMark level={profile.level} size="sm" />
             <Avatar className="h-8 w-8 ml-0.5">
-              <AvatarImage src="" alt="프로필" />
+              <AvatarImage src={user?.image ?? ''} alt="프로필" />
               <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
-                {nickname.slice(0, 1)}
+                {user?.name?.slice(0, 1) ?? '?'}
               </AvatarFallback>
             </Avatar>
           </Link>

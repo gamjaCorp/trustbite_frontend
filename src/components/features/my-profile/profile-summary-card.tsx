@@ -8,7 +8,7 @@ import { ChevronRight, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProfileHeaderCard } from '@/components/common/profile-header-card';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
-import { useMyProfileMock } from '@/stores/my-profile-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 import { EditProfileDialog } from './edit-profile-dialog';
 import type { MyProfile } from '@/types/user';
 
@@ -19,17 +19,17 @@ interface Props {
 // 내 프로필 요약 카드 (아바타, 닉네임, 팔로우 통계)
 export function ProfileSummaryCard({ profile }: Props) {
   const router = useRouter();
-  const { nickname, avatarUrl } = useMyProfileMock();
+  const { user } = useAuthStatus();
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   return (
     <>
       <ProfileHeaderCard
-        avatarInitial={profile.avatarInitial}
-        avatarUrl={avatarUrl}
+        avatarInitial={user?.name?.slice(0, 1) ?? '?'}
+        avatarUrl={user?.image ?? undefined}
         title={
           <>
-            <span className="text-title-1 text-foreground truncate">{nickname}</span>
+            <span className="text-title-1 text-foreground truncate">{user?.name}</span>
             <UserGradeMark level={profile.level} size="sm" showLabel />
           </>
         }

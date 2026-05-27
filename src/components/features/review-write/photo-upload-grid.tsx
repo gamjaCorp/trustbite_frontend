@@ -1,7 +1,6 @@
 'use client';
 
 import { ChangeEvent, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { Check, Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -83,12 +82,10 @@ export function PhotoUploadGrid({ maxSlots = 4, hideHeader = false }: Props) {
             key={photo.previewUrl}
             className="relative aspect-square rounded-xl overflow-hidden bg-muted ring-1 ring-border"
           >
-            <Image
+            <img
               src={photo.previewUrl}
               alt={`업로드한 사진 ${idx + 1}`}
-              fill
-              className="object-cover"
-              unoptimized
+              className="absolute inset-0 h-full w-full object-cover"
             />
             <button
               type="button"

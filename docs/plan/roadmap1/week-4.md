@@ -1,9 +1,12 @@
-# Week 4 — 품질 + 스테이징 배포 (6/2~6/6)
+# Week 4 — 백엔드 연동 + 최종 QA·배포 (백엔드 준비 후)
 
 ## 이번 주 목표
 
-W3까지 모든 1차 MVP 화면이 실 백엔드 위에서 동작하는 상태.  
-이번 주는 **9개 화면 디자인 점검(Mon) → 잔여 이슈·빌드(Tue) → 반응형(Wed) → 통합 QA(Thu) → 스테이징 배포(Fri)** 순서로 마무리한다.
+백엔드 API가 준비된 시점에 시작. W3에서 인프라 골격(타입 경로, fetch 래퍼, RHF/zod)을 완비한 상태에서 **9개 화면을 mock → 실 API로 마이그레이션**한다.
+
+이 주가 끝나면 `src/data/mock-*` 파일이 모두 사라지고, **1차 MVP 9개 화면이 실 백엔드 위에서 동작**한다.
+
+> 화면 단위 마이그레이션 표준 7단계: 백엔드 endpoint 확인 → 타입 분할 → API 함수(fetch) → React Query 훅(클라 한정) → 페이지 전환 → 의존성 정리 → 체크
 
 ---
 
@@ -11,139 +14,148 @@ W3까지 모든 1차 MVP 화면이 실 백엔드 위에서 동작하는 상태.
 
 | Day | 날짜 | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|---|
-| Mon | 6/2 | 9개 화면 디자인 점검 | cross-page 톤 통일, punch list fix, `pnpm design:check` 그린 | ☐ |
-| Tue | 6/3 | 잔여 이슈 + 빌드 점검 | `any`/`console.log` 제거, `pnpm build` 그린 | ☐ |
-| Wed | 6/4 | 반응형 (모바일 + 데스크톱) | 375/768/1280 breakpoint 점검, 레이아웃 수정 | ☐ |
-| Thu | 6/5 | 통합 시나리오 QA | PRD 16 플로우 1-1, 1-2, 1-3 수동 테스트 | ☐ |
-| Fri | 6/6 | 스테이징 배포 + 내부 테스트 | Vercel preview, env 점검, 내부 피드백 수집 | ☐ |
+| Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /auth/login` · `needsOnboarding` · 온보딩 영속화 (프론트 세션 연결은 W3 완료) | [ ] |
+| Day 2 | — | `/profile` + `/profile/grade` 데이터 레이어 | `useMyProfile`, `useGradeProgress`, mock 삭제 | [ ] |
+| Day 3 | — | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | [ ] |
+| Day 4 | — | `/review/new` mutation + 인증 가드 + 에러 페이지 | `useSubmitReview`, middleware 매처, `not-found/error.tsx` | [ ] |
+| Day 5 | — | `/my-places` + 탐색 탭 검색/필터 | `useMyRanking`, `useSearchRestaurants` (디바운스/URL) | [ ] |
+| Day 6 | — | `/user/[id]` + Wishlist mutation + mock 전량 삭제 | `useUserProfile`, `useToggleBookmark`, mock-* 0개 | [ ] |
+| Day 7 | — | 통합 QA + 스테이징 배포 + 회고 | PRD 플로우 1-1/1-2/1-3 수동 테스트, Vercel 스테이징 URL | [ ] |
 
 ---
 
-## Day 1 (월 6/2) — 9개 화면 디자인 점검 — ≈ 5h
+## Day 1 — 실 인증 — 백엔드 연동
 
-W3 Day 5 `frontend-code-reviewer` punch list를 처리하며 9개 화면 디자인 정합성 완성.
+프론트 세션 연결(W3 완료) 위에 백엔드 인증 흐름을 추가. `auth-mock-store`는 W3에서 이미 제거됨.
 
-**순회 대상** (화면당 ≈ 30분)
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 인증 callbacks | - `callbacks.signIn` — 백엔드 `POST /auth/login` 호출, 신규 사용자 `needsOnboarding: true` 처리 | `src/auth.ts` | [ ] |
+|  | - `callbacks.jwt` — `userId`, `accessToken`, `needsOnboarding` 추가 저장 | `src/auth.ts` | [ ] |
+|  | - `callbacks.session` — 백엔드 필드 → session 노출 | `src/auth.ts` | [ ] |
+| 온보딩 | - `/onboarding` — `POST /users/onboarding` submit 후 `/` 이동, 기존 사용자는 곧장 `/` | `src/app/onboarding/page.tsx` | [ ] |
+|  | - 비로그인 → Google → 신규 사용자 → `/onboarding` → `/` 흐름 확인 | — | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-`/` · `/restaurant/[id]` · `/review/new` · `/review/new/result` · `/profile` · `/profile/grade` · `/my-places` · `/user/[id]` · `/login`+`/onboarding`
-
-**각 화면 체크 (W0 표준 기준)**
-
-- [ ] 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 ≤ 5건 (전체)
-- [ ] 컬러 토큰 — arbitrary hex 0 (Google 로고/Pin SVG 예외만)
-- [ ] 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관
-- [ ] 스페이싱 — `[px]` 임의값 정당화 확인
-- [ ] 로딩/빈/에러 톤 일관 (Skeleton/Empty/Error)
-- [ ] 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, `alt` 텍스트
-- [ ] 컴포넌트 함수 위 한 줄 한국어 설명 주석 확인
-
-**완료 게이트**
-
-- [ ] `pnpm design:check` 통과
-- [ ] critical (시각 깨짐, 접근성) 즉시 fix
-
-> 산출물: 9개 화면이 일관된 디자인 토큰 위에서 동작
+> 산출물: 인증 흐름이 실 백엔드 위에서 동작
 
 ---
 
-## Day 2 (화 6/3) — 잔여 이슈 + 빌드 점검 — ≈ 4h
+## Day 2 — `/profile` + `/profile/grade` 데이터 레이어
 
-- [ ] W4 Day 1 발견 minor 이슈 처리
-- [ ] `any` 타입 전수 검색 → 명시적 타입으로 교체
-- [ ] `console.log` 전량 제거
-- [ ] `pnpm build` 번들 사이즈 확인 (지도 청크 분리 여부)
-- [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 그린
+두 화면 모두 `src/api/user/` / `src/hooks/user/`에 들어가는 짝이라 같은 날 처리.
 
-> 산출물: 커밋이 깨끗한 상태에서 반응형 점검 진입
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 타입·API | - `MyProfileResponse`, `GradeProgressResponse` 타입 정의 | `src/lib/types/user/response.ts` | [ ] |
+|  | - `getMyProfile()`, `getGradeProgress()` API 함수 작성 (`authedFetch`, `no-store`) | `src/api/user/user.ts` (신규) | [ ] |
+| 페이지 전환 | - `/profile` 페이지를 **Server Component**로 전환 — API 함수 직접 호출, Suspense 로딩, 에러('다시 시도' 버튼) | `src/app/profile/page.tsx`, `src/app/profile/loading.tsx` (신규) | [ ] |
+|  | - `mock-my-profile.ts` 흡수 후 삭제 | `src/data/mock-my-profile.ts` (삭제) | [ ] |
+| 확인 | - 브라우저 3상태 확인: 로딩 → 정상 → 에러 강제 | — | [ ] |
 
----
-
-## Day 3 (수 6/4) — 반응형 점검 — ≈ 4~5h
-
-**뷰포트별 점검**
-
-| 뷰포트 | 확인 화면 |
-|---|---|
-| 모바일 375 × 667 | 모든 화면 |
-| 태블릿 768 × 1024 | 홈, 상세, 리뷰 작성 |
-| 데스크톱 1280 × 800 | 모든 화면 |
-
-**주요 체크 포인트**
-
-- [ ] `/review/new` 2컬럼 (PRD 8.4) — 데스크톱만 사이드바, 모바일 단일 컬럼
-- [ ] 지도 시트 모바일 드래그 부드러움
-- [ ] 헤더 모바일 — 중요하지 않은 요소 축소/숨김
-- [ ] 탐색 탭 필터 칩 — 모바일 가로 스크롤 처리
-- [ ] 등급 타임라인 — 모바일에서 가독성 확인
-- [ ] `text-xs`(12px) 미만 텍스트 없는지 재확인
-
-> 산출물: 모든 화면이 375~1280에서 의도대로 표시
+> 산출물: `/profile`이 Server Component + authedFetch로 동작. 이후 화면의 마이그 템플릿
 
 ---
 
-## Day 4 (목 6/5) — 통합 시나리오 QA — ≈ 5~6h
+## Day 3 — `/restaurant/[id]` 마이그
 
-PRD 16 플로우 3개를 직접 따라가며 버그를 잡는다.
+가장 복잡한 화면. 표준 7단계 적용 + 비로그인 분기 정합.
 
-**플로우 1-1 — 첫 방문 → 리뷰 작성**
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 타입·API | - `RestaurantDetailResponse` 타입 정의 | `src/lib/types/restaurant/response.ts` | [ ] |
+|  | - `getRestaurantDetail(id: string)` API 함수 작성 (`publicFetch`, `tags:['restaurant',id]`, revalidate) | `src/api/restaurant/restaurant.ts` (신규) | [ ] |
+| 페이지 전환 | - 페이지를 **Server Component**로 전환 — API 함수 직접 호출 + 로딩(Suspense) / 404(`notFound()`) | `src/app/restaurant/[id]/page.tsx`, `loading.tsx` (신규) | [ ] |
+|  | - middleware `auth()` 결과로 비로그인 미리보기 분기 일관화 | — | [ ] |
+|  | - `mock-restaurant-detail.ts` 흡수 후 삭제 | `src/data/mock-restaurant-detail.ts` (삭제) | [ ] |
 
-- [ ] 비로그인 홈 접속 → 탐색 탭 랭킹 보임
-- [ ] 맛집 카드 클릭 → 상세 미리보기 (리뷰 2~3개 + CTA)
-- [ ] '리뷰 더 보기' → 로그인 모달
-- [ ] 구글 로그인 → 온보딩 (닉네임/지역) → 완료
-- [ ] 로그인 상태 홈 복귀, 인트로 카드 사라짐 확인
-
-**플로우 1-2 — 리뷰 작성 → 신뢰도 상승**
-
-- [ ] 맛집 상세 → '리뷰 쓰기' CTA
-- [ ] 리뷰 쓰기: 가게 검색 → 평점 → 텍스트 100자 이상 → 사진 업로드
-- [ ] 사진 업로드 시 실시간 신뢰도 게이지 변화 확인
-- [ ] 제출 → 결과 화면: 게이지 애니메이션 → 항목별 기여 → 등급 진행바
-- [ ] '내 랭킹 보기' → `/my-places`
-- [ ] '등급 안내' → `/profile` 내 GradeGuideCard 타임라인 확인
-
-**플로우 1-3 — 소셜 (1차 MVP 범위)**
-
-- [ ] 리뷰 카드 닉네임 클릭 → `/user/[id]`
-- [ ] 팔로우 버튼 UI 확인 (1차: UI만)
-- [ ] 맛집 랭킹 잠금 메시지 확인
-
-**버그 처리**
-
-- [ ] critical 이슈 즉시 fix
-- [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 그린
-
-> 산출물: PRD 핵심 루프 3개가 깨지지 않고 동작
+> 산출물: `/restaurant/[id]`가 Server Component + publicFetch(Next 캐시)로 동작
 
 ---
 
-## Day 5 (금 6/6) — 스테이징 배포 + 내부 테스트 — ≈ 4~5h
+## Day 4 — `/review/new` mutation + 인증 가드 + 에러 페이지
 
-**배포 준비**
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 타입·API | - `CreateReviewRequest`, `ReviewSubmitResult` 타입 정의 | `src/lib/types/review/request.ts`, `response.ts` (신규) | [ ] |
+|  | - `submitReview(data)` **Server Action** 작성 (multipart 사진 포함) + 성공 후 `revalidateTag('restaurant')` | `src/app/review/actions.ts` (신규) | [ ] |
+|  | - `getReviewResult(reviewId)` API 함수 작성 (`authedFetch`) | `src/api/review/review.ts` (신규) | [ ] |
+| 폼 연결 | - 폼 submit → Server Action 호출 + 제출 중 버튼 disabled + Spinner | `src/components/features/review/review-write-form.tsx` | [ ] |
+|  | - 결과 Dialog에 서버 fetch(reviewId) 연결 + 로딩 스켈레톤 | `src/components/features/review/review-result-dialog.tsx` | [ ] |
+| 인증 가드 | - middleware에 `/profile`, `/my-places`, `/review/*` 인증 가드 추가 | `src/proxy.ts` | [ ] |
+|  | - 비로그인 → `/signin?next=<원래 경로>` 리다이렉트 + 로그인 후 `next` 쿼리로 복귀 | `src/proxy.ts`, `src/app/signin/page.tsx` | [ ] |
+| 에러 페이지 | - 404 페이지 (TrustBite 톤) | `src/app/not-found.tsx` (신규) | [ ] |
+|  | - 전역 에러 페이지 + '다시 시도' 버튼 | `src/app/error.tsx` (신규) | [ ] |
+|  | - 맛집 상세 전용 에러 페이지 | `src/app/restaurant/[id]/error.tsx` (신규) | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-- [ ] env 변수 목록 최종 확인
-  - [ ] `NEXT_PUBLIC_API_BASE_URL`
-  - [ ] `NEXTAUTH_SECRET`
-  - [ ] `NEXTAUTH_URL`
-  - [ ] `NEXT_PUBLIC_KAKAO_MAP_KEY`
-- [ ] `pnpm build` 로컬 최종 확인
+> 산출물: 폼 → mutation → 결과 흐름 정식화 + 인증 가드 + 에러 페이지
 
-**Vercel 배포**
+---
 
-- [ ] Vercel preview 배포
-- [ ] 도메인/HTTPS 확인
-- [ ] 배포된 URL에서 플로우 1-1, 1-2 빠르게 재확인
+## Day 5 — `/my-places` + 탐색 탭 검색/필터
 
-**내부 테스트**
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| my-places 마이그 | - `MyRestaurantStats`, `MyRestaurantRankResponse` 타입 정의 | `src/lib/types/restaurant/response.ts` | [ ] |
+|  | - `getMyRanking()`, `getMyStats()` API 함수 작성 (`authedFetch`, `no-store`) | `src/api/restaurant/my-ranking.ts` (신규) | [ ] |
+|  | - `/my-places` 페이지를 **Server Component**로 전환 — API 함수 직접 호출, Suspense 로딩 / 빈 목록 분기 | `src/app/my-places/page.tsx`, `loading.tsx` (신규) | [ ] |
+|  | - `mock-my-places.ts` 흡수 후 삭제 | `src/data/mock-my-places.ts` (삭제) | [ ] |
+| 검색/필터 | - `SearchParams` 타입 정의 (q, region, category[], context[], sort, page) | `src/lib/types/restaurant/request.ts` (신규) | [ ] |
+|  | - `searchRestaurants(params)` API 함수 작성 (`clientFetch`) | `src/api/restaurant/restaurant.ts` | [ ] |
+|  | - 300ms 디바운스 + URL 쿼리 동기화 **React Query 검색 훅** 작성 | `src/hooks/restaurant/use-search-restaurants.ts` (신규) | [ ] |
+|  | - 검색바·지역/정렬/카테고리/상황 필터 → URL 즉시 반영 + '필터 초기화' 버튼 | `src/components/features/map/search-bar.tsx` 등 | [ ] |
+|  | - Kakao Local 임시 어댑터 교체 (자체 백엔드 검색으로) | `src/api/kakao-local.ts` (삭제) | [ ] |
 
-- [ ] 3~5명 테스터에게 URL 공유
-- [ ] 피드백 수집 (짧은 설문 또는 직접 대화)
-- [ ] critical 이슈 핫픽스
+> 산출물: `/my-places` + 탐색 탭 검색/필터가 실 백엔드 위에서 동작
 
-**1차 MVP 회고**
+---
 
-- [ ] 잘된 것 / 부족한 것 정리
-- [ ] `docs/week-5.md` 2차 MVP 인풋 초안 작성
+## Day 6 — `/user/[id]` + Wishlist mutation + mock 전량 삭제
+
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| user/[id] 마이그 | - `UserProfileResponse` 타입 정의 | `src/lib/types/user/response.ts` | [ ] |
+|  | - `getUserProfile(id: string)` API 함수 작성 (`publicFetch`, `tags:['user',id]`) | `src/api/user/user.ts` | [ ] |
+|  | - `/user/[id]` 페이지를 **Server Component**로 전환 — API 함수 직접 호출 | `src/app/user/[id]/page.tsx` | [ ] |
+|  | - `mock-other-user.ts` 흡수 후 삭제 | `src/data/mock-other-user.ts` (삭제) | [ ] |
+| Wishlist mutation | - `WishlistItem` 타입 정의 | `src/lib/types/wishlist/type.ts` (신규) | [ ] |
+|  | - `getWishlist()`, `addBookmark(id)`, `removeBookmark(id)` API 함수 작성 (`clientFetch`) | `src/api/wishlist/wishlist.ts` (신규) | [ ] |
+|  | - **React Query** wishlist 조회 훅 + 낙관적 업데이트 toggle 훅 작성 (실패 시 롤백) | `src/hooks/wishlist/use-wishlist.ts`, `use-toggle-bookmark.ts` (신규) | [ ] |
+|  | - wishlist-section, restaurant-header 북마크 → `useToggleBookmark` 교체 | `src/components/features/my-places/wishlist-section.tsx`, `restaurant-detail/restaurant-header.tsx` | [ ] |
+| mock 전량 삭제 | - `wishlist-mock-store.tsx`, `helpful-mock-store.tsx`, `follow-mock-store.tsx`, `my-profile-mock-store.tsx` 제거 | `src/stores/` (삭제) | [ ] |
+|  | - `src/data/mock-*` 파일 0개 확인 (남은 파일 전량 흡수) | `src/data/` (전량 삭제) | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit && pnpm build` 그린 | — | [ ] |
+
+> 산출물: 1차 MVP 9개 화면이 실 백엔드 API 위에서 동작. mock 파일 0개
+
+---
+
+## Day 7 — 통합 QA + 스테이징 배포 + 회고
+
+PRD 핵심 루프 3개를 직접 따라가며 버그를 잡고 스테이징 배포 후 내부 테스트.
+
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 플로우 1-1 | - 비로그인 홈 접속 → 탐색 탭 랭킹 확인 | — | [ ] |
+|  | - 맛집 카드 클릭 → 상세 미리보기 (리뷰 2~3개 + CTA) | — | [ ] |
+|  | - '리뷰 더 보기' → 로그인 모달 | — | [ ] |
+|  | - 구글 로그인 → 온보딩 (닉네임/지역) → 완료 | — | [ ] |
+|  | - 로그인 상태 홈 복귀, 인트로 카드 사라짐 | — | [ ] |
+| 플로우 1-2 | - 맛집 상세 → '리뷰 쓰기' CTA | — | [ ] |
+|  | - 리뷰 작성 — 가게 검색·평점·텍스트 100자 이상·사진 업로드 | — | [ ] |
+|  | - 사진 업로드 시 실시간 신뢰도 게이지 변화 확인 | — | [ ] |
+|  | - 제출 → 결과 화면: 게이지 애니메이션·기여·등급 진행바 | — | [ ] |
+| 플로우 1-3 | - 리뷰 카드 닉네임 클릭 → `/user/[id]` | — | [ ] |
+|  | - 팔로우 버튼 UI 확인 (1차: UI만) | — | [ ] |
+|  | - 맛집 랭킹 잠금 메시지 확인 | — | [ ] |
+| 배포 | - env 최종 확인: `NEXT_PUBLIC_API_BASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_KAKAO_MAP_KEY` | — | [ ] |
+|  | - `pnpm build` 로컬 최종 확인 | — | [ ] |
+|  | - Vercel 스테이징 배포 + 도메인/HTTPS 확인 | — | [ ] |
+|  | - 배포된 URL에서 플로우 1-1, 1-2 빠르게 재확인 | — | [ ] |
+|  | - 3~5명 테스터에게 URL 공유 + 피드백 수집 | — | [ ] |
+|  | - critical 이슈 핫픽스 | — | [ ] |
+|  | - 잘된 것 / 부족한 것 정리 + 2차 MVP 인풋 초안 작성 | `docs/plan/week-5.md` (신규) | [ ] |
 
 > 산출물: 외부 접근 가능한 Vercel 스테이징 URL + 내부 피드백 수집 시작
 
@@ -153,12 +165,12 @@ PRD 16 플로우 3개를 직접 따라가며 버그를 잡는다.
 
 | 항목 | 확인 |
 |---|---|
-| PRD 1차 MVP 9개 화면 모두 동작 | ☐ |
-| 핵심 루프 플로우 1-1, 1-2 완주 | ☐ |
-| `pnpm build` 에러 없음 | ☐ |
-| 모바일 375 기준 레이아웃 정상 | ☐ |
-| 비로그인/로그인 분기 일관 동작 | ☐ |
-| Vercel 스테이징 URL 접근 가능 | ☐ |
+| PRD 1차 MVP 9개 화면 모두 동작 | [ ] |
+| 핵심 루프 플로우 1-1, 1-2 완주 | [ ] |
+| `pnpm build` 에러 없음 | [ ] |
+| 모바일 375 기준 레이아웃 정상 | [ ] |
+| 비로그인/로그인 분기 일관 동작 | [ ] |
+| Vercel 스테이징 URL 접근 가능 | [ ] |
 
 ---
 

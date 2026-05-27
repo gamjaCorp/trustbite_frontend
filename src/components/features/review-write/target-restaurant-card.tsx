@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { Pencil } from 'lucide-react';
 import { Surface } from '@/components/common/surface';
 import { CategoryBadge } from '@/components/common/category-badge';
@@ -18,7 +17,7 @@ export function TargetRestaurantCard() {
   return (
     <Surface variant="card" padding="sm" className="flex items-center gap-3">
       <div className="relative w-14 h-14 shrink-0 overflow-hidden rounded-xl bg-muted">
-        <Image src={selected.imageUrl} alt={selected.name} fill className="object-cover" />
+        <img src={selected.imageUrl} alt={selected.name} className="absolute inset-0 h-full w-full object-cover" />
       </div>
 
       <div className="flex-1 min-w-0">

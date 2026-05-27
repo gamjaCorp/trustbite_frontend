@@ -3,12 +3,11 @@
 // 통합 맛집 리스트 행 — variant(regional/my/wishlist)에 따라 좌측 머리·중앙 본문·우측 평점을 분기 표시
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Star, Bookmark, PencilLine, MessageSquare, Calendar, Repeat, Users, SquarePen, Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import { useAuthMock } from '@/stores/auth-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
@@ -26,6 +25,7 @@ import type {
   RestaurantDetail,
 } from '@/types/restaurant';
 import { SCORE_LABELS } from '@/lib/score-labels';
+import { formatDistance } from '@/lib/format-distance';
 
 export interface PlaceListRowData {
   id: string;
@@ -47,6 +47,8 @@ export interface PlaceListRowData {
   myLatestScene?: SceneTag;
   myStatus?: VisitStatus;
   addedAt?: string;
+  subCategory?: string;
+  distanceMeters?: number;
 }
 
 export type PlaceListRowVariant = 'regional' | 'my' | 'wishlist';
@@ -58,6 +60,8 @@ interface PlaceListRowProps {
   hideTrustScore?: boolean;
   hideReviewCta?: boolean;
   showVisitStats?: boolean;
+  /** regional variant에서 합성 필드(메달·평점·comment·리뷰수·CTA) 전부 숨김 */
+  minimal?: boolean;
   active?: boolean;
   onRemoveFromWishlist?: (id: string) => void;
   // variant="my"에서 타인의 랭킹을 볼 때 — 라벨을 "{name}의 평점"으로, 수정 링크 숨김
@@ -71,6 +75,7 @@ export function PlaceListRow({
   hideTrustScore = false,
   hideReviewCta = false,
   showVisitStats = false,
+  minimal = false,
   active = false,
   onRemoveFromWishlist,
   ownerName,
@@ -95,15 +100,17 @@ export function PlaceListRow({
     myLatestScene,
     myStatus,
     addedAt,
+    subCategory,
+    distanceMeters,
   } = data;
 
-  const { isAuthed } = useAuthMock();
+  const { isAuthed } = useAuthStatus();
   const bookmarked = useWishlistMock((s) => s.isBookmarked(id));
   const toggleWishlist = useWishlistMock((s) => s.toggle);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const showTrustScore = variant === 'regional' && !hideTrustScore;
+  const showTrustScore = variant === 'regional' && !hideTrustScore && !minimal;
   const showBookmarkOverlay = variant === 'regional' && !hideBookmark;
 
   return (
@@ -115,7 +122,7 @@ export function PlaceListRow({
           active && 'bg-primary-subtle/40',
         )}
       >
-        {/* ① 좌측 머리 — wishlist: 큰 북마크 토글 / regional·my: 랭크 메달 */}
+        {/* ① 좌측 머리 — wishlist: 큰 북마크 토글 / regional·my: 랭크 메달 (minimal 시 생략) */}
         {variant === 'wishlist' ? (
           <button
             type="button"
@@ -125,16 +132,14 @@ export function PlaceListRow({
           >
             <Bookmark className="w-5 h-5 fill-current" />
           </button>
-        ) : rank != null ? (
+        ) : !minimal && rank != null ? (
           <RankMedal
             rank={rank}
             fallbackTone="paper"
             className="self-center sm:w-8 sm:h-8 sm:text-title-2"
             aria-label={`${rank}위`}
           />
-        ) : (
-          <span className="shrink-0 w-7 h-7 sm:w-8 sm:h-8" aria-hidden />
-        )}
+        ) : null}
 
         {/* ② 썸네일 + regional 북마크 오버레이 */}
         <div className="relative shrink-0 w-20 h-20 sm:w-24 sm:h-24">
@@ -142,11 +147,10 @@ export function PlaceListRow({
             href={`/restaurant/${id}`}
             className="relative block w-full h-full overflow-hidden rounded-xl"
           >
-            <Image
+            <img
               src={imageUrl}
               alt={name}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </Link>
 
@@ -158,7 +162,7 @@ export function PlaceListRow({
                 toggleWishlist(id);
               }}
               className={cn(
-                'absolute top-0.5 right-0 w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
+                'absolute top-1 right-1 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
                 bookmarked && isAuthed
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-background/85 text-ink/70 hover:bg-background',
@@ -168,6 +172,7 @@ export function PlaceListRow({
               <Bookmark className={cn('w-4 h-4', bookmarked && isAuthed && 'fill-current')} />
             </button>
           )}
+
         </div>
 
         {/* ③ 중앙 컬럼 */}
@@ -177,19 +182,30 @@ export function PlaceListRow({
               <CategoryBadge category={category} />
               <span className="truncate">· {region}</span>
             </div>
-            {/* 모바일용 평점 인라인 표시 */}
-            {(variant === 'my' ? myAvgScore : communityAvgScore) != null && (
+            {/* 모바일용 평점 인라인 표시 — minimal 시 신규 칩 */}
+            {minimal && variant === 'regional' ? (
+              <span className="sm:hidden inline-flex items-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2 shrink-0">신규</span>
+            ) : (variant === 'my' ? myAvgScore : communityAvgScore) != null ? (
               <ScoreStars
                 score={(variant === 'my' ? myAvgScore : communityAvgScore)!}
                 size="sm"
                 className="sm:hidden shrink-0 gap-0.5"
               />
-            )}
+            ) : null}
           </div>
 
           <Link href={`/restaurant/${id}`} className="text-title-1 text-foreground truncate">
             {name}
           </Link>
+
+          {/* minimal 시 세부 카테고리 + 거리 (Kakao 원본 데이터) */}
+          {minimal && variant === 'regional' && (subCategory || distanceMeters != null) && (
+            <span className="text-caption-2 text-muted-foreground -mt-0.5 truncate">
+              {[subCategory, distanceMeters != null ? formatDistance(distanceMeters) : null]
+                .filter(Boolean)
+                .join(' · ')}
+            </span>
+          )}
 
           {/* regional: 방문 통계 */}
           {variant === 'regional' && showVisitStats && visitCount != null && lastVisitedAt != null && (
@@ -198,11 +214,13 @@ export function PlaceListRow({
             </span>
           )}
 
-          {/* comment (regional / my) */}
-          {(variant === 'regional' || variant === 'my') && comment && (
-            <p className="text-caption-1 text-muted-foreground line-clamp-1 mb-0.5">
-              &ldquo;{comment}&rdquo;
-            </p>
+          {/* comment (regional / my) — minimal 시 미노출 */}
+          {(variant === 'regional' || variant === 'my') && (
+            minimal && variant === 'regional' ? null : comment ? (
+              <p className="text-caption-1 text-muted-foreground line-clamp-1 mb-0.5">
+                &ldquo;{comment}&rdquo;
+              </p>
+            ) : null
           )}
 
           {/* wishlist: tagline */}
@@ -259,28 +277,28 @@ export function PlaceListRow({
             </div>
           )}
 
-          {/* regional: 리뷰수 + CTA */}
+          {/* regional: 리뷰수 + CTA — minimal 시 리뷰수 — placeholder, CTA는 유지 */}
           {variant === 'regional' && !hideReviewCta && (
             <div className="flex items-center justify-between gap-2 pt-0.5">
               <div className="flex items-center gap-1 text-caption-2 text-muted-foreground">
                 <MessageSquare className="w-3.5 h-3.5" aria-hidden />
-                <span>{reviewCount}</span>
+                <span>{minimal ? 0 : reviewCount}</span>
               </div>
-              {myStatus !== 'reviewed' ? (
-                <Link
-                  href={`/restaurant/${id}/review/new`}
-                  className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
-                >
-                  <PencilLine className="w-3 h-3" aria-hidden />
-                  리뷰 쓰기
-                </Link>
-              ) : (
+              {!minimal && myStatus === 'reviewed' ? (
                 <Link
                   href={`/restaurant/${id}/review/new`}
                   className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
                 >
                   <Star className="w-3 h-3 fill-primary text-primary" aria-hidden />
                   내 평점 {myAvgScore?.toFixed(1)} · 수정
+                </Link>
+              ) : (
+                <Link
+                  href={`/restaurant/${id}/review/new`}
+                  className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
+                >
+                  <PencilLine className="w-3 h-3" aria-hidden />
+                  리뷰 쓰기
                 </Link>
               )}
             </div>
@@ -317,22 +335,29 @@ export function PlaceListRow({
         {/* 수직 구분선 */}
         <div className="hidden sm:block self-stretch w-px bg-border" />
 
-        {/* ④ 우측 평점 컬럼 */}
+        {/* ④ 우측 평점 컬럼 — minimal 시 — placeholder */}
         <div className="hidden sm:flex shrink-0 flex-col items-end gap-0.5 self-center px-3 sm:px-4">
-          <span className="text-caption-2 text-muted-foreground text-right max-w-[4.5rem] leading-tight">
+          <span className="text-caption-2 text-muted-foreground text-right max-w-18 leading-tight">
             {variant === 'my' ? (ownerName ? `${ownerName}의 평점` : '내 평점') : '평균'}
           </span>
-          {(variant === 'my' ? myAvgScore : communityAvgScore) != null && (
+          {minimal ? (
+            <span className="inline-flex items-center gap-1">
+              <Star className="w-4 h-4 fill-warning text-warning" aria-hidden />
+              <span className="text-title-3 text-muted-foreground tabular-nums">–</span>
+            </span>
+          ) : (variant === 'my' ? myAvgScore : communityAvgScore) != null ? (
             <ScoreStars score={(variant === 'my' ? myAvgScore : communityAvgScore)!} size="lg" />
-          )}
-          {showTrustScore && trustScore != null && (
+          ) : null}
+          {minimal ? (
+            <span className="mt-2 inline-flex items-center justify-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2">리뷰 부족</span>
+          ) : showTrustScore && trustScore != null ? (
             <TrustScoreBadge
               score={trustScore}
               size="sm"
               onClick={() => setSheetOpen(true)}
             />
-          )}
-          {variant === 'wishlist' && trustScore != null && (
+          ) : null}
+          {!minimal && variant === 'wishlist' && trustScore != null && (
             <TrustScoreBadge score={trustScore} size="sm" showIcon={false} />
           )}
         </div>
@@ -383,6 +408,8 @@ export function toPlaceListRowData(entry: RegionalRankEntry): PlaceListRowData {
     lastVisitedAt: entry.lastVisitedAt,
     myLatestScene: entry.myLatestScene,
     myStatus: entry.myStatus,
+    subCategory: entry.subCategory,
+    distanceMeters: entry.distanceMeters,
   };
 }
 

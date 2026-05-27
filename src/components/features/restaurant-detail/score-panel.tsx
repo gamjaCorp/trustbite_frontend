@@ -32,6 +32,8 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
 export function ScorePanel({ detail }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  if (detail.reviewCount === 0) return null;
+
   return (
     <section className="px-6 pt-4">
       <Surface variant="ring" padding="lg">
