@@ -11,12 +11,12 @@ type CategoryFilter = Category | 'all';
 type ResolvedKeyword = { query: string; keyword: string | undefined };
 
 interface RegionRankState {
-  category: CategoryFilter;        // 선택된 카테고리 칩 (기본 'all')
-  query: string;                   // 검색창 입력값 (지명 이동 후 자동 초기화)
-  activeId: string | null;         // 핀 클릭으로 선택된 맛집 ID → 행 하이라이트
-  occasions: Set<SceneTag>;        // 선택된 상황 태그 (다중, 토글)
-  appliedArea: SearchArea | null;  // 현재 검색에 사용 중인 영역 (중심 + 반경) — 원 고정 기준
-  resolvedKeyword: ResolvedKeyword | null; // 검색어 휴리스틱 판정 결과 (지명 이동인지 키워드 필터인지)
+  category: CategoryFilter; // 선택된 카테고리 칩 (기본 'all')
+  query: string; // 검색창 입력값 (지명 이동 후 자동 초기화)
+  activeId: string | null; // 핀 클릭으로 선택된 맛집 ID → 행 하이라이트
+  occasions: Set<SceneTag>; // 선택된 상황 태그 (다중, 토글)
+  appliedArea: SearchArea | null; // 현재 검색에 사용 중인 영역 (중심 + 반경) — 원 고정 기준
+  resolvedKeyword: ResolvedKeyword | null; // 검색어 휴리스틱 판정 결과 (지명인지, 키워드 필터인지)
 }
 
 interface RegionRankActions {

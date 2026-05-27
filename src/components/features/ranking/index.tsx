@@ -1,29 +1,28 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Check, MapPin } from 'lucide-react';
 import { RegionalRankEntry } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
 import { RegionRankSkeleton } from './region-rank-skeleton';
-import { MapView } from '@/components/features/explore/index';
+import { MapView } from './explore/index';
 import type { SearchArea } from '@/lib/geo';
 import { IntroCard } from '@/components/common/intro-card';
 import { SearchInput } from '@/components/core/search-input';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
-import { SearchThisArea } from '@/components/features/explore/search-this-area';
-import { useNearbyPlaces } from '@/hooks/explore/use-nearby-places';
-import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { SearchThisArea } from './explore/search-this-area';
+import { useNearbyPlaces } from './hooks/use-nearby-places';
+import { usePlaceSearch } from './hooks/use-place-search';
+import { usePinRowSync } from './hooks/use-pin-row-sync';
 import RegionRankProvider, {
   useRankActions,
-  useRankActiveId,
   useRankAppliedArea,
   useRankCategory,
   useRankOccasions,
   useRankQuery,
-  useRankResolvedKeyword,
 } from '@/stores/region-rank-store';
 
 interface Props {
@@ -51,68 +50,14 @@ export function RegionRankList({ entries }: Props) {
 function RegionRankListView({ entries: entriesProp }: Props) {
   const category = useRankCategory();
   const query = useRankQuery();
-  const activeId = useRankActiveId();
   const occasions = useRankOccasions();
   const appliedArea = useRankAppliedArea();
-  const resolvedKeyword = useRankResolvedKeyword();
   const action = useRankActions();
 
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
   const [currentRegion, setCurrentRegion] = useState<string | null>(null);
 
-  // sticky 필터+지도 블록 — 핀 클릭 스크롤 오프셋 실측용
-  const stickyRef = useRef<HTMLDivElement>(null);
-
-  const debouncedQuery = useDebouncedValue(query.trim(), 500);
-  // debouncedQuery가 바뀌면 이전 resolvedKeyword는 무효 → undefined로 파생
-  const searchKeyword =
-    debouncedQuery && resolvedKeyword?.query === debouncedQuery
-      ? resolvedKeyword.keyword
-      : undefined;
-
-  // 지명은 지도 이동 + 검색창 비우기 / 음식·가게명은 keyword 필터로 분기
-  useEffect(() => {
-    if (!debouncedQuery) return;
-    if (typeof window === 'undefined' || !window.kakao?.maps?.services) return;
-    let cancelled = false;
-
-    // 1차: 주소(행정구역) 매칭 — 동·구·시는 곧장 이동
-    const geocoder = new window.kakao.maps.services.Geocoder();
-    geocoder.addressSearch(debouncedQuery, (addrResult, addrStatus) => {
-      if (cancelled) return;
-      if (addrStatus === window.kakao.maps.services.Status.OK && addrResult[0]) {
-        action.navigateToArea(
-          { lat: parseFloat(addrResult[0].y), lng: parseFloat(addrResult[0].x) },
-          debouncedQuery,
-        );
-        setPendingArea(null);
-        return;
-      }
-      // 2차: 지하철역(SW8)·관광명소(AT4)만 이동 — 그 외는 keyword 필터
-      const places = new window.kakao.maps.services.Places();
-      places.keywordSearch(debouncedQuery, (kwResult, kwStatus) => {
-        if (cancelled) return;
-        if (kwStatus !== window.kakao.maps.services.Status.OK || !kwResult[0]) {
-          action.setResolvedKeyword({ query: debouncedQuery, keyword: debouncedQuery });
-          return;
-        }
-        const code = kwResult[0].category_group_code;
-        if (code === 'SW8' || code === 'AT4') {
-          action.navigateToArea(
-            { lat: parseFloat(kwResult[0].y), lng: parseFloat(kwResult[0].x) },
-            debouncedQuery,
-          );
-          setPendingArea(null);
-        } else {
-          action.setResolvedKeyword({ query: debouncedQuery, keyword: debouncedQuery });
-        }
-      });
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [debouncedQuery, action]);
+  const { searchKeyword } = usePlaceSearch({ onNavigate: () => setPendingArea(null) });
 
   // entriesProp 없으면 Kakao Local에서 area + keyword 기반으로 fetch
   const { data: kakaoEntries = [], isFetching } = useNearbyPlaces({
@@ -134,23 +79,7 @@ function RegionRankListView({ entries: entriesProp }: Props) {
     [filteredList],
   );
 
-  // 현재 화면에 없는 항목은 active 상태를 무시 (별도 setState 없이 파생)
-  const effectiveActiveId = useMemo(
-    () => (activeId && rankedEntries.some((e) => e.id === activeId) ? activeId : null),
-    [activeId, rankedEntries],
-  );
-
-  // 핀 클릭 → 해당 카드로 스크롤 (sticky 블록 아래 12px에 행 상단을 맞춤)
-  const handlePinClick = (id: string) => {
-    action.setActiveId(id);
-    requestAnimationFrame(() => {
-      const row = document.querySelector(`[data-restaurant-id="${id}"]`);
-      if (!row) return;
-      const stickyBottom = stickyRef.current?.getBoundingClientRect().bottom ?? 0;
-      const rowTop = row.getBoundingClientRect().top;
-      window.scrollBy({ top: rowTop - stickyBottom - 12, behavior: 'smooth' });
-    });
-  };
+  const { stickyRef, effectiveActiveId, handlePinClick } = usePinRowSync({ entries: rankedEntries });
 
   return (
     <div className="space-y-4">

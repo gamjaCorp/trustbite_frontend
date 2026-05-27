@@ -52,9 +52,11 @@ npx tsc --noEmit       # 타입 검사 (스크립트 없음 — 수동 실행)
 ```
 src/app                          Next App Router
 src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 features/(가까운 도메인) 또는 common/에 둔다. ui는 shadcn (직접 수정 금지)
-src/components/features/<feat>/  feature 폴더의 진입점 파일은 반드시 index.tsx. 예: explore/index.tsx
+src/components/features/<feat>/  feature = 페이지 단위. 진입점 파일은 반드시 index.tsx.
+src/components/features/<feat>/hooks/use-*.ts  해당 feature(페이지)에만 쓰이는 훅은 feature 폴더 안 hooks/에 배치.
+src/components/common/          두 개 이상 feature에서 공유하는 컴포넌트. feature에 귀속시키면 교차 의존이 생기는 경우.
 src/api/<feature>/<feature>.ts   fetch 기반 API 함수 (publicFetch/authedFetch/Server Action, feature별 하위 폴더)
-src/hooks/<feature>/use-*.ts     React Query 훅 — 클라 인터랙션 한정 (검색·낙관적 토글·Kakao SDK)
+src/hooks/use-*.ts               여러 feature에서 공유하는 범용 훅 (예: use-debounced-value, use-auth-status, use-mobile)
 src/stores/<name>-store.tsx      Zustand + Context 스토어
 src/lib                          utils.ts(cn), fetch.ts + fetch.server.ts + fetch.client.ts, types/<feature>/{request,response,type,schema}.ts
 src/stories/{PascalCase}.stories.tsx  모든 스토리가 평탄하게 여기 모임
@@ -73,6 +75,7 @@ src/auth.ts + src/proxy.ts       NextAuth v5 (proxy는 middleware alias)
 - **Import 순서**: React → 3rd-party → `@/*` → 상대경로.
 - **주석/스토리 설명/toast 문구는 한국어**.
 - **컴포넌트 함수 위에는 한 줄 설명 주석을 단다** — 어떤 컴포넌트인지 한국어로 간단히 적는다 (예: `// 신뢰도 점수를 배지 형태로 표시`).
+- **interface/type 프로퍼티 주석은 해당 줄 오른쪽에 인라인으로 작성한다** — `/** */` 블록을 프로퍼티 위에 쓰지 않는다. 예: `onAreaChanged?: (area: SearchArea) => void; // 최초 타일 로드 시에만 호출`
 - **허가되지 않은 새 라이브러리 설치 금지** — 기존 deps로 해결 가능한지 먼저 확인.
 - **`any` 지양**. 명시적으로 허용한 경우 외에는 타입을 정의한다.
 

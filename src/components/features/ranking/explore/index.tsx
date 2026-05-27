@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Circle, CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
-import { CategoryPin } from './category-pin';
+import { CategoryPin } from '@/components/common/category-pin';
 import { type SearchArea, haversine, computeViewportRadius } from '@/lib/geo';
 
 export type { SearchArea };
@@ -13,14 +13,10 @@ interface MapViewProps {
   entries: RegionalRankEntry[];
   activeId?: string | null;
   onPinClick?: (id: string) => void;
-  /** 최초 타일 로드 시에만 검색 영역 전달 → 첫 자동 검색 트리거 */
-  onAreaChanged?: (area: SearchArea) => void;
-  /** 드래그·줌 등 viewport 변경 시마다 현재 영역 전달 → 재검색 버튼 표시 용도 */
-  onViewportChange?: (area: SearchArea) => void;
-  /** 현재 적용된 검색 영역 — 원이 이 영역에 고정됨. null이면 내부 초기값 사용 */
-  appliedArea?: SearchArea | null;
-  /** appliedArea 중심의 행정구역명 전달 (재검색 시에만 발화) */
-  onRegionChange?: (region: string | null) => void;
+  onAreaChanged?: (area: SearchArea) => void; // 최초 타일 로드 시에만 검색 영역 전달 → 첫 자동 검색 트리거
+  onViewportChange?: (area: SearchArea) => void; // 드래그·줌 등 viewport 변경 시마다 현재 영역 전달 → 재검색 버튼 표시 용도
+  appliedArea?: SearchArea | null; // 현재 적용된 검색 영역 — 원이 이 영역에 고정됨. null이면 내부 초기값 사용
+  onRegionChange?: (region: string | null) => void; // appliedArea 중심의 행정구역명 전달 (재검색 시에만 발화)
 }
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
