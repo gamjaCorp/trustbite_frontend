@@ -1,294 +1,166 @@
-# Week 3 — 백엔드 연동 + 9개 화면 데이터 레이어 일괄 적용 (5/25~5/31)
+# Week 3 — 백엔드 없이 지금 할 수 있는 일 (5/25~5/31)
 
 ## 이번 주 목표
 
-W2에서 시각 1차 MVP + 지도 통합 + Vercel Preview 배포가 완성된 상태. 이번 주는 **백엔드 API가 준비된 시점을 전제로, 인프라 그릇 → 인증 → 9개 화면 데이터 레이어**를 일괄 표준화한다.
+백엔드가 아직 준비되지 않아 W3(백엔드 전환) 전체가 블로킹 상태.  
+이번 주는 **백엔드 없이도 지금 할 수 있는 작업**을 앞당겨 진행한다.
 
-W2에서 지도 통합(Kakao SDK + 시트 + 핀 + 영역 재검색)이 mock 위에서 완료됐으므로, 탐색 탭의 검색/필터 동작은 이번 주 Day 6에 real API 위에서 바로 연결한다.
-
-이 주가 끝나면 `src/data/mock-*` 파일이 모두 사라지고, **1차 MVP 9개 화면이 실 백엔드 위에서 동작**한다.
+이 주가 끝나면 지도 UX가 완성되고, 인프라 골격이 잡히고, 폼에 검증이 붙고, 코드가 배포 가능한 수준으로 정리된다.
 
 ---
 
 ## 일별 요약
 
-| Day | 날짜 | 목표 | 주요 산출물 | 완료 |
-|---|---|---|---|---|
-| Mon | 5/25 | 인프라 그릇 다지기 | 타입 이동, `lib/axios.ts`, env 정리 | ☐ |
-| Tue | 5/26 | 로그인 백엔드 통합 + RHF/zod 셋업 | `src/auth.ts` 확장, 온보딩 실 API, `form.tsx` 첫 적용 | ☐ |
-| Wed | 5/27 | `/profile` + `/profile/grade` 데이터 레이어 | `useMyProfile`, `useGradeProgress`, mock 파일 삭제 | ☐ |
-| Thu | 5/28 | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | ☐ |
-| Fri | 5/29 | `/review/new` mutation + 인증 가드 + 에러 페이지 | `useSubmitReview`, middleware 매처, `not-found/error.tsx` | ☐ |
-| Sat | 5/30 | `/my-places` 마이그 + 탐색 탭 검색/필터 동작 | `useMyRanking`, `useSearchRestaurants` (디바운스/URL) | ☐ |
-| Sun | 5/31 | `/user/[id]` + Wishlist mutation + 코드 리뷰 | `useUserProfile`, `useToggleBookmark` (낙관적 업데이트) | ☐ |
+| Day | 목표 | 주요 산출물 | 완료 |
+|---|---|---|---|
+| 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [ ] |
+| 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 미니카드 오버레이 | [ ] |
+| 3 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
+| 4 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
+| 5 | 디자인 품질 점검 — 9개 화면 | cross-page 톤 통일, `pnpm design:check` 그린 | [ ] |
+| 6 | 반응형 점검 | 375 / 768 / 1280 breakpoint 정상 동작 | [ ] |
+| 7 | 코드 정리 + 빌드 + 스토리북 | `any`/`console.log` 제거, `pnpm build` 그린, 스토리북 잔여 | [ ] |
 
 ---
 
-## Day 1 (월 5/25) — 인프라 그릇 다지기 — ≈ 4h
+## Day 1 — 실 Google 로그인 연결 (프론트)
 
-**타입 이동**
+이미 완료된 것: `auth.ts`(Google provider 설정) · `api/auth/[...nextauth]/route.ts` · `/signin` 페이지 · `/onboarding` 페이지 · `.env.local` AUTH_* 키 스캐폴딩(값 미입력).
+백엔드 없이 실 Google OAuth → 세션 발급 → UI 연결까지 가능. 백엔드 의존분(`POST /auth/login`, 온보딩 영속화)은 W4 Day 1에 잔류.
 
-- [ ] `src/types/restaurant.ts` → `src/lib/types/restaurant/type.ts`
-- [ ] `src/types/user.ts` → `src/lib/types/user/type.ts`
-- [ ] `src/types/review.ts` → `src/lib/types/review/type.ts`
-- [ ] 프로젝트 내 `@/types/*` import 전체 수정
+> `/login`·`/signin` 네이밍: 코드는 `/signin` 사용, `layout.tsx`도 `/signin` 참조. 로드맵 전반에서 `/login` 언급은 `/signin`으로 통일.
 
-**axios 인프라**
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| env 세팅 | - `.env.local`에 `AUTH_SECRET` · `AUTH_GOOGLE_ID` · `AUTH_GOOGLE_SECRET` 입력 (Google Cloud OAuth client 등록) | `.env.local` | [ ] |
+| NextAuth 설정 | - `callbacks.jwt` / `callbacks.session` 추가 — Google `sub` → `session.user.id` 노출 | `src/auth.ts` | [ ] |
+|  | - `next-auth.d.ts` 타입 augmentation — `Session['user'].id`, `JWT.id` | `src/types/next-auth.d.ts` (신규) | [ ] |
+|  | - `SessionProvider` 추가 + 서버 세션 주입 | `src/components/common/layout/providers.tsx`, `src/app/layout.tsx` | [ ] |
+| 훅·교체 | - `use-auth-status.ts` 훅 작성 — `useSession` 래핑, `{ isAuthed, user }` 반환 | `src/hooks/use-auth-status.ts` (신규) | [ ] |
+|  | - `useAuthMock` → `useAuthStatus` 교체 (소비처 8곳) | `header.tsx`, `back-header.tsx`, `place-list-row.tsx`, `review-cta-bar.tsx`, `restaurant-summary.tsx`, `my-review-section.tsx`, `logged-out-review-gate.tsx`, `auth-mock-toggle.tsx` | [ ] |
+|  | - `signin/page.tsx` `searchParams` await (Next 16 규약) | `src/app/signin/page.tsx` | [ ] |
+| mock 제거 | - `auth-mock-store.tsx` · `auth-mock-toggle.tsx` 제거 + 스토리 2개 갱신(`Header.stories.tsx`, `BackHeader.stories.tsx`) | `src/stores/`, `src/components/common/auth-mock-toggle.tsx`, `src/stories/` | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-- [ ] `src/lib/axios.ts` 신규
-  - `baseURL`: `process.env.NEXT_PUBLIC_API_BASE_URL`
-  - 요청 인터셉터: NextAuth session → `Authorization: Bearer` 헤더
-  - 응답 인터셉터: 401 처리 + `sonner` 에러 toast
-
-**env 정리**
-
-- [ ] `.env.local` / Vercel Preview / Production env 확인
-  - `NEXT_PUBLIC_API_BASE_URL` (이제 실제 값 입력)
-  - `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
-  - `NEXT_PUBLIC_KAKAO_MAP_KEY` (W2에서 이미 입력됐으면 점검만)
-
-**점검**
-
-- [ ] `pnpm lint && npx tsc --noEmit` 그린
-
-> 산출물: 타입 경로 일관 + axios 인프라 그릇 완비
+> 산출물: 실 Google 로그인 → 세션이 프론트 위에서 동작 (백엔드 미연동)
 
 ---
 
-## Day 2 (화 5/26) — 로그인 백엔드 통합 + RHF/zod 셋업 — ≈ 6h
+## Day 2 — 지도 코드 검토 + UX 마무리
 
-**RHF + zod 셋업 (≈ 1h)**
+탐색/지도 기능 전반(최근 커밋)은 직접 작성한 코드가 아니다.  
+미니카드 오버레이를 얹기 전에 기존 코드를 먼저 검토하고 punch list를 정리한 뒤 오버레이를 추가한다.
 
-- [ ] `pnpm add react-hook-form zod @hookform/resolvers`
-- [ ] `npx shadcn@latest add form` → `src/components/ui/form.tsx` 생성
-- [ ] `src/lib/types/auth/schema.ts` — `onboardingSchema` (닉네임 2~16자, 지역 1개 이상, 한국어 에러 메시지)
-- [ ] `/onboarding`에 첫 적용: `useForm({ resolver: zodResolver(onboardingSchema) })` + shadcn `<Form>`/`<FormField>`/`<FormMessage>`
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 검토 · SDK/핀 | - `useKakaoLoader` 로딩 방식, 뷰포트 반경 계산, area/viewport/region 이벤트 흐름 검토 | `map-view.tsx`, `category-pin.tsx`, `restaurant-pin.tsx`, `search-this-area.tsx` | [ ] |
+| 검토 · 동기화/검색 | - `activeId` pin↔row 동기화, applied/pending area 상태 전환, 검색 입력 흐름 검토 | `region-rank-list.tsx`, `hooks/explore/use-nearby-places.ts`, `common/place-list-row.tsx` | [ ] |
+| 검토 · 데이터 어댑터 | - Kakao Local API 호출 구조, KakaoPlace → RegionalRankEntry 변환 로직, 타입 정의 검토 | `api/kakao-local.ts`, `lib/synthesize-restaurant.ts`, `types/restaurant.ts` | [ ] |
+| 에이전트 검토 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [ ] |
+| 핀 미니카드 | - 핀 클릭 → 지도 위 미니카드 오버레이 (가게명 + 평점 + 신뢰도%) | `src/components/features/explore/map-mini-card.tsx` (신규) | [ ] |
+|  | - `map-view.tsx`의 `onPinClick` 콜백에 미니카드 표시 연결, 지도 바깥 클릭 시 닫힘 | `src/components/features/explore/map-view.tsx` | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-**`src/auth.ts` 확장**
-
-- [ ] `callbacks.signIn`: 백엔드 `POST /auth/login` 호출, 신규 사용자 → `needsOnboarding: true`
-- [ ] `callbacks.jwt`: `userId`, `accessToken`, `needsOnboarding` 플래그 토큰에 저장
-- [ ] `callbacks.session`: 토큰 → session에 `userId`, `accessToken`, `needsOnboarding` 노출
-
-**로그인 진입점 통합**
-
-- [ ] `src/app/login/page.tsx` — "Google로 계속하기" → `signIn('google', { callbackUrl: '/onboarding' })`
-- [ ] `/signin/page.tsx` 로직 중복 정리
-
-**`/onboarding` 백엔드 연결**
-
-- [ ] `src/lib/types/auth/{request,response,type}.ts` — `OnboardingRequest`, `LoginResponse`
-- [ ] `src/api/auth/auth.ts` — `loginWithProvider()`, `submitOnboarding()`
-- [ ] `src/hooks/auth/use-onboarding.ts` — React Query mutation
-- [ ] `handleSubmit(onValid)` → `POST /users/onboarding` → `/` 이동
-- [ ] 이미 온보딩 완료 사용자 → `session.needsOnboarding` 체크 → `/` 리다이렉트
-- [ ] 에러: `sonner` toast
-
-**점검**
-
-- [ ] 비로그인 → `/login` → Google → 신규 사용자 → `/onboarding` → 닉네임/지역 → `/`
-- [ ] 기존 사용자 → `/login` → Google → 곧장 `/`
-- [ ] `pnpm lint && npx tsc --noEmit` 그린
-
-> 산출물: 인증 흐름이 실 백엔드 위에서 동작 + RHF/zod 첫 적용
+> 산출물: 기존 지도 코드 검토·정리 완료 + 핀 클릭 미니카드 오버레이 동작
 
 ---
 
-## Day 3 (수 5/27) — `/profile` + `/profile/grade` 데이터 레이어 — ≈ 5h
+## Day 3 — 인프라 스캐폴딩
 
-두 화면 모두 `src/api/user/user.ts`/`src/hooks/user/`에 들어가는 짝이라 같은 날 처리한다.
+백엔드 연결 전 필요한 타입 경로 재배치 및 fetch 래퍼 골격 확보. API 함수 없이 골격만.
 
-**타입**
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 타입 이동 | - `src/types/restaurant.ts` → `src/lib/types/restaurant/type.ts` 이동 | `src/types/` → `src/lib/types/` | [ ] |
+|  | - `src/types/user.ts` → `src/lib/types/user/type.ts` 이동 | `src/types/` → `src/lib/types/` | [ ] |
+|  | - `src/types/follow.ts` → `src/lib/types/follow/type.ts` 이동 | `src/types/` → `src/lib/types/` | [ ] |
+|  | - 프로젝트 내 `@/types/*` import 전체 수정 | — | [ ] |
+| fetch 골격 | - `ApiError` 클래스, `baseURL`(`NEXT_PUBLIC_API_BASE_URL`), 공통 응답 파서 작성 | `src/lib/fetch.ts` (신규) | [ ] |
+|  | - `publicFetch<T>` (토큰 없음, `next: { tags, revalidate }` 캐시 가능), `authedFetch<T>` (`auth()` Bearer, `no-store`) 작성 | `src/lib/fetch.server.ts` (신규) | [ ] |
+|  | - `clientFetch<T>` (세션 토큰, 401 시 sonner + signout) 작성 | `src/lib/fetch.client.ts` (신규) | [ ] |
+| 에러 핸들러 | - 글로벌 React Query 에러 핸들러 → `sonner` toast 연결 골격 | `src/components/common/layout/providers.tsx` | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-- [ ] `src/lib/types/user/response.ts` — `MyProfileResponse`, `GradeProgressResponse` 추가
-- [ ] `src/lib/types/user/type.ts`의 `GradeLevel`/`GradeRequirement` 정리 확인
-
-**API**
-
-- [ ] `src/api/user/user.ts` — `getMyProfile()`, `getGradeProgress()` (axios)
-
-**훅**
-
-- [ ] `src/hooks/user/use-my-profile.ts` — `useMyProfile()` React Query
-- [ ] `src/hooks/user/use-grade-progress.ts` — `useGradeProgress()`
-
-**페이지**
-
-- [ ] `src/app/profile/page.tsx` — `'use client'` + `useMyProfile()` + `useGradeProgress()`
-- [ ] loading / error / 정상 분기 (Skeleton, Empty 활용)
-- [ ] 로딩: 스켈레톤 (현재 등급 카드 + 타임라인)
-- [ ] 에러: 에러 메시지 + 다시 시도 버튼
-
-**정리**
-
-- [ ] `src/data/mock-my-profile.ts` 흡수 후 삭제
-- [ ] `src/data/mock-grade-progress.ts` (있다면) 흡수 후 삭제
-- [ ] 브라우저 3상태 확인: 로딩 → 정상 → 에러 강제
-
-> 산출물: `/profile`이 React Query로 동작. 폴더 구조가 다른 화면의 템플릿
+> 산출물: 타입 경로 일관화 + fetch 래퍼 골격 완비 (API 함수는 W4에서 작성)
 
 ---
 
-## Day 4 (목 5/28) — `/restaurant/[id]` 마이그 — ≈ 5h
+## Day 4 — 폼 검증
 
-가장 복잡한 화면. 표준 7단계 적용.
+온보딩 폼: 현재 plain useState + 수동 검증 → RHF + zod으로 전환.
+리뷰 폼: 현재 **Zustand Context 스토어(`review-write-store`)로 상태 관리** — 스토어 구조 유지, zod schema 검증 메시지만 추가. RHF 전면 전환 아님.
+제출은 기존 mock 유지.
 
-**타입**
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 패키지 설치 | - `react-hook-form`, `zod`, `@hookform/resolvers` 패키지 설치 | `package.json` | [ ] |
+|  | - shadcn `form.tsx` 추가 (`pnpm dlx shadcn@latest add form`) | `src/components/ui/form.tsx` (신규) | [ ] |
+| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~16자, 지역 1개 이상, 한국어 에러 메시지) | `src/lib/types/auth/schema.ts` (신규) | [ ] |
+|  | - `/onboarding` 폼에 `useForm({ resolver: zodResolver })` + shadcn Form 컴포넌트 적용 | `src/app/onboarding/page.tsx` | [ ] |
+| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~5, 한국어 에러 메시지) | `src/lib/types/review/schema.ts` (신규) | [ ] |
+|  | - `useReviewIsValid` 검증 로직을 zod schema `safeParse`로 교체 (Zustand 스토어 구조 유지) | `src/stores/review-write-store.tsx` | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-- [ ] `src/lib/types/restaurant/response.ts`에 `RestaurantDetailResponse` 추가
-
-**API**
-
-- [ ] `src/api/restaurant/restaurant.ts`에 `getRestaurantDetail(id: string)` 추가
-
-**훅**
-
-- [ ] `src/hooks/restaurant/use-restaurant-detail.ts`
-
-**페이지**
-
-- [ ] `src/app/restaurant/[id]/page.tsx` — `'use client'` + `useRestaurantDetail`
-- [ ] 로딩: `PhotoGallery` + `ScorePanel` 스켈레톤
-- [ ] 404: `notFound()` 호출
-
-**비로그인 분기 정합**
-
-- [ ] middleware/`auth()` 결과로 분기 일관화
-- [ ] 미리보기 vs 전체 분기를 컴포넌트 prop으로 명시 (`isPreview: boolean`)
-
-**정리**
-
-- [ ] `src/data/mock-restaurant-detail.ts` 흡수 후 삭제
-
-> 산출물: `/restaurant/[id]`가 React Query로 동작
+> 산출물: 폼 검증 적용 완료 (리뷰 폼 Zustand 스토어 유지, 제출 로직은 기존 mock 유지)
 
 ---
 
-## Day 5 (금 5/29) — `/review/new` mutation + 인증 가드 + 에러 페이지 — ≈ 6h
+## Day 5 — 디자인 품질 점검 — 9개 화면
 
-**타입**
+순회 대상: `/` · `/restaurant/[id]` · `/review/new` · `/review/new/result` · `/profile` · `/my-places` · `/user/[id]` · `/signin`+`/onboarding`
 
-- [ ] `src/lib/types/review/request.ts` — `CreateReviewRequest`
-- [ ] `src/lib/types/review/response.ts` — `ReviewSubmitResult`
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 토큰 점검 | - 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 5건 이하로 정리 | — | [ ] |
+|  | - 컬러 토큰 — arbitrary hex 0건 (Google 로고/Pin SVG 예외만) | — | [ ] |
+|  | - 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관 적용 | — | [ ] |
+|  | - 스페이싱 — `[px]` 임의값 사용처 정당화 확인 | — | [ ] |
+|  | - 로딩/빈/에러 톤 일관 (Skeleton/Empty/Error) | — | [ ] |
+| 접근성 | - 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, `alt` 텍스트 | — | [ ] |
+|  | - 컴포넌트 함수 위 한 줄 한국어 설명 주석 점검 | — | [ ] |
+| 검증 | - `pnpm design:check` 통과 + critical 이슈 즉시 수정 | — | [ ] |
 
-**API**
-
-- [ ] `src/api/review/review.ts` 신규
-  - `submitReview(data: CreateReviewRequest): Promise<ReviewSubmitResult>` (multipart 사진 포함)
-  - `getReviewResult(reviewId: string): Promise<ReviewSubmitResult>`
-
-**훅**
-
-- [ ] `src/hooks/review/use-submit-review.ts` — mutation, 성공 시 `sonner` toast
-- [ ] `src/hooks/review/use-review-result.ts` — `useReviewResult(reviewId)`
-
-**폼 연결**
-
-- [ ] `review-write-form.tsx` submit → `mutate(formData)` 호출 (W1의 직접 Dialog 오픈 교체)
-- [ ] 제출 중 버튼 disabled + Spinner
-
-**결과 Dialog 전환**
-
-- [ ] `review-result-dialog.tsx` → `useReviewResult` 훅 사용으로 전환
-- [ ] 로딩: 스켈레톤
-
-**RHF + zod (review 폼)**
-
-- [ ] `src/lib/types/review/schema.ts` — `reviewWriteSchema` (가게 선택 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~5장, 한국어 에러 메시지)
-- [ ] `RatingFields`, `ReviewTextField`, `PhotoUploadGrid`를 `Controller`로 RHF에 등록
-
-**Middleware 통합 가드**
-
-- [ ] `src/proxy.ts` 보호 경로 매처 추가
-  - `/profile`, `/profile/*`, `/my-places`, `/review/*`
-- [ ] 비로그인 진입 → `/login?next=<원래 경로>` 리다이렉트
-- [ ] 로그인 후 `next` 쿼리로 원래 경로 복귀
-
-**에러 페이지**
-
-- [ ] `src/app/not-found.tsx` — 404 (TrustBite 톤)
-- [ ] `src/app/error.tsx` — 전역 에러 + '다시 시도' 버튼
-- [ ] `src/app/restaurant/[id]/error.tsx` — 맛집 상세 전용 에러
-- [ ] React Query 글로벌 에러 핸들러 → `sonner` toast 표준화
-
-**정리**
-
-- [ ] `src/data/mock-review-result.ts` (있다면) 흡수 후 삭제
-
-**점검**
-
-- [ ] 비로그인 `/profile` 진입 → `/login?next=/profile` → 로그인 → `/profile` 자동 복귀
-- [ ] 잘못된 ID `/restaurant/abc123` → 404 페이지
-- [ ] `pnpm lint && npx tsc --noEmit` 그린
-
-> 산출물: 폼 → mutation → 결과 흐름 정식화 + 인증 가드 + 에러 페이지
+> 산출물: 9개 화면이 일관된 디자인 토큰 위에서 동작
 
 ---
 
-## Day 6 (토 5/30) — `/my-places` 마이그 + 탐색 탭 검색/필터 동작 — ≈ 6h
+## Day 6 — 반응형 점검
 
-**`/my-places` 마이그**
+**뷰포트별 점검 대상**
 
-- [ ] `src/lib/types/restaurant/response.ts`에 `MyRestaurantStats`, `MyRestaurantRankResponse` 추가
-- [ ] `src/api/restaurant/my-ranking.ts` 신규 — `getMyRanking()`, `getMyStats()`
-- [ ] `src/hooks/restaurant/use-my-ranking.ts`, `use-my-stats.ts`
-- [ ] `src/app/my-places/page.tsx` — `'use client'` + 훅
-- [ ] 로딩: 스탯 카드 + 리스트 스켈레톤 (W2 Day 2 `list-skeleton` 재사용)
-- [ ] 빈 목록: '아직 리뷰한 맛집이 없어요'
-- [ ] `src/data/mock-restaurant.ts`의 `mockStats5`, `mockRankList` → api로 흡수 후 삭제 확인
+| 뷰포트 | 확인 화면 |
+|---|---|
+| 모바일 375 × 667 | 모든 화면 |
+| 태블릿 768 × 1024 | 홈, 상세, 리뷰 작성 |
+| 데스크톱 1280 × 800 | 모든 화면 |
 
-**탐색 탭 검색/필터 동작** (W2 Day 4·5에서 지도 UI 완성, 이제 real API 연결)
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 레이아웃 | - `/review/new` 데스크톱 2컬럼 — 데스크톱만 사이드바, 모바일 단일 컬럼 | — | [ ] |
+|  | - 헤더 모바일 — 중요하지 않은 요소 축소/숨김 | — | [ ] |
+|  | - 탐색 탭 필터 칩 모바일 가로 스크롤 처리 | — | [ ] |
+| 확인 | - 지도 미니카드 모바일 위치·크기 확인 | — | [ ] |
+|  | - 등급 타임라인 모바일 가독성 확인 | — | [ ] |
+|  | - `text-xs`(12px) 미만 텍스트 없는지 재확인 | — | [ ] |
 
-- [ ] `src/lib/types/restaurant/request.ts` — `SearchParams` (q, region, category[], context[], sort, page)
-- [ ] `src/lib/types/restaurant/response.ts` — `RestaurantListResponse`
-- [ ] `src/api/restaurant/restaurant.ts`에 `searchRestaurants(params: SearchParams)` 추가
-- [ ] `src/hooks/restaurant/use-search-restaurants.ts`
-  - 검색어 300ms 디바운스
-  - URL 쿼리 동기화 (`?q=...&category=...&sort=...`)
-  - 쿼리 변경 시 자동 재호출
-- [ ] `search-bar` → 디바운스 → URL → 훅
-- [ ] `region-filter`, `sort-filter`, `category-chips`, `context-chips` → URL 즉시 반영
-- [ ] 결과 0개: `<Empty>`, 로딩: W2 Day 2 산출물 (`list-skeleton`) 또는 `<RankCardSkeleton>`
-- [ ] "필터 초기화" 버튼
-
-> 산출물: `/my-places` + 탐색 탭 검색/필터가 실 백엔드 위에서 동작
+> 산출물: 모든 화면이 375~1280에서 의도대로 표시
 
 ---
 
-## Day 7 (일 5/31) — `/user/[id]` + Wishlist mutation + 코드 리뷰 — ≈ 4~5h
+## Day 7 — 코드 정리 + 빌드 + 스토리북
 
-**`/user/[id]` 마이그**
+배포 전 코드 품질 확보 — `any` 제거, `console.log` 제거, 빌드 그린, 스토리북 보강.
 
-- [ ] `src/lib/types/user/response.ts`에 `UserProfileResponse` 추가
-- [ ] `src/api/user/user.ts`에 `getUserProfile(id: string)` 추가
-- [ ] `src/hooks/user/use-user-profile.ts`
-- [ ] `src/app/user/[id]/page.tsx` — `'use client'` 전환
-- [ ] `src/data/mock-other-user.ts` 흡수 후 삭제
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 코드 정리 | - `any` 타입 전수 검색 → 명시적 타입으로 교체 | — | [ ] |
+|  | - `console.log` 전량 제거 | — | [ ] |
+| Storybook | - W3 Day 1~6 산출물 중 Storybook story 미작성 컴포넌트 보강 | `src/stories/` | [ ] |
+| 코드 리뷰 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [ ] |
+| 검증 | - `pnpm build` 번들 사이즈 확인 (지도 청크 분리 여부) | — | [ ] |
+|  | - `pnpm lint && npx tsc --noEmit && pnpm build` 그린 | — | [ ] |
 
-**Wishlist mutation 낙관적 업데이트**
-
-- [ ] `src/lib/types/wishlist/type.ts` — `WishlistItem`
-- [ ] `src/api/wishlist/wishlist.ts` — `getWishlist()`, `addBookmark(id)`, `removeBookmark(id)`
-- [ ] `src/hooks/wishlist/use-wishlist.ts`
-- [ ] `src/hooks/wishlist/use-toggle-bookmark.ts` — `useMutation` + `onMutate` 낙관적 업데이트 + 실패 시 롤백
-- [ ] `wishlist-section.tsx`의 mock 토글 → `useToggleBookmark` 호출
-- [ ] `/restaurant/[id]` 헤더 북마크 → `useToggleBookmark` 호출
-
-**최종 mock-* 정리**
-
-- [ ] `src/data/mock-*` 파일 0개 확인 (남은 파일 전량 흡수)
-- [ ] `src/stores/auth-mock-store.tsx`, `wishlist-mock-store.tsx` 정리 여부 검토
-- [ ] `pnpm lint && npx tsc --noEmit && pnpm build` 그린
-
-**코드 리뷰 punch list 수집**
-
-- [ ] `frontend-code-reviewer` 에이전트 1바퀴 — 컨벤션 위반 punch list 수집 (fix는 W4 Day 1)
-
-> 산출물: 1차 MVP 9개 화면이 실 백엔드 API 위에서 동작. W4 진입 준비.
-
----
-
-> **참고**: 지도 시트 통합(Kakao SDK + vaul + 핀 + 영역 재검색)은 W2 Day 4·5에서 완료됨. 이번 주 별도 지도 작업 없음.
+> 산출물: 커밋이 깨끗한 상태로 W4 백엔드 연동 진입 준비 완료
 
 ---
 
@@ -296,13 +168,10 @@ W2에서 지도 통합(Kakao SDK + 시트 + 핀 + 영역 재검색)이 mock 위�
 
 | 필요한 것 | 사용 |
 |---|---|
-| 데이터 페칭 | `@tanstack/react-query` (Providers 설정됨) |
+| 지도 미니카드 | `src/components/features/explore/map-mini-card.tsx` (Day 2 산출물) |
 | toast | `sonner` (설치됨) |
-| 미들웨어 인증 | NextAuth `auth()` (`src/auth.ts`) |
-| 로딩 스켈레톤 | W2 Day 2 산출물 (`common/list-skeleton.tsx`) + `ui/skeleton.tsx` |
-| 빈 상태 | W2 Day 2 산출물 (`common/empty-list.tsx`) + `ui/empty.tsx` |
-| 폼 | `src/components/ui/form.tsx` (shadcn, Day 2에서 설치) |
-| 카드 셸 | W2 Day 2 산출물 `src/components/core/place-card.tsx` |
-| URL 쿼리 동기화 | `next/navigation` `useSearchParams`, `useRouter` |
-| 디바운스 | `useDeferredValue` (React 19) 또는 직접 구현 |
-| 낙관적 업데이트 | `@tanstack/react-query` `useMutation` `onMutate` |
+| 폼 | `react-hook-form` + `zod` (Day 4에서 설치) + `src/components/ui/form.tsx` |
+| 카드 셸 | `src/components/common/place-list-row.tsx` (이미 my/wishlist/regional variant 통합) |
+| 로딩 스켈레톤 | `src/components/ui/skeleton.tsx` + feature별 skeleton (예: `ranking/region-rank-skeleton.tsx`) |
+| 빈 상태 | `src/components/ui/empty.tsx` + feature별 empty |
+| 타입 경로 | `src/lib/types/<feature>/type.ts` (Day 3 산출물) |
