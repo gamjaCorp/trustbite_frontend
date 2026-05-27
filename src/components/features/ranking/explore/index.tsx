@@ -20,10 +20,12 @@ interface MapViewProps {
 }
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
+// --palette-brand (#ff7a00) 참조 — Kakao SDK fillColor는 string 전용이라 CSS 변수 직접 사용 불가
 const CIRCLE_COLOR = '#ff7a00';
 // onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
 const VIEWPORT_MOVE_RATIO = 0.3;
 
+// 카카오 지도 뷰 — appKey 유무 게이트 후 KakaoMap에 위임
 export function MapView(props: MapViewProps) {
   const appKey = process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY;
 

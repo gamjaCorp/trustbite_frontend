@@ -1,5 +1,6 @@
-// TODO: 1차 MVP 제외 — Kakao Local 임시 훅. 백엔드 도착 시 교체
 'use client';
+
+// TODO: 1차 MVP 제외 — Kakao Local 임시 훅. 백엔드 도착 시 교체
 
 import { useQuery } from '@tanstack/react-query';
 import { searchPlacesByRadius, searchPlacesByKeyword } from '@/api/kakao-local';
@@ -27,6 +28,6 @@ export function useNearbyPlaces({ area, keyword }: NearbyPlacesInput) {
       typeof window !== 'undefined' &&
       !!window.kakao?.maps?.services,
     staleTime: 5 * 60 * 1000,
-    placeholderData: [],
+    placeholderData: [] as RegionalRankEntry[],
   });
 }

@@ -9,6 +9,7 @@ interface Props {
   className?: string;
 }
 
+// 지도 드래그·줌 후 재검색 유도 플로팅 버튼 — visible 상태에 따라 fade+slide 전환
 export function SearchThisArea({ visible, onClick, className }: Props) {
   return (
     <button

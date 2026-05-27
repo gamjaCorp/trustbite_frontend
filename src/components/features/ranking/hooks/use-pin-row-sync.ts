@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { useRankActiveId, useRankActions } from '@/stores/region-rank-store';
 
@@ -23,7 +23,7 @@ export function usePinRowSync({ entries }: UsePinRowSyncOptions) {
   );
 
   // 핀 클릭 → 해당 카드로 스크롤 (sticky 블록 아래 12px에 행 상단을 맞춤)
-  const handlePinClick = (id: string) => {
+  const handlePinClick = useCallback((id: string) => {
     action.setActiveId(id);
     requestAnimationFrame(() => {
       const row = document.querySelector(`[data-restaurant-id="${id}"]`);
@@ -32,7 +32,7 @@ export function usePinRowSync({ entries }: UsePinRowSyncOptions) {
       const rowTop = row.getBoundingClientRect().top;
       window.scrollBy({ top: rowTop - stickyBottom - 12, behavior: 'smooth' });
     });
-  };
+  }, [action]);
 
   return { stickyRef, effectiveActiveId, handlePinClick };
 }

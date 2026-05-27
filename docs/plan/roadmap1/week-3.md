@@ -15,10 +15,10 @@
 |---|---|---|---|
 | 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [x] |
 | 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 미니카드 오버레이 | [ ] |
-| 3 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
-| 4 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
-| 5 | 디자인 품질 점검 — 9개 화면 | cross-page 톤 통일, `pnpm design:check` 그린 | [ ] |
-| 6 | 반응형 점검 | 375 / 768 / 1280 breakpoint 정상 동작 | [ ] |
+| 3 | 로그인 로직 파악 + 세션 시간 명시 | 분기 메커니즘·화면별 분기·세션 정책 정리 + session.maxAge 명시 | [ ] |
+| 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
+| 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
+| 6 | 디자인 품질 점검 + 반응형 점검 | cross-page 톤 통일, breakpoint 375/768/1280 정상 | [ ] |
 | 7 | 코드 정리 + 빌드 + 스토리북 | `any`/`console.log` 제거, `pnpm build` 그린, 스토리북 잔여 | [ ] |
 
 ---
@@ -56,11 +56,11 @@
 | 검토 · SDK/핀 | - `useKakaoLoader` 로딩 방식, 뷰포트 반경 계산, area/viewport/region 이벤트 흐름 검토 | `map-view.tsx`, `category-pin.tsx`, `restaurant-pin.tsx`, `search-this-area.tsx` | [ ] |
 | 검토 · 동기화/검색 | - `activeId` pin↔row 동기화, applied/pending area 상태 전환, 검색 입력 흐름 검토 | `region-rank-list.tsx`, `hooks/explore/use-nearby-places.ts`, `common/place-list-row.tsx` | [ ] |
 | 검토 · 데이터 어댑터 | - Kakao Local API 호출 구조, KakaoPlace → RegionalRankEntry 변환 로직, 타입 정의 검토 | `api/kakao-local.ts`, `lib/synthesize-restaurant.ts`, `types/restaurant.ts` | [ ] |
-| 리팩토링 · 상태 스토어 | - `RegionRankList`의 8개 useState → Zustand+Context 스토어 이관 (뷰는 selector hook 소비, `MapView`·`PlaceListRow`는 prop 유지) | `src/stores/region-rank-store.tsx`(신규), `region-rank-list.tsx` | [ ] |
-| 리팩토링 · 지오 유틸 추출 | - `SearchArea` 타입 + `haversine`·`computeViewportRadius`를 `map-view.tsx`에서 lib/types로 추출 | `src/lib/geo.ts`(신규), `src/lib/types/restaurant/type.ts`, `map-view.tsx` | [ ] |
-| 리팩토링 · 검색 분기 훅 추출 | - geocoder→keyword→filter 분기 effect를 `use-place-search` 훅으로 추출 (store 액션 소비) | `src/hooks/explore/use-place-search.ts`(신규), `region-rank-list.tsx` | [ ] |
-| 리팩토링 · 핀↔행 동기화 정리 | - activeId 기반 핀↔행 스크롤·하이라이트 로직을 훅/유틸로 정리 | `region-rank-list.tsx` | [ ] |
-| 리팩토링 · View 컴포넌트 분해 | - `RegionRankListView`를 필터바·지도블록·결과리스트 하위 컴포넌트로 분해 (각자 store hook 소비) | `src/components/features/ranking/`(신규 분할) | [ ] |
+| 리팩토링 · 상태 스토어 | - `RegionRankList`의 8개 useState → Zustand+Context 스토어 이관 (뷰는 selector hook 소비, `MapView`·`PlaceListRow`는 prop 유지) | `src/stores/region-rank-store.tsx`(신규), `region-rank-list.tsx` | [x] |
+| 리팩토링 · 지오 유틸 추출 | - `SearchArea` 타입 + `haversine`·`computeViewportRadius`를 `map-view.tsx`에서 lib/types로 추출 | `src/lib/geo.ts`(신규), `src/lib/types/restaurant/type.ts`, `map-view.tsx` | [x] |
+| 리팩토링 · 검색 분기 훅 추출 | - geocoder→keyword→filter 분기 effect를 `use-place-search` 훅으로 추출 (store 액션 소비) | `src/hooks/explore/use-place-search.ts`(신규), `region-rank-list.tsx` | [x] |
+| 리팩토링 · 핀↔행 동기화 정리 | - activeId 기반 핀↔행 스크롤·하이라이트 로직을 훅/유틸로 정리 | `region-rank-list.tsx` | [x] |
+| 리팩토링 · View 컴포넌트 분해 | - `RegionRankListView`를 필터바·지도블록·결과리스트 하위 컴포넌트로 분해 (각자 store hook 소비) | `src/components/features/ranking/`(신규 분할) | [x] |
 | 에이전트 검토 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [ ] |
 | 핀 미니카드 | - 핀 클릭 → 지도 위 미니카드 오버레이 (가게명 + 평점 + 신뢰도%) | `src/components/features/explore/map-mini-card.tsx` (신규) | [ ] |
 |  | - `map-view.tsx`의 `onPinClick` 콜백에 미니카드 표시 연결, 지도 바깥 클릭 시 닫힘 | `src/components/features/explore/map-view.tsx` | [ ] |
@@ -70,7 +70,27 @@
 
 ---
 
-## Day 3 — 인프라 스캐폴딩
+## Day 3 — 로그인 로직 파악 + 세션 시간 명시
+
+Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이 문서화되지 않았다.
+인증은 가장 까다로운 영역이므로, 코드를 한 바퀴 훑어 로그인/비로그인 분기 메커니즘·화면별 분기 지점·세션 유지시간을 정리하고, 미설정된 세션 만료를 명시값으로 고정한다.
+
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 세션 설정 | - `auth.ts`에 `session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 30 }` 추가 — 미설정(NextAuth 30일 기본값)을 명시 | `src/auth.ts` | [ ] |
+| 파악 · 아키텍처 | - provider(Google 단독)·JWT 전략·`jwt`/`session` 콜백 id 매핑·`SessionProvider` 서버→클라 주입 정리 | `src/auth.ts`, `src/types/next-auth.d.ts` | [ ] |
+| 파악 · 분기 | - `useAuthStatus`(`useSession` 래핑 → `{isAuthed, isLoading, user}`) 정리 | `src/hooks/use-auth-status.ts` | [ ] |
+|  | - `LoginCtaDialog`(→`/signin?callbackUrl=`) 중앙 리다이렉트 흐름 정리 | `features/auth/login-cta-dialog.tsx` | [ ] |
+| 파악 · 화면별 표 | - 소비처 8곳 × 로그인/비로그인 차이 표 작성 (이 섹션 인라인) | — | [ ] |
+| 파악 · 플로우 | - signin(`redirectTo: callbackUrl ?? '/'`)·signOut(`/signin`)·온보딩 플로우 정리 | `signin/page.tsx`, `logout-row.tsx`, `onboarding/page.tsx` | [ ] |
+| 갭 정리 | - 서버 보호 부재(`proxy.ts` matcher 없음)·온보딩 미연결 → W4 후속으로 명시 | `src/proxy.ts` | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+
+> 산출물: `auth.ts` session.maxAge 명시 + 아래 파악 정리(아키텍처·분기·화면별 표·플로우·갭) 완성
+
+---
+
+## Day 4 — 인프라 스캐폴딩
 
 백엔드 연결 전 필요한 타입 경로 재배치 및 fetch 래퍼 골격 확보. API 함수 없이 골격만.
 
@@ -90,7 +110,7 @@
 
 ---
 
-## Day 4 — 폼 검증
+## Day 5 — 폼 검증
 
 온보딩 폼: 현재 plain useState + 수동 검증 → RHF + zod으로 전환.
 리뷰 폼: 현재 **Zustand Context 스토어(`review-write-store`)로 상태 관리** — 스토어 구조 유지, zod schema 검증 메시지만 추가. RHF 전면 전환 아님.
@@ -110,26 +130,9 @@
 
 ---
 
-## Day 5 — 디자인 품질 점검 — 9개 화면
+## Day 6 — 디자인 품질 점검 + 반응형 점검
 
 순회 대상: `/` · `/restaurant/[id]` · `/review/new` · `/review/new/result` · `/profile` · `/my-places` · `/user/[id]` · `/signin`+`/onboarding`
-
-| 그룹 | 할 일 | 관련 파일 | 상태 |
-|---|---|---|---|
-| 토큰 점검 | - 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 5건 이하로 정리 | — | [ ] |
-|  | - 컬러 토큰 — arbitrary hex 0건 (Google 로고/Pin SVG 예외만) | — | [ ] |
-|  | - 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관 적용 | — | [ ] |
-|  | - 스페이싱 — `[px]` 임의값 사용처 정당화 확인 | — | [ ] |
-|  | - 로딩/빈/에러 톤 일관 (Skeleton/Empty/Error) | — | [ ] |
-| 접근성 | - 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, `alt` 텍스트 | — | [ ] |
-|  | - 컴포넌트 함수 위 한 줄 한국어 설명 주석 점검 | — | [ ] |
-| 검증 | - `pnpm design:check` 통과 + critical 이슈 즉시 수정 | — | [ ] |
-
-> 산출물: 9개 화면이 일관된 디자인 토큰 위에서 동작
-
----
-
-## Day 6 — 반응형 점검
 
 **뷰포트별 점검 대상**
 
@@ -141,14 +144,22 @@
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
+| 토큰 점검 | - 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 5건 이하로 정리 | — | [ ] |
+|  | - 컬러 토큰 — arbitrary hex 0건 (Google 로고/Pin SVG 예외만) | — | [ ] |
+|  | - 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관 적용 | — | [ ] |
+|  | - 스페이싱 — `[px]` 임의값 사용처 정당화 확인 | — | [ ] |
+|  | - 로딩/빈/에러 톤 일관 (Skeleton/Empty/Error) | — | [ ] |
+| 접근성 | - 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, `alt` 텍스트 | — | [ ] |
+|  | - 컴포넌트 함수 위 한 줄 한국어 설명 주석 점검 | — | [ ] |
 | 레이아웃 | - `/review/new` 데스크톱 2컬럼 — 데스크톱만 사이드바, 모바일 단일 컬럼 | — | [ ] |
 |  | - 헤더 모바일 — 중요하지 않은 요소 축소/숨김 | — | [ ] |
 |  | - 탐색 탭 필터 칩 모바일 가로 스크롤 처리 | — | [ ] |
 | 확인 | - 지도 미니카드 모바일 위치·크기 확인 | — | [ ] |
 |  | - 등급 타임라인 모바일 가독성 확인 | — | [ ] |
 |  | - `text-xs`(12px) 미만 텍스트 없는지 재확인 | — | [ ] |
+| 검증 | - `pnpm design:check` 통과 + critical 이슈 즉시 수정 | — | [ ] |
 
-> 산출물: 모든 화면이 375~1280에서 의도대로 표시
+> 산출물: 9개 화면이 일관된 디자인 토큰 위에서 동작하며 375~1280에서 의도대로 표시
 
 ---
 
@@ -175,8 +186,8 @@
 |---|---|
 | 지도 미니카드 | `src/components/features/explore/map-mini-card.tsx` (Day 2 산출물) |
 | toast | `sonner` (설치됨) |
-| 폼 | `react-hook-form` + `zod` (Day 4에서 설치) + `src/components/ui/form.tsx` |
+| 폼 | `react-hook-form` + `zod` (Day 5에서 설치) + `src/components/ui/form.tsx` |
 | 카드 셸 | `src/components/common/place-list-row.tsx` (이미 my/wishlist/regional variant 통합) |
 | 로딩 스켈레톤 | `src/components/ui/skeleton.tsx` + feature별 skeleton (예: `ranking/region-rank-skeleton.tsx`) |
 | 빈 상태 | `src/components/ui/empty.tsx` + feature별 empty |
-| 타입 경로 | `src/lib/types/<feature>/type.ts` (Day 3 산출물) |
+| 타입 경로 | `src/lib/types/<feature>/type.ts` (Day 4 산출물) |
