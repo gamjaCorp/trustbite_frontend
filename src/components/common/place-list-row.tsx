@@ -3,7 +3,6 @@
 // 통합 맛집 리스트 행 — variant(regional/my/wishlist)에 따라 좌측 머리·중앙 본문·우측 평점을 분기 표시
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Star, Bookmark, PencilLine, MessageSquare, Calendar, Repeat, Users, SquarePen, Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -148,11 +147,10 @@ export function PlaceListRow({
             href={`/restaurant/${id}`}
             className="relative block w-full h-full overflow-hidden rounded-xl"
           >
-            <Image
+            <img
               src={imageUrl}
               alt={name}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </Link>
 
