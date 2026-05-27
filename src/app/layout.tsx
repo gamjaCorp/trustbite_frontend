@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
+import { auth } from '@/auth';
 import { Providers } from '@/components/common/layout/providers';
 import { Header } from '@/components/common/layout/header';
-import { AuthMockToggle } from '@/components/common/auth-mock-toggle';
 
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
@@ -17,18 +17,18 @@ export const metadata: Metadata = {
   description: '믿을 수 있는 별점, 같이 모으는 맛집',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="ko" suppressHydrationWarning>
       <body className={`${jetbrainsMono.variable} antialiased`}>
-        <Providers>
+        <Providers session={session}>
           <Header />
           <main className="min-h-screen bg-background">{children}</main>
-          <AuthMockToggle />
         </Providers>
       </body>
     </html>

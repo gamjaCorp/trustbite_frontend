@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import type { DetailedReview } from '@/types/restaurant';
-import { useAuthMock } from '@/stores/auth-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 
 import { ReviewCard } from './review-card';
 import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
@@ -17,7 +17,7 @@ interface Props {
 
 // 인증 상태에 따라 리뷰 노출 개수와 '더 보기' CTA 동작을 분기
 export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }: Props) {
-  const { isAuthed } = useAuthMock();
+  const { isAuthed } = useAuthStatus();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const visibleReviews = isAuthed ? reviews.slice(0, 5) : reviews.slice(0, 2);

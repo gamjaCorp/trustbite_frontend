@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 
 import { MyReview } from '@/types/restaurant';
-import { useAuthMock } from '@/stores/auth-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 
 import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
 
@@ -16,7 +16,7 @@ interface Props {
 
 // 상세 페이지 하단 리뷰 작성 CTA 바 (비로그인 시 로그인 유도)
 export function ReviewCtaBar({ restaurantId, myReview }: Props) {
-  const { isAuthed } = useAuthMock();
+  const { isAuthed } = useAuthStatus();
   const [dialogOpen, setDialogOpen] = useState(false);
   const isRevisit = Boolean(myReview);
 

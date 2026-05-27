@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SessionProvider } from 'next-auth/react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Header } from '@/components/common/layout/header';
-import { useAuthMock } from '@/stores/auth-mock-store';
+
+const MOCK_SESSION = {
+  user: { id: 'mock-user', name: '햄' },
+  expires: '2099-01-01T00:00:00.000Z',
+};
 
 const meta = {
   title: 'Common/Layout/Header',
@@ -36,20 +41,22 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   name: 'Default — 비로그인 홈',
   decorators: [
-    (Story) => {
-      useAuthMock.setState({ isAuthed: false });
-      return <Story />;
-    },
+    (Story) => (
+      <SessionProvider session={null}>
+        <Story />
+      </SessionProvider>
+    ),
   ],
 };
 
 export const LoggedIn: Story = {
   name: 'LoggedIn — 로그인 상태',
   decorators: [
-    (Story) => {
-      useAuthMock.setState({ isAuthed: true });
-      return <Story />;
-    },
+    (Story) => (
+      <SessionProvider session={MOCK_SESSION}>
+        <Story />
+      </SessionProvider>
+    ),
   ],
 };
 
@@ -64,10 +71,11 @@ export const MyPlacesTab: Story = {
     },
   },
   decorators: [
-    (Story) => {
-      useAuthMock.setState({ isAuthed: true });
-      return <Story />;
-    },
+    (Story) => (
+      <SessionProvider session={MOCK_SESSION}>
+        <Story />
+      </SessionProvider>
+    ),
   ],
 };
 
@@ -82,9 +90,10 @@ export const RestaurantPath: Story = {
     },
   },
   decorators: [
-    (Story) => {
-      useAuthMock.setState({ isAuthed: false });
-      return <Story />;
-    },
+    (Story) => (
+      <SessionProvider session={null}>
+        <Story />
+      </SessionProvider>
+    ),
   ],
 };

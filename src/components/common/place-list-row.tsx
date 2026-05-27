@@ -7,7 +7,7 @@ import { Star, Bookmark, PencilLine, MessageSquare, Calendar, Repeat, Users, Squ
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import { useAuthMock } from '@/stores/auth-mock-store';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
@@ -104,7 +104,7 @@ export function PlaceListRow({
     distanceMeters,
   } = data;
 
-  const { isAuthed } = useAuthMock();
+  const { isAuthed } = useAuthStatus();
   const bookmarked = useWishlistMock((s) => s.isBookmarked(id));
   const toggleWishlist = useWishlistMock((s) => s.toggle);
   const [sheetOpen, setSheetOpen] = useState(false);
