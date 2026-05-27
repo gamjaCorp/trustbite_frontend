@@ -7,8 +7,9 @@ import { CutleryRain } from '@/components/features/auth/cutlery-rain';
 const SIGNIN_ERROR_URL = '/error';
 
 export default async function SignInPage(props: {
-  searchParams: { callbackUrl: string | undefined };
+  searchParams: Promise<{ callbackUrl?: string }>;
 }) {
+  const { callbackUrl } = await props.searchParams;
   return (
     <div className="relative overflow-hidden min-h-[calc(100vh-var(--header-height))] bg-gradient-to-b from-primary-subtle/60 via-background to-background flex flex-col items-center justify-center px-6 py-16">
       <CutleryRain />
@@ -30,7 +31,7 @@ export default async function SignInPage(props: {
                 'use server';
                 try {
                   await signIn(provider.id, {
-                    redirectTo: props.searchParams?.callbackUrl ?? '',
+                    redirectTo: callbackUrl ?? '/',
                   });
                 } catch (error) {
                   if (error instanceof AuthError) {
