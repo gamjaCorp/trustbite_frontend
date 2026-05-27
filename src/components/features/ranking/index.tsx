@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, MapPin } from 'lucide-react';
-import { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
+import { RegionalRankEntry } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
 import { RegionRankEmpty } from './region-rank-empty';
 import { RegionRankSkeleton } from './region-rank-skeleton';
@@ -15,6 +15,15 @@ import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SearchThisArea } from '@/components/features/explore/search-this-area';
 import { useNearbyPlaces } from '@/hooks/explore/use-nearby-places';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import RegionRankProvider, {
+  useRankActions,
+  useRankActiveId,
+  useRankAppliedArea,
+  useRankCategory,
+  useRankOccasions,
+  useRankQuery,
+  useRankResolvedKeyword,
+} from '@/stores/region-rank-store';
 
 interface Props {
   // entries가 없으면 Kakao Local API에서 자동으로 가져옴 (Storybook·테스트는 직접 주입 가능)
@@ -28,26 +37,37 @@ const SORT_ITEMS: SelectListItem[] = [
   { value: 'recent', label: '최신순' },
 ];
 
-export function RegionRankList({ entries: entriesProp }: Props) {
-  const [category, setCategory] = useState<Category | 'all'>('all');
-  const [query, setQuery] = useState('');
-  const debouncedQuery = useDebouncedValue(query.trim(), 500);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
+// 지역 랭킹 화면 — Provider로 스토어를 서브트리에 제공
+export function RegionRankList({ entries }: Props) {
+  return (
+    <RegionRankProvider>
+      <RegionRankListView entries={entries} />
+    </RegionRankProvider>
+  );
+}
+
+// 실제 화면 렌더링 — 스토어 selector hook을 소비
+function RegionRankListView({ entries: entriesProp }: Props) {
+  const category = useRankCategory();
+  const query = useRankQuery();
+  const activeId = useRankActiveId();
+  const occasions = useRankOccasions();
+  const appliedArea = useRankAppliedArea();
+  const resolvedKeyword = useRankResolvedKeyword();
+  const action = useRankActions();
+
+  const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
   const [currentRegion, setCurrentRegion] = useState<string | null>(null);
 
-  // 실제 검색에 사용된 영역 (최초 타일 로드 시 + 재검색 버튼 클릭 시 갱신)
-  const [appliedArea, setAppliedArea] = useState<SearchArea | null>(null);
-  // 현재 지도 viewport 영역 — 재검색 버튼 표시 여부에 사용
-  const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
   // sticky 필터+지도 블록 — 핀 클릭 스크롤 오프셋 실측용
   const stickyRef = useRef<HTMLDivElement>(null);
-  // 휴리스틱 판정 결과 — query + 판정된 keyword를 쌍으로 저장해 stale 판별
-  const [resolvedKeyword, setResolvedKeyword] = useState<{ query: string; keyword: string | undefined } | null>(null);
+
+  const debouncedQuery = useDebouncedValue(query.trim(), 500);
   // debouncedQuery가 바뀌면 이전 resolvedKeyword는 무효 → undefined로 파생
-  const searchKeyword = debouncedQuery && resolvedKeyword?.query === debouncedQuery
-    ? resolvedKeyword.keyword
-    : undefined;
+  const searchKeyword =
+    debouncedQuery && resolvedKeyword?.query === debouncedQuery
+      ? resolvedKeyword.keyword
+      : undefined;
 
   // 지명은 지도 이동 + 검색창 비우기 / 음식·가게명은 keyword 필터로 분기
   useEffect(() => {
@@ -55,28 +75,16 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     if (typeof window === 'undefined' || !window.kakao?.maps?.services) return;
     let cancelled = false;
 
-    const navigate = (latStr: string, lngStr: string) => {
-      if (cancelled) return;
-      const center = { lat: parseFloat(latStr), lng: parseFloat(lngStr) };
-      setAppliedArea((prev) =>
-        prev ? { center, radius: prev.radius } : { center, radius: 1000 },
-      );
-      setPendingArea(null);
-      setResolvedKeyword({ query: debouncedQuery, keyword: undefined });
-      setQuery('');
-    };
-
-    const applyAsFilter = () => {
-      if (cancelled) return;
-      setResolvedKeyword({ query: debouncedQuery, keyword: debouncedQuery });
-    };
-
     // 1차: 주소(행정구역) 매칭 — 동·구·시는 곧장 이동
     const geocoder = new window.kakao.maps.services.Geocoder();
     geocoder.addressSearch(debouncedQuery, (addrResult, addrStatus) => {
       if (cancelled) return;
       if (addrStatus === window.kakao.maps.services.Status.OK && addrResult[0]) {
-        navigate(addrResult[0].y, addrResult[0].x);
+        action.navigateToArea(
+          { lat: parseFloat(addrResult[0].y), lng: parseFloat(addrResult[0].x) },
+          debouncedQuery,
+        );
+        setPendingArea(null);
         return;
       }
       // 2차: 지하철역(SW8)·관광명소(AT4)만 이동 — 그 외는 keyword 필터
@@ -84,14 +92,18 @@ export function RegionRankList({ entries: entriesProp }: Props) {
       places.keywordSearch(debouncedQuery, (kwResult, kwStatus) => {
         if (cancelled) return;
         if (kwStatus !== window.kakao.maps.services.Status.OK || !kwResult[0]) {
-          applyAsFilter();
+          action.setResolvedKeyword({ query: debouncedQuery, keyword: debouncedQuery });
           return;
         }
         const code = kwResult[0].category_group_code;
         if (code === 'SW8' || code === 'AT4') {
-          navigate(kwResult[0].y, kwResult[0].x);
+          action.navigateToArea(
+            { lat: parseFloat(kwResult[0].y), lng: parseFloat(kwResult[0].x) },
+            debouncedQuery,
+          );
+          setPendingArea(null);
         } else {
-          applyAsFilter();
+          action.setResolvedKeyword({ query: debouncedQuery, keyword: debouncedQuery });
         }
       });
     });
@@ -99,7 +111,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [debouncedQuery]);
+  }, [debouncedQuery, action]);
 
   // entriesProp 없으면 Kakao Local에서 area + keyword 기반으로 fetch
   const { data: kakaoEntries = [], isFetching } = useNearbyPlaces({
@@ -107,33 +119,6 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     keyword: searchKeyword,
   });
   const entries = entriesProp ?? kakaoEntries;
-
-  // 최초 타일 로드 시 자동 검색
-  const handleAreaChange = (area: SearchArea) => {
-    setAppliedArea(area);
-  };
-
-  // 드래그·줌 시 viewport 변경 추적 → 재검색 버튼 표시
-  const handleViewportChange = (area: SearchArea) => {
-    setPendingArea(area);
-  };
-
-  // 재검색 버튼 클릭 — 현재 viewport를 새 검색 영역으로 적용
-  const handleAreaSearch = () => {
-    if (pendingArea) {
-      setAppliedArea(pendingArea);
-      setPendingArea(null);
-    }
-  };
-
-  const toggleOccasion = (tag: SceneTag) => {
-    setOccasions((prev) => {
-      const next = new Set(prev);
-      if (next.has(tag)) next.delete(tag);
-      else next.add(tag);
-      return next;
-    });
-  };
 
   // category 필터 → keyword는 서버(Kakao keywordSearch)에서 이미 처리됨
   const filteredList = useMemo(() => {
@@ -148,9 +133,15 @@ export function RegionRankList({ entries: entriesProp }: Props) {
     [filteredList],
   );
 
+  // 현재 화면에 없는 항목은 active 상태를 무시 (별도 setState 없이 파생)
+  const effectiveActiveId = useMemo(
+    () => (activeId && rankedEntries.some((e) => e.id === activeId) ? activeId : null),
+    [activeId, rankedEntries],
+  );
+
   // 핀 클릭 → 해당 카드로 스크롤 (sticky 블록 아래 12px에 행 상단을 맞춤)
   const handlePinClick = (id: string) => {
-    setActiveId(id);
+    action.setActiveId(id);
     requestAnimationFrame(() => {
       const row = document.querySelector(`[data-restaurant-id="${id}"]`);
       if (!row) return;
@@ -159,12 +150,6 @@ export function RegionRankList({ entries: entriesProp }: Props) {
       window.scrollBy({ top: rowTop - stickyBottom - 12, behavior: 'smooth' });
     });
   };
-
-  // 현재 화면에 없는 항목은 active 상태를 무시 (별도 setState 없이 파생)
-  const effectiveActiveId = useMemo(
-    () => (activeId && rankedEntries.some((e) => e.id === activeId) ? activeId : null),
-    [activeId, rankedEntries],
-  );
 
   return (
     <div className="space-y-4">
@@ -176,7 +161,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
         {/* row 1: 검색 */}
         <SearchInput
           value={query}
-          onValueChange={setQuery}
+          onValueChange={action.setQuery}
           placeholder="맛집, 지역, 메뉴 검색"
           className="w-full mb-4"
         />
@@ -185,7 +170,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
         <div className="flex flex-col gap-2">
           <CategoryChipRow
             category={category}
-            onCategoryChange={setCategory}
+            onCategoryChange={action.setCategory}
             categories={CATEGORIES}
           />
 
@@ -201,7 +186,7 @@ export function RegionRankList({ entries: entriesProp }: Props) {
                   key={tag}
                   type="button"
                   aria-pressed={active}
-                  onClick={() => toggleOccasion(tag)}
+                  onClick={() => action.toggleOccasion(tag)}
                   className={cn(
                     'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
                     active
@@ -223,15 +208,20 @@ export function RegionRankList({ entries: entriesProp }: Props) {
             entries={rankedEntries}
             activeId={effectiveActiveId}
             onPinClick={handlePinClick}
-            onAreaChanged={handleAreaChange}
-            onViewportChange={handleViewportChange}
+            onAreaChanged={action.setAppliedArea}
+            onViewportChange={setPendingArea}
             appliedArea={appliedArea}
             onRegionChange={setCurrentRegion}
           />
           <div className="absolute top-3 left-0 right-0 flex justify-center pointer-events-none z-10">
             <SearchThisArea
               visible={!!pendingArea}
-              onClick={handleAreaSearch}
+              onClick={() => {
+                if (pendingArea) {
+                  action.setAppliedArea(pendingArea);
+                  setPendingArea(null);
+                }
+              }}
             />
           </div>
         </div>

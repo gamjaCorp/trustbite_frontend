@@ -1,4 +1,4 @@
-// 카테고리별 아이콘 핀 — primary 색상 통일, 아이콘만 카테고리별로 구분
+// 카테고리별 아이콘 핀 — 원형 핀에 카테고리 아이콘 표시, active 시 확대·그림자 강조
 import { Coffee, Beer, Utensils } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { Category } from '@/types/restaurant';

@@ -13,7 +13,7 @@
 
 | Day | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|
-| 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [ ] |
+| 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [x] |
 | 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 미니카드 오버레이 | [ ] |
 | 3 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
 | 4 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
@@ -32,15 +32,15 @@
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| env 세팅 | - `.env.local`에 `AUTH_SECRET` · `AUTH_GOOGLE_ID` · `AUTH_GOOGLE_SECRET` 입력 (Google Cloud OAuth client 등록) | `.env.local` | [ ] |
-| NextAuth 설정 | - `callbacks.jwt` / `callbacks.session` 추가 — Google `sub` → `session.user.id` 노출 | `src/auth.ts` | [ ] |
-|  | - `next-auth.d.ts` 타입 augmentation — `Session['user'].id`, `JWT.id` | `src/types/next-auth.d.ts` (신규) | [ ] |
-|  | - `SessionProvider` 추가 + 서버 세션 주입 | `src/components/common/layout/providers.tsx`, `src/app/layout.tsx` | [ ] |
-| 훅·교체 | - `use-auth-status.ts` 훅 작성 — `useSession` 래핑, `{ isAuthed, user }` 반환 | `src/hooks/use-auth-status.ts` (신규) | [ ] |
-|  | - `useAuthMock` → `useAuthStatus` 교체 (소비처 8곳) | `header.tsx`, `back-header.tsx`, `place-list-row.tsx`, `review-cta-bar.tsx`, `restaurant-summary.tsx`, `my-review-section.tsx`, `logged-out-review-gate.tsx`, `auth-mock-toggle.tsx` | [ ] |
-|  | - `signin/page.tsx` `searchParams` await (Next 16 규약) | `src/app/signin/page.tsx` | [ ] |
-| mock 제거 | - `auth-mock-store.tsx` · `auth-mock-toggle.tsx` 제거 + 스토리 2개 갱신(`Header.stories.tsx`, `BackHeader.stories.tsx`) | `src/stores/`, `src/components/common/auth-mock-toggle.tsx`, `src/stories/` | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| env 세팅 | - `.env.local`에 `AUTH_SECRET` · `AUTH_GOOGLE_ID` · `AUTH_GOOGLE_SECRET` 입력 (Google Cloud OAuth client 등록) | `.env.local` | [x] |
+| NextAuth 설정 | - `callbacks.jwt` / `callbacks.session` 추가 — Google `sub` → `session.user.id` 노출 | `src/auth.ts` | [x] |
+|  | - `next-auth.d.ts` 타입 augmentation — `Session['user'].id`, `JWT.id` | `src/types/next-auth.d.ts` (신규) | [x] |
+|  | - `SessionProvider` 추가 + 서버 세션 주입 | `src/components/common/layout/providers.tsx`, `src/app/layout.tsx` | [x] |
+| 훅·교체 | - `use-auth-status.ts` 훅 작성 — `useSession` 래핑, `{ isAuthed, user }` 반환 | `src/hooks/use-auth-status.ts` (신규) | [x] |
+|  | - `useAuthMock` → `useAuthStatus` 교체 (소비처 8곳) | `header.tsx`, `back-header.tsx`, `place-list-row.tsx`, `review-cta-bar.tsx`, `restaurant-summary.tsx`, `my-review-section.tsx`, `logged-out-review-gate.tsx`, `auth-mock-toggle.tsx` | [x] |
+|  | - `signin/page.tsx` `searchParams` await (Next 16 규약) | `src/app/signin/page.tsx` | [x] |
+| mock 제거 | - `auth-mock-store.tsx` · `auth-mock-toggle.tsx` 제거 + 스토리 2개 갱신(`Header.stories.tsx`, `BackHeader.stories.tsx`) | `src/stores/`, `src/components/common/auth-mock-toggle.tsx`, `src/stories/` | [x] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
 > 산출물: 실 Google 로그인 → 세션이 프론트 위에서 동작 (백엔드 미연동)
 
@@ -56,6 +56,11 @@
 | 검토 · SDK/핀 | - `useKakaoLoader` 로딩 방식, 뷰포트 반경 계산, area/viewport/region 이벤트 흐름 검토 | `map-view.tsx`, `category-pin.tsx`, `restaurant-pin.tsx`, `search-this-area.tsx` | [ ] |
 | 검토 · 동기화/검색 | - `activeId` pin↔row 동기화, applied/pending area 상태 전환, 검색 입력 흐름 검토 | `region-rank-list.tsx`, `hooks/explore/use-nearby-places.ts`, `common/place-list-row.tsx` | [ ] |
 | 검토 · 데이터 어댑터 | - Kakao Local API 호출 구조, KakaoPlace → RegionalRankEntry 변환 로직, 타입 정의 검토 | `api/kakao-local.ts`, `lib/synthesize-restaurant.ts`, `types/restaurant.ts` | [ ] |
+| 리팩토링 · 상태 스토어 | - `RegionRankList`의 8개 useState → Zustand+Context 스토어 이관 (뷰는 selector hook 소비, `MapView`·`PlaceListRow`는 prop 유지) | `src/stores/region-rank-store.tsx`(신규), `region-rank-list.tsx` | [ ] |
+| 리팩토링 · 지오 유틸 추출 | - `SearchArea` 타입 + `haversine`·`computeViewportRadius`를 `map-view.tsx`에서 lib/types로 추출 | `src/lib/geo.ts`(신규), `src/lib/types/restaurant/type.ts`, `map-view.tsx` | [ ] |
+| 리팩토링 · 검색 분기 훅 추출 | - geocoder→keyword→filter 분기 effect를 `use-place-search` 훅으로 추출 (store 액션 소비) | `src/hooks/explore/use-place-search.ts`(신규), `region-rank-list.tsx` | [ ] |
+| 리팩토링 · 핀↔행 동기화 정리 | - activeId 기반 핀↔행 스크롤·하이라이트 로직을 훅/유틸로 정리 | `region-rank-list.tsx` | [ ] |
+| 리팩토링 · View 컴포넌트 분해 | - `RegionRankListView`를 필터바·지도블록·결과리스트 하위 컴포넌트로 분해 (각자 store hook 소비) | `src/components/features/ranking/`(신규 분할) | [ ] |
 | 에이전트 검토 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [ ] |
 | 핀 미니카드 | - 핀 클릭 → 지도 위 미니카드 오버레이 (가게명 + 평점 + 신뢰도%) | `src/components/features/explore/map-mini-card.tsx` (신규) | [ ] |
 |  | - `map-view.tsx`의 `onPinClick` 콜백에 미니카드 표시 연결, 지도 바깥 클릭 시 닫힘 | `src/components/features/explore/map-view.tsx` | [ ] |

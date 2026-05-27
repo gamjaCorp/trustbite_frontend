@@ -118,7 +118,7 @@ export function PlaceListRow({
       <div
         data-restaurant-id={id}
         className={cn(
-          'group relative flex items-center gap-3 pl-3 pr-3 py-4 scroll-mt-[180px] transition-colors hover:bg-muted/30 sm:gap-4 sm:pl-4 sm:pr-4',
+          'group relative flex items-center gap-3 pl-3 pr-3 py-4 transition-colors hover:bg-muted/30 sm:gap-4 sm:pl-4 sm:pr-4',
           active && 'bg-primary-subtle/40',
         )}
       >
