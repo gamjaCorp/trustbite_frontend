@@ -7,7 +7,7 @@ import type { DetailedReview } from '@/types/restaurant';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
 import { ReviewCard } from './review-card';
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 
 interface Props {
   reviews: DetailedReview[];

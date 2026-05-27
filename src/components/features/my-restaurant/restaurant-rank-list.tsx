@@ -16,7 +16,8 @@ import {
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
-import { CategoryChipRow, CATEGORIES, OCCASIONS } from '@/components/features/ranking/rank-filter-bar';
+import { CategoryChipRow } from '@/components/common/category-chip-row';
+import { CATEGORIES, OCCASIONS } from '@/lib/category';
 import { SelectList } from '@/components/core/select-list';
 
 const SORT_ITEMS = [

@@ -24,16 +24,16 @@ import ReviewWriteProvider, {
 } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import type { GradeLevel } from '@/lib/grade-levels';
-import { ReviewResultDialog } from '@/components/features/review-result/index';
+import { ReviewResultDialog } from './review-result/index';
 
-import { TargetRestaurantCard } from './target-restaurant-card';
-import { RestaurantPicker } from './restaurant-picker';
-import { RatingFields } from './rating-fields';
-import { SceneTagSelector } from './scene-tag-selector';
-import { ReviewTextField } from './review-text-field';
-import { PhotoUploadGrid } from './photo-upload-grid';
-import { LocationVerifyBanner } from './location-verify-banner';
-import { PreviewSidebar } from './preview-sidebar';
+import { TargetRestaurantCard } from './fields/target-restaurant-card';
+import { RestaurantPicker } from './fields/restaurant-picker';
+import { RatingFields } from './fields/rating-fields';
+import { SceneTagSelector } from './fields/scene-tag-selector';
+import { ReviewTextField } from './fields/review-text-field';
+import { PhotoUploadGrid } from './fields/photo-upload-grid';
+import { LocationVerifyBanner } from './fields/location-verify-banner';
+import { PreviewSidebar } from './preview/preview-sidebar';
 
 interface Props {
   initialSelectedRestaurant?: SelectedRestaurant | null;

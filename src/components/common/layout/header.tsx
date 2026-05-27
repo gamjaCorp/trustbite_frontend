@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 
 const NAV_TABS = [
   { label: '맛집 탐색', href: '/', requiresAuth: false },

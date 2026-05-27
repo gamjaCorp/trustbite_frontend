@@ -1,4 +1,4 @@
-import { Category } from '@/types/restaurant';
+import { Category, SceneTag } from '@/types/restaurant';
 
 export const CATEGORY_STYLE: Record<Category, string> = {
   한식: 'bg-palette-red-subtle text-palette-red',
@@ -20,3 +20,16 @@ export const CATEGORY_TEXT_STYLE: Record<Category, string> = {
   술집: 'text-palette-red',
   기타: 'text-palette-gray',
 };
+
+export const CATEGORIES: Array<Category | 'all'> = [
+  'all',
+  '한식',
+  '일식',
+  '중식',
+  '양식',
+  '카페',
+  '술집',
+  '기타',
+];
+
+export const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '다이어트'];

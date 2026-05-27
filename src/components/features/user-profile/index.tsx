@@ -1,7 +1,7 @@
 'use client';
 
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
-import { TasteProfileSection } from '@/components/features/my-restaurant/taste-profile-section';
+import { TasteProfileSection } from '@/components/common/taste-profile-section';
 import { StatsStrip } from '@/components/common/stats-strip';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';

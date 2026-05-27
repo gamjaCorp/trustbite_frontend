@@ -9,7 +9,8 @@ import {
   useRankOccasions,
   useRankQuery,
 } from '@/stores/region-rank-store';
-import { CategoryChipRow, CATEGORIES, OCCASIONS } from './rank-filter-bar';
+import { CategoryChipRow } from '@/components/common/category-chip-row';
+import { CATEGORIES, OCCASIONS } from '@/lib/category';
 
 // 검색창 + 카테고리 칩 + 상황 칩 묶음 — store hook 직접 소비, props 없음
 export function RankFilterControls() {

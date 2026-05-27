@@ -7,7 +7,7 @@ import { PencilLine } from 'lucide-react';
 import { MyReview } from '@/types/restaurant';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 
 interface Props {
   restaurantId: string;

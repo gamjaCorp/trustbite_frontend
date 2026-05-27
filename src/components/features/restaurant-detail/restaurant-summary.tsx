@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { RestaurantDetail } from '@/types/restaurant';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 
 interface Props {
   detail: RestaurantDetail;

@@ -1,13 +1,13 @@
 import type { MyProfile } from '@/types/user';
 
-import { GradeGuideCard } from '@/components/features/grade-guide/index';
-import { PointsAndListsRow } from './points-and-lists-row';
+import { GradeGuideCard } from './grade-guide/index';
+import { PointsAndListsRow } from './rows/points-and-lists-row';
 import { ProfileFooter } from './profile-footer';
-import { ProfileListRow } from './profile-list-row';
+import { ProfileListRow } from './rows/profile-list-row';
 import { ProfileSection } from './profile-section';
 import { ProfileSummaryCard } from './profile-summary-card';
-import { ThemeSettingRow } from './theme-setting-row';
-import { LogoutRow } from './logout-row';
+import { ThemeSettingRow } from './rows/theme-setting-row';
+import { LogoutRow } from './rows/logout-row';
 
 interface Props {
   profile: MyProfile;

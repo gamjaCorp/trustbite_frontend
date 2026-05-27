@@ -14,7 +14,7 @@ import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
 import { CategoryBadge } from '@/components/common/category-badge';
 import { RankMedal } from '@/components/common/rank-medal';
 import { ScoreStars } from '@/components/common/score-stars';
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 import type {
   Category,
   RatingScores,
