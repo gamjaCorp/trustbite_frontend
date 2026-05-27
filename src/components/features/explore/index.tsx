@@ -5,11 +5,9 @@ import { Circle, CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { CategoryPin } from './category-pin';
+import { type SearchArea, haversine, computeViewportRadius } from '@/lib/geo';
 
-export interface SearchArea {
-  center: { lat: number; lng: number };
-  radius: number;
-}
+export type { SearchArea };
 
 interface MapViewProps {
   entries: RegionalRankEntry[];
@@ -27,37 +25,8 @@ interface MapViewProps {
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
 const CIRCLE_COLOR = '#ff7a00';
-// Kakao Places radius 최대값
-const MAX_RADIUS_M = 20000;
 // onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
 const VIEWPORT_MOVE_RATIO = 0.3;
-
-// Haversine 거리(m) 계산
-function haversine(
-  a: { lat: number; lng: number },
-  b: { lat: number; lng: number },
-): number {
-  const R = 6371000;
-  const φ1 = (a.lat * Math.PI) / 180;
-  const φ2 = (b.lat * Math.PI) / 180;
-  const Δφ = ((b.lat - a.lat) * Math.PI) / 180;
-  const Δλ = ((b.lng - a.lng) * Math.PI) / 180;
-  const x =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
-}
-
-// 현재 viewport의 inscribed 반경 — 짧은 축에 접하는 원
-function computeViewportRadius(map: kakao.maps.Map): number {
-  const c = map.getCenter();
-  const ne = map.getBounds().getNorthEast();
-  const lat = c.getLat();
-  const lng = c.getLng();
-  const northM = haversine({ lat, lng }, { lat: ne.getLat(), lng });
-  const eastM = haversine({ lat, lng }, { lat, lng: ne.getLng() });
-  return Math.min(Math.min(northM, eastM) * 0.9, MAX_RADIUS_M);
-}
 
 export function MapView(props: MapViewProps) {
   const appKey = process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY;

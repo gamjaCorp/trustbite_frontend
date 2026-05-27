@@ -5,7 +5,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 import { StoreApi, createStore, useStore } from 'zustand';
 
 import type { Category, SceneTag } from '@/types/restaurant';
-import type { SearchArea } from '@/components/features/explore/index';
+import type { SearchArea } from '@/lib/geo';
 
 type CategoryFilter = Category | 'all';
 type ResolvedKeyword = { query: string; keyword: string | undefined };
