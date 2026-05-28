@@ -2,7 +2,7 @@
 
 import { Check } from 'lucide-react';
 import { Category } from '@/types/restaurant';
-import { CATEGORY_STYLE } from '@/lib/category';
+import { CATEGORY_ICON, CATEGORY_STYLE } from '@/lib/category';
 import { cn } from '@/lib/utils';
 
 interface CategoryChipRowProps {
@@ -14,9 +14,10 @@ interface CategoryChipRowProps {
 // 카테고리 칩 가로 스크롤 행 — 활성 시 Check 아이콘 + CATEGORY_STYLE 색상
 export function CategoryChipRow({ category, onCategoryChange, categories }: CategoryChipRowProps) {
   return (
-    <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5">
+    <div className="flex flex-wrap items-center gap-2">
       {categories.map((c) => {
         const active = category === c;
+        const Icon = CATEGORY_ICON[c];
         return (
           <button
             key={c}
@@ -24,7 +25,7 @@ export function CategoryChipRow({ category, onCategoryChange, categories }: Cate
             aria-pressed={active}
             onClick={() => onCategoryChange(c)}
             className={cn(
-              'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
+              'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors cursor-pointer',
               active
                 ? c === 'all'
                   ? 'bg-foreground text-background'
@@ -32,7 +33,13 @@ export function CategoryChipRow({ category, onCategoryChange, categories }: Cate
                 : 'bg-muted text-muted-foreground hover:text-foreground',
             )}
           >
-            {active && <Check aria-hidden className="w-3.5 h-3.5" />}
+            {c !== 'all' && (
+              active ? (
+                <Check aria-hidden className="w-3.5 h-3.5" />
+              ) : (
+                <Icon aria-hidden className="w-3.5 h-3.5" />
+              )
+            )}
             {c === 'all' ? '전체' : c}
           </button>
         );

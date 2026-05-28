@@ -16,6 +16,9 @@ import RegionRankProvider, {
   useRankCategory,
 } from '@/stores/region-rank-store';
 
+// 백엔드 도착 시 서버 page 기반으로 교체 — 현재는 클라 slice 임시 처리
+const PAGE_SIZE = 30;
+
 interface Props {
   entries?: RegionalRankEntry[]; // entries가 없으면 Kakao Local API에서 자동으로 가져옴 (Storybook·테스트는 직접 주입 가능)
 }
@@ -37,6 +40,7 @@ function RegionRankListView({ entries: entriesProp }: Props) {
 
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
   const [currentRegion, setCurrentRegion] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const { searchKeyword } = usePlaceSearch({ onNavigate: () => setPendingArea(null) });
 
@@ -54,21 +58,39 @@ function RegionRankListView({ entries: entriesProp }: Props) {
     return [...list].sort((a, b) => a.rank - b.rank);
   }, [entries, category]);
 
-  // 핀 표시용: 현재 보이는 결과에 1~N 랭크 부여
+  // 결과셋 교체(새 영역·키워드·카테고리) 시 공개 개수 초기화 — 렌더 중 파생 상태 패턴
+  const [prevFilteredList, setPrevFilteredList] = useState(filteredList);
+  if (prevFilteredList !== filteredList) {
+    setPrevFilteredList(filteredList);
+    setVisibleCount(PAGE_SIZE);
+  }
+
+  // 전체 랭크 부여 목록 (더보기 카운트 기준)
   const rankedEntries = useMemo(
     () => filteredList.map((e, i) => ({ ...e, rank: i + 1 })),
     [filteredList],
   );
 
-  const { stickyRef, effectiveActiveId, handlePinClick } = usePinRowSync({ entries: rankedEntries });
+  // 현재 보이는 항목 — 핀·행·핀동기화 모두 이 slice 기준
+  const visibleEntries = useMemo(
+    () => rankedEntries.slice(0, visibleCount),
+    [rankedEntries, visibleCount],
+  );
+
+  const { stickyRef, effectiveActiveId, handlePinClick } = usePinRowSync({
+    entries: visibleEntries,
+  });
 
   return (
     <div className="space-y-4">
       <IntroCard />
-      <div ref={stickyRef} className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4">
+      <div
+        ref={stickyRef}
+        className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4"
+      >
         <RankFilterControls />
         <RankMapBlock
-          entries={rankedEntries}
+          entries={visibleEntries}
           activeId={effectiveActiveId}
           onPinClick={handlePinClick}
           pendingArea={pendingArea}
@@ -80,13 +102,20 @@ function RegionRankListView({ entries: entriesProp }: Props) {
             }
           }}
           onRegionChange={setCurrentRegion}
+          hasMore={!pendingArea && visibleCount < rankedEntries.length}
+          remainingCount={Math.min(PAGE_SIZE, rankedEntries.length - visibleCount)}
+          onLoadMore={() => setVisibleCount((c) => c + PAGE_SIZE)}
         />
       </div>
       <RankResultList
-        entries={rankedEntries}
+        entries={visibleEntries}
         activeId={effectiveActiveId}
         isFetching={isFetching}
         region={currentRegion}
+        remainingCount={Math.min(PAGE_SIZE, rankedEntries.length - visibleCount)}
+        hasMore={!pendingArea && visibleCount < rankedEntries.length}
+        onLoadMore={() => setVisibleCount((c) => c + PAGE_SIZE)}
+        onFocusMap={action.setActiveId}
       />
     </div>
   );

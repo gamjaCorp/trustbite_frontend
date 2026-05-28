@@ -141,6 +141,16 @@ function KakaoMap({
     map.panTo(new kakao.maps.LatLng(appliedArea.center.lat, appliedArea.center.lng));
   }, [appliedArea]);
 
+  // activeId 변경 시 해당 핀으로 이동·확대
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !activeId) return;
+    const entry = entries.find((e) => e.id === activeId);
+    if (!entry) return;
+    map.setLevel(3);
+    map.panTo(new kakao.maps.LatLng(entry.coordinates.lat, entry.coordinates.lng));
+  }, [activeId, entries]);
+
   // 원은 항상 마지막 검색 영역(appliedArea)에 고정. 부모 전파 전 짧은 공백은 initialArea로 채움
   const circleArea = appliedArea ?? initialArea;
 
@@ -211,7 +221,12 @@ function KakaoMap({
             onClick={() => onPinClick?.(entry.id)}
             className="bg-transparent p-0 border-0 cursor-pointer"
           >
-            <CategoryPin category={entry.category} active={activeId === entry.id} />
+            <CategoryPin
+              category={entry.category}
+              active={activeId === entry.id}
+              rank={entry.rank}
+              showRank={entry.hasRealData ?? false}
+            />
           </button>
         </CustomOverlayMap>
       ))}

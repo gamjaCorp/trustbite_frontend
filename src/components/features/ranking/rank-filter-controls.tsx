@@ -35,32 +35,36 @@ export function RankFilterControls() {
           categories={CATEGORIES}
         />
 
-        <div className="border-t border-dashed border-border" />
+        {/* TODO: 1차 MVP 제외 — 사용자 sceneTag 누적 기반 필터, 2차 MVP에서 백엔드 aggregate API 후 재노출 */}
+        {false && (
+          <>
+            <div className="border-t border-dashed border-border" />
 
-        {/* 상황 태그 (다중 선택) — UI만, 백엔드 연결 시 필터 적용 */}
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-          <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
-          {OCCASIONS.map((tag) => {
-            const active = occasions.has(tag);
-            return (
-              <button
-                key={tag}
-                type="button"
-                aria-pressed={active}
-                onClick={() => action.toggleOccasion(tag)}
-                className={cn(
-                  'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
-                  active
-                    ? 'bg-primary-subtle text-primary'
-                    : 'bg-muted text-muted-foreground hover:text-foreground',
-                )}
-              >
-                {active && <Check aria-hidden className="w-3.5 h-3.5" />}
-                {tag}
-              </button>
-            );
-          })}
-        </div>
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+              <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
+              {OCCASIONS.map((tag) => {
+                const active = occasions.has(tag);
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => action.toggleOccasion(tag)}
+                    className={cn(
+                      'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
+                      active
+                        ? 'bg-primary-subtle text-primary'
+                        : 'bg-muted text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {active && <Check aria-hidden className="w-3.5 h-3.5" />}
+                    {tag}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

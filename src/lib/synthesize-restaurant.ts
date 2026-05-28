@@ -30,6 +30,9 @@ const CATEGORY_KEYWORDS: [string, Category][] = [
   ['양식', '양식'],
   ['카페', '카페'],
   ['술집', '술집'],
+  ['분식', '분식'],   // "한식" 앞에 — "분식"이 없으면 한식 substring 오매칭 없지만 명시적 우선
+  ['치킨', '치킨'],
+  ['패스트푸드', '패스트푸드'],
   ['한식', '한식'],
 ];
 
@@ -112,8 +115,6 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
   const reviewCount = 5 + Math.floor(r() * 200);
 
   const subCategory = parseSubCategory(place.category_name);
-  const distanceRaw = parseInt(place.distance, 10);
-  const distanceMeters = Number.isFinite(distanceRaw) && distanceRaw >= 0 ? distanceRaw : undefined;
 
   return {
     id: place.id,
@@ -138,7 +139,6 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
     trustScore,
     trustBreakdown: { photoRatio, longTextRatio, recentActivityRatio },
     subCategory,
-    distanceMeters,
     phone: place.phone || undefined,
     roadAddress: place.road_address_name || undefined,
     placeUrl: place.place_url || undefined,

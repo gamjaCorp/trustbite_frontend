@@ -3,6 +3,7 @@
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { RegionRankEmpty } from './region-rank-empty';
@@ -16,14 +17,27 @@ const SORT_ITEMS: SelectListItem[] = [
 ];
 
 interface RankResultListProps {
-  entries: RegionalRankEntry[]; // 랭크 부여된 결과 목록
+  entries: RegionalRankEntry[]; // 현재 공개된 항목 (slice 결과)
   activeId: string | null; // 행 하이라이트 대상
   isFetching: boolean; // Kakao API 로딩 중 여부
   region: string | null; // 검색 기준 행정구역명 (없으면 "이 지역")
+  remainingCount: number; // 더보기 한 번에 추가될 개수 (버튼 라벨용)
+  hasMore: boolean; // 더 불러올 항목 존재 여부
+  onLoadMore: () => void; // 더보기 클릭 핸들러
+  onFocusMap?: (id: string) => void; // 카드 클릭 시 지도 클로즈업 + 핀 강조 트리거
 }
 
-// 검색 결과 리스트 — 헤더(지역명 + 정렬) + 카운트 + PlaceListRow 목록
-export function RankResultList({ entries, activeId, isFetching, region }: RankResultListProps) {
+// 검색 결과 리스트 — 헤더(지역명 + 정렬) + 카운트 + PlaceListRow 목록 + 더보기 버튼
+export function RankResultList({
+  entries,
+  activeId,
+  isFetching,
+  region,
+  remainingCount,
+  hasMore,
+  onLoadMore,
+  onFocusMap,
+}: RankResultListProps) {
   if (entries.length === 0) {
     return isFetching ? <RegionRankSkeleton /> : <RegionRankEmpty />;
   }
@@ -56,10 +70,16 @@ export function RankResultList({ entries, activeId, isFetching, region }: RankRe
               minimal={!entry.hasRealData}
               data={toPlaceListRowData(entry)}
               active={activeId === entry.id}
+              onFocusMap={onFocusMap}
             />
           </li>
         ))}
       </ul>
+      {hasMore && (
+        <Button variant="outline" className="w-full h-10" onClick={onLoadMore}>
+          {remainingCount}개 더보기
+        </Button>
+      )}
     </section>
   );
 }

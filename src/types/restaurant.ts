@@ -1,6 +1,6 @@
 import type { GradeLevel } from '@/lib/grade-levels';
 
-export type Category = '한식' | '일식' | '중식' | '양식' | '카페' | '술집' | '기타';
+export type Category = '한식' | '일식' | '중식' | '양식' | '분식' | '치킨' | '패스트푸드' | '카페' | '술집' | '기타';
 
 export interface TopRestaurant {
   rank: 1 | 2 | 3;
@@ -72,8 +72,6 @@ export type RegionalRankEntry = MyRestaurantEntry & {
   trustBreakdown: TrustBreakdown;
   // TODO: 1차 MVP 제외 — Kakao 원본 세부 카테고리. 백엔드 도착 시 별도 필드로 교체 가능
   subCategory?: string;
-  // TODO: 1차 MVP 제외 — Kakao 거리(m). 백엔드 도착 시 서버 거리 계산값으로 교체
-  distanceMeters?: number;
   // TODO: 1차 MVP 제외 — mock 상세 데이터가 있는 경우 true. 백엔드 도착 시 항상 true로 처리
   hasRealData?: boolean;
   // TODO: 1차 MVP 제외 — Kakao 원본 메타. 백엔드 도착 시 삭제
