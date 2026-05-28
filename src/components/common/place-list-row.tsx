@@ -212,7 +212,7 @@ export function PlaceListRow({
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
-            className="inline-flex items-center gap-1 max-w-full text-title-1 text-foreground text-left bg-transparent p-0 hover:underline cursor-pointer"
+            className="self-start inline-flex items-center gap-1 max-w-full text-title-1 text-foreground text-left bg-transparent p-0 hover:underline cursor-pointer"
             aria-label={`${name} 상세 보기`}
           >
             <span className="truncate min-w-0">{name}</span>
@@ -232,7 +232,7 @@ export function PlaceListRow({
               <button
                 type="button"
                 onClick={onFocusMap ? undefined : (e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
-                className="text-caption-1 text-muted-foreground line-clamp-1 mb-0.5 text-left bg-transparent p-0"
+                className="self-start text-caption-1 text-muted-foreground line-clamp-1 mb-0.5 text-left bg-transparent p-0"
               >
                 &ldquo;{comment}&rdquo;
               </button>
