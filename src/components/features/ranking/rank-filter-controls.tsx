@@ -2,29 +2,29 @@
 
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SearchInput } from '@/components/core/search-input';
 import {
   useRankActions,
   useRankCategory,
   useRankOccasions,
-  useRankQuery,
 } from '@/stores/region-rank-store';
 import { CategoryChipRow } from '@/components/common/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/category';
+import { SearchAutocomplete } from './search-autocomplete';
 
-// 검색창 + 카테고리 칩 + 상황 칩 묶음 — store hook 직접 소비, props 없음
-export function RankFilterControls() {
-  const query = useRankQuery();
+interface RankFilterControlsProps {
+  onAreaConfirm?: () => void; // area 확정 시 부모의 pendingArea 초기화
+}
+
+// 검색창 + 카테고리 칩 + 상황 칩 묶음 — store hook 직접 소비
+export function RankFilterControls({ onAreaConfirm }: RankFilterControlsProps) {
   const category = useRankCategory();
   const occasions = useRankOccasions();
   const action = useRankActions();
 
   return (
     <>
-      <SearchInput
-        value={query}
-        onValueChange={action.setQuery}
-        placeholder="맛집, 지역, 메뉴 검색"
+      <SearchAutocomplete
+        onAreaConfirm={onAreaConfirm}
         className="w-full mb-4"
       />
 

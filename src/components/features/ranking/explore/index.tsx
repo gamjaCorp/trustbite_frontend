@@ -6,6 +6,7 @@ import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { CategoryPin } from '@/components/common/category-pin';
 import { type SearchArea, haversine, computeViewportRadius } from '@/lib/geo';
+import { cn } from '@/lib/utils';
 
 export type { SearchArea };
 
@@ -24,6 +25,8 @@ const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
 const CIRCLE_COLOR = '#ff7a00';
 // onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
 const VIEWPORT_MOVE_RATIO = 0.3;
+// 이 level 이하로 확대되면 모든 핀에 이름 라벨 표시 (작을수록 확대, 1=최대 확대)
+const LABEL_VISIBLE_LEVEL = 3;
 
 // 카카오 지도 뷰 — appKey 유무 게이트 후 KakaoMap에 위임
 export function MapView(props: MapViewProps) {
@@ -57,6 +60,9 @@ function KakaoMap({
     appkey: appKey,
     libraries: ['services', 'clusterer'],
   });
+
+  // 현재 지도 zoom level 추적 — LABEL_VISIBLE_LEVEL 이하로 확대 시 모든 핀 라벨 표시
+  const [level, setLevel] = useState(5);
 
   const [resolvedCenter, setResolvedCenter] = useState<{ lat: number; lng: number } | null>(() => {
     if (entries.length > 0) {
@@ -197,6 +203,7 @@ function KakaoMap({
         if (searched && haversine(center, searched) < radius * VIEWPORT_MOVE_RATIO) return;
         onViewportChange?.({ center, radius });
       }}
+      onZoomChanged={(target) => setLevel(target.getLevel())}
     >
       {circleArea && (
         <Circle
@@ -221,12 +228,29 @@ function KakaoMap({
             onClick={() => onPinClick?.(entry.id)}
             className="bg-transparent p-0 border-0 cursor-pointer"
           >
-            <CategoryPin
-              category={entry.category}
-              active={activeId === entry.id}
-              rank={entry.rank}
-              showRank={entry.hasRealData ?? false}
-            />
+            <div className="relative flex items-center justify-center">
+              <CategoryPin
+                category={entry.category}
+                active={activeId === entry.id}
+                rank={entry.rank}
+                showRank={entry.hasRealData ?? false}
+              />
+              {(() => {
+                const isActive = activeId === entry.id;
+                const showLabel = isActive || level <= LABEL_VISIBLE_LEVEL;
+                if (!showLabel) return null;
+                return (
+                  <span className={cn(
+                    'absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border px-2 py-0.5 shadow-card',
+                    isActive
+                      ? 'border-primary bg-background/95 text-foreground text-label-3'
+                      : 'border-border bg-background/95 text-foreground text-label-3',
+                  )}>
+                    {entry.name}
+                  </span>
+                );
+              })()}
+            </div>
           </button>
         </CustomOverlayMap>
       ))}

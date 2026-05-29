@@ -28,6 +28,8 @@ interface RegionRankActions {
   setResolvedKeyword: (resolved: ResolvedKeyword) => void;
   // 지명 이동: 중심 교체(반경 유지) + keyword 비움 + 검색창 초기화
   navigateToArea: (center: { lat: number; lng: number }, matchedQuery: string) => void;
+  // X 버튼·ESC 시 검색어 + 키워드 필터 동시 초기화
+  resetSearch: () => void;
 }
 
 type RegionRankStore = RegionRankState & { action: RegionRankActions };
@@ -46,7 +48,8 @@ export default function RegionRankProvider({ children }: { children: ReactNode }
       resolvedKeyword: null,
       action: {
         setCategory: (c) => set({ category: c }),
-        setQuery: (q) => set({ query: q }),
+        // query가 바뀌면 이전 확정 키워드 필터도 함께 초기화 (입력 수정 시 stale 필터 방지)
+        setQuery: (q) => set({ query: q, resolvedKeyword: null }),
         setActiveId: (id) => set({ activeId: id }),
         toggleOccasion: (tag) =>
           set((s) => {
@@ -65,6 +68,7 @@ export default function RegionRankProvider({ children }: { children: ReactNode }
             resolvedKeyword: { query: matchedQuery, keyword: undefined },
             query: '',
           })),
+        resetSearch: () => set({ query: '', resolvedKeyword: null }),
       },
     })),
   );

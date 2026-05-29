@@ -64,9 +64,9 @@
 | 에이전트 검토 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [x] |
 | 지도 개선 | - 미니카드 대신 선택된 핀을 브랜드 컬러·확대·헤일로로 강조 | `category-pin.tsx` | [x] |
 |  | - 핀에 순위 번호 표시 — 실데이터면 숫자, 아니면 카테고리 아이콘 | `category-pin.tsx`, `explore/index.tsx` | [x] |
-|  | - 리스트 카드 클릭 시 지도가 해당 핀으로 이동·확대 (양방향 동기화) | `place-list-row.tsx`, `rank-result-list.tsx`, `ranking/index.tsx` | [ ] |
-|  | - 클로즈업된 핀(activeId)에 가게 이름 라벨 함께 표시 — 아이콘만으론 어떤 가게인지 불명확 | `category-pin.tsx`, `explore/index.tsx` | [ ] |
-|  | - 지도가 일정 zoom level 이하로 확대되면 모든 가게 이름 라벨을 핀 옆에 자동 표시 (Kakao 기본 지도와 유사한 UX) | `explore/index.tsx` | [ ] |
+|  | - 리스트 카드 클릭 시 지도가 해당 핀으로 이동·확대 (양방향 동기화) | `place-list-row.tsx`, `rank-result-list.tsx`, `ranking/index.tsx` | [x] |
+|  | - 클로즈업된 핀(activeId)에 가게 이름 라벨 함께 표시 — 아이콘만으론 어떤 가게인지 불명확 | `category-pin.tsx`, `explore/index.tsx` | [x] |
+|  | - 지도가 일정 zoom level 이하로 확대되면 모든 가게 이름 라벨을 핀 옆에 자동 표시 (Kakao 기본 지도와 유사한 UX) | `explore/index.tsx` | [x] |
 | 검색 UX | - 검색창 입력 시 지역어("강남구", "강남역")는 `↵ 강남구로 이동` 한 줄 힌트, 가게/음식 키워드는 가게명·주소·카테고리가 든 자동완성 드롭다운 표시 | `core/search-input.tsx`, `ui/combobox.tsx` | [ ] |
 |  | - 드롭다운 키보드 동작(↑↓ 하이라이트, Enter 확정, ESC 닫기, X 버튼으로 입력 비움) 연결 | `core/search-input.tsx` | [ ] |
 | Focus 모드 | - 자동완성에서 가게를 확정하면 지도 핀 1개·리스트 1행만 표시, "이 지역에서 검색"/"더 불러오기" 숨김. ESC·X·다른 항목 선택으로 해제 | `features/ranking/index.tsx`, `stores/region-rank-store.tsx` | [ ] |

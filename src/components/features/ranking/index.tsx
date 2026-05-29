@@ -5,7 +5,6 @@ import type { RegionalRankEntry } from '@/types/restaurant';
 import type { SearchArea } from '@/lib/geo';
 import { IntroCard } from '@/components/common/intro-card';
 import { useNearbyPlaces } from './hooks/use-nearby-places';
-import { usePlaceSearch } from './hooks/use-place-search';
 import { usePinRowSync } from './hooks/use-pin-row-sync';
 import { RankFilterControls } from './rank-filter-controls';
 import { RankMapBlock } from './rank-map-block';
@@ -14,6 +13,7 @@ import RegionRankProvider, {
   useRankActions,
   useRankAppliedArea,
   useRankCategory,
+  useRankResolvedKeyword,
 } from '@/stores/region-rank-store';
 
 // 백엔드 도착 시 서버 page 기반으로 교체 — 현재는 클라 slice 임시 처리
@@ -42,7 +42,9 @@ function RegionRankListView({ entries: entriesProp }: Props) {
   const [currentRegion, setCurrentRegion] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const { searchKeyword } = usePlaceSearch({ onNavigate: () => setPendingArea(null) });
+  // 키워드 검색어 — 사용자가 가게명·음식을 확정(SearchAutocomplete)한 경우에만 적용됨
+  const resolvedKeyword = useRankResolvedKeyword();
+  const searchKeyword = resolvedKeyword?.keyword;
 
   // entriesProp 없으면 Kakao Local에서 area + keyword 기반으로 fetch
   const { data: kakaoEntries = [], isFetching } = useNearbyPlaces({
@@ -88,7 +90,7 @@ function RegionRankListView({ entries: entriesProp }: Props) {
         ref={stickyRef}
         className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4"
       >
-        <RankFilterControls />
+        <RankFilterControls onAreaConfirm={() => setPendingArea(null)} />
         <RankMapBlock
           entries={visibleEntries}
           activeId={effectiveActiveId}
