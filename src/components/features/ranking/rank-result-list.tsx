@@ -1,7 +1,7 @@
 'use client';
 
 import { MapPin } from 'lucide-react';
-import type { RegionalRankEntry } from '@/types/restaurant';
+import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';

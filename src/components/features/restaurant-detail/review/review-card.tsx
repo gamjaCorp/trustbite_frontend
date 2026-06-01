@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
-import { DetailedReview } from '@/types/restaurant';
+import { DetailedReview } from '@/lib/types/restaurant/type';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { DimensionScoreRow } from './dimension-score-row';
 import { VisitOrdinalChip } from './visit-ordinal-chip';

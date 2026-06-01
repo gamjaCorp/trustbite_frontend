@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
-import { Category, MyRestaurantEntry } from '@/types/restaurant';
+import { Category, MyRestaurantEntry } from '@/lib/types/restaurant/type';
 import { CATEGORY_TEXT_STYLE } from '@/lib/category';
 import { Surface } from '@/components/common/surface';
 

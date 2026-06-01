@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 
-import { MyReview } from '@/types/restaurant';
+import { MyReview } from '@/lib/types/restaurant/type';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';

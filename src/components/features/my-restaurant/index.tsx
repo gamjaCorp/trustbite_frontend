@@ -6,7 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { RestaurantRankList } from '@/components/features/my-restaurant/restaurant-rank-list';
 import { TasteProfileSection } from '@/components/common/taste-profile-section';
 import { WishlistSection } from '@/components/features/my-restaurant/wishlist-section';
-import { RegionalRankEntry } from '@/types/restaurant';
+import { RegionalRankEntry } from '@/lib/types/restaurant/type';
 
 interface Props {
   initialTab: 'ranking' | 'wishlist';

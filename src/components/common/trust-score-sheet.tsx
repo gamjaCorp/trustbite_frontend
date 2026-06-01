@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sheet';
 import { Progress } from '@/components/ui/progress';
 import { getTrustToneClass } from '@/lib/trust-score';
-import type { TrustBreakdown } from '@/types/restaurant';
+import type { TrustBreakdown } from '@/lib/types/restaurant/type';
 import { cn } from '@/lib/utils';
 
 interface Props {

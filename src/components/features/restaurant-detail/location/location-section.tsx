@@ -2,7 +2,7 @@
 
 import { Clock, Copy, ExternalLink, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
-import { RestaurantDetail } from '@/types/restaurant';
+import { RestaurantDetail } from '@/lib/types/restaurant/type';
 import { RestaurantLocationMap } from './restaurant-location-map';
 
 interface Props {

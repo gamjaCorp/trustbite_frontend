@@ -22,7 +22,7 @@ import ReviewWriteProvider, {
   useReviewTrustDelta,
   useSelectedRestaurant,
 } from '@/stores/review-write-store';
-import type { RegionalRankEntry } from '@/types/restaurant';
+import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
 import type { GradeLevel } from '@/lib/grade-levels';
 import { ReviewResultDialog } from './review-result/index';
 

@@ -6,7 +6,7 @@ import { Surface } from '@/components/common/surface';
 import { CategoryBadge } from '@/components/common/category-badge';
 import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useReviewActions } from '@/stores/review-write-store';
-import type { RegionalRankEntry } from '@/types/restaurant';
+import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
 
 interface Props {
   candidates: RegionalRankEntry[];

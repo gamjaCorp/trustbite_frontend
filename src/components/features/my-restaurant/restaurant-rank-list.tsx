@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { UtensilsCrossed, Plus, Share2, Check, MapPin } from 'lucide-react';
-import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/types/restaurant';
+import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/lib/types/restaurant/type';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {

@@ -25,7 +25,7 @@ import type {
   VisitStatus,
   RegionalRankEntry,
   RestaurantDetail,
-} from '@/types/restaurant';
+} from '@/lib/types/restaurant/type';
 import { SCORE_LABELS } from '@/lib/score-labels';
 
 export interface PlaceListRowData {

@@ -4,7 +4,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
+import type { Category, RegionalRankEntry, SceneTag } from '@/lib/types/restaurant/type';
 import type { SearchArea } from '@/lib/geo';
 
 type CategoryFilter = Category | 'all';

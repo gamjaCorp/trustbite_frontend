@@ -1,4 +1,4 @@
-import type { MyProfile } from '@/types/user';
+import type { MyProfile } from '@/lib/types/user/type';
 
 import { GradeGuideCard } from './grade-guide/index';
 import { PointsAndListsRow } from './rows/points-and-lists-row';

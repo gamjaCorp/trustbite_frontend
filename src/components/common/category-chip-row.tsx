@@ -1,7 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
-import { Category } from '@/types/restaurant';
+import { Category } from '@/lib/types/restaurant/type';
 import { CATEGORY_ICON, CATEGORY_STYLE } from '@/lib/category';
 import { cn } from '@/lib/utils';
 

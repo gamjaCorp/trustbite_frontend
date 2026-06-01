@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { MyReview, MyReviewEntry } from '@/types/restaurant';
+import { MyReview, MyReviewEntry } from '@/lib/types/restaurant/type';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import {
   DropdownMenu,

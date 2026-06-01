@@ -1,4 +1,4 @@
-import type { RegionalRankEntry } from './restaurant';
+import type { RegionalRankEntry } from '../restaurant/type';
 import type { GradeLevel } from '@/lib/grade-levels';
 
 interface MutualFollowing {

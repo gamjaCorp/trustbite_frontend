@@ -1,5 +1,5 @@
 import type { GradeLevel } from '@/lib/grade-levels';
-import type { MyProfile } from '@/types/user';
+import type { MyProfile } from '@/lib/types/user/type';
 
 const myProfile: MyProfile = {
   id: 'hamzee',

@@ -2,7 +2,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import type { Coordinates } from '@/types/restaurant';
+import type { Coordinates } from '@/lib/types/restaurant/type';
 
 interface NearestStation {
   name: string;

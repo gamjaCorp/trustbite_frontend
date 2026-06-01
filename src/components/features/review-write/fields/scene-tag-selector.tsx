@@ -3,7 +3,7 @@
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useReviewActions, useReviewSceneTags } from '@/stores/review-write-store';
-import type { SceneTag } from '@/types/restaurant';
+import type { SceneTag } from '@/lib/types/restaurant/type';
 
 const SCENE_TAGS: SceneTag[] = ['혼밥', '데이트', '회식', '다이어트'];
 

@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { CATEGORY_ICON } from '@/lib/category';
-import type { Category } from '@/types/restaurant';
+import type { Category } from '@/lib/types/restaurant/type';
 
 interface RestaurantThumbnailProps {
   src: string;

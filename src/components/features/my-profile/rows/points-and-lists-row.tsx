@@ -1,4 +1,4 @@
-import type { MyProfile } from '@/types/user';
+import type { MyProfile } from '@/lib/types/user/type';
 
 import { Badge } from '@/components/ui/badge';
 

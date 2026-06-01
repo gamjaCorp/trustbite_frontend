@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-import type { DetailedReview } from '@/types/restaurant';
+import type { DetailedReview } from '@/lib/types/restaurant/type';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
 import { ReviewCard } from './review-card';

@@ -8,7 +8,7 @@ import { DividedList } from '@/components/common/divided-list';
 import { getLevelDef } from '@/lib/grade-levels';
 import { getTrustToneClass } from '@/lib/trust-score';
 import { useFollowMock } from '@/stores/follow-mock-store';
-import type { UserProfile } from '@/types/user';
+import type { UserProfile } from '@/lib/types/user/type';
 
 import { LockedRankingsSection } from './locked-rankings-section';
 import { UserProfileHeader } from './user-profile-header';

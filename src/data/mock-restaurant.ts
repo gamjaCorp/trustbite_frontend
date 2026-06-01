@@ -1,4 +1,4 @@
-import { MyRestaurantStats, RealtimeReview, RegionalRankEntry } from '@/types/restaurant';
+import { MyRestaurantStats, RealtimeReview, RegionalRankEntry } from '@/lib/types/restaurant/type';
 
 export const mockStats5: MyRestaurantStats = {
   visitCount: 12,

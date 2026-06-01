@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Bookmark, Phone, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { RestaurantDetail } from '@/types/restaurant';
+import { RestaurantDetail } from '@/lib/types/restaurant/type';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
