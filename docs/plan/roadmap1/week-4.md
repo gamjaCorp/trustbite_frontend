@@ -84,6 +84,7 @@
 |  | - 결과 Dialog에 서버 fetch(reviewId) 연결 + 로딩 스켈레톤 | `src/components/features/review/review-result-dialog.tsx` | [ ] |
 | 인증 가드 | - middleware에 `/profile`, `/my-places`, `/review/*` 인증 가드 추가 | `src/proxy.ts` | [ ] |
 |  | - 비로그인 → `/signin?next=<원래 경로>` 리다이렉트 + 로그인 후 `next` 쿼리로 복귀 | `src/proxy.ts`, `src/app/signin/page.tsx` | [ ] |
+| 리뷰 fallback | - `/restaurant/[id]/review/new` 페이지에 mock 외 가게 ID fallback 처리 — `synthesizeDetailFromEntry(null, id)` 로 placeholder 진행하거나 `/review/new` redirect. 임시로 카드 링크는 `/review/new`로 우회 중 | `app/restaurant/[id]/review/new/page.tsx`, `common/place-list-row.tsx` | [ ] |
 | 에러 페이지 | - 404 페이지 (TrustBite 톤) | `src/app/not-found.tsx` (신규) | [ ] |
 |  | - 전역 에러 페이지 + '다시 시도' 버튼 | `src/app/error.tsx` (신규) | [ ] |
 |  | - 맛집 상세 전용 에러 페이지 | `src/app/restaurant/[id]/error.tsx` (신규) | [ ] |
@@ -178,6 +179,7 @@ PRD 핵심 루프 3개를 직접 따라가며 버그를 잡고 스테이징 배�
 
 | 기능 | PRD 위치 |
 |---|---|
+| 상황 필터 (sceneTag aggregate) | - |
 | 위치 인증 (Geolocation API) | 10장 |
 | trustScore Decay 적용 | 2.6장 |
 | 지도 핀 색상 차등 | 5.2장 |

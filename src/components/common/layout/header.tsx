@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 
 const NAV_TABS = [
   { label: '맛집 탐색', href: '/', requiresAuth: false },
@@ -34,7 +34,17 @@ export function Header() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
         <div className="max-w-5xl mx-auto w-full flex items-center justify-between px-6 py-3">
-          <Link href="/" className="text-headline-2 text-primary tracking-tight">
+          <Link
+            href="/"
+            onClick={(e) => {
+              // 이미 홈이면 soft-nav가 no-op이라 검색 상태가 남음 → 풀 리로드로 초기화
+              if (pathname === '/') {
+                e.preventDefault();
+                window.location.assign('/');
+              }
+            }}
+            className="text-headline-2 text-primary tracking-tight"
+          >
             TrustBite
           </Link>
 

@@ -1,4 +1,4 @@
-import { RestaurantDetailClient } from './restaurant-detail-client';
+import { RestaurantDetailView } from '@/components/features/restaurant-detail';
 
 export default async function RestaurantDetailPage({
   params,
@@ -6,5 +6,5 @@ export default async function RestaurantDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <RestaurantDetailClient id={id} />;
+  return <RestaurantDetailView id={id} />;
 }

@@ -1,8 +1,5 @@
 import { RestaurantDetail } from '@/types/restaurant';
 
-const unsplash = (id: string) =>
-  `https://images.unsplash.com/${id}?w=800&h=600&fit=crop&auto=format`;
-
 const yangmiok: RestaurantDetail = {
   id: '1',
   name: '을지로 양미옥',
@@ -21,14 +18,7 @@ const yangmiok: RestaurantDetail = {
   accessSummary: '을지로입구역 5번 출구 5분',
   hours: { weekday: '매일 11:00 – 22:00' },
   coordinates: { lat: 37.5662, lng: 126.9898 },
-  photos: [
-    unsplash('photo-1547592180-85f173990554'),
-    unsplash('photo-1583394838336-acd977736f90'),
-    unsplash('photo-1504674900247-0877df9cc836'),
-    unsplash('photo-1498654896293-37aacf113fd9'),
-    unsplash('photo-1546069901-ba9599a7e63c'),
-    unsplash('photo-1482049016688-2d3e1b311543'),
-  ],
+  photos: [],
   totalPhotoCount: 42,
   locationDescription:
     '을지로입구역 5번 출구에서 도보 5분. 한정식 전문점이 모여 있는 조용한 골목 안쪽이라 식사 후 산책하기에도 좋아요.',
@@ -53,13 +43,7 @@ const yangmiok: RestaurantDetail = {
         content:
           '남자친구 생일이어서 미리 예약하고 방문했어요. 2주 전에 예약했는데도 원하는 시간대가 거의 없어서 당황했네요.\n\n입구부터 한옥 분위기로 꾸며져 있어서 사진 찍기도 좋았고, 룸으로 안내받았는데 조용하고 프라이빗해서 기념일 분위기 내기 딱 좋았어요. 2인 코스로 시켰는데 전체적으로 정갈하고 맛있었습니다. 특히 간장게장이 시그니처답게 밥도둑이고, 전복죽은 고소함이 남달랐어요.\n\n다만 가격대가 있어서 자주 오기엔 부담이고, 정말 특별한 날에 오기 좋은 곳이라는 느낌. 다음엔 부모님 모시고 와야겠다 생각했어요.',
         sceneTags: ['데이트'],
-        photos: [
-          unsplash('photo-1604908176997-125f25cc6f3d'),
-          unsplash('photo-1567620905732-2d1ec7ab7445'),
-          unsplash('photo-1565299624946-b28f40a0ae38'),
-          unsplash('photo-1546069901-ba9599a7e63c'),
-          unsplash('photo-1482049016688-2d3e1b311543'),
-        ],
+        photos: [],
       },
       {
         visitOrdinal: 2,
@@ -105,11 +89,7 @@ const yangmiok: RestaurantDetail = {
       scores: { taste: 5.0, value: 4.0, vibe: 5.0 },
       content:
         '반찬 하나하나가 정성스러워요. 간장게장이 시그니처라는데 진짜 밥도둑이고, 전복죽도 고소함이 다릅니다. 예약은 필수고, 데이트로도 회식으로도 무난하게 좋아요.',
-      photos: [
-        unsplash('photo-1604908176997-125f25cc6f3d'),
-        unsplash('photo-1567620905732-2d1ec7ab7445'),
-        unsplash('photo-1565299624946-b28f40a0ae38'),
-      ],
+      photos: [],
       sceneTags: ['데이트', '회식'],
       helpfulCount: 24,
       postedAt: '2주 전',
@@ -173,14 +153,7 @@ const sushidoku: RestaurantDetail = {
   accessSummary: '홍대입구역 9번 출구 7분',
   hours: { weekday: '화–일 12:00 – 22:00 (월 휴무)' },
   coordinates: { lat: 37.5573, lng: 126.925 },
-  photos: [
-    unsplash('photo-1579584425555-c3ce17fd4351'),
-    unsplash('photo-1617196034796-73dfa7b1fd56'),
-    unsplash('photo-1553621042-f6e147245754'),
-    unsplash('photo-1563612116625-3012372fccce'),
-    unsplash('photo-1534482421-64566f976cfa'),
-    unsplash('photo-1607301406259-dfb186e15de8'),
-  ],
+  photos: [],
   totalPhotoCount: 58,
   locationDescription:
     '홍대입구역 9번 출구에서 도보 7분. 조용한 주택가에 자리잡은 오마카세 전문점.',
@@ -206,7 +179,7 @@ const sushidoku: RestaurantDetail = {
       scores: { taste: 5.0, value: 4.0, vibe: 4.5 },
       content:
         '코스 구성이 훌륭했어요. 가격 대비 퀄리티가 정말 좋고 셰프님이 친절하세요. 재료 설명 하나하나 꼼꼼히 해주시는 것도 좋았습니다.',
-      photos: [unsplash('photo-1579584425555-c3ce17fd4351'), unsplash('photo-1617196034796-73dfa7b1fd56')],
+      photos: [],
       sceneTags: ['데이트'],
       helpfulCount: 32,
       postedAt: '3일 전',
@@ -240,14 +213,7 @@ const onion: RestaurantDetail = {
   accessSummary: '성수역 2번 출구 5분',
   hours: { weekday: '매일 08:00 – 22:00' },
   coordinates: { lat: 37.5443, lng: 127.0553 },
-  photos: [
-    unsplash('photo-1509042239860-f550ce710b93'),
-    unsplash('photo-1517705008128-361805f42e86'),
-    unsplash('photo-1534432586043-d45ebcf6f88c'),
-    unsplash('photo-1495474472287-4d71bcdd2085'),
-    unsplash('photo-1453614512568-c4024d13c9a1'),
-    unsplash('photo-1511920170033-f8396924c348'),
-  ],
+  photos: [],
   totalPhotoCount: 203,
   locationDescription:
     '성수역 2번 출구에서 도보 5분. 오래된 공장을 리모델링한 대형 카페로 평일 오전 방문이 쾌적합니다.',
@@ -273,7 +239,7 @@ const onion: RestaurantDetail = {
       scores: { taste: 4.0, value: 3.0, vibe: 5.0 },
       content:
         '공간이 너무 예쁘고 라떼가 맛있어요. 주말엔 줄이 길지만 기다릴 가치 있어요. 팡도르가 시그니처.',
-      photos: [unsplash('photo-1509042239860-f550ce710b93')],
+      photos: [],
       sceneTags: ['데이트'],
       helpfulCount: 48,
       postedAt: '5일 전',
@@ -292,14 +258,7 @@ const karedang: RestaurantDetail = {
   accessSummary: '을지로3가역 11번 출구 4분',
   hours: { weekday: '평일 11:30 – 21:00 (토·일 휴무)' },
   coordinates: { lat: 37.566, lng: 126.992 },
-  photos: [
-    unsplash('photo-1565557623262-b51c2513a641'),
-    unsplash('photo-1547573854-74d2a71d0826'),
-    unsplash('photo-1553621042-f6e147245754'),
-    unsplash('photo-1563612116625-3012372fccce'),
-    unsplash('photo-1574484284002-952d92456975'),
-    unsplash('photo-1626100134240-1c0b3437d65a'),
-  ],
+  photos: [],
   totalPhotoCount: 37,
   locationDescription:
     '을지로3가역 11번 출구에서 도보 4분. 점심시간 줄이 길지만 회전이 빨라 10분 안에 자리가 납니다. 1인 카운터석도 있어서 혼밥하기 좋아요.',
@@ -324,10 +283,7 @@ const karedang: RestaurantDetail = {
         content:
           '을지로에서 점심을 해결할 곳을 찾다가 지나가다 발견했어요. 들어가니 자리가 꽉 찼는데 카운터석이 있어서 혼자도 어색하지 않았습니다.\n\n카츠카레 주문했는데 소스가 진하고 고소하면서도 매콤하지 않아서 좋았어요. 돈카츠 튀김이 얇게 잘 튀겨져서 소스에 푹 적셔 먹으면 최고. 밥 양도 넉넉해서 배부르게 먹었습니다.\n\n가격도 점심 기준으로 착한 편이고, 조용히 혼자 먹기 딱 좋은 분위기예요. 근처 일하는 분들이 많이 오시는 것 같았어요.',
         sceneTags: ['혼밥'],
-        photos: [
-          unsplash('photo-1565557623262-b51c2513a641'),
-          unsplash('photo-1547573854-74d2a71d0826'),
-        ],
+        photos: [],
       },
       {
         visitOrdinal: 2,
@@ -373,10 +329,7 @@ const karedang: RestaurantDetail = {
       scores: { taste: 5.0, value: 4.5, vibe: 4.0 },
       content:
         '카츠카레가 시그니처인데 소스가 진하고 카츠가 얇게 잘 튀겨져서 밥이랑 비벼 먹으면 진짜 맛있어요. 을지로 점심 픽으로 항상 추천하는 곳입니다. 줄이 길어도 기다릴 가치 있어요.',
-      photos: [
-        unsplash('photo-1565557623262-b51c2513a641'),
-        unsplash('photo-1553621042-f6e147245754'),
-      ],
+      photos: [],
       sceneTags: ['혼밥'],
       helpfulCount: 21,
       postedAt: '1주 전',

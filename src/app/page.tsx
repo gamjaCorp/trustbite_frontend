@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 // import { mockRealtimeReviews } from '@/data/mock-restaurant';
 // import { RealtimeReviews } from '@/components/features/ranking/realtime-reviews';
-import { RegionRankList } from '@/components/features/ranking/region-rank-list';
+import { RegionRankList } from '@/components/features/ranking/index';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {

@@ -3,7 +3,8 @@
 // 통합 맛집 리스트 행 — variant(regional/my/wishlist)에 따라 좌측 머리·중앙 본문·우측 평점을 분기 표시
 import { useState } from 'react';
 import Link from 'next/link';
-import { Star, Bookmark, PencilLine, MessageSquare, Calendar, Repeat, Users, SquarePen, Clock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Star, Bookmark, PencilLine, MessageSquare, Calendar, Repeat, Users, SquarePen, Clock, ArrowUpRight } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -14,7 +15,8 @@ import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
 import { CategoryBadge } from '@/components/common/category-badge';
 import { RankMedal } from '@/components/common/rank-medal';
 import { ScoreStars } from '@/components/common/score-stars';
-import { LoginCtaDialog } from '@/components/features/auth/login-cta-dialog';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
+import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import type {
   Category,
   RatingScores,
@@ -25,7 +27,6 @@ import type {
   RestaurantDetail,
 } from '@/types/restaurant';
 import { SCORE_LABELS } from '@/lib/score-labels';
-import { formatDistance } from '@/lib/format-distance';
 
 export interface PlaceListRowData {
   id: string;
@@ -48,7 +49,6 @@ export interface PlaceListRowData {
   myStatus?: VisitStatus;
   addedAt?: string;
   subCategory?: string;
-  distanceMeters?: number;
 }
 
 export type PlaceListRowVariant = 'regional' | 'my' | 'wishlist';
@@ -63,6 +63,7 @@ interface PlaceListRowProps {
   /** regional variant에서 합성 필드(메달·평점·comment·리뷰수·CTA) 전부 숨김 */
   minimal?: boolean;
   active?: boolean;
+  onFocusMap?: (id: string) => void; // 카드 클릭 시 지도 클로즈업 + 핀 강조 트리거 (regional 전용)
   onRemoveFromWishlist?: (id: string) => void;
   // variant="my"에서 타인의 랭킹을 볼 때 — 라벨을 "{name}의 평점"으로, 수정 링크 숨김
   ownerName?: string;
@@ -77,6 +78,7 @@ export function PlaceListRow({
   showVisitStats = false,
   minimal = false,
   active = false,
+  onFocusMap,
   onRemoveFromWishlist,
   ownerName,
 }: PlaceListRowProps) {
@@ -101,9 +103,9 @@ export function PlaceListRow({
     myStatus,
     addedAt,
     subCategory,
-    distanceMeters,
   } = data;
 
+  const router = useRouter();
   const { isAuthed } = useAuthStatus();
   const bookmarked = useWishlistMock((s) => s.isBookmarked(id));
   const toggleWishlist = useWishlistMock((s) => s.toggle);
@@ -118,9 +120,11 @@ export function PlaceListRow({
       <div
         data-restaurant-id={id}
         className={cn(
-          'group relative flex items-center gap-3 pl-3 pr-3 py-4 scroll-mt-[180px] transition-colors hover:bg-muted/30 sm:gap-4 sm:pl-4 sm:pr-4',
+          'group relative flex items-center gap-3 pl-3 pr-3 py-4 transition-colors hover:bg-muted/30 sm:gap-4 sm:pl-4 sm:pr-4',
           active && 'bg-primary-subtle/40',
+          onFocusMap && 'cursor-pointer',
         )}
+        onClick={() => onFocusMap?.(id)}
       >
         {/* ① 좌측 머리 — wishlist: 큰 북마크 토글 / regional·my: 랭크 메달 (minimal 시 생략) */}
         {variant === 'wishlist' ? (
@@ -143,33 +147,46 @@ export function PlaceListRow({
 
         {/* ② 썸네일 + regional 북마크 오버레이 */}
         <div className="relative shrink-0 w-20 h-20 sm:w-24 sm:h-24">
-          <Link
-            href={`/restaurant/${id}`}
-            className="relative block w-full h-full overflow-hidden rounded-xl"
-          >
-            <img
-              src={imageUrl}
-              alt={name}
-              className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-          </Link>
+          {onFocusMap ? (
+            <div className="relative w-full h-full overflow-hidden rounded-xl">
+              <RestaurantThumbnail
+                src={imageUrl}
+                alt={name}
+                category={category}
+                className="absolute inset-0 group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          ) : (
+            <Link
+              href={`/restaurant/${id}`}
+              className="relative block w-full h-full overflow-hidden rounded-xl"
+            >
+              <RestaurantThumbnail
+                src={imageUrl}
+                alt={name}
+                category={category}
+                className="absolute inset-0 group-hover:scale-105 transition-transform duration-300"
+              />
+            </Link>
+          )}
 
           {showBookmarkOverlay && (
             <button
               type="button"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (!isAuthed) { setDialogOpen(true); return; }
                 toggleWishlist(id);
               }}
               className={cn(
-                'absolute top-1 right-1 w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
+                'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
                 bookmarked && isAuthed
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-background/85 text-ink/70 hover:bg-background',
               )}
               aria-label="북마크"
             >
-              <Bookmark className={cn('w-4 h-4', bookmarked && isAuthed && 'fill-current')} />
+              <Bookmark className={cn('w-3.5 h-3.5', bookmarked && isAuthed && 'fill-current')} />
             </button>
           )}
 
@@ -180,7 +197,7 @@ export function PlaceListRow({
           <div className="flex items-center justify-between gap-1 text-caption-1 text-muted-foreground">
             <div className="flex items-center gap-1 min-w-0">
               <CategoryBadge category={category} />
-              <span className="truncate">· {region}</span>
+              <span className="truncate">· {[subCategory, region].filter(Boolean).join(' · ')}</span>
             </div>
             {/* 모바일용 평점 인라인 표시 — minimal 시 신규 칩 */}
             {minimal && variant === 'regional' ? (
@@ -194,18 +211,15 @@ export function PlaceListRow({
             ) : null}
           </div>
 
-          <Link href={`/restaurant/${id}`} className="text-title-1 text-foreground truncate">
-            {name}
-          </Link>
-
-          {/* minimal 시 세부 카테고리 + 거리 (Kakao 원본 데이터) */}
-          {minimal && variant === 'regional' && (subCategory || distanceMeters != null) && (
-            <span className="text-caption-2 text-muted-foreground -mt-0.5 truncate">
-              {[subCategory, distanceMeters != null ? formatDistance(distanceMeters) : null]
-                .filter(Boolean)
-                .join(' · ')}
-            </span>
-          )}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
+            className="self-start inline-flex items-center gap-1 max-w-full text-title-1 text-foreground text-left bg-transparent p-0 hover:underline cursor-pointer"
+            aria-label={`${name} 상세 보기`}
+          >
+            <span className="truncate min-w-0">{name}</span>
+            <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" aria-hidden />
+          </button>
 
           {/* regional: 방문 통계 */}
           {variant === 'regional' && showVisitStats && visitCount != null && lastVisitedAt != null && (
@@ -217,9 +231,13 @@ export function PlaceListRow({
           {/* comment (regional / my) — minimal 시 미노출 */}
           {(variant === 'regional' || variant === 'my') && (
             minimal && variant === 'regional' ? null : comment ? (
-              <p className="text-caption-1 text-muted-foreground line-clamp-1 mb-0.5">
+              <button
+                type="button"
+                onClick={onFocusMap ? undefined : (e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
+                className="self-start text-caption-1 text-muted-foreground line-clamp-1 mb-0.5 text-left bg-transparent p-0"
+              >
                 &ldquo;{comment}&rdquo;
-              </p>
+              </button>
             ) : null
           )}
 
@@ -279,14 +297,20 @@ export function PlaceListRow({
 
           {/* regional: 리뷰수 + CTA — minimal 시 리뷰수 — placeholder, CTA는 유지 */}
           {variant === 'regional' && !hideReviewCta && (
-            <div className="flex items-center justify-between gap-2 pt-0.5">
-              <div className="flex items-center gap-1 text-caption-2 text-muted-foreground">
+            <div className="flex items-center justify-between gap-2 pt-2">
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
+                className="flex items-center gap-1 text-caption-2 text-muted-foreground cursor-pointer hover:underline bg-transparent p-0"
+                aria-label={`${name} 리뷰 보기`}
+              >
                 <MessageSquare className="w-3.5 h-3.5" aria-hidden />
                 <span>{minimal ? 0 : reviewCount}</span>
-              </div>
+              </button>
               {!minimal && myStatus === 'reviewed' ? (
                 <Link
                   href={`/restaurant/${id}/review/new`}
+                  onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
                 >
                   <Star className="w-3 h-3 fill-primary text-primary" aria-hidden />
@@ -294,7 +318,8 @@ export function PlaceListRow({
                 </Link>
               ) : (
                 <Link
-                  href={`/restaurant/${id}/review/new`}
+                  href="/review/new"
+                  onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
                 >
                   <PencilLine className="w-3 h-3" aria-hidden />
@@ -315,14 +340,19 @@ export function PlaceListRow({
                   </span>
                 )}
                 {reviewCount != null && (
-                  <span className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
+                    className="flex items-center gap-1 cursor-pointer hover:underline bg-transparent p-0"
+                    aria-label={`${name} 리뷰 보기`}
+                  >
                     <MessageSquare className="w-3.5 h-3.5" aria-hidden />
                     {reviewCount}
-                  </span>
+                  </button>
                 )}
               </div>
               <Link
-                href={`/restaurant/${id}/review/new`}
+                href="/review/new"
                 className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
               >
                 <PencilLine className="w-3 h-3" aria-hidden />
@@ -351,11 +381,13 @@ export function PlaceListRow({
           {minimal ? (
             <span className="mt-2 inline-flex items-center justify-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2">리뷰 부족</span>
           ) : showTrustScore && trustScore != null ? (
-            <TrustScoreBadge
-              score={trustScore}
-              size="sm"
-              onClick={() => setSheetOpen(true)}
-            />
+            <div onClick={(e) => e.stopPropagation()}>
+              <TrustScoreBadge
+                score={trustScore}
+                size="sm"
+                onClick={() => setSheetOpen(true)}
+              />
+            </div>
           ) : null}
           {!minimal && variant === 'wishlist' && trustScore != null && (
             <TrustScoreBadge score={trustScore} size="sm" showIcon={false} />
@@ -386,9 +418,6 @@ export function PlaceListRow({
   );
 }
 
-const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&auto=format';
-
 export function toPlaceListRowData(entry: RegionalRankEntry): PlaceListRowData {
   return {
     id: entry.id,
@@ -409,7 +438,6 @@ export function toPlaceListRowData(entry: RegionalRankEntry): PlaceListRowData {
     myLatestScene: entry.myLatestScene,
     myStatus: entry.myStatus,
     subCategory: entry.subCategory,
-    distanceMeters: entry.distanceMeters,
   };
 }
 
@@ -422,7 +450,7 @@ export function toPlaceListRowDataFromDetail(
     name: detail.name,
     category: detail.category,
     region: detail.region,
-    imageUrl: detail.photos[0] ?? FALLBACK_IMAGE,
+    imageUrl: detail.photos[0] ?? '',
     communityAvgScore: detail.communityAvgScore,
     trustScore: detail.trustScore,
     trustBreakdown: detail.trustBreakdown,

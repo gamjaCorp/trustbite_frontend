@@ -1,5 +1,5 @@
 import { mockRankList } from '@/data/mock-restaurant';
-import { ReviewWriteForm } from '@/components/features/review-write/review-write-form';
+import { ReviewWriteForm } from '@/components/features/review-write/index';
 import { getLevelDef, getNextLevelDef } from '@/lib/grade-levels';
 import type { GradeLevel } from '@/lib/grade-levels';
 
