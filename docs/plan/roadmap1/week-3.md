@@ -15,7 +15,7 @@
 |---|---|---|---|
 | 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [x] |
 | 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 강조 + 검색 자동완성/Focus 모드/대체 이미지 | [x] |
-| 3 | 로그인 로직 파악 + 세션 시간 명시 | 분기 메커니즘·화면별 분기·세션 정책 정리 + session.maxAge 명시 | [ ] |
+| 3 | 로그인 로직 파악 + 세션 시간 명시 | 분기 메커니즘·화면별 분기·세션 정책 정리 + session.maxAge 명시 | [x] |
 | 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
 | 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
 | 6 | 디자인 품질 점검 + 반응형 점검 | cross-page 톤 통일, breakpoint 375/768/1280 정상 | [ ] |
@@ -84,16 +84,56 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 세션 설정 | - `auth.ts`에 `session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 30 }` 추가 — 미설정(NextAuth 30일 기본값)을 명시 | `src/auth.ts` | [ ] |
-| 파악 · 아키텍처 | - provider(Google 단독)·JWT 전략·`jwt`/`session` 콜백 id 매핑·`SessionProvider` 서버→클라 주입 정리 | `src/auth.ts`, `src/types/next-auth.d.ts` | [ ] |
-| 파악 · 분기 | - `useAuthStatus`(`useSession` 래핑 → `{isAuthed, isLoading, user}`) 정리 | `src/hooks/use-auth-status.ts` | [ ] |
-|  | - `LoginCtaDialog`(→`/signin?callbackUrl=`) 중앙 리다이렉트 흐름 정리 | `features/auth/login-cta-dialog.tsx` | [ ] |
-| 파악 · 화면별 표 | - 소비처 8곳 × 로그인/비로그인 차이 표 작성 (이 섹션 인라인) | — | [ ] |
-| 파악 · 플로우 | - signin(`redirectTo: callbackUrl ?? '/'`)·signOut(`/signin`)·온보딩 플로우 정리 | `signin/page.tsx`, `logout-row.tsx`, `onboarding/page.tsx` | [ ] |
-| 갭 정리 | - 서버 보호 부재(`proxy.ts` matcher 없음)·온보딩 미연결 → W4 후속으로 명시 | `src/proxy.ts` | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 세션 설정 | - `auth.ts`에 `session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 30 }` 추가 — 미설정(NextAuth 30일 기본값)을 명시 | `src/auth.ts` | [x] |
+| 파악 · 아키텍처 | - provider(Google 단독)·JWT 전략·`jwt`/`session` 콜백 id 매핑·`SessionProvider` 서버→클라 주입 정리 | `src/auth.ts`, `src/types/next-auth.d.ts` | [x] |
+| 파악 · 분기 | - `useAuthStatus`(`useSession` 래핑 → `{isAuthed, isLoading, user}`) 정리 | `src/hooks/use-auth-status.ts` | [x] |
+|  | - `LoginCtaDialog`(→`/signin?callbackUrl=`) 중앙 리다이렉트 흐름 정리 | `features/auth/login-cta-dialog.tsx` | [x] |
+| 파악 · 화면별 표 | - 소비처 8곳 × 로그인/비로그인 차이 표 작성 (이 섹션 인라인) | — | [x] |
+| 파악 · 플로우 | - signin(`redirectTo: callbackUrl ?? '/'`)·signOut(`/signin`)·온보딩 플로우 정리 | `signin/page.tsx`, `logout-row.tsx`, `onboarding/page.tsx` | [x] |
+| 갭 정리 | - 서버 보호 부재(`proxy.ts` matcher 없음)·온보딩 미연결 → W4 후속으로 명시 | `src/proxy.ts` | [x] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
 > 산출물: `auth.ts` session.maxAge 명시 + 아래 파악 정리(아키텍처·분기·화면별 표·플로우·갭) 완성
+> 정식 spec 문서: [`docs/spec/auth/`](../../../docs/spec/auth/)
+
+### 파악 — 아키텍처
+
+- **Provider**: Google 단독 (`providers = [Google]`). `providerMap`이 제공자 목록을 만들고, `/signin` 페이지가 이를 순회하며 "Google로 시작하기" 버튼을 렌더링한다.
+- **전략**: JWT (`session.strategy = 'jwt'`). 서버에 세션 저장소 없음. 인증 상태는 토큰에 보관.
+- **`callbacks.jwt`**: 최초 로그인 시 Google `user.id`(내부적으로 Google `sub`) → `token.id`에 저장.
+- **`callbacks.session`**: `token.id` → `session.user.id`로 복사. 클라이언트에서 `session.user.id`를 사용할 수 있게 된다.
+- **타입 확장**: `src/types/next-auth.d.ts`에서 `Session['user'].id`·`JWT.id`를 모듈 augmentation으로 선언해 TypeScript에서 `.id`를 안전하게 접근.
+- **클라 주입**: `providers.tsx`의 `SessionProvider`가 서버 세션을 props로 받아 클라이언트 트리에 공급. 어느 컴포넌트에서나 `useSession()`으로 소비 가능.
+
+### 파악 — 분기 메커니즘
+
+- **`useAuthStatus`** (`src/hooks/use-auth-status.ts`): `useSession()`을 래핑해 `{ isAuthed, isLoading, user }` 형태로 정규화. 모든 소비처가 이 훅만 사용한다.
+- **비로그인 인터랙션 차단**: `LoginCtaDialog`(`src/components/common/login-cta-dialog.tsx`)가 `/signin?callbackUrl=<encodeURIComponent(현재 경로)>` 로 보낸다. 로그인 완료 후 `callbackUrl`로 복귀.
+
+### 파악 — 화면별 분기 (소비처 8곳)
+
+| 소비처 | 로그인 | 비로그인 |
+|---|---|---|
+| `layout/header.tsx` | 아바타 + 닉네임 | 로그인 버튼 / `requiresAuth` 탭 → `LoginCtaDialog` |
+| `layout/back-header.tsx` | 닉네임 + 아바타 | 표시 안 함 |
+| `common/place-list-row.tsx` | 북마크 즉시 토글 | 북마크 클릭 → `LoginCtaDialog` |
+| `restaurant-detail/restaurant-summary.tsx` | 북마크 즉시 토글 | 북마크 클릭 → `LoginCtaDialog` |
+| `restaurant-detail/review/review-cta-bar.tsx` | 리뷰 쓰기 CTA 표시 | `LoginCtaDialog` |
+| `restaurant-detail/review/logged-out-review-gate.tsx` | 리뷰 5개 + 더보기 버튼 | 리뷰 2개만, 더보기 클릭 → `LoginCtaDialog` |
+| `restaurant-detail/review/my-review-section.tsx` | 내 리뷰 표시 | `null` 반환 (숨김) |
+| `my-profile/profile-summary-card.tsx` | `user` 정보 표시 | 보호 라우트라 비로그인 도달 불가 (이론상) |
+
+### 파악 — 플로우
+
+- **로그인**: `/signin`에서 Server Action `signIn(provider, { redirectTo: callbackUrl ?? '/' })` 호출. Google OAuth 완료 후 `redirectTo`로 이동.
+- **로그아웃**: `logout-row.tsx`에서 클라이언트 `signOut({ callbackUrl: '/signin' })` 호출. 완료 후 `/signin`으로 이동.
+- **온보딩**: Google 로그인 성공 후 자동 진입 로직 미연결. 현재 `/onboarding`은 직접 URL 접근만 가능. 폼 상태는 `useState`, 제출 시 `router.push('/')`. **백엔드 저장 없음** (W4 Day 1에서 연동).
+
+### 파악 — 갭 (W4 후속)
+
+- **서버 보호 부재**: `src/proxy.ts`는 `auth`를 re-export만 하고 `config.matcher`가 없어 미들웨어가 실제로 라우트를 가드하지 않는다. 현재 `/profile` 등 보호 라우트는 클라 분기(`LoginCtaDialog`)에만 의존. → W4에서 `matcher` 추가.
+- **온보딩 미연결**: 최초 로그인 후 온보딩 화면으로 자동 이동하는 로직 없음. 닉네임·지역 입력값도 백엔드에 저장 안 됨. → W4 Day 1.
+- **`POST /auth/login`** 백엔드 연동 잔류 → W4 Day 1.
 
 ---
 
@@ -117,23 +157,28 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 ---
 
-## Day 5 — 폼 검증
+## Day 5 — 온보딩 필드 개편 + 폼 검증
 
-온보딩 폼: 현재 plain useState + 수동 검증 → RHF + zod으로 전환.
+온보딩 폼: **닉네임 + 프로필 사진** 구성으로 개편. 지역 선택 제거. 이후 RHF + zod 검증 적용.
 리뷰 폼: 현재 **Zustand Context 스토어(`review-write-store`)로 상태 관리** — 스토어 구조 유지, zod schema 검증 메시지만 추가. RHF 전면 전환 아님.
 제출은 기존 mock 유지.
+
+> 온보딩 프로필 사진 교체 구현 시 `edit-profile-dialog.tsx`의 아바타 교체 패턴 재사용:
+> `Avatar` + 카메라 버튼 + 숨긴 `<input type="file" accept="image/*">` + `URL.createObjectURL`. 저장은 W4.
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
 | 패키지 설치 | - `react-hook-form`, `zod`, `@hookform/resolvers` 패키지 설치 | `package.json` | [ ] |
 |  | - shadcn `form.tsx` 추가 (`pnpm dlx shadcn@latest add form`) | `src/components/ui/form.tsx` (신규) | [ ] |
-| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~16자, 지역 1개 이상, 한국어 에러 메시지) | `src/lib/types/auth/schema.ts` (신규) | [ ] |
+| 온보딩 필드 개편 | - 지역 선택 UI 제거 (`PRIMARY_REGIONS`/`MORE_REGIONS`/`selectedRegions` 삭제) | `src/app/onboarding/page.tsx` | [ ] |
+|  | - 프로필 사진 교체 UI 추가 (아바타 + 카메라 버튼 + 파일 input + 로컬 미리보기, 저장은 W4) | `src/app/onboarding/page.tsx` | [ ] |
+| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~12자, 사진 선택(0~1장), 한국어 에러 메시지) | `src/lib/types/auth/schema.ts` (신규) | [ ] |
 |  | - `/onboarding` 폼에 `useForm({ resolver: zodResolver })` + shadcn Form 컴포넌트 적용 | `src/app/onboarding/page.tsx` | [ ] |
-| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~5, 한국어 에러 메시지) | `src/lib/types/review/schema.ts` (신규) | [ ] |
+| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~4, 한국어 에러 메시지) | `src/lib/types/review/schema.ts` (신규) | [ ] |
 |  | - `useReviewIsValid` 검증 로직을 zod schema `safeParse`로 교체 (Zustand 스토어 구조 유지) | `src/stores/review-write-store.tsx` | [ ] |
 | 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-> 산출물: 폼 검증 적용 완료 (리뷰 폼 Zustand 스토어 유지, 제출 로직은 기존 mock 유지)
+> 산출물: 온보딩 필드 개편(지역 제거·사진 추가) + 폼 검증 적용 완료 (리뷰 폼 Zustand 스토어 유지, 제출 로직은 기존 mock 유지)
 
 ---
 

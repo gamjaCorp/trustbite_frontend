@@ -20,6 +20,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: '/signin',
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 60 * 24 * 30, // 30일 (NextAuth 기본값을 명시적으로 고정)
+  },
   callbacks: {
     jwt({ token, user }) {
       if (user) token.id = user.id;
