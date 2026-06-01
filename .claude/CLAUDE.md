@@ -57,6 +57,7 @@ src/app                          Next App Router
 src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 features/(가까운 도메인) 또는 common/에 둔다. ui는 shadcn (직접 수정 금지)
 src/components/features/<feat>/  feature = 페이지 단위. 진입점 파일은 반드시 index.tsx.
 src/components/features/<feat>/hooks/use-*.ts  해당 feature(페이지)에만 쓰이는 훅은 feature 폴더 안 hooks/에 배치.
+src/components/features/<feat>/schema.ts       해당 feature에서만 쓰이는 zod schema는 feature 폴더 안에 배치. 여러 feature가 공유하게 되면 그때 src/lib/으로 승격.
 src/components/common/          두 개 이상 feature에서 공유하는 컴포넌트. feature에 귀속시키면 교차 의존이 생기는 경우.
 src/api/<feature>/<feature>.ts   fetch 기반 API 함수 (publicFetch/authedFetch/Server Action, feature별 하위 폴더)
 src/hooks/use-*.ts               여러 feature에서 공유하는 범용 훅 (예: use-debounced-value, use-auth-status, use-mobile)

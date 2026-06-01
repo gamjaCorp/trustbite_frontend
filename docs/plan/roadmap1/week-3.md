@@ -17,7 +17,7 @@
 | 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 강조 + 검색 자동완성/Focus 모드/대체 이미지 | [x] |
 | 3 | 로그인 로직 파악 + 세션 시간 명시 | 분기 메커니즘·화면별 분기·세션 정책 정리 + session.maxAge 명시 | [x] |
 | 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [x] |
-| 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
+| 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [x] |
 | 6 | 디자인 품질 점검 + 반응형 점검 | cross-page 톤 통일, breakpoint 375/768/1280 정상 | [ ] |
 | 7 | 코드 정리 + 빌드 + 스토리북 | `any`/`console.log` 제거, `pnpm build` 그린, 스토리북 잔여 | [ ] |
 
@@ -172,13 +172,13 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 |  | - shadcn `form.tsx` 추가 (`pnpm dlx shadcn@latest add form`) | `src/components/ui/form.tsx` (신규) | [x] |
 | 온보딩 필드 개편 | - 지역 선택 UI 제거 | `src/app/onboarding/page.tsx` | [x] |
 |  | - 프로필 사진 교체 UI 추가 (아바타 + 카메라 버튼 + 로컬 미리보기, 저장은 W4) | `src/app/onboarding/page.tsx` | [x] |
-| 온보딩 디자인 개편 | - 로그인과 통일된 비주얼로 개편 — 2컬럼 분할 제거, 전역 헤더 아래 중앙 단일 컬럼 구조로 (로그인과 동일한 배경 톤·여백·타이포 위계) | `src/app/onboarding/page.tsx`, `src/components/features/auth/` | [ ] |
-|  | - 온보딩 단독으로 쓰이던 분할 레이아웃 컴포넌트 정리 | `src/components/features/auth/index.tsx` | [ ] |
-| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~12자, 사진 선택(0~1장), 한국어 에러 메시지) | `src/lib/types/auth-schema.ts` (신규) | [ ] |
-|  | - `/onboarding` 폼에 `useForm({ resolver: zodResolver })` + shadcn Form 컴포넌트 적용 | `src/app/onboarding/page.tsx` | [ ] |
-| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~4, 한국어 에러 메시지) | `src/lib/types/review-schema.ts` (신규) | [ ] |
-|  | - `useReviewIsValid` 검증 로직을 zod schema `safeParse`로 교체 (Zustand 스토어 구조 유지) | `src/stores/review-write-store.tsx` | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 온보딩 디자인 개편 | - 로그인과 통일된 비주얼로 개편 — 2컬럼 분할 제거, 전역 헤더 아래 중앙 단일 컬럼 구조로 (로그인과 동일한 배경 톤·여백·타이포 위계) | `src/app/onboarding/page.tsx`, `src/components/features/auth/` | [x] |
+|  | - 온보딩 단독으로 쓰이던 분할 레이아웃 컴포넌트 정리 | `src/components/features/auth/index.tsx` | [x] |
+| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~12자, 사진 선택(0~1장), 한국어 에러 메시지) | `src/components/features/onboarding/schema.ts` (신규) | [x] |
+|  | - `/onboarding` 폼에 `useForm({ resolver: standardSchemaResolver })` + shadcn Form 컴포넌트 적용 | `src/components/features/onboarding/index.tsx` | [x] |
+| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 0.5~5, 텍스트 무제약, 사진 0~4, 한국어 에러 메시지) | `src/components/features/review-write/schema.ts` (신규) | [x] |
+|  | - `useReviewIsValid` 검증 로직을 zod schema `safeParse`로 교체 (Zustand 스토어 구조 유지) | `src/stores/review-write-store.tsx` | [x] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
 > 산출물: 온보딩 디자인 로그인과 통일 + 필드 개편(지역 제거·사진 추가) + 폼 검증 적용 완료 (리뷰 폼 Zustand 스토어 유지, 제출 로직은 기존 mock 유지)
 > 진행 순서: 디자인 개편 → schema 작성 → useForm 배선 순으로 진행 (같은 파일 두 번 대규모 수정 방지)

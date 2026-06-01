@@ -7,6 +7,8 @@ import { StoreApi, createStore, useStore } from 'zustand';
 import type { Category, SceneTag } from '@/lib/types/restaurant';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 
+import { reviewSchema } from '@/components/features/review-write/schema';
+
 export interface ReviewDraft {
   taste: number;
   value: number;
@@ -160,7 +162,14 @@ export const useReviewAvgScore = () =>
 export const useReviewIsValid = () =>
   useReviewWriteStore(
     (s) =>
-      s.selectedRestaurant !== null && s.taste > 0 && s.value > 0 && s.vibe > 0,
+      reviewSchema.safeParse({
+        restaurantId: s.selectedRestaurant?.id ?? '',
+        taste: s.taste,
+        value: s.value,
+        vibe: s.vibe,
+        text: s.text,
+        photos: s.photos,
+      }).success,
   );
 
 export const useReviewTrustDelta = () =>
