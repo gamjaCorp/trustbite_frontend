@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
 import { Progress } from '@/components/ui/progress';
-import { getLevelDef } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { getLevelDef } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 import { GradeIcon } from '@/components/common/grade-icon';
 

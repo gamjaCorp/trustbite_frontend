@@ -5,7 +5,7 @@ import { Surface } from '@/components/common/surface';
 import { RankMedal } from '@/components/common/rank-medal';
 import { ScoreStars } from '@/components/common/score-stars';
 import { useReviewAvgScore, useSelectedRestaurant } from '@/stores/review-write-store';
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 
 interface Props {
   myTopRestaurants: RegionalRankEntry[];

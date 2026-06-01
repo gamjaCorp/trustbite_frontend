@@ -10,7 +10,7 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/
 import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/place-list-row';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
-import type { RestaurantDetail } from '@/lib/types/restaurant/type';
+import type { RestaurantDetail } from '@/lib/types/restaurant';
 
 type WishlistSortKey = 'recent' | 'score' | 'trust';
 

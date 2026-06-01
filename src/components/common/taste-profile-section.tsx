@@ -11,8 +11,8 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
-import { Category, MyRestaurantEntry } from '@/lib/types/restaurant/type';
-import { CATEGORY_TEXT_STYLE } from '@/lib/category';
+import { Category, MyRestaurantEntry } from '@/lib/types/restaurant';
+import { CATEGORY_TEXT_STYLE } from '@/lib/domain/category';
 import { Surface } from '@/components/common/surface';
 
 interface Props {

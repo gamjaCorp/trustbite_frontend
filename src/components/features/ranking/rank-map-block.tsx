@@ -1,6 +1,6 @@
 'use client';
 
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import type { SearchArea } from '@/lib/geo';
 import { useRankActions, useRankAppliedArea } from '@/stores/region-rank-store';
 import { MapView } from './explore/index';

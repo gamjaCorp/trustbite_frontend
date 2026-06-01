@@ -4,8 +4,8 @@ import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { mockRankList } from '@/data/mock-restaurant';
 import { BackHeader } from '@/components/common/layout/back-header';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
-import { getLevelDef, getNextLevelDef } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { getLevelDef, getNextLevelDef } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 import type { ReviewDraft, SelectedRestaurant } from '@/stores/review-write-store';
 
 const CURRENT_LEVEL: GradeLevel = 3;

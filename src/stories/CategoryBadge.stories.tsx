@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { CategoryBadge } from '@/components/common/category-badge';
-import type { Category } from '@/lib/types/restaurant/type';
+import type { Category } from '@/lib/types/restaurant';
 
 const CATEGORIES: Category[] = ['한식', '일식', '중식', '양식', '카페', '술집', '기타'];
 

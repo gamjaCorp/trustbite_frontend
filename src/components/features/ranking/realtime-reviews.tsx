@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Star } from 'lucide-react';
-import { RealtimeReview } from '@/lib/types/restaurant/type';
+import { RealtimeReview } from '@/lib/types/restaurant';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { Surface } from '@/components/common/surface';
 import { SectionHeader } from '@/components/common/section-header';

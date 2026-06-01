@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
-import { GRADE_LEVELS } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 const LEVELS = GRADE_LEVELS.map((d) => d.level) as GradeLevel[];
 

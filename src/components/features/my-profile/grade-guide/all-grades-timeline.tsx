@@ -1,6 +1,6 @@
 import { GradeIcon } from '@/components/common/grade-icon';
-import { GRADE_LEVELS } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';
 
 interface Props {

@@ -1,4 +1,4 @@
-import type { GradeLevel } from '@/lib/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 export type FollowTabKey = 'followers' | 'following';
 

@@ -1,5 +1,5 @@
-import type { MyRestaurantEntry, RegionalRankEntry } from '@/lib/types/restaurant/type';
-import type { UserProfile } from '@/lib/types/user/type';
+import type { MyRestaurantEntry, RegionalRankEntry } from '@/lib/types/restaurant';
+import type { UserProfile } from '@/lib/types/user';
 
 const toRanked = (entry: MyRestaurantEntry): RegionalRankEntry => ({
   ...entry,

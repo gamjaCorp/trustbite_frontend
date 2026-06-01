@@ -1,7 +1,7 @@
 // 순위 메달 배지 — 1~3위는 메달 색(금/은/동), 그 외는 fallback 톤
 import type { ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/utils';
-import { getRankMedalClasses } from '@/lib/rank';
+import { getRankMedalClasses } from '@/lib/domain/rank';
 
 interface Props extends ComponentPropsWithoutRef<'span'> {
   rank: number;

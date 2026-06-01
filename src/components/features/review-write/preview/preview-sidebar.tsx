@@ -1,6 +1,6 @@
 import { RankingPreview } from './ranking-preview';
 import { TrustDeltaCard } from './trust-delta-card';
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 
 interface Props {
   myTopRestaurants: RegionalRankEntry[];

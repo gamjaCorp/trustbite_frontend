@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { GradeIcon } from '@/components/common/grade-icon';
-import { GRADE_LEVELS } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 const LEVELS = GRADE_LEVELS.map((d) => d.level) as GradeLevel[];
 

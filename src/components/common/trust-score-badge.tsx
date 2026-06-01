@@ -2,7 +2,7 @@
 
 import { ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getTrustToneClass } from '@/lib/trust-score';
+import { getTrustToneClass } from '@/lib/domain/trust-score';
 
 interface Props {
   score: number;

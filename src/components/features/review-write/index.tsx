@@ -22,8 +22,8 @@ import ReviewWriteProvider, {
   useReviewTrustDelta,
   useSelectedRestaurant,
 } from '@/stores/review-write-store';
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
-import type { GradeLevel } from '@/lib/grade-levels';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { ReviewResultDialog } from './review-result/index';
 
 import { TargetRestaurantCard } from './fields/target-restaurant-card';

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { mapCategory } from '@/lib/synthesize-restaurant';
-import type { Category } from '@/lib/types/restaurant/type';
+import { mapCategory } from '@/lib/mock/synthesize-restaurant';
+import type { Category } from '@/lib/types/restaurant';
 
 // 자동완성 드롭다운에 표시되는 가게 항목
 export interface SuggestItem {

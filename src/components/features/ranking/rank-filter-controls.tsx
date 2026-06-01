@@ -8,7 +8,7 @@ import {
   useRankOccasions,
 } from '@/stores/region-rank-store';
 import { CategoryChipRow } from '@/components/common/category-chip-row';
-import { CATEGORIES, OCCASIONS } from '@/lib/category';
+import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import { SearchAutocomplete } from './search-autocomplete';
 
 interface RankFilterControlsProps {

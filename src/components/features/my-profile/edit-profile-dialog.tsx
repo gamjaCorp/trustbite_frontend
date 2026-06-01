@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useMyProfileMock } from '@/stores/my-profile-mock-store';
-import type { MyProfile } from '@/lib/types/user/type';
+import type { MyProfile } from '@/lib/types/user';
 
 const NICKNAME_MIN = 2;
 const NICKNAME_MAX = 12;

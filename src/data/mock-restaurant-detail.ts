@@ -1,4 +1,4 @@
-import { RestaurantDetail } from '@/lib/types/restaurant/type';
+import { RestaurantDetail } from '@/lib/types/restaurant';
 
 const yangmiok: RestaurantDetail = {
   id: '1',

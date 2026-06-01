@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import type { SearchArea } from '@/lib/geo';
 import { IntroCard } from '@/components/common/intro-card';
 import { useNearbyPlaces } from './hooks/use-nearby-places';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef } from 'react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import { useRankActiveId, useRankActions } from '@/stores/region-rank-store';
 
 interface UsePinRowSyncOptions {

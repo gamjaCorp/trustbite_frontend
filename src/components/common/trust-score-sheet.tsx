@@ -9,8 +9,8 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Progress } from '@/components/ui/progress';
-import { getTrustToneClass } from '@/lib/trust-score';
-import type { TrustBreakdown } from '@/lib/types/restaurant/type';
+import { getTrustToneClass } from '@/lib/domain/trust-score';
+import type { TrustBreakdown } from '@/lib/types/restaurant';
 import { cn } from '@/lib/utils';
 
 interface Props {

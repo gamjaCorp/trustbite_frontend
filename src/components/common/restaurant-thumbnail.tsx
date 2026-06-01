@@ -3,8 +3,8 @@
 // 가게 썸네일 — src가 비거나 로드 실패하면 카테고리 아이콘 placeholder로 스왑
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { CATEGORY_ICON } from '@/lib/category';
-import type { Category } from '@/lib/types/restaurant/type';
+import { CATEGORY_ICON } from '@/lib/domain/category';
+import type { Category } from '@/lib/types/restaurant';
 
 interface RestaurantThumbnailProps {
   src: string;

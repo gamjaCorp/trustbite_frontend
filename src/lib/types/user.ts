@@ -1,5 +1,5 @@
-import type { RegionalRankEntry } from '../restaurant/type';
-import type { GradeLevel } from '@/lib/grade-levels';
+import type { RegionalRankEntry } from './restaurant';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 interface MutualFollowing {
   displayName: string;

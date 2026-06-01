@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getMyProfile } from '@/data/mock-my-profile';
-import type { FollowTabKey, FollowedUser } from '@/lib/types/follow/type';
+import type { FollowTabKey, FollowedUser } from '@/lib/types/follow';
 
 import { FollowEmpty } from './follow-empty';
 import { FollowUserRow } from './follow-user-row';

@@ -25,8 +25,8 @@ import type {
   VisitStatus,
   RegionalRankEntry,
   RestaurantDetail,
-} from '@/lib/types/restaurant/type';
-import { SCORE_LABELS } from '@/lib/score-labels';
+} from '@/lib/types/restaurant';
+import { SCORE_LABELS } from '@/lib/domain/score-labels';
 
 export interface PlaceListRowData {
   id: string;

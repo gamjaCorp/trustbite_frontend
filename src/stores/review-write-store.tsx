@@ -4,8 +4,8 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, SceneTag } from '@/lib/types/restaurant/type';
-import type { GradeLevel } from '@/lib/grade-levels';
+import type { Category, SceneTag } from '@/lib/types/restaurant';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 export interface ReviewDraft {
   taste: number;

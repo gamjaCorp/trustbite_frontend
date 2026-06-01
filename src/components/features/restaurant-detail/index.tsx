@@ -3,8 +3,8 @@
 // TODO: 1차 MVP 제외 — 백엔드 상세 API 도착 시 cache lookup 로직 제거 후 server component로 복원
 import { useQueryClient } from '@tanstack/react-query';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
-import { findPlaceInCache } from '@/lib/find-place-in-cache';
-import { synthesizeDetailFromEntry } from '@/lib/synthesize-restaurant-detail';
+import { findPlaceInCache } from '@/lib/mock/find-place-in-cache';
+import { synthesizeDetailFromEntry } from '@/lib/mock/synthesize-restaurant-detail';
 import { BackHeader } from '@/components/common/layout/back-header';
 
 import { useLocationMeta } from './hooks/use-location-meta';

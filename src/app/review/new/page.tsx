@@ -1,7 +1,7 @@
 import { mockRankList } from '@/data/mock-restaurant';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
-import { getLevelDef, getNextLevelDef } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { getLevelDef, getNextLevelDef } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 const CURRENT_LEVEL: GradeLevel = 3;
 const BASE_TRUST_SCORE = 72;

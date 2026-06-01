@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { UtensilsCrossed, Plus, Share2, Check, MapPin } from 'lucide-react';
-import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/lib/types/restaurant/type';
+import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/lib/types/restaurant';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +17,7 @@ import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
 import { CategoryChipRow } from '@/components/common/category-chip-row';
-import { CATEGORIES, OCCASIONS } from '@/lib/category';
+import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import { SelectList } from '@/components/core/select-list';
 
 const SORT_ITEMS = [

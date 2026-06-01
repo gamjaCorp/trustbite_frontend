@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ProfileHeaderCard } from '@/components/common/profile-header-card';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { cn } from '@/lib/utils';
-import type { UserProfile } from '@/lib/types/user/type';
+import type { UserProfile } from '@/lib/types/user';
 
 interface Props {
   profile: UserProfile;

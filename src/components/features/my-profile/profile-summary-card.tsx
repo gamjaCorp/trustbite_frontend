@@ -10,7 +10,7 @@ import { ProfileHeaderCard } from '@/components/common/profile-header-card';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { EditProfileDialog } from './edit-profile-dialog';
-import type { MyProfile } from '@/lib/types/user/type';
+import type { MyProfile } from '@/lib/types/user';
 
 interface Props {
   profile: MyProfile;

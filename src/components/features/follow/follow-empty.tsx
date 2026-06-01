@@ -8,7 +8,7 @@ import {
   EmptyTitle,
   EmptyDescription,
 } from '@/components/ui/empty';
-import type { FollowTabKey } from '@/lib/types/follow/type';
+import type { FollowTabKey } from '@/lib/types/follow';
 
 interface Props {
   mode: 'self' | 'other';

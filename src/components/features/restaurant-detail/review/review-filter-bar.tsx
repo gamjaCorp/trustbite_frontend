@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { type SceneTag } from '@/lib/types/restaurant/type';
+import { type SceneTag } from '@/lib/types/restaurant';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SectionHeader } from '@/components/common/section-header';
 

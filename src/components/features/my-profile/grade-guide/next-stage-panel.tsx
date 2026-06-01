@@ -2,8 +2,8 @@ import { Check, FileText, ShieldCheck } from 'lucide-react';
 
 import { Progress } from '@/components/ui/progress';
 import { GradeIcon } from '@/components/common/grade-icon';
-import { getNextLevelDef, getProgressToNext } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { getNextLevelDef, getProgressToNext } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';
 
 interface Props {

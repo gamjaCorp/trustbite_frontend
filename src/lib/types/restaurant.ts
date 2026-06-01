@@ -1,4 +1,4 @@
-import type { GradeLevel } from '@/lib/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 export type Category = '한식' | '일식' | '중식' | '양식' | '분식' | '치킨' | '패스트푸드' | '카페' | '술집' | '기타';
 

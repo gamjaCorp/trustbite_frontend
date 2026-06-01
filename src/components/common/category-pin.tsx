@@ -2,8 +2,8 @@
 import { Coffee, Beer, Utensils } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getRankMedalClasses } from '@/lib/rank';
-import type { Category } from '@/lib/types/restaurant/type';
+import { getRankMedalClasses } from '@/lib/domain/rank';
+import type { Category } from '@/lib/types/restaurant';
 
 interface Props {
   category: Category;

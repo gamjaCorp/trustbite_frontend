@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Circle, CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { MapPin } from 'lucide-react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant/type';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import { CategoryPin } from '@/components/common/category-pin';
 import { type SearchArea, haversine, computeViewportRadius } from '@/lib/geo';
 import { cn } from '@/lib/utils';

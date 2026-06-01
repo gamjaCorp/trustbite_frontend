@@ -5,10 +5,10 @@ import { TasteProfileSection } from '@/components/common/taste-profile-section';
 import { StatsStrip } from '@/components/common/stats-strip';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
-import { getLevelDef } from '@/lib/grade-levels';
-import { getTrustToneClass } from '@/lib/trust-score';
+import { getLevelDef } from '@/lib/domain/grade-levels';
+import { getTrustToneClass } from '@/lib/domain/trust-score';
 import { useFollowMock } from '@/stores/follow-mock-store';
-import type { UserProfile } from '@/lib/types/user/type';
+import type { UserProfile } from '@/lib/types/user';
 
 import { LockedRankingsSection } from './locked-rankings-section';
 import { UserProfileHeader } from './user-profile-header';

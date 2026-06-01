@@ -12,7 +12,7 @@ import {
   UtensilsCrossed,
   type LucideIcon,
 } from 'lucide-react';
-import { Category, SceneTag } from '@/lib/types/restaurant/type';
+import { Category, SceneTag } from '@/lib/types/restaurant';
 
 export const CATEGORY_STYLE: Record<Category, string> = {
   한식: 'bg-palette-red-subtle text-palette-red',
