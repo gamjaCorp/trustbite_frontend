@@ -1,186 +1,157 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check } from 'lucide-react';
+import { Check, Camera } from 'lucide-react';
 
-import { AuthLayout } from '@/components/features/auth/index';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { CutleryRain } from '@/components/features/auth/index';
+import { useAuthStatus } from '@/hooks/use-auth-status';
 import { cn } from '@/lib/utils';
 
-const PRIMARY_REGIONS = ['강남', '홍대', '을지로', '성수', '한남'] as const;
-const MORE_REGIONS = [
-  '광장시장',
-  '서촌',
-  '망원',
-  '합정',
-  '이태원',
-  '압구정',
-  '신촌',
-  '종로',
-  '명동',
-] as const;
-
-const MAX_REGIONS = 3;
 const NICKNAME_MIN = 2;
 const NICKNAME_MAX = 12;
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [nickname, setNickname] = useState('함사먹은 햄찌');
-  const [selectedRegions, setSelectedRegions] = useState<string[]>(['강남', '성수']);
-  const [showMore, setShowMore] = useState(false);
+  const { user } = useAuthStatus();
 
-  const toggleRegion = (region: string) => {
-    setSelectedRegions((prev) => {
-      if (prev.includes(region)) return prev.filter((r) => r !== region);
-      if (prev.length >= MAX_REGIONS) return prev;
-      return [...prev, region];
-    });
+  // 닉네임: 직접 입력하면 그 값을, 아직 안 건드렸으면 구글 이름으로 파생
+  const [nickname, setNickname] = useState<string | undefined>(undefined);
+  const displayNickname = nickname ?? user?.name ?? '';
+
+  // 아바타: 사용자가 직접 고른 파일이 있으면 우선, 없으면 구글 기본 이미지
+  const [draftAvatarUrl, setDraftAvatarUrl] = useState<string | undefined>(undefined);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const pendingBlobRef = useRef<string | undefined>(undefined);
+
+  const revokePending = useCallback(() => {
+    if (pendingBlobRef.current) {
+      URL.revokeObjectURL(pendingBlobRef.current);
+      pendingBlobRef.current = undefined;
+    }
+  }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    revokePending();
+    const url = URL.createObjectURL(file);
+    pendingBlobRef.current = url;
+    setDraftAvatarUrl(url);
+    e.target.value = '';
   };
 
-  const trimmedLength = nickname.trim().length;
-  const isValid =
-    trimmedLength >= NICKNAME_MIN &&
-    trimmedLength <= NICKNAME_MAX &&
-    selectedRegions.length > 0;
+  const trimmedLength = displayNickname.trim().length;
+  const isValid = trimmedLength >= NICKNAME_MIN && trimmedLength <= NICKNAME_MAX;
 
   const handleStart = () => {
     if (!isValid) return;
+    // TODO: 1차 MVP 제외 — 닉네임·아바타 백엔드 저장 (W4 연동)
     router.push('/');
   };
 
-  const visibleRegions = showMore
-    ? [...PRIMARY_REGIONS, ...MORE_REGIONS]
-    : PRIMARY_REGIONS;
+  // 표시 아바타: 직접 선택 > 구글 기본 이미지 > 이니셜 fallback
+  const displayAvatarSrc = draftAvatarUrl ?? user?.image ?? undefined;
+  const avatarInitial = displayNickname.trim().charAt(0) || '?';
+  const firstName = user?.name?.split(' ')[0];
+  const heading = firstName ? `환영해요, ${firstName}님!` : '환영해요!';
 
   return (
-    <AuthLayout
-      step={2}
-      left={
-        <div className="flex-1 flex flex-col w-full max-w-md mx-auto">
-          <div className="flex-1 flex flex-col justify-center space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-display-1 text-foreground">
-                잘 오셨어요, 햄찌님
-              </h1>
-              <p className="text-caption-1 text-muted-foreground leading-relaxed">
-                마지막 한 단계만 남았어요.
-                <br />
-                곧 만나볼 수 있어요.
-              </p>
-            </div>
+    <div className="relative overflow-hidden min-h-[calc(100vh-var(--header-height))] bg-gradient-to-b from-primary-subtle/60 via-background to-background flex flex-col items-center justify-center px-6 py-16">
+      <CutleryRain />
 
-            <blockquote className="pl-4 border-l-2 border-primary">
-              <p className="text-body-2 text-foreground leading-relaxed">
-                &ldquo;리뷰는 단순한 평가가 아니라,
-                <br />
-                다른 사람의 신중한 선택을 만드는 거예요.&rdquo;
-              </p>
-              <footer className="mt-2 text-caption-2 text-muted-foreground">
-                — TrustBite의 약속
-              </footer>
-            </blockquote>
-          </div>
-
-          <div className="pt-8 border-t border-border flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground text-background">
-              <Check className="w-3 h-3" strokeWidth={3} />
-            </span>
-            <span className="text-caption-1 text-muted-foreground">Google 인증 완료</span>
-          </div>
+      {/* form 살짝 위로 */}
+      <div className="relative z-10 w-full max-w-sm space-y-8 -translate-y-4">
+        {/* Google 인증 완료 배지 */}
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-success-subtle text-success">
+            <Check className="w-3 h-3" strokeWidth={3} />
+          </span>
+          <span className="text-caption-1 text-muted-foreground">Google 인증 완료</span>
         </div>
-      }
-      right={
-        <div className="flex-1 flex flex-col w-full max-w-md mx-auto">
-          <div className="flex-1 flex flex-col justify-center space-y-6">
-            <div>
-              <h2 className="text-headline-1 tracking-tight text-foreground">
-                두 가지만 알려주시면 시작해요
-              </h2>
-              <p className="mt-2 text-caption-1 text-muted-foreground">
-                언제든 나중에 변경할 수 있어요
-              </p>
-            </div>
 
-            <div className="space-y-1.5">
-              <label
-                htmlFor="nickname"
-                className="block text-title-2 text-foreground"
-              >
-                닉네임
-              </label>
-              <input
-                id="nickname"
-                type="text"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                maxLength={NICKNAME_MAX}
-                className="w-full rounded-xl border border-border bg-card px-4 py-3 text-label-1 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
-              />
-              <p className="text-caption-2 text-muted-foreground">
-                {NICKNAME_MIN}~{NICKNAME_MAX}자 · 나중에 변경 가능
-              </p>
-            </div>
+        {/* 헤딩 */}
+        <div className="space-y-2">
+          <h1 className="text-display-1 text-foreground">{heading}</h1>
+          <p className="text-caption-1 text-muted-foreground leading-relaxed">
+            프로필만 확인하면 끝이에요
+          </p>
+        </div>
 
-            <div className="space-y-2">
-              <p className="text-title-2 text-foreground">자주 가는 지역</p>
-              <div className="flex flex-wrap gap-2">
-                {visibleRegions.map((region) => {
-                  const selected = selectedRegions.includes(region);
-                  const disabled =
-                    !selected && selectedRegions.length >= MAX_REGIONS;
-                  return (
-                    <button
-                      key={region}
-                      type="button"
-                      onClick={() => toggleRegion(region)}
-                      disabled={disabled}
-                      className={cn(
-                        'inline-flex items-center gap-1 rounded-full border px-3 py-1.5 transition-colors',
-                        selected
-                          ? 'bg-primary-subtle text-primary border-primary/40 text-title-3'
-                          : 'text-body-2 bg-card text-foreground border-border hover:bg-muted/40',
-                        disabled && 'opacity-40 cursor-not-allowed hover:bg-card',
-                      )}
-                    >
-                      {region}
-                      {selected && (
-                        <Check className="w-3.5 h-3.5" strokeWidth={2.5} />
-                      )}
-                    </button>
-                  );
-                })}
-                {!showMore && (
-                  <button
-                    type="button"
-                    onClick={() => setShowMore(true)}
-                    className="inline-flex items-center rounded-full border border-dashed border-border px-3 py-1.5 text-label-2 text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
-                  >
-                    + 더보기
-                  </button>
+        {/* 폼 */}
+        <div className="space-y-6">
+          {/* 프로필 사진 */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative">
+              <Avatar className="h-20 w-20">
+                {displayAvatarSrc && (
+                  <AvatarImage src={displayAvatarSrc} alt="프로필 이미지" />
                 )}
-              </div>
-              <p className="text-caption-2 text-muted-foreground">
-                최대 {MAX_REGIONS}개 · 검색 시 우선 노출
-              </p>
+                <AvatarFallback className="bg-primary-subtle text-primary text-2xl">
+                  {avatarInitial}
+                </AvatarFallback>
+              </Avatar>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                aria-label="프로필 이미지 변경"
+                className={cn(
+                  'absolute bottom-0 right-0 w-7 h-7 rounded-full',
+                  'bg-primary text-primary-foreground flex items-center justify-center',
+                  'ring-2 ring-background hover:bg-primary/80 transition-colors',
+                )}
+              >
+                <Camera className="w-3.5 h-3.5" />
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFileChange}
+              />
             </div>
           </div>
 
-          <div className="pt-8">
-            <button
-              type="button"
-              onClick={handleStart}
-              disabled={!isValid}
-              className="w-full rounded-xl bg-foreground text-background px-4 py-3.5 text-title-2 hover:bg-foreground/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          {/* 닉네임 */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="nickname"
+              className="block text-title-2 text-foreground"
             >
-              시작하기
-            </button>
-            <p className="mt-3 text-center text-title-3 text-primary">
-              리뷰를 쓸수록 내 신뢰도가 올라가요
+              닉네임
+            </label>
+            <input
+              id="nickname"
+              type="text"
+              value={displayNickname}
+              onChange={(e) => setNickname(e.target.value)}
+              maxLength={NICKNAME_MAX}
+              placeholder="닉네임을 입력해 주세요"
+              className="w-full rounded-xl border border-border bg-card px-4 py-3 text-label-1 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+            />
+            <p className="text-caption-2 text-muted-foreground">
+              {NICKNAME_MIN}~{NICKNAME_MAX}자 · 중복 불가 · 나중에 변경 가능
             </p>
           </div>
         </div>
-      }
-    />
+
+        {/* CTA */}
+        <div>
+          <button
+            type="button"
+            onClick={handleStart}
+            disabled={!isValid}
+            className="w-full rounded-xl bg-primary text-primary-foreground px-4 py-3.5 text-title-2 hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            시작하기
+          </button>
+          <p className="mt-3 text-center text-title-3 text-primary">
+            믿을 수 있는 별점, 같이 모으는 맛집
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

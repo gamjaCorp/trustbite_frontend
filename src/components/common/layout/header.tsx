@@ -22,12 +22,8 @@ export function Header() {
   const { isAuthed, user } = useAuthStatus();
   const [myPlacesDialogOpen, setMyPlacesDialogOpen] = useState(false);
 
-  // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다. 로그인/온보딩은 미니 랜딩.
-  if (
-    pathname.startsWith('/restaurant/') ||
-    pathname.startsWith('/user/') ||
-    pathname === '/onboarding'
-  )
+  // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다.
+  if (pathname.startsWith('/restaurant/') || pathname.startsWith('/user/'))
     return null;
 
   return (

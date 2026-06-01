@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { signIn, providerMap } from '@/auth';
 import { AuthError } from 'next-auth';
 import { Button } from '@/components/ui/button';
-import { CutleryRain } from '@/components/features/auth/cutlery-rain';
+import { CutleryRain } from '@/components/features/auth/index';
 
 const SIGNIN_ERROR_URL = '/error';
 
@@ -30,8 +30,9 @@ export default async function SignInPage(props: {
               action={async () => {
                 'use server';
                 try {
+                  // TODO: 1차 MVP 제외 — 데모용 강제 온보딩 진입. W4에서 "신규 유저면 온보딩" 분기로 교체
                   await signIn(provider.id, {
-                    redirectTo: callbackUrl ?? '/',
+                    redirectTo: callbackUrl ?? '/onboarding',
                   });
                 } catch (error) {
                   if (error instanceof AuthError) {

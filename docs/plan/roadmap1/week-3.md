@@ -16,7 +16,7 @@
 | 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [x] |
 | 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 강조 + 검색 자동완성/Focus 모드/대체 이미지 | [x] |
 | 3 | 로그인 로직 파악 + 세션 시간 명시 | 분기 메커니즘·화면별 분기·세션 정책 정리 + session.maxAge 명시 | [x] |
-| 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
+| 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [x] |
 | 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
 | 6 | 디자인 품질 점검 + 반응형 점검 | cross-page 톤 통일, breakpoint 375/768/1280 정상 | [ ] |
 | 7 | 코드 정리 + 빌드 + 스토리북 | `any`/`console.log` 제거, `pnpm build` 그린, 스토리북 잔여 | [ ] |
@@ -143,15 +143,15 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 타입 이동 | - `src/types/restaurant.ts` → `src/lib/types/restaurant/type.ts` 이동 | `src/types/` → `src/lib/types/` | [ ] |
-|  | - `src/types/user.ts` → `src/lib/types/user/type.ts` 이동 | `src/types/` → `src/lib/types/` | [ ] |
-|  | - `src/types/follow.ts` → `src/lib/types/follow/type.ts` 이동 | `src/types/` → `src/lib/types/` | [ ] |
-|  | - 프로젝트 내 `@/types/*` import 전체 수정 | — | [ ] |
-| fetch 골격 | - `ApiError` 클래스, `baseURL`(`NEXT_PUBLIC_API_BASE_URL`), 공통 응답 파서 작성 | `src/lib/fetch.ts` (신규) | [ ] |
-|  | - `publicFetch<T>` (토큰 없음, `next: { tags, revalidate }` 캐시 가능), `authedFetch<T>` (`auth()` Bearer, `no-store`) 작성 | `src/lib/fetch.server.ts` (신규) | [ ] |
-|  | - `clientFetch<T>` (세션 토큰, 401 시 sonner + signout) 작성 | `src/lib/fetch.client.ts` (신규) | [ ] |
-| 에러 핸들러 | - 글로벌 React Query 에러 핸들러 → `sonner` toast 연결 골격 | `src/components/common/layout/providers.tsx` | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 타입 이동 | - `src/types/restaurant.ts` → `src/lib/types/restaurant/type.ts` 이동 | `src/types/` → `src/lib/types/` | [x] |
+|  | - `src/types/user.ts` → `src/lib/types/user/type.ts` 이동 | `src/types/` → `src/lib/types/` | [x] |
+|  | - `src/types/follow.ts` → `src/lib/types/follow/type.ts` 이동 | `src/types/` → `src/lib/types/` | [x] |
+|  | - 프로젝트 내 `@/types/*` import 전체 수정 | — | [x] |
+| fetch 골격 | - `ApiError` 클래스, `baseURL`(`NEXT_PUBLIC_API_BASE_URL`), 공통 응답 파서 작성 | `src/network/base.ts` (신규) | [x] |
+|  | - `publicFetch<T>` (토큰 없음, `next: { tags, revalidate }` 캐시 가능), `authedFetch<T>` (`auth()` Bearer, `no-store`) 작성 | `src/network/server.ts` (신규) | [x] |
+|  | - `clientFetch<T>` (세션 토큰, 401 시 sonner + signout) 작성 | `src/network/client.ts` (신규) | [x] |
+| 에러 핸들러 | - 글로벌 React Query 에러 핸들러 → `sonner` toast 연결 골격 | `src/components/common/layout/providers.tsx` | [x] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
 > 산출물: 타입 경로 일관화 + fetch 래퍼 골격 완비 (API 함수는 W4에서 작성)
 
@@ -168,17 +168,20 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 패키지 설치 | - `react-hook-form`, `zod`, `@hookform/resolvers` 패키지 설치 | `package.json` | [ ] |
-|  | - shadcn `form.tsx` 추가 (`pnpm dlx shadcn@latest add form`) | `src/components/ui/form.tsx` (신규) | [ ] |
-| 온보딩 필드 개편 | - 지역 선택 UI 제거 (`PRIMARY_REGIONS`/`MORE_REGIONS`/`selectedRegions` 삭제) | `src/app/onboarding/page.tsx` | [ ] |
-|  | - 프로필 사진 교체 UI 추가 (아바타 + 카메라 버튼 + 파일 input + 로컬 미리보기, 저장은 W4) | `src/app/onboarding/page.tsx` | [ ] |
-| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~12자, 사진 선택(0~1장), 한국어 에러 메시지) | `src/lib/types/auth/schema.ts` (신규) | [ ] |
+| 패키지 설치 | - `react-hook-form`, `zod`, `@hookform/resolvers` 패키지 설치 | `package.json` | [x] |
+|  | - shadcn `form.tsx` 추가 (`pnpm dlx shadcn@latest add form`) | `src/components/ui/form.tsx` (신규) | [x] |
+| 온보딩 필드 개편 | - 지역 선택 UI 제거 | `src/app/onboarding/page.tsx` | [x] |
+|  | - 프로필 사진 교체 UI 추가 (아바타 + 카메라 버튼 + 로컬 미리보기, 저장은 W4) | `src/app/onboarding/page.tsx` | [x] |
+| 온보딩 디자인 개편 | - 로그인과 통일된 비주얼로 개편 — 2컬럼 분할 제거, 전역 헤더 아래 중앙 단일 컬럼 구조로 (로그인과 동일한 배경 톤·여백·타이포 위계) | `src/app/onboarding/page.tsx`, `src/components/features/auth/` | [ ] |
+|  | - 온보딩 단독으로 쓰이던 분할 레이아웃 컴포넌트 정리 | `src/components/features/auth/index.tsx` | [ ] |
+| 온보딩 폼 | - 온보딩 schema 작성 (닉네임 2~12자, 사진 선택(0~1장), 한국어 에러 메시지) | `src/lib/types/auth-schema.ts` (신규) | [ ] |
 |  | - `/onboarding` 폼에 `useForm({ resolver: zodResolver })` + shadcn Form 컴포넌트 적용 | `src/app/onboarding/page.tsx` | [ ] |
-| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~4, 한국어 에러 메시지) | `src/lib/types/review/schema.ts` (신규) | [ ] |
+| 리뷰 폼 | - 리뷰 작성 zod schema 작성 (가게 필수, 평점 1~5, 텍스트 100자 이상, 사진 0~4, 한국어 에러 메시지) | `src/lib/types/review-schema.ts` (신규) | [ ] |
 |  | - `useReviewIsValid` 검증 로직을 zod schema `safeParse`로 교체 (Zustand 스토어 구조 유지) | `src/stores/review-write-store.tsx` | [ ] |
 | 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-> 산출물: 온보딩 필드 개편(지역 제거·사진 추가) + 폼 검증 적용 완료 (리뷰 폼 Zustand 스토어 유지, 제출 로직은 기존 mock 유지)
+> 산출물: 온보딩 디자인 로그인과 통일 + 필드 개편(지역 제거·사진 추가) + 폼 검증 적용 완료 (리뷰 폼 Zustand 스토어 유지, 제출 로직은 기존 mock 유지)
+> 진행 순서: 디자인 개편 → schema 작성 → useForm 배선 순으로 진행 (같은 파일 두 번 대규모 수정 방지)
 
 ---
 
@@ -196,6 +199,8 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
+| 공통 컴포넌트 점검 | - `core/`(2개)·`common/`(24개) 재사용 우선순위(`core→ui→new`)·`core=ui 래퍼 한정` 규칙 준수 점검 | `src/components/{core,common}/` | [ ] |
+|  | - `common/` 내 중복·유사 컴포넌트 통합 가능 여부 점검 (배지/마크/스타 계열 등) | `src/components/common/` | [ ] |
 | 토큰 점검 | - 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 5건 이하로 정리 | — | [ ] |
 |  | - 컬러 토큰 — arbitrary hex 0건 (Google 로고/Pin SVG 예외만) | — | [ ] |
 |  | - 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관 적용 | — | [ ] |
