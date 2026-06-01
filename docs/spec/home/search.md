@@ -72,4 +72,4 @@ keyword 항목이 확정되면 `focusedPlace` 상태 진입:
 
 ---
 
-> 백엔드 계약 상세 (엔드포인트·응답 타입·판단 규칙·API 영향) → [`search-backend-spec.md`](./search-backend-spec.md)
+> 백엔드 계약 상세 (엔드포인트·응답 타입·판단 규칙·API 영향) → [`backend-spec.md`](./backend-spec.md)
