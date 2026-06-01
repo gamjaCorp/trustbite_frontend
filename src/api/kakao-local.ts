@@ -40,7 +40,7 @@ function fetchCategory(
           } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
             resolve(results);
           } else {
-            reject(new Error(`Kakao Places 검색 실패 (${code})`));
+            reject(new Error(`Kakao Places 검색 실패 (${code}) status=${status}`));
           }
         },
         { location, radius, page },
@@ -95,7 +95,7 @@ function fetchKeywordPage(
           } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
             resolve(results);
           } else {
-            reject(new Error(`Kakao Places 키워드 검색 실패 (${code})`));
+            reject(new Error(`Kakao Places 키워드 검색 실패 (${code}) status=${status}`));
           }
         },
         { location, radius, page, category_group_code: code },

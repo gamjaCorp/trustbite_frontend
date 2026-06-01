@@ -25,8 +25,12 @@ const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
 const CIRCLE_COLOR = '#ff7a00';
 // onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
 const VIEWPORT_MOVE_RATIO = 0.3;
+// 카카오 줌 1단계는 반경을 약 2배/절반으로 바꿈 — 0.35면 한 단계 줌도 확실히 감지
+const RADIUS_CHANGE_RATIO = 0.35;
 // 이 level 이하로 확대되면 모든 핀에 이름 라벨 표시 (작을수록 확대, 1=최대 확대)
 const LABEL_VISIBLE_LEVEL = 3;
+// 핀 클릭 시 줌인 기준 — 현재 level이 이보다 크면(덜 확대) 이 level로 줌인, 이미 확대된 경우 그 줌 유지
+const CLOSEUP_LEVEL = 3;
 
 // 카카오 지도 뷰 — appKey 유무 게이트 후 KakaoMap에 위임
 export function MapView(props: MapViewProps) {
@@ -105,6 +109,8 @@ function KakaoMap({
   const mapRef = useRef<kakao.maps.Map | null>(null);
   // 마지막으로 검색한 중심 — onIdle 오발화 가드에 사용 (동기 갱신, React 배치 무관)
   const searchedCenterRef = useRef<{ lat: number; lng: number } | null>(null);
+  // 마지막으로 검색한 반경 — 줌 변화도 재검색 트리거에 포함하기 위해 추적
+  const searchedRadiusRef = useRef<number | null>(null);
 
   // onRegionChange를 ref로 안정화 — 부모가 매 렌더마다 새 함수를 넘겨도 effect 재실행 방지
   const onRegionChangeRef = useRef(onRegionChange);
@@ -140,6 +146,7 @@ function KakaoMap({
     const map = mapRef.current;
     if (!map || !appliedArea) return;
     searchedCenterRef.current = appliedArea.center;
+    searchedRadiusRef.current = appliedArea.radius;
     const cur = map.getCenter();
     const dx = Math.abs(cur.getLat() - appliedArea.center.lat);
     const dy = Math.abs(cur.getLng() - appliedArea.center.lng);
@@ -153,7 +160,8 @@ function KakaoMap({
     if (!map || !activeId) return;
     const entry = entries.find((e) => e.id === activeId);
     if (!entry) return;
-    map.setLevel(3);
+    // 현재 줌이 클로즈업 기준보다 덜 확대된 경우에만 줌인 — 이미 확대 중이면 그 줌 유지
+    if (map.getLevel() > CLOSEUP_LEVEL) map.setLevel(CLOSEUP_LEVEL);
     map.panTo(new kakao.maps.LatLng(entry.coordinates.lat, entry.coordinates.lng));
   }, [activeId, entries]);
 
@@ -192,6 +200,7 @@ function KakaoMap({
           };
           setInitialArea(area);
           searchedCenterRef.current = area.center;
+          searchedRadiusRef.current = area.radius;
           onAreaChanged?.(area);
         }
       }}
@@ -200,7 +209,11 @@ function KakaoMap({
         const center = { lat: c.getLat(), lng: c.getLng() };
         const radius = computeViewportRadius(target);
         const searched = searchedCenterRef.current;
-        if (searched && haversine(center, searched) < radius * VIEWPORT_MOVE_RATIO) return;
+        const searchedRadius = searchedRadiusRef.current;
+        const movedFar = !searched || haversine(center, searched) >= radius * VIEWPORT_MOVE_RATIO;
+        const zoomedFar =
+          !searchedRadius || Math.abs(radius - searchedRadius) >= searchedRadius * RADIUS_CHANGE_RATIO;
+        if (!movedFar && !zoomedFar) return;
         onViewportChange?.({ center, radius });
       }}
       onZoomChanged={(target) => setLevel(target.getLevel())}

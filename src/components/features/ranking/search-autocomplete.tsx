@@ -16,7 +16,9 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group';
-import { useRankActions, useRankQuery } from '@/stores/region-rank-store';
+import { useRankActions, useRankFocusedEntry, useRankQuery } from '@/stores/region-rank-store';
+import { synthesizeEntryFromSuggest } from '@/lib/synthesize-restaurant';
+import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useSearchSuggest, type SuggestItem } from './hooks/use-search-suggest';
 
 interface Props {
@@ -33,6 +35,7 @@ type SuggestValue =
 export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
   const query = useRankQuery();
   const action = useRankActions();
+  const focusedEntry = useRankFocusedEntry();
   const suggest = useSearchSuggest(query);
 
   // 사용자가 ESC / 바깥 클릭으로 명시적으로 닫은 상태 추적
@@ -60,10 +63,8 @@ export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
       action.navigateToArea(value.center, value.label);
       onAreaConfirm?.();
     } else {
-      // keyword 확정: 입력창에 가게명, 키워드 필터로 목록 갱신
-      // TODO: 1차 MVP 제외 — focus 모드(핀 1개·1행) 진입, 다음 task(line 72)에서 구현
-      action.setQuery(value.item.name);
-      action.setResolvedKeyword({ query: value.item.name, keyword: value.item.name });
+      // keyword 확정: focus 모드 진입 — 그 가게 1개만 핀·행에 표시
+      action.enterFocus(synthesizeEntryFromSuggest(value.item));
     }
     setDismissed(true);
   }
@@ -84,10 +85,18 @@ export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
       open={open}
       onOpenChange={handleOpenChange}
       inputValue={query}
-      onInputValueChange={(v: string) => action.setQuery(v)}
+      onInputValueChange={(v: string, details: BaseCombobox.Root.ChangeEventDetails) => {
+        // 항목 선택·네비게이션으로 인한 동기화는 무시 — 타이핑만 query에 반영
+        // (item-press 시 base-ui가 객체를 문자열로 직렬화해 onInputValueChange로 흘리는 문제 방지)
+        if (details.reason !== 'input-change') return;
+        action.setQuery(v);
+      }}
       onValueChange={(val: unknown) => {
         if (val) handleConfirm(val as SuggestValue);
       }}
+      itemToStringLabel={(v: SuggestValue) =>
+        v.type === 'keyword' ? v.item.name : v.label
+      }
       autoHighlight
       modal={false}
     >
@@ -112,6 +121,20 @@ export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
             // 포커스 시 기존 결과가 있으면 다시 열기 (ESC 후 재포커스 대응)
             if (suggest.kind === 'area' || suggest.kind === 'keyword') setDismissed(false);
           }}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            // focus 모드 중 ESC → resetSearch로 해제 (드롭다운이 닫혀 있어 popup이 ESC를 소비하지 않음)
+            if (e.key === 'Escape' && focusedEntry) {
+              e.preventDefault();
+              action.resetSearch();
+            }
+          }}
+          onInput={(e: React.FormEvent<HTMLInputElement>) => {
+            // 한글 조합 중인 음절까지 매 입력마다 query에 동기화
+            // (base-ui onInputValueChange는 조합 중 음절을 전달하지 않아 마지막 글자가 누락되는 문제 해결)
+            action.setQuery(e.currentTarget.value);
+            // 타이핑 = 결과를 다시 보겠다는 의도 → 선택 후 닫힌 드롭다운 재오픈
+            setDismissed(false);
+          }}
         />
 
         {/* 오른쪽 X(지우기) 버튼 — 입력이 있을 때만 표시 */}
@@ -134,11 +157,11 @@ export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
 
       {/* 드롭다운 — area 케이스: 한 줄 이동 힌트, keyword 케이스: 가게 목록 */}
       {open && (
-        <ComboboxContent>
+        <ComboboxContent className="min-w-(--anchor-width) p-2">
           <ComboboxList>
             {/* 케이스 A: 지역·역·관광지 → 이동 힌트 단일 항목 */}
             {suggest.kind === 'area' && areaValue && (
-              <ComboboxItem value={areaValue}>
+              <ComboboxItem value={areaValue} className="py-3 px-3 cursor-pointer">
                 <span className="text-primary mr-1" aria-hidden>↵</span>
                 <span className="text-label-3 text-muted-foreground">
                   {suggest.label}로 이동
@@ -152,7 +175,16 @@ export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
                 if (v.type !== 'keyword') return null;
                 const { item } = v;
                 return (
-                  <ComboboxItem key={item.id} value={v}>
+                  <ComboboxItem key={item.id} value={v} className="py-3 px-3 cursor-pointer">
+                    {/* 썸네일 — 이미지가 없으면 카테고리 아이콘 placeholder(텍스트 없음) */}
+                    <div className="size-10 shrink-0 overflow-hidden rounded-md">
+                      <RestaurantThumbnail
+                        src=""
+                        alt={item.name}
+                        category={item.categoryType}
+                        showLabel={false}
+                      />
+                    </div>
                     <div className="flex flex-col min-w-0 gap-0.5">
                       <span className="text-label-2 truncate">{item.name}</span>
                       <span className="text-caption-2 text-muted-foreground truncate">

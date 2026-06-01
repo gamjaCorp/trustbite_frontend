@@ -13,6 +13,7 @@ import RegionRankProvider, {
   useRankActions,
   useRankAppliedArea,
   useRankCategory,
+  useRankFocusedEntry,
   useRankResolvedKeyword,
 } from '@/stores/region-rank-store';
 
@@ -36,6 +37,7 @@ export function RegionRankList({ entries }: Props) {
 function RegionRankListView({ entries: entriesProp }: Props) {
   const category = useRankCategory();
   const appliedArea = useRankAppliedArea();
+  const focusedEntry = useRankFocusedEntry();
   const action = useRankActions();
 
   const [pendingArea, setPendingArea] = useState<SearchArea | null>(null);
@@ -46,19 +48,22 @@ function RegionRankListView({ entries: entriesProp }: Props) {
   const resolvedKeyword = useRankResolvedKeyword();
   const searchKeyword = resolvedKeyword?.keyword;
 
-  // entriesProp 없으면 Kakao Local에서 area + keyword 기반으로 fetch
+  // focus 모드면 그 가게의 지역, 아니면 지도 역지오코딩 지역
+  const listRegion = focusedEntry ? focusedEntry.region : currentRegion;
+
+  // focus 모드 중엔 fetch 불필요 — focusedEntry를 직접 목록으로 사용
   const { data: kakaoEntries = [], isFetching } = useNearbyPlaces({
-    area: entriesProp ? null : appliedArea,
+    area: entriesProp || focusedEntry ? null : appliedArea,
     keyword: searchKeyword,
   });
-  const entries = entriesProp ?? kakaoEntries;
 
-  // category 필터 → keyword는 서버(Kakao keywordSearch)에서 이미 처리됨
+  // category 필터 — focus 모드 중엔 단일 엔트리이므로 우회
   const filteredList = useMemo(() => {
+    const entries = entriesProp ?? (focusedEntry ? [focusedEntry] : kakaoEntries);
     let list = entries;
-    if (category !== 'all') list = list.filter((e) => e.category === category);
+    if (!focusedEntry && category !== 'all') list = list.filter((e) => e.category === category);
     return [...list].sort((a, b) => a.rank - b.rank);
-  }, [entries, category]);
+  }, [entriesProp, focusedEntry, kakaoEntries, category]);
 
   // 결과셋 교체(새 영역·키워드·카테고리) 시 공개 개수 초기화 — 렌더 중 파생 상태 패턴
   const [prevFilteredList, setPrevFilteredList] = useState(filteredList);
@@ -95,8 +100,8 @@ function RegionRankListView({ entries: entriesProp }: Props) {
           entries={visibleEntries}
           activeId={effectiveActiveId}
           onPinClick={handlePinClick}
-          pendingArea={pendingArea}
-          onViewportChange={setPendingArea}
+          pendingArea={focusedEntry ? null : pendingArea}
+          onViewportChange={focusedEntry ? () => {} : setPendingArea}
           onApplyPending={() => {
             if (pendingArea) {
               action.setAppliedArea(pendingArea);
@@ -104,7 +109,7 @@ function RegionRankListView({ entries: entriesProp }: Props) {
             }
           }}
           onRegionChange={setCurrentRegion}
-          hasMore={!pendingArea && visibleCount < rankedEntries.length}
+          hasMore={!focusedEntry && !pendingArea && visibleCount < rankedEntries.length}
           remainingCount={Math.min(PAGE_SIZE, rankedEntries.length - visibleCount)}
           onLoadMore={() => setVisibleCount((c) => c + PAGE_SIZE)}
         />
@@ -113,9 +118,9 @@ function RegionRankListView({ entries: entriesProp }: Props) {
         entries={visibleEntries}
         activeId={effectiveActiveId}
         isFetching={isFetching}
-        region={currentRegion}
+        region={listRegion}
         remainingCount={Math.min(PAGE_SIZE, rankedEntries.length - visibleCount)}
-        hasMore={!pendingArea && visibleCount < rankedEntries.length}
+        hasMore={!focusedEntry && !pendingArea && visibleCount < rankedEntries.length}
         onLoadMore={() => setVisibleCount((c) => c + PAGE_SIZE)}
         onFocusMap={action.setActiveId}
       />

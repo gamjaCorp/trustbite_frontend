@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { mapCategory } from '@/lib/synthesize-restaurant';
+import type { Category } from '@/types/restaurant';
 
 // 자동완성 드롭다운에 표시되는 가게 항목
 export interface SuggestItem {
   id: string; // Kakao place id
   name: string; // 가게명
   address: string; // 도로명 또는 지번 주소
-  category: string; // 카테고리 마지막 세그먼트
+  category: string; // 카테고리 마지막 세그먼트 (표시용)
+  categoryType: Category; // 썸네일 아이콘용 카테고리 매핑
   center: { lat: number; lng: number }; // 가게 중심 좌표
 }
 
@@ -71,19 +74,29 @@ export function useSearchSuggest(query: string): SuggestState {
               },
             });
           } else {
-            // 가게·음식 키워드 → 드롭다운 항목
-            const items: SuggestItem[] = kwResult.slice(0, 8).map((p) => ({
-              id: p.id,
-              name: p.place_name,
-              address: p.road_address_name || p.address_name,
-              category: p.category_name.split(' > ').at(-1) ?? p.category_name,
-              center: { lat: parseFloat(p.y), lng: parseFloat(p.x) },
-            }));
+            // 음식점(FD6)·카페(CE7)만 자동완성 항목으로 — 지도 데이터 범위와 일치
+            const items: SuggestItem[] = kwResult
+              .filter(
+                (p) => p.category_group_code === 'FD6' || p.category_group_code === 'CE7',
+              )
+              .slice(0, 8)
+              .map((p) => ({
+                id: p.id,
+                name: p.place_name,
+                address: p.road_address_name || p.address_name,
+                category: p.category_name.split(' > ').at(-1) ?? p.category_name,
+                categoryType: mapCategory(p.category_name),
+                center: { lat: parseFloat(p.y), lng: parseFloat(p.x) },
+              }));
+            if (items.length === 0) {
+              setState({ kind: 'none' });
+              return;
+            }
             setState({ kind: 'keyword', items });
           }
         },
-        // 결과 관련성 높은 순, 최대 5건
-        { size: 8 },
+        // 음식·카페가 상위에 없을 수도 있어 여유 있게 가져온 뒤 필터 후 8개로 자름
+        { size: 15 },
       );
     });
 

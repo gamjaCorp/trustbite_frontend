@@ -14,7 +14,7 @@
 | Day | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|
 | 1 | 실 Google 로그인 연결 (프론트) | NextAuth 세션 연결, `useAuthMock` 대체, mock-store 제거 (백엔드 불필요) | [x] |
-| 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 강조 + 검색 자동완성/Focus 모드/대체 이미지 | [ ] |
+| 2 | 지도 코드 검토 + UX 마무리 | 기존 지도 코드 검토(punch list) + 핀 강조 + 검색 자동완성/Focus 모드/대체 이미지 | [x] |
 | 3 | 로그인 로직 파악 + 세션 시간 명시 | 분기 메커니즘·화면별 분기·세션 정책 정리 + session.maxAge 명시 | [ ] |
 | 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [ ] |
 | 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [ ] |
@@ -67,9 +67,9 @@
 |  | - 리스트 카드 클릭 시 지도가 해당 핀으로 이동·확대 (양방향 동기화) | `place-list-row.tsx`, `rank-result-list.tsx`, `ranking/index.tsx` | [x] |
 |  | - 클로즈업된 핀(activeId)에 가게 이름 라벨 함께 표시 — 아이콘만으론 어떤 가게인지 불명확 | `category-pin.tsx`, `explore/index.tsx` | [x] |
 |  | - 지도가 일정 zoom level 이하로 확대되면 모든 가게 이름 라벨을 핀 옆에 자동 표시 (Kakao 기본 지도와 유사한 UX) | `explore/index.tsx` | [x] |
-| 검색 UX | - 검색창 입력 시 지역어("강남구", "강남역")는 `↵ 강남구로 이동` 한 줄 힌트, 가게/음식 키워드는 가게명·주소·카테고리가 든 자동완성 드롭다운 표시 | `core/search-input.tsx`, `ui/combobox.tsx` | [ ] |
-|  | - 드롭다운 키보드 동작(↑↓ 하이라이트, Enter 확정, ESC 닫기, X 버튼으로 입력 비움) 연결 | `core/search-input.tsx` | [ ] |
-| Focus 모드 | - 자동완성에서 가게를 확정하면 지도 핀 1개·리스트 1행만 표시, "이 지역에서 검색"/"더 불러오기" 숨김. ESC·X·다른 항목 선택으로 해제 | `features/ranking/index.tsx`, `stores/region-rank-store.tsx` | [ ] |
+| 검색 UX | - 검색창 입력 시 지역어("강남구", "강남역")는 `↵ 강남구로 이동` 한 줄 힌트, 가게/음식 키워드는 가게명·주소·카테고리가 든 자동완성 드롭다운 표시 | `core/search-input.tsx`, `ui/combobox.tsx` | [x] |
+|  | - 드롭다운 키보드 동작(↑↓ 하이라이트, Enter 확정, ESC 닫기, X 버튼으로 입력 비움) 연결 | `core/search-input.tsx` | [x] |
+| Focus 모드 | - 자동완성에서 가게를 확정하면 지도 핀 1개·리스트 1행만 표시, "이 지역에서 검색"/"더 불러오기" 숨김. ESC·X·다른 항목 선택으로 해제 | `features/ranking/index.tsx`, `stores/region-rank-store.tsx` | [x] |
 | 대체 이미지 | - 로컬 placeholder 1장(`public/images/restaurant-placeholder.svg` 등) 추가 + 가게 카드 이미지가 비거나 로드 실패하면 placeholder로 스왑 | `public/images/`, `common/place-list-row.tsx` | [x] |
 | 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
