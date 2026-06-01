@@ -16,6 +16,7 @@ import { CategoryBadge } from '@/components/common/category-badge';
 import { RankMedal } from '@/components/common/rank-medal';
 import { ScoreStars } from '@/components/common/score-stars';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
+import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import type {
   Category,
   RatingScores,
@@ -26,7 +27,6 @@ import type {
   RestaurantDetail,
 } from '@/types/restaurant';
 import { SCORE_LABELS } from '@/lib/score-labels';
-
 
 export interface PlaceListRowData {
   id: string;
@@ -149,10 +149,11 @@ export function PlaceListRow({
         <div className="relative shrink-0 w-20 h-20 sm:w-24 sm:h-24">
           {onFocusMap ? (
             <div className="relative w-full h-full overflow-hidden rounded-xl">
-              <img
+              <RestaurantThumbnail
                 src={imageUrl}
                 alt={name}
-                className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                category={category}
+                className="absolute inset-0 group-hover:scale-105 transition-transform duration-300"
               />
             </div>
           ) : (
@@ -160,10 +161,11 @@ export function PlaceListRow({
               href={`/restaurant/${id}`}
               className="relative block w-full h-full overflow-hidden rounded-xl"
             >
-              <img
+              <RestaurantThumbnail
                 src={imageUrl}
                 alt={name}
-                className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                category={category}
+                className="absolute inset-0 group-hover:scale-105 transition-transform duration-300"
               />
             </Link>
           )}
@@ -416,9 +418,6 @@ export function PlaceListRow({
   );
 }
 
-const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&auto=format';
-
 export function toPlaceListRowData(entry: RegionalRankEntry): PlaceListRowData {
   return {
     id: entry.id,
@@ -451,7 +450,7 @@ export function toPlaceListRowDataFromDetail(
     name: detail.name,
     category: detail.category,
     region: detail.region,
-    imageUrl: detail.photos[0] ?? FALLBACK_IMAGE,
+    imageUrl: detail.photos[0] ?? '',
     communityAvgScore: detail.communityAvgScore,
     trustScore: detail.trustScore,
     trustBreakdown: detail.trustBreakdown,

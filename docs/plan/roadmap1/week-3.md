@@ -70,7 +70,7 @@
 | 검색 UX | - 검색창 입력 시 지역어("강남구", "강남역")는 `↵ 강남구로 이동` 한 줄 힌트, 가게/음식 키워드는 가게명·주소·카테고리가 든 자동완성 드롭다운 표시 | `core/search-input.tsx`, `ui/combobox.tsx` | [ ] |
 |  | - 드롭다운 키보드 동작(↑↓ 하이라이트, Enter 확정, ESC 닫기, X 버튼으로 입력 비움) 연결 | `core/search-input.tsx` | [ ] |
 | Focus 모드 | - 자동완성에서 가게를 확정하면 지도 핀 1개·리스트 1행만 표시, "이 지역에서 검색"/"더 불러오기" 숨김. ESC·X·다른 항목 선택으로 해제 | `features/ranking/index.tsx`, `stores/region-rank-store.tsx` | [ ] |
-| 대체 이미지 | - 로컬 placeholder 1장(`public/images/restaurant-placeholder.svg` 등) 추가 + 가게 카드 이미지가 비거나 로드 실패하면 placeholder로 스왑 | `public/images/`, `common/place-list-row.tsx` | [ ] |
+| 대체 이미지 | - 로컬 placeholder 1장(`public/images/restaurant-placeholder.svg` 등) 추가 + 가게 카드 이미지가 비거나 로드 실패하면 placeholder로 스왑 | `public/images/`, `common/place-list-row.tsx` | [x] |
 | 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
 > 산출물: 기존 지도 코드 검토·정리 완료 + 핀 클릭 미니카드 오버레이 동작

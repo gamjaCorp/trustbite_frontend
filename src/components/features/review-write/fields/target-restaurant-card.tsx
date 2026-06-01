@@ -3,6 +3,7 @@
 import { Pencil } from 'lucide-react';
 import { Surface } from '@/components/common/surface';
 import { CategoryBadge } from '@/components/common/category-badge';
+import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
 
 // 리뷰 작성 대상 음식점 선택 카드
@@ -17,7 +18,12 @@ export function TargetRestaurantCard() {
   return (
     <Surface variant="card" padding="sm" className="flex items-center gap-3">
       <div className="relative w-14 h-14 shrink-0 overflow-hidden rounded-xl bg-muted">
-        <img src={selected.imageUrl} alt={selected.name} className="absolute inset-0 h-full w-full object-cover" />
+        <RestaurantThumbnail
+          src={selected.imageUrl}
+          alt={selected.name}
+          category={selected.category}
+          className="absolute inset-0"
+        />
       </div>
 
       <div className="flex-1 min-w-0">

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Surface } from '@/components/common/surface';
 import { CategoryBadge } from '@/components/common/category-badge';
+import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useReviewActions } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
@@ -65,7 +66,13 @@ export function RestaurantPicker({ candidates }: Props) {
                 className="w-full flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-muted/60 transition-colors"
               >
                 <div className="relative w-10 h-10 shrink-0 overflow-hidden rounded-lg bg-muted">
-                  <img src={entry.imageUrl} alt={entry.name} className="absolute inset-0 h-full w-full object-cover" />
+                  <RestaurantThumbnail
+                    src={entry.imageUrl}
+                    alt={entry.name}
+                    category={entry.category}
+                    showLabel={false}
+                    className="absolute inset-0"
+                  />
                 </div>
 
                 <div className="flex-1 min-w-0 text-left">

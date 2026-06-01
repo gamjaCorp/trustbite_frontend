@@ -36,7 +36,7 @@ const CATEGORY_KEYWORDS: [string, Category][] = [
   ['한식', '한식'],
 ];
 
-function mapCategory(kakaoCategory: string): Category {
+export function mapCategory(kakaoCategory: string): Category {
   for (const [keyword, value] of CATEGORY_KEYWORDS) {
     if (kakaoCategory.includes(keyword)) return value;
   }
@@ -121,7 +121,7 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
     name: place.place_name,
     category: mapCategory(place.category_name),
     region: parseRegion(place.address_name, place.road_address_name),
-    imageUrl: `https://loremflickr.com/400/300/food,restaurant?lock=${hash(place.id)}`,
+    imageUrl: '',
     coordinates: {
       lat: parseFloat(place.y),
       lng: parseFloat(place.x),
@@ -148,6 +148,33 @@ export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankE
   };
 }
 
+// 자동완성 확정 가게(SuggestItem 형태)를 단일 엔트리로 합성 — focus 모드 진입 시 사용
+export function synthesizeEntryFromSuggest(item: {
+  id: string;
+  name: string;
+  address: string;
+  category: string;
+  center: { lat: number; lng: number };
+}): RegionalRankEntry {
+  return synthesizeEntry(
+    {
+      id: item.id,
+      place_name: item.name,
+      category_name: item.category,
+      category_group_code: '',
+      category_group_name: '',
+      address_name: item.address,
+      road_address_name: item.address,
+      x: String(item.center.lng),
+      y: String(item.center.lat),
+      phone: '',
+      place_url: '',
+      distance: '',
+    },
+    0,
+  );
+}
+
 // TODO: 1차 MVP 제외 — 실제 mock 상세 데이터가 있는 place ID에 대해 카드 필드 덮어쓰기
 const MOCK_ENTRY_OVERRIDES: Record<string, Partial<import('@/types/restaurant').RegionalRankEntry>> = {
   '1309119533': {
@@ -157,7 +184,7 @@ const MOCK_ENTRY_OVERRIDES: Record<string, Partial<import('@/types/restaurant').
     communityAvgScore: 4.5,
     trustScore: 78,
     reviewCount: 87,
-    imageUrl: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop&auto=format',
+    imageUrl: '',
     hasRealData: true,
   },
 };
