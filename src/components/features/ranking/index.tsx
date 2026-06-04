@@ -27,16 +27,10 @@ function RegionRankListView({ entries: entriesProp }: Props) {
   const {
     isFetching,
     visibleEntries,
-    rankedEntries,
-    pendingArea,
-    setPendingArea,
-    setCurrentRegion,
     listRegion,
-    focusedEntry,
     action,
-    pageSize,
-    visibleCount,
-    setVisibleCount,
+    hasMore,
+    remainingCount,
   } = useRankList({ entriesProp });
 
   const { stickyRef, effectiveActiveId, handlePinClick } = usePinRowSync({
@@ -50,23 +44,14 @@ function RegionRankListView({ entries: entriesProp }: Props) {
         ref={stickyRef}
         className="sticky top-[var(--header-height)] z-10 bg-background space-y-3 pt-3 pb-4"
       >
-        <RankFilterControls onAreaConfirm={() => setPendingArea(null)} />
+        <RankFilterControls />
         <RankMapBlock
           entries={visibleEntries}
           activeId={effectiveActiveId}
           onPinClick={handlePinClick}
-          pendingArea={focusedEntry ? null : pendingArea}
-          onViewportChange={focusedEntry ? () => {} : setPendingArea}
-          onApplyPending={() => {
-            if (pendingArea) {
-              action.setAppliedArea(pendingArea);
-              setPendingArea(null);
-            }
-          }}
-          onRegionChange={setCurrentRegion}
-          hasMore={!focusedEntry && !pendingArea && visibleCount < rankedEntries.length}
-          remainingCount={Math.min(pageSize, rankedEntries.length - visibleCount)}
-          onLoadMore={() => setVisibleCount((c) => c + pageSize)}
+          hasMore={hasMore}
+          remainingCount={remainingCount}
+          onLoadMore={action.loadMore}
         />
       </div>
       <RankResultList
@@ -74,9 +59,9 @@ function RegionRankListView({ entries: entriesProp }: Props) {
         activeId={effectiveActiveId}
         isFetching={isFetching}
         region={listRegion}
-        remainingCount={Math.min(pageSize, rankedEntries.length - visibleCount)}
-        hasMore={!focusedEntry && !pendingArea && visibleCount < rankedEntries.length}
-        onLoadMore={() => setVisibleCount((c) => c + pageSize)}
+        remainingCount={remainingCount}
+        hasMore={hasMore}
+        onLoadMore={action.loadMore}
         onFocusMap={action.setActiveId}
       />
     </div>

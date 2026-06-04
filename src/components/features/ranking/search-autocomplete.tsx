@@ -22,7 +22,6 @@ import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useSearchSuggest, type SuggestItem } from './hooks/use-search-suggest';
 
 interface Props {
-  onAreaConfirm?: () => void; // area 확정(Enter/클릭)으로 지도가 이동할 때 부모의 pendingArea 초기화용
   className?: string;
 }
 
@@ -32,7 +31,7 @@ type SuggestValue =
   | { type: 'keyword'; item: SuggestItem };
 
 // 검색창 + 지역어 한 줄 힌트 / 가게 자동완성 드롭다운 통합 컴포넌트
-export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
+export function SearchAutocomplete({ className }: Props) {
   const query = useRankQuery();
   const action = useRankActions();
   const focusedEntry = useRankFocusedEntry();
@@ -57,11 +56,10 @@ export function SearchAutocomplete({ onAreaConfirm, className }: Props) {
     if (!newOpen) setDismissed(true);
   }
 
-  // 항목 확정: area → 지도 이동, keyword → 목록 키워드 필터
+  // 항목 확정: area → 지도 이동(store가 pendingArea를 함께 초기화), keyword → focus 모드 진입
   function handleConfirm(value: SuggestValue) {
     if (value.type === 'area') {
       action.navigateToArea(value.center, value.label);
-      onAreaConfirm?.();
     } else {
       // keyword 확정: focus 모드 진입 — 그 가게 1개만 핀·행에 표시
       action.enterFocus(synthesizeEntryFromSuggest(value.item));

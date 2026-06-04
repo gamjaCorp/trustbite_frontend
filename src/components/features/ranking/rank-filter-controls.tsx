@@ -11,12 +11,8 @@ import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import type { SceneTag } from '@/lib/types/restaurant';
 import { SearchAutocomplete } from './search-autocomplete';
 
-interface RankFilterControlsProps {
-  onAreaConfirm?: () => void; // area 확정 시 부모의 pendingArea 초기화
-}
-
 // 검색창 + 카테고리 칩 + 상황 칩 묶음 — store hook 직접 소비
-export function RankFilterControls({ onAreaConfirm }: RankFilterControlsProps) {
+export function RankFilterControls() {
   const category = useRankCategory();
   const occasions = useRankOccasions();
   const action = useRankActions();
@@ -24,7 +20,6 @@ export function RankFilterControls({ onAreaConfirm }: RankFilterControlsProps) {
   return (
     <>
       <SearchAutocomplete
-        onAreaConfirm={onAreaConfirm}
         className="w-full mb-4"
       />
 

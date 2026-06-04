@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
-import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/lib/types/restaurant';
+import { RegionalRankEntry, Category, SceneTag } from '@/lib/types/restaurant';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/core/empty-state';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
@@ -13,6 +13,13 @@ import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import { SelectList } from '@/components/core/select-list';
 import { IconButton } from '@/components/core/icon-button';
 import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
+import MyRankFilterProvider, {
+  useMyRankCategory,
+  useMyRankFilterActions,
+  useMyRankOccasions,
+  useMyRankRegion,
+  useMyRankSort,
+} from '@/stores/my-rank-filter-store';
 
 const SORT_ITEMS = [
   { value: 'score', label: '점수순' },
@@ -23,21 +30,22 @@ interface Props {
   entries: RegionalRankEntry[];
 }
 
-// my-places 전체 랭킹 — 헤더(타이틀/서브스탯/공유/정렬) + 카테고리·상황·지역 칩 필터 + 카드 리스트
+// my-places 전체 랭킹 — Provider로 필터 스토어를 서브트리에 제공
 export function RestaurantRankList({ entries }: Props) {
-  const [sort, setSort] = useState<SortKey>('score');
-  const [category, setCategory] = useState<Category | 'all'>('all');
-  const [region, setRegion] = useState<string>('all');
-  const [occasions, setOccasions] = useState<Set<SceneTag>>(new Set());
+  return (
+    <MyRankFilterProvider>
+      <RestaurantRankListView entries={entries} />
+    </MyRankFilterProvider>
+  );
+}
 
-  const toggleOccasion = (tag: SceneTag) => {
-    setOccasions((prev) => {
-      const next = new Set(prev);
-      if (next.has(tag)) next.delete(tag);
-      else next.add(tag);
-      return next;
-    });
-  };
+// 렌더링 전담 — 필터 상태는 store hook으로 직접 구독
+function RestaurantRankListView({ entries }: Props) {
+  const sort = useMyRankSort();
+  const category = useMyRankCategory();
+  const region = useMyRankRegion();
+  const occasions = useMyRankOccasions();
+  const action = useMyRankFilterActions();
 
   const reviewedCount = useMemo(
     () => entries.filter((e) => e.myStatus === 'reviewed').length,
@@ -75,7 +83,7 @@ export function RestaurantRankList({ entries }: Props) {
             <IconButton icon={Share2} aria-label="공유" disabled />
             <SelectList
               value={region}
-              onValueChange={setRegion}
+              onValueChange={action.setRegion}
               icon={MapPin}
               placeholder="전체 지역"
               items={[
@@ -85,7 +93,7 @@ export function RestaurantRankList({ entries }: Props) {
             />
             <SelectList
               value={sort}
-              onValueChange={(v) => setSort(v as SortKey)}
+              onValueChange={(v) => action.setSort(v as 'score' | 'recent')}
               items={SORT_ITEMS}
             />
           </>
@@ -96,7 +104,7 @@ export function RestaurantRankList({ entries }: Props) {
       <div className="sticky top-[var(--header-height)] z-10 bg-background py-3 mt-3 space-y-2">
         <CategoryChipRow
           category={category}
-          onCategoryChange={setCategory}
+          onCategoryChange={(c) => action.setCategory(c as Category | 'all')}
           categories={CATEGORIES}
         />
 
@@ -108,7 +116,7 @@ export function RestaurantRankList({ entries }: Props) {
           <SceneTagChipRow
             tags={OCCASIONS}
             isActive={(t) => occasions.has(t as SceneTag)}
-            onToggle={(t) => toggleOccasion(t as SceneTag)}
+            onToggle={(t) => action.toggleOccasion(t as SceneTag)}
           />
         </div>
 
