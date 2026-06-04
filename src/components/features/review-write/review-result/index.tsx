@@ -9,6 +9,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { formatDelta } from '@/lib/format';
 import type { ReviewResultSnapshot } from '@/stores/review-write-store';
 
 import { TrustScoreChangeCard } from './trust-score-change-card';
@@ -16,10 +17,6 @@ import { ContributionChecklist } from './contribution-checklist';
 import { GradeProgressCard } from './grade-progress-card';
 // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
 // import { PointsEarnedCard } from './points-earned-card';
-
-function formatDelta(value: number): string {
-  return value % 1 === 0 ? value.toFixed(0) : value.toFixed(1);
-}
 
 interface Props {
   open: boolean;

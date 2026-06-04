@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
 import { DetailedReview } from '@/lib/types/restaurant';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserAvatar } from '@/components/core/user-avatar';
 import { DimensionScoreRow } from './dimension-score-row';
 import { VisitOrdinalChip } from './visit-ordinal-chip';
 import { ReviewBodyClamp } from './review-body-clamp';
@@ -19,9 +20,9 @@ export function ReviewCard({ review }: Props) {
         <div className="flex items-start gap-3 min-w-0">
           <Link
             href={`/user/${review.reviewerId}`}
-            className="shrink-0 w-10 h-10 rounded-full bg-primary-subtle text-primary font-bold flex items-center justify-center hover:opacity-90 transition-opacity"
+            className="shrink-0 hover:opacity-90 transition-opacity"
           >
-            {review.reviewerInitial}
+            <UserAvatar initial={review.reviewerInitial} size="md" />
           </Link>
           <div className="min-w-0">
             <div className="flex items-center flex-wrap gap-1.5">

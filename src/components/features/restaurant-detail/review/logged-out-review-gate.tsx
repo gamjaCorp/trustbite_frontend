@@ -1,13 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import type { DetailedReview } from '@/lib/types/restaurant';
-import { useAuthStatus } from '@/hooks/use-auth-status';
+import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
+import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 
 import { ReviewCard } from './review-card';
-import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 
 interface Props {
   reviews: DetailedReview[];
@@ -17,8 +16,10 @@ interface Props {
 
 // 인증 상태에 따라 리뷰 노출 개수와 '더 보기' CTA 동작을 분기
 export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }: Props) {
-  const { isAuthed } = useAuthStatus();
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const { trigger, dialogProps, isAuthed } = useAuthGatedAction({
+    action: () => {},
+    callbackPath: `/restaurant/${restaurantId}`,
+  });
 
   const visibleReviews = isAuthed ? reviews.slice(0, 5) : reviews.slice(0, 2);
   const remainingReviews = Math.max(0, othersReviewCount - visibleReviews.length);
@@ -35,11 +36,7 @@ export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }
         <div className="px-6 pt-4">
           <button
             type="button"
-            onClick={() => {
-              if (!isAuthed) {
-                setDialogOpen(true);
-              }
-            }}
+            onClick={trigger}
             className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-3 text-title-3 text-foreground hover:bg-muted transition-colors"
           >
             리뷰 <span className="">{remainingReviews}</span>개 더 보기
@@ -51,11 +48,7 @@ export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }
         </div>
       )}
 
-      <LoginCtaDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        callbackPath={`/restaurant/${restaurantId}`}
-      />
+      <LoginCtaDialog {...dialogProps} />
     </>
   );
 }

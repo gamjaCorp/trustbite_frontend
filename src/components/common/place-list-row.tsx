@@ -8,8 +8,8 @@ import { Star, Bookmark, PencilLine, MessageSquare, Calendar, Repeat, Users, Squ
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
+import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 import { TrustScoreBadge } from '@/components/common/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
 import { CategoryBadge } from '@/components/common/category-badge';
@@ -106,11 +106,14 @@ export function PlaceListRow({
   } = data;
 
   const router = useRouter();
-  const { isAuthed } = useAuthStatus();
   const bookmarked = useWishlistMock((s) => s.isBookmarked(id));
   const toggleWishlist = useWishlistMock((s) => s.toggle);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const { trigger: triggerBookmark, dialogProps: bookmarkDialogProps, isAuthed } = useAuthGatedAction({
+    action: () => toggleWishlist(id),
+    callbackPath: `/restaurant/${id}`,
+    description: '로그인하면 맛집을 저장할 수 있어요',
+  });
 
   const showTrustScore = variant === 'regional' && !hideTrustScore && !minimal;
   const showBookmarkOverlay = variant === 'regional' && !hideBookmark;
@@ -175,8 +178,7 @@ export function PlaceListRow({
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                if (!isAuthed) { setDialogOpen(true); return; }
-                toggleWishlist(id);
+                triggerBookmark();
               }}
               className={cn(
                 'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
@@ -406,14 +408,7 @@ export function PlaceListRow({
           reviewCount={reviewCount ?? 0}
         />
       )}
-      {showBookmarkOverlay && (
-        <LoginCtaDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          callbackPath={`/restaurant/${id}`}
-          description="로그인하면 맛집을 저장할 수 있어요"
-        />
-      )}
+      {showBookmarkOverlay && <LoginCtaDialog {...bookmarkDialogProps} />}
     </>
   );
 }

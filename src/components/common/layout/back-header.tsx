@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserAvatar } from '@/components/core/user-avatar';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
@@ -42,12 +42,7 @@ export function BackHeader() {
           >
             <span className="text-title-3 text-foreground">{user?.name}</span>
             <UserGradeMark level={profile.level} size="sm" />
-            <Avatar className="h-8 w-8 ml-0.5">
-              <AvatarImage src={user?.image ?? ''} alt="프로필" />
-              <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
-                {user?.name?.slice(0, 1) ?? '?'}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar initial={user?.name?.slice(0, 1) ?? '?'} imageUrl={user?.image || undefined} size="sm" className="ml-0.5" />
           </Link>
         ) : (
           <Button asChild size="sm" variant="outline" className="rounded-full">

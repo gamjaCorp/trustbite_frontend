@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Surface } from '@/components/common/surface';
-import { CategoryBadge } from '@/components/common/category-badge';
+import { RestaurantIdentityRow } from '@/components/common/restaurant-identity-row';
 import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useReviewActions } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
@@ -75,17 +75,12 @@ export function RestaurantPicker({ candidates }: Props) {
                   />
                 </div>
 
-                <div className="flex-1 min-w-0 text-left">
-                  <p className="text-title-2 text-foreground truncate">
-                    {entry.name}
-                  </p>
-                  <div className="mt-0.5 flex items-center gap-1.5">
-                    <CategoryBadge category={entry.category} />
-                    <span className="text-caption-2 text-muted-foreground truncate">
-                      {entry.region}
-                    </span>
-                  </div>
-                </div>
+                <RestaurantIdentityRow
+                  name={entry.name}
+                  category={entry.category}
+                  subtitle={entry.region}
+                  className="flex-1 text-left"
+                />
               </button>
             </li>
           ))}

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   title: string;
-  subtitle?: string;
+  subtitle?: ReactNode;
   rightAction?: ReactNode;
   // h1=text-headline-1, h2=text-headline-2, h3=text-headline-3
   size?: 'h1' | 'h2' | 'h3';

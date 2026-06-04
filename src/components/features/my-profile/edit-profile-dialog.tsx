@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UserAvatar } from '@/components/core/user-avatar';
 import { useMyProfileMock } from '@/stores/my-profile-mock-store';
 import type { MyProfile } from '@/lib/types/user';
 
@@ -81,14 +81,7 @@ function EditProfileForm({
     <>
       <div className="flex flex-col items-center gap-6 py-2">
         <div className="relative">
-          <Avatar className="h-20 w-20">
-            {draftAvatarUrl && (
-              <AvatarImage src={draftAvatarUrl} alt="프로필 이미지 미리보기" />
-            )}
-            <AvatarFallback className="bg-primary-subtle text-primary text-2xl">
-              {profile.avatarInitial}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar initial={profile.avatarInitial} imageUrl={draftAvatarUrl} size="xl" />
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}

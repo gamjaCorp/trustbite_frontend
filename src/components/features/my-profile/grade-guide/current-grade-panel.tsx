@@ -2,6 +2,7 @@ import { getLevelDef } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 import { GradeIcon } from '@/components/common/grade-icon';
+import { StatCell } from '@/components/common/stat-cell';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -26,20 +27,18 @@ export function CurrentGradePanel({ level, reviewCount, trustScore }: Props) {
       </div>
 
       <div className="grid grid-cols-2 gap-3 pt-2">
-        <div className="text-center">
-          <p className="text-caption-1 text-muted-foreground mb-1">리뷰</p>
-          <p className="text-title-1 text-foreground">
-            {reviewCount}
-            <span className="text-caption-2 text-muted-foreground font-sans"> 개</span>
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-caption-1 text-muted-foreground mb-1">신뢰도</p>
-          <p className="text-title-1 text-foreground">
-            {trustScore}
-            <span className="text-caption-2 text-muted-foreground font-sans"> %</span>
-          </p>
-        </div>
+        <StatCell
+          size="sm"
+          label="리뷰"
+          value={<>{reviewCount}<span className="text-caption-2 text-muted-foreground font-sans"> 개</span></>}
+          className="text-center"
+        />
+        <StatCell
+          size="sm"
+          label="신뢰도"
+          value={<>{trustScore}<span className="text-caption-2 text-muted-foreground font-sans"> %</span></>}
+          className="text-center"
+        />
       </div>
     </div>
   );

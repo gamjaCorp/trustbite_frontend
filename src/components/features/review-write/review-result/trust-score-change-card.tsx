@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import { formatDelta } from '@/lib/format';
 import { Progress } from '@/components/ui/progress';
 import type { TrustBreakdown } from '@/stores/review-write-store';
 
@@ -10,10 +11,6 @@ interface Props {
   baseTrustScore: number;
   nextTrustScore: number;
   breakdown: TrustBreakdown;
-}
-
-function formatDelta(value: number): string {
-  return value % 1 === 0 ? value.toFixed(0) : value.toFixed(1);
 }
 
 export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown }: Props) {

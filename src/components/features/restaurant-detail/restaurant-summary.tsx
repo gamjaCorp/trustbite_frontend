@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { Bookmark, Phone, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RestaurantDetail } from '@/lib/types/restaurant';
-import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
+import { IconButton } from '@/components/core/icon-button';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
+import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 
 interface Props {
   detail: RestaurantDetail;
@@ -14,10 +14,12 @@ interface Props {
 
 // 식당 상세 페이지 헤더 요약 — 이름, 카테고리, 공유/북마크 버튼
 export function RestaurantSummary({ detail }: Props) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const { isAuthed } = useAuthStatus();
   const bookmarked = useWishlistMock((s) => s.isBookmarked(detail.id));
   const toggle = useWishlistMock((s) => s.toggle);
+  const { trigger, dialogProps, isAuthed } = useAuthGatedAction({
+    action: () => toggle(detail.id),
+    callbackPath: `/restaurant/${detail.id}`,
+  });
 
   const categoryLine = [
     detail.categoryGroupName,
@@ -55,40 +57,19 @@ export function RestaurantSummary({ detail }: Props) {
 
         <div className="flex items-center gap-1.5 shrink-0">
           {/* TODO: 1차 MVP 제외 — 공유 기능 */}
-          <div
-            aria-disabled="true"
-            className="w-9 h-9 rounded-full bg-muted text-ink/70 flex items-center justify-center opacity-35 cursor-not-allowed"
-          >
-            <Share2 className="w-4 h-4" />
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              if (!isAuthed) {
-                setDialogOpen(true);
-              } else {
-                toggle(detail.id);
-              }
-            }}
-            className={cn(
-              'w-9 h-9 rounded-full flex items-center justify-center transition-colors',
-              bookmarked && isAuthed
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-ink/70 hover:bg-muted/80',
-            )}
+          <IconButton icon={Share2} aria-label="공유" disabled />
+          <IconButton
+            icon={Bookmark}
             aria-label="북마크"
-          >
-            <Bookmark className={cn('w-4 h-4', bookmarked && isAuthed && 'fill-current')} />
-          </button>
+            active={bookmarked && isAuthed}
+            iconClassName={cn(bookmarked && isAuthed && 'fill-current')}
+            onClick={trigger}
+          />
         </div>
       </div>
     </section>
 
-    <LoginCtaDialog
-      open={dialogOpen}
-      onOpenChange={setDialogOpen}
-      callbackPath={`/restaurant/${detail.id}`}
-    />
+    <LoginCtaDialog {...dialogProps} />
     </>
   );
 }

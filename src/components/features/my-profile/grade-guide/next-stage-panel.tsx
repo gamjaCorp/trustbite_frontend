@@ -1,7 +1,7 @@
-import { Check, FileText, ShieldCheck } from 'lucide-react';
+import { FileText, ShieldCheck } from 'lucide-react';
 
-import { Progress } from '@/components/ui/progress';
 import { GradeIcon } from '@/components/common/grade-icon';
+import { MetricProgressBlock } from '@/components/common/metric-progress-block';
 import { getNextLevelDef, getProgressToNext } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';
@@ -48,45 +48,24 @@ export function NextStagePanel({ level, reviewCount, trustScore }: Props) {
       </div>
 
       <div className="space-y-3">
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <FileText className="w-3.5 h-3.5 text-palette-amber shrink-0" />
-              <span className="text-label-2 text-foreground">리뷰 {next.reviewMin}개</span>
-            </div>
-            {progress.reviewMet ? (
-              <Check className="w-4 h-4 text-success" strokeWidth={2.5} />
-            ) : (
-              <span className="text-label-3 text-muted-foreground">
-                {reviewRemaining}개 남음
-              </span>
-            )}
-          </div>
-          <Progress
-            value={progress.reviewPct}
-            className="h-3 bg-palette-amber/20 [&>[data-slot=progress-indicator]]:bg-palette-amber"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-palette-green shrink-0" />
-              <span className="text-label-2 text-foreground">신뢰도 {next.trustMin}%</span>
-            </div>
-            {progress.trustMet ? (
-              <Check className="w-4 h-4 text-success" strokeWidth={2.5} />
-            ) : (
-              <span className="text-label-3 text-muted-foreground">
-                {trustRemaining}%P 남음
-              </span>
-            )}
-          </div>
-          <Progress
-            value={progress.trustPct}
-            className="h-3 bg-palette-green/20 [&>[data-slot=progress-indicator]]:bg-palette-green"
-          />
-        </div>
+        <MetricProgressBlock
+          icon={FileText}
+          iconClassName="text-palette-amber"
+          label={`리뷰 ${next.reviewMin}개`}
+          met={progress.reviewMet}
+          remaining={`${reviewRemaining}개 남음`}
+          progressValue={progress.reviewPct}
+          progressClassName="bg-palette-amber/20 [&>[data-slot=progress-indicator]]:bg-palette-amber"
+        />
+        <MetricProgressBlock
+          icon={ShieldCheck}
+          iconClassName="text-palette-green"
+          label={`신뢰도 ${next.trustMin}%`}
+          met={progress.trustMet}
+          remaining={`${trustRemaining}%P 남음`}
+          progressValue={progress.trustPct}
+          progressClassName="bg-palette-green/20 [&>[data-slot=progress-indicator]]:bg-palette-green"
+        />
       </div>
     </div>
   );

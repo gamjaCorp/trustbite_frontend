@@ -1,7 +1,6 @@
 'use client';
 
-import { Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
 import {
   useRankActions,
   useRankCategory,
@@ -9,6 +8,7 @@ import {
 } from '@/stores/region-rank-store';
 import { CategoryChipRow } from '@/components/common/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
+import type { SceneTag } from '@/lib/types/restaurant';
 import { SearchAutocomplete } from './search-autocomplete';
 
 interface RankFilterControlsProps {
@@ -42,26 +42,11 @@ export function RankFilterControls({ onAreaConfirm }: RankFilterControlsProps) {
 
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
               <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
-              {OCCASIONS.map((tag) => {
-                const active = occasions.has(tag);
-                return (
-                  <button
-                    key={tag}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => action.toggleOccasion(tag)}
-                    className={cn(
-                      'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
-                      active
-                        ? 'bg-primary-subtle text-primary'
-                        : 'bg-muted text-muted-foreground hover:text-foreground',
-                    )}
-                  >
-                    {active && <Check aria-hidden className="w-3.5 h-3.5" />}
-                    {tag}
-                  </button>
-                );
-              })}
+              <SceneTagChipRow
+                tags={OCCASIONS}
+                isActive={(t) => occasions.has(t as SceneTag)}
+                onToggle={(t) => action.toggleOccasion(t as SceneTag)}
+              />
             </div>
           </>
         )}

@@ -25,7 +25,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg'],
       description: '아이콘 크기',
     },
     variant: {
@@ -72,7 +72,7 @@ export const AllSizes: Story = {
   parameters: { layout: 'padded' },
   render: () => (
     <div className="flex items-end gap-4">
-      {(['xs', 'sm', 'md', 'lg'] as const).map((size) => (
+      {(['sm', 'md', 'lg'] as const).map((size) => (
         <div key={size} className="flex flex-col items-center gap-1.5">
           <GradeIcon level={3} size={size} />
           <span className="text-label-3 text-muted-foreground">{size}</span>

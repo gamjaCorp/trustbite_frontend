@@ -1,13 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 
 import { MyReview } from '@/lib/types/restaurant';
-import { useAuthStatus } from '@/hooks/use-auth-status';
-
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
+import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 
 interface Props {
   restaurantId: string;
@@ -16,8 +14,11 @@ interface Props {
 
 // 상세 페이지 하단 리뷰 작성 CTA 바 (비로그인 시 로그인 유도)
 export function ReviewCtaBar({ restaurantId, myReview }: Props) {
-  const { isAuthed } = useAuthStatus();
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const { trigger, dialogProps, isAuthed } = useAuthGatedAction({
+    action: () => {},
+    callbackPath: `/restaurant/${restaurantId}/review/new`,
+    description: '로그인하면 리뷰를 쓰고 신뢰도를 쌓을 수 있어요',
+  });
   const isRevisit = Boolean(myReview);
 
   return (
@@ -51,7 +52,7 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
         ) : (
           <button
             type="button"
-            onClick={() => setDialogOpen(true)}
+            onClick={trigger}
             className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-title-1 text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
           >
             <PencilLine className="w-4 h-4" />
@@ -60,12 +61,7 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
         )}
       </div>
 
-      <LoginCtaDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        callbackPath={`/restaurant/${restaurantId}/review/new`}
-        description="로그인하면 리뷰를 쓰고 신뢰도를 쌓을 수 있어요"
-      />
+      <LoginCtaDialog {...dialogProps} />
     </div>
   );
 }

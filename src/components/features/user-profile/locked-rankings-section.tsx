@@ -1,6 +1,6 @@
-import { Lock, UserPlus } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { FollowToggleButton } from '@/components/features/follow/follow-toggle-button';
 
 interface Props {
   totalCount: number;
@@ -28,14 +28,7 @@ export function LockedRankingsSection({ totalCount, targetName, onFollow }: Prop
         <p className="text-caption-2 text-muted-foreground">
           팔로우하면 전체 랭킹이 공개돼요
         </p>
-        <Button
-          size="sm"
-          onClick={onFollow}
-          className="gap-1.5 rounded-xl bg-foreground text-background hover:bg-foreground/90"
-        >
-          <UserPlus className="w-3.5 h-3.5" />
-          팔로우하기
-        </Button>
+        <FollowToggleButton isFollowing={false} onToggle={onFollow} size="md" />
       </div>
     </section>
   );

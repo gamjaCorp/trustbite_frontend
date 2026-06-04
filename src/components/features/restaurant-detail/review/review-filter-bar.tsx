@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
 import { type SceneTag } from '@/lib/types/restaurant';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SectionHeader } from '@/components/common/section-header';
+import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
 
 const SORT_OPTIONS: SelectListItem[] = [
   { value: 'trust', label: '신뢰도순' },
@@ -50,25 +50,13 @@ export function ReviewFilterBar({ title }: Props) {
 
       <div className="flex items-center gap-2">
         <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
-        {SCENE_TAGS.map((tag) => {
-          const active = scenes.has(tag);
-          return (
-            <button
-              key={tag}
-              type="button"
-              aria-pressed={active}
-              onClick={() => toggleScene(tag)}
-              className={cn(
-                'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
-                active
-                  ? 'bg-primary-subtle text-primary'
-                  : 'bg-muted text-muted-foreground hover:text-foreground',
-              )}
-            >
-              #{tag}
-            </button>
-          );
-        })}
+        <SceneTagChipRow
+          tags={SCENE_TAGS}
+          isActive={(t) => scenes.has(t as SceneTag)}
+          onToggle={(t) => toggleScene(t as SceneTag)}
+          formatLabel={(t) => `#${t}`}
+          checkPosition="none"
+        />
       </div>
     </div>
   );

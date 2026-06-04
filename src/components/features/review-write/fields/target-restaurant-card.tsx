@@ -2,7 +2,7 @@
 
 import { Pencil } from 'lucide-react';
 import { Surface } from '@/components/common/surface';
-import { CategoryBadge } from '@/components/common/category-badge';
+import { RestaurantIdentityRow } from '@/components/common/restaurant-identity-row';
 import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
 import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
 
@@ -26,13 +26,12 @@ export function TargetRestaurantCard() {
         />
       </div>
 
-      <div className="flex-1 min-w-0">
-        <p className="text-title-2 text-foreground truncate">{selected.name}</p>
-        <div className="mt-1 flex items-center gap-1.5">
-          <CategoryBadge category={selected.category} />
-          <span className="text-caption-2 text-muted-foreground truncate">{selected.subtitle}</span>
-        </div>
-      </div>
+      <RestaurantIdentityRow
+        name={selected.name}
+        category={selected.category}
+        subtitle={selected.subtitle}
+        className="flex-1"
+      />
 
       <span className="shrink-0 rounded-chip bg-primary-subtle px-2.5 py-1 text-label-3 text-primary">
         {visitOrdinal}번째 방문

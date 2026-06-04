@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Check, Camera } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UserAvatar } from '@/components/core/user-avatar';
 import {
   Form,
   FormControl,
@@ -106,14 +106,7 @@ export function OnboardingForm() {
             {/* 프로필 사진 */}
             <div className="flex flex-col items-center gap-2">
               <div className="relative">
-                <Avatar className="h-20 w-20">
-                  {displayAvatarSrc && (
-                    <AvatarImage src={displayAvatarSrc} alt="프로필 이미지" />
-                  )}
-                  <AvatarFallback className="bg-primary-subtle text-primary text-2xl">
-                    {avatarInitial}
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar initial={avatarInitial} imageUrl={displayAvatarSrc} size="xl" />
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}

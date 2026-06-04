@@ -2,6 +2,7 @@ import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import '../src/app/globals.css';
 
 import type { Preview } from '@storybook/nextjs-vite';
+import { SessionProvider } from 'next-auth/react';
 
 const preview: Preview = {
   parameters: {
@@ -26,9 +27,11 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <div className="font-sans antialiased bg-background text-foreground">
-        <Story />
-      </div>
+      <SessionProvider>
+        <div className="font-sans antialiased bg-background text-foreground">
+          <Story />
+        </div>
+      </SessionProvider>
     ),
   ],
 };

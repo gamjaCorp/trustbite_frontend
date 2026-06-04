@@ -2,7 +2,7 @@ import { getLevelDef } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';
 
-type Size = 'xs' | 'sm' | 'md' | 'lg';
+type Size = 'sm' | 'md' | 'lg';
 type State = 'default' | 'muted' | 'next';
 
 interface Props {
@@ -14,8 +14,7 @@ interface Props {
 }
 
 const SIZE_MAP = {
-  xs: { circle: 'w-5 h-5',  icon: 'w-3 h-3' },
-  sm: { circle: 'w-9 h-9',  icon: 'w-4 h-4' },
+  sm: { circle: 'w-9 h-9',   icon: 'w-4 h-4' },
   md: { circle: 'w-12 h-12', icon: 'w-5 h-5' },
   lg: { circle: 'w-20 h-20', icon: 'w-9 h-9' },
 } satisfies Record<Size, { circle: string; icon: string }>;

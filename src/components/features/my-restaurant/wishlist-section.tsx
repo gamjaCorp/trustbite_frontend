@@ -6,10 +6,11 @@ import { Bookmark, Share2, X } from 'lucide-react';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { SelectList } from '@/components/core/select-list';
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import { EmptyState } from '@/components/common/empty-state';
 import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/place-list-row';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
+import { IconButton } from '@/components/core/icon-button';
 import type { RestaurantDetail } from '@/lib/types/restaurant';
 
 type WishlistSortKey = 'recent' | 'score' | 'trust';
@@ -47,15 +48,12 @@ export function WishlistSection() {
 
   if (resolved.length === 0) {
     return (
-      <Empty className="mt-8 border border-dashed border-border">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <Bookmark />
-          </EmptyMedia>
-          <EmptyTitle>가고 싶은 맛집을 저장해보세요</EmptyTitle>
-          <EmptyDescription>상세 페이지의 북마크를 눌러 추가할 수 있어요</EmptyDescription>
-        </EmptyHeader>
-      </Empty>
+      <EmptyState
+        icon={Bookmark}
+        title="가고 싶은 맛집을 저장해보세요"
+        description="상세 페이지의 북마크를 눌러 추가할 수 있어요"
+        className="mt-8 border border-dashed border-border py-6"
+      />
     );
   }
 
@@ -92,12 +90,7 @@ export function WishlistSection() {
         rightAction={
           <>
             {/* TODO: 1차 MVP 제외 — 공유 기능 */}
-            <div
-              aria-disabled="true"
-              className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
-            >
-              <Share2 className="w-4 h-4" />
-            </div>
+            <IconButton icon={Share2} aria-label="공유" disabled />
             <SelectList
               value={sort}
               onValueChange={(v) => setSort(v as WishlistSortKey)}

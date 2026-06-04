@@ -1,24 +1,18 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { UtensilsCrossed, Plus, Share2, Check, MapPin } from 'lucide-react';
+import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
 import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/lib/types/restaurant';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty';
+import { EmptyState } from '@/components/common/empty-state';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';
 import { CategoryChipRow } from '@/components/common/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import { SelectList } from '@/components/core/select-list';
+import { IconButton } from '@/components/core/icon-button';
+import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
 
 const SORT_ITEMS = [
   { value: 'score', label: '점수순' },
@@ -78,12 +72,7 @@ export function RestaurantRankList({ entries }: Props) {
         rightAction={
           <>
             {/* TODO: 1차 MVP 제외 — 공유 기능 */}
-            <div
-              aria-disabled="true"
-              className="w-9 h-9 rounded-full border border-border bg-muted text-muted-foreground flex items-center justify-center opacity-35 cursor-not-allowed"
-            >
-              <Share2 className="w-4 h-4" />
-            </div>
+            <IconButton icon={Share2} aria-label="공유" disabled />
             <SelectList
               value={region}
               onValueChange={setRegion}
@@ -116,47 +105,26 @@ export function RestaurantRankList({ entries }: Props) {
         {/* 상황 칩 행 */}
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
           <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
-          {OCCASIONS.map((tag) => {
-            const active = occasions.has(tag);
-            return (
-              <button
-                key={tag}
-                type="button"
-                aria-pressed={active}
-                onClick={() => toggleOccasion(tag)}
-                className={cn(
-                  'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
-                  active
-                    ? 'bg-primary-subtle text-primary'
-                    : 'bg-muted text-muted-foreground hover:text-foreground',
-                )}
-              >
-                {active && <Check aria-hidden className="w-3.5 h-3.5" />}
-                {tag}
-              </button>
-            );
-          })}
+          <SceneTagChipRow
+            tags={OCCASIONS}
+            isActive={(t) => occasions.has(t as SceneTag)}
+            onToggle={(t) => toggleOccasion(t as SceneTag)}
+          />
         </div>
 
       </div>
 
       {filteredList.length === 0 ? (
-        <Empty className="border-0 py-16">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <UtensilsCrossed />
-            </EmptyMedia>
-            <EmptyTitle>아직 기록한 맛집이 없어요</EmptyTitle>
-            <EmptyDescription>
-              첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
+        <EmptyState
+          icon={UtensilsCrossed}
+          title="아직 기록한 맛집이 없어요"
+          description="첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요."
+          cta={
             <Button className="gap-1.5 rounded-chip">
               <Plus className="w-4 h-4" />새 맛집 추가하기
             </Button>
-          </EmptyContent>
-        </Empty>
+          }
+        />
       ) : (
         <DividedList
           items={filteredList}

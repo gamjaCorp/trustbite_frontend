@@ -57,8 +57,8 @@ export const WithLabel: Story = {
 };
 
 export const Small: Story = {
-  name: 'Small — xs 크기',
-  args: { level: 3, showLabel: false, size: 'xs' },
+  name: 'Small — sm 크기',
+  args: { level: 3, showLabel: false, size: 'sm' },
 };
 
 export const AllLevels: Story = {

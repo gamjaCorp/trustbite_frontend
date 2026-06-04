@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserAvatar } from '@/components/core/user-avatar';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
@@ -50,12 +50,7 @@ export function Header() {
                 href="/profile"
                 className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
               >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.image ?? ''} alt="프로필" />
-                  <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
-                    {user?.name?.slice(0, 1) ?? '?'}
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar initial={user?.name?.slice(0, 1) ?? '?'} imageUrl={user?.image || undefined} size="sm" />
                 <span className="text-title-3 text-foreground">{user?.name}</span>
                 <UserGradeMark level={profile.level} size="sm" />
               </Link>

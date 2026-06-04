@@ -11,7 +11,7 @@ import { GradeIcon } from './grade-icon';
 interface Props {
   level: GradeLevel;
   showLabel?: boolean;
-  size?: 'xs' | 'sm';
+  size?: 'sm';
   className?: string;
 }
 
