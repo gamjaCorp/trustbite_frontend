@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useAuthStatus } from '@/hooks/use-auth-status';
+import { useImagePreview } from '@/hooks/use-image-preview';
 import { cn } from '@/lib/utils';
 import { CutleryRain } from '../auth/index';
 import { onboardingSchema, NICKNAME_MIN, NICKNAME_MAX, type OnboardingValues } from './schema';
@@ -40,27 +41,8 @@ export function OnboardingForm() {
   });
 
   // 아바타: 사용자가 직접 고른 파일의 object URL 미리보기
-  const [draftAvatarUrl, setDraftAvatarUrl] = useState<string | undefined>(undefined);
+  const { previewUrl: draftAvatarUrl, handleFileChange } = useImagePreview(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const pendingBlobRef = useRef<string | undefined>(undefined);
-
-  const revokePending = useCallback(() => {
-    if (pendingBlobRef.current) {
-      URL.revokeObjectURL(pendingBlobRef.current);
-      pendingBlobRef.current = undefined;
-    }
-  }, []);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    revokePending();
-    const url = URL.createObjectURL(file);
-    pendingBlobRef.current = url;
-    setDraftAvatarUrl(url);
-    form.setValue('avatar', file, { shouldDirty: true });
-    e.target.value = '';
-  };
 
   // TODO: 1차 MVP 제외 — 닉네임·아바타 백엔드 저장 (W4 연동)
   const onValid = () => {
@@ -124,7 +106,11 @@ export function OnboardingForm() {
                   type="file"
                   accept="image/*"
                   hidden
-                  onChange={handleFileChange}
+                  onChange={(e) =>
+                    handleFileChange(e, (file) =>
+                      form.setValue('avatar', file, { shouldDirty: true }),
+                    )
+                  }
                 />
               </div>
             </div>

@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+
 import { GradeIcon } from '@/components/common/trust/grade-icon';
 import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
@@ -13,21 +17,38 @@ const CONNECTOR_TOP_PX = 52;
 // 전체 등급 타임라인 — Lv1~6 단계를 수직으로 나열하고 현재 등급 강조
 export function AllGradesTimeline({ currentLevel }: Props) {
   const nextLevel = currentLevel < 6 ? ((currentLevel + 1) as GradeLevel) : null;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const currentRef = useRef<HTMLLIElement>(null);
+
+  // 현재 등급이 모바일 가로 스크롤 뷰의 중앙에 오도록 초기 스크롤 위치 조정
+  // scrollIntoView 대신 scrollLeft 직접 계산 — 페이지 세로 스크롤 점프 방지
+  useEffect(() => {
+    const container = containerRef.current;
+    const current = currentRef.current;
+    if (!container || !current) return;
+    const offset = current.offsetLeft - container.offsetWidth / 2 + current.offsetWidth / 2;
+    container.scrollLeft = Math.max(0, offset);
+  }, [currentLevel]);
 
   return (
     <div className="pt-6 pb-14">
       <p className="px-8 text-label-2 text-muted-foreground mb-5">전체 등급</p>
-      <div className="overflow-x-auto scrollbar-hide">
-        <ol className="grid grid-cols-6 px-8 min-w-[560px] sm:min-w-0">
-          {GRADE_LEVELS.map((lvl, i) => {
-            const isCurrent = lvl.level === currentLevel;
-            const isNext = lvl.level === nextLevel;
-            const isReached = lvl.level <= currentLevel;
-            const connectorActive = isReached && i < GRADE_LEVELS.length - 1;
-            const iconState = !isReached ? 'muted' : isNext ? 'next' : 'default';
+      <div className="relative">
+        <div ref={containerRef} className="overflow-x-auto scrollbar-hide">
+          <ol className="grid grid-cols-6 px-8 min-w-[560px] sm:min-w-0">
+            {GRADE_LEVELS.map((lvl, i) => {
+              const isCurrent = lvl.level === currentLevel;
+              const isNext = lvl.level === nextLevel;
+              const isReached = lvl.level <= currentLevel;
+              const connectorActive = isReached && i < GRADE_LEVELS.length - 1;
+              const iconState = !isReached ? 'muted' : isNext ? 'next' : 'default';
 
-            return (
-              <li key={lvl.level} className="relative flex flex-col items-center text-center gap-1 px-0.5">
+              return (
+                <li
+                  key={lvl.level}
+                  ref={isCurrent ? currentRef : undefined}
+                  className="relative flex flex-col items-center text-center gap-1 px-0.5"
+                >
                 {/* 칩 슬롯 — 항상 h-6(24px)으로 고정해 아이콘 수직 정렬 일치 */}
                 <div className="h-6 flex items-center justify-center">
                   {isCurrent && (
@@ -80,10 +101,13 @@ export function AllGradesTimeline({ currentLevel }: Props) {
                   )}
                 </div>
 
-              </li>
-            );
-          })}
-        </ol>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+        {/* 모바일에서 가로 스크롤 가능 여부를 암시하는 우측 fade */}
+        <div className="sm:hidden absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
       </div>
     </div>
   );

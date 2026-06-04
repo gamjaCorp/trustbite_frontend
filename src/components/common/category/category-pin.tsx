@@ -49,7 +49,7 @@ export function CategoryPin({ category, active = false, rank, showRank = false }
       {displayRank ? (
         <span
           className="text-white font-bold tabular-nums leading-none"
-          style={{ fontSize: Math.round(size * 0.42) }}
+          style={{ fontSize: Math.max(12, Math.round(size * 0.42)) }}
         >
           {rank}
         </span>

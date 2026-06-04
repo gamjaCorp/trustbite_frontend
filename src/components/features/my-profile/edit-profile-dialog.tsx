@@ -1,7 +1,7 @@
 'use client';
 
 // 내 프로필 편집 다이얼로그 (닉네임 + 아바타 이미지)
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { Camera } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -16,6 +16,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { UserAvatar } from '@/components/core/user-avatar';
+import { useImagePreview } from '@/hooks/use-image-preview';
 import { useMyProfileMock } from '@/stores/my-profile-mock-store';
 import type { MyProfile } from '@/lib/types/user';
 import { NICKNAME_MIN, NICKNAME_MAX } from '@/lib/domain/profile';
@@ -36,26 +37,8 @@ function EditProfileForm({
   onCancel,
 }: FormProps) {
   const [draftNickname, setDraftNickname] = useState(initialNickname);
-  const [draftAvatarUrl, setDraftAvatarUrl] = useState<string | undefined>(initialAvatarUrl);
+  const { previewUrl: draftAvatarUrl, handleFileChange, revokePending } = useImagePreview(initialAvatarUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const pendingBlobRef = useRef<string | undefined>(undefined);
-
-  const revokePending = useCallback(() => {
-    if (pendingBlobRef.current) {
-      URL.revokeObjectURL(pendingBlobRef.current);
-      pendingBlobRef.current = undefined;
-    }
-  }, []);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    revokePending();
-    const url = URL.createObjectURL(file);
-    pendingBlobRef.current = url;
-    setDraftAvatarUrl(url);
-    e.target.value = '';
-  };
 
   const isNicknameValid =
     draftNickname.trim().length >= NICKNAME_MIN &&
@@ -66,7 +49,6 @@ function EditProfileForm({
 
   const handleSave = () => {
     if (!isNicknameValid) return;
-    pendingBlobRef.current = undefined;
     onSave(draftNickname.trim(), draftAvatarUrl);
   };
 

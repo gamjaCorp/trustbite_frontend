@@ -2,24 +2,21 @@
 
 import { useMemo } from 'react';
 import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
-import { RegionalRankEntry, Category, SceneTag } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/core/empty-state';
-import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row/index';
 import { SectionHeader } from '@/components/common/display/section-header';
 import { DividedList } from '@/components/common/display/divided-list';
-import { CategoryChipRow } from '@/components/common/category/category-chip-row';
-import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import { SelectList } from '@/components/core/select-list';
 import { IconButton } from '@/components/core/icon-button';
-import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 import MyRankFilterProvider, {
   useMyRankCategory,
   useMyRankFilterActions,
-  useMyRankOccasions,
   useMyRankRegion,
   useMyRankSort,
 } from '@/stores/my-rank-filter-store';
+import { RankFilterBar } from './rank-filter-bar';
 
 const SORT_ITEMS = [
   { value: 'score', label: '점수순' },
@@ -44,7 +41,6 @@ function RestaurantRankListView({ entries }: Props) {
   const sort = useMyRankSort();
   const category = useMyRankCategory();
   const region = useMyRankRegion();
-  const occasions = useMyRankOccasions();
   const action = useMyRankFilterActions();
 
   const reviewedCount = useMemo(
@@ -100,27 +96,7 @@ function RestaurantRankListView({ entries }: Props) {
         }
       />
 
-      {/* sticky 필터 */}
-      <div className="sticky top-[var(--header-height)] z-10 bg-background py-3 mt-3 space-y-2">
-        <CategoryChipRow
-          category={category}
-          onCategoryChange={(c) => action.setCategory(c as Category | 'all')}
-          categories={CATEGORIES}
-        />
-
-        <div className="mt-2 border-t border-dashed border-border" />
-
-        {/* 상황 칩 행 */}
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-          <span className="text-label-3 text-muted-foreground shrink-0">상황</span>
-          <SceneTagChipRow
-            tags={OCCASIONS}
-            isActive={(t) => occasions.has(t as SceneTag)}
-            onToggle={(t) => action.toggleOccasion(t as SceneTag)}
-          />
-        </div>
-
-      </div>
+      <RankFilterBar />
 
       {filteredList.length === 0 ? (
         <EmptyState

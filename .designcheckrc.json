@@ -9,7 +9,7 @@
   "exclude": [
     "src/components/ui",
     "src/lib/kakao-sdk-colors.ts",
-    "src/components/common/category-pin.tsx"
+    "src/components/common/category/category-pin.tsx"
   ],
   "rules": {
     "no-raw-color": {

@@ -7,7 +7,7 @@ import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { SelectList } from '@/components/core/select-list';
 import { EmptyState } from '@/components/core/empty-state';
-import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/restaurant/place-list-row';
+import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/restaurant/place-list-row/index';
 import { SectionHeader } from '@/components/common/display/section-header';
 import { DividedList } from '@/components/common/display/divided-list';
 import { IconButton } from '@/components/core/icon-button';

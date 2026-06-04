@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { PlaceListRow, toPlaceListRowData, toPlaceListRowDataFromDetail } from '@/components/common/restaurant/place-list-row';
+import { PlaceListRow, toPlaceListRowData, toPlaceListRowDataFromDetail } from '@/components/common/restaurant/place-list-row/index';
 import { mockRankList } from '@/data/mock-restaurant';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 

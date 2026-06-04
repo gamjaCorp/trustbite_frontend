@@ -2,13 +2,13 @@ import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 export type Category = '한식' | '일식' | '중식' | '양식' | '분식' | '치킨' | '패스트푸드' | '카페' | '술집' | '기타';
 
-export interface TopRestaurant {
+interface TopRestaurant {
   rank: 1 | 2 | 3;
   name: string;
   myRating: number; // 1~5
 }
 
-export interface RegionCount {
+interface RegionCount {
   region: string;
   count: number;
 }
@@ -102,11 +102,11 @@ export interface RealtimeReview {
 
 export type SceneTag = '데이트' | '회식' | '혼밥' | '다이어트';
 
-export interface OpeningHours {
+interface OpeningHours {
   weekday: string;
 }
 
-export interface SceneScore {
+interface SceneScore {
   tag: SceneTag;
   score: number;
 }
@@ -127,7 +127,7 @@ export interface DetailedReview {
   postedAt: string;
 }
 
-export interface RepeatVisitEntry {
+interface RepeatVisitEntry {
   label: string;
   scores: RatingScores;
   content: string;
@@ -148,7 +148,7 @@ export interface MyReview {
   visits: MyReviewEntry[];
 }
 
-export interface RepeatVisitReview {
+interface RepeatVisitReview {
   reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;

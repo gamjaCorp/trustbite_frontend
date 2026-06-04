@@ -19,6 +19,32 @@ interface Props {
   following: FollowedUser[];
 }
 
+// 팔로워·팔로잉 탭 단일 패널 — 빈 상태 or FollowUserRow 목록
+function FollowTabPanel({
+  tab,
+  mode,
+  subjectName,
+  myId,
+  users,
+}: {
+  tab: FollowTabKey;
+  mode: 'self' | 'other';
+  subjectName: string;
+  myId: string;
+  users: FollowedUser[];
+}) {
+  if (users.length === 0) {
+    return <FollowEmpty mode={mode} tab={tab} subjectName={subjectName} />;
+  }
+  return (
+    <ul>
+      {users.map((user) => (
+        <FollowUserRow key={user.id} user={user} hideFollowAction={user.id === myId} />
+      ))}
+    </ul>
+  );
+}
+
 // 팔로워·팔로잉 목록 뷰 — self/other 모드로 탭 전환 제공
 export function FollowListView({
   mode,
@@ -63,35 +89,11 @@ export function FollowListView({
         </div>
 
         <TabsContent value="followers" className="mt-4">
-          {followers.length === 0 ? (
-            <FollowEmpty mode={mode} tab="followers" subjectName={subjectName} />
-          ) : (
-            <ul>
-              {followers.map((user) => (
-                <FollowUserRow
-                  key={user.id}
-                  user={user}
-                  hideFollowAction={user.id === myId}
-                />
-              ))}
-            </ul>
-          )}
+          <FollowTabPanel tab="followers" mode={mode} subjectName={subjectName} myId={myId} users={followers} />
         </TabsContent>
 
         <TabsContent value="following" className="mt-4">
-          {following.length === 0 ? (
-            <FollowEmpty mode={mode} tab="following" subjectName={subjectName} />
-          ) : (
-            <ul>
-              {following.map((user) => (
-                <FollowUserRow
-                  key={user.id}
-                  user={user}
-                  hideFollowAction={user.id === myId}
-                />
-              ))}
-            </ul>
-          )}
+          <FollowTabPanel tab="following" mode={mode} subjectName={subjectName} myId={myId} users={following} />
         </TabsContent>
       </Tabs>
     </div>

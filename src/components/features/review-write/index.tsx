@@ -8,15 +8,13 @@ import ReviewWriteProvider, {
   type ReviewDraft,
   type ReviewResultSnapshot,
   type SelectedRestaurant,
-  type TrustBreakdown,
-  LONG_TEXT_THRESHOLD,
-  TRUST_DELTA,
   useReviewActions,
   useReviewIsEditMode,
   useReviewPhotos,
   useReviewText,
   useSelectedRestaurant,
 } from '@/stores/review-write-store';
+import { buildReviewSnapshot } from './build-review-snapshot';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { ReviewResultDialog } from './review-result/index';
@@ -82,40 +80,17 @@ function ReviewWriteFormInner({
 
   const handleSubmit = () => {
     if (!selected) return;
-
-    const hasPhoto = photos.length > 0;
-    const hasLongText = text.length >= LONG_TEXT_THRESHOLD;
-    const breakdown: TrustBreakdown = {
-      consistency: TRUST_DELTA.consistency,
-      photo: hasPhoto ? TRUST_DELTA.photo : null,
-      longText: hasLongText ? TRUST_DELTA.longText : null,
-      total:
-        TRUST_DELTA.consistency +
-        (hasPhoto ? TRUST_DELTA.photo : 0) +
-        (hasLongText ? TRUST_DELTA.longText : 0),
-    };
-    const nextTrustScore = Math.min(100, baseTrustScore + breakdown.total);
-
-    const snapshot: ReviewResultSnapshot = {
-      restaurantId: selected.id,
-      baseTrustScore,
-      nextTrustScore,
-      breakdown,
+    const snapshot = buildReviewSnapshot({
+      selected,
       photoCount: photos.length,
+      text,
+      baseTrustScore,
       currentLevel,
-      currentGradeReviewCount: currentGradeReviewCount + 1,
+      currentGradeReviewCount,
       currentGradeReviewTarget,
       nextGradeName,
-      remainingReviewsForNextGrade: Math.max(0, remainingReviewsForNextGrade - 1),
-      // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
-      // pointsEarned: 5 + (hasPhoto ? 3 : 0) + (text.length >= 100 ? 2 : 0),
-      // pointReasons: [
-      //   { label: '리뷰', value: 5 },
-      //   ...(hasPhoto ? [{ label: '사진', value: 3 }] : []),
-      //   ...(text.length >= 100 ? [{ label: '100자', value: 2 }] : []),
-      // ],
-    };
-
+      remainingReviewsForNextGrade,
+    });
     setResultSnapshot(snapshot);
     setResultOpen(true);
   };
