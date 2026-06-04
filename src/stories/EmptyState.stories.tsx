@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { UtensilsCrossed, Search, Heart, Star } from 'lucide-react';
-import { EmptyState } from '@/components/common/empty-state';
+import { EmptyState } from '@/components/core/empty-state';
 import { Button } from '@/components/ui/button';
 
 const meta = {
-  title: 'Common/EmptyState',
+  title: 'Core/EmptyState',
   component: EmptyState,
   parameters: {
     layout: 'padded',

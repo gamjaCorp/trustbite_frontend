@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
 import { RegionalRankEntry, Category, SortKey, SceneTag } from '@/lib/types/restaurant';
 import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/components/common/empty-state';
+import { EmptyState } from '@/components/core/empty-state';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
 import { SectionHeader } from '@/components/common/section-header';
 import { DividedList } from '@/components/common/divided-list';

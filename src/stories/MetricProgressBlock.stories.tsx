@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { FileText, ShieldCheck, Star } from 'lucide-react';
-import { MetricProgressBlock } from '@/components/common/metric-progress-block';
+import { MetricProgressBlock } from '@/components/core/metric-progress-block';
 
 const meta = {
-  title: 'Common/MetricProgressBlock',
+  title: 'Core/MetricProgressBlock',
   component: MetricProgressBlock,
   parameters: {
     layout: 'padded',

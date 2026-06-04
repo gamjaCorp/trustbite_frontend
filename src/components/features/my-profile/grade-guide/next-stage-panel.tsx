@@ -1,7 +1,7 @@
 import { FileText, ShieldCheck } from 'lucide-react';
 
 import { GradeIcon } from '@/components/common/grade-icon';
-import { MetricProgressBlock } from '@/components/common/metric-progress-block';
+import { MetricProgressBlock } from '@/components/core/metric-progress-block';
 import { getNextLevelDef, getProgressToNext } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';

@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { ConfirmDialog } from '@/components/common/confirm-dialog';
+import { ConfirmDialog } from '@/components/core/confirm-dialog';
 
 interface Props {
   open: boolean;

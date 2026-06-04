@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Surface } from '@/components/common/surface';
-import { EmptyState } from '@/components/common/empty-state';
+import { EmptyState } from '@/components/core/empty-state';
 
 interface Props {
   restaurantId: string;

@@ -1,7 +1,7 @@
 import { Plus, UtensilsCrossed } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/components/common/empty-state';
+import { EmptyState } from '@/components/core/empty-state';
 
 // 지역 랭킹 리스트 결과 없음 빈 상태
 export function RegionRankEmpty() {
