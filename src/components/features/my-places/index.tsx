@@ -3,9 +3,9 @@
 // 나의 맛집 페이지 탭 — 나의 랭킹 / 가고 싶은 서브탭 + URL 쿼리 동기화
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { RestaurantRankList } from '@/components/features/my-restaurant/restaurant-rank-list';
+import { RestaurantRankList } from '@/components/features/my-places/restaurant-rank-list';
 import { TasteProfileSection } from '@/components/common/profile/taste-profile-section';
-import { WishlistSection } from '@/components/features/my-restaurant/wishlist-section';
+import { WishlistSection } from '@/components/features/my-places/wishlist-section';
 import { RegionalRankEntry } from '@/lib/types/restaurant';
 
 interface Props {

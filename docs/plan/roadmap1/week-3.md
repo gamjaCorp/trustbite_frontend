@@ -19,7 +19,7 @@
 | 4 | 인프라 스캐폴딩 | `src/lib/types/` 재배치, fetch 래퍼 3파일 골격, 글로벌 에러/토스트 골격 | [x] |
 | 5 | 폼 검증 — 온보딩 RHF+zod / 리뷰 zod 검증 | 온보딩·리뷰 폼 검증 (제출은 mock 유지) | [x] |
 | 6 | 디자인 품질 점검 + 반응형 점검 | cross-page 톤 통일, breakpoint 375/768/1280 정상 | [x] |
-| 7 | 코드 정리 + 빌드 + 스토리북 | `any`/`console.log` 제거, `pnpm build` 그린, 스토리북 잔여 | [ ] |
+| 7 | 코드 정리 + 빌드 + 스토리북 | `any`/`console.log` 제거, `pnpm build` 그린, 스토리북 잔여 | [x] |
 
 ---
 
@@ -226,12 +226,12 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 코드 정리 | - `any` 타입 전수 검색 → 명시적 타입으로 교체 | — | [ ] |
-|  | - `console.log` 전량 제거 | — | [ ] |
-| Storybook | - W3 Day 1~6 산출물 중 Storybook story 미작성 컴포넌트 보강 | `src/stories/` | [ ] |
-| 코드 리뷰 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [ ] |
-| 검증 | - `pnpm build` 번들 사이즈 확인 (지도 청크 분리 여부) | — | [ ] |
-|  | - `pnpm lint && npx tsc --noEmit && pnpm build` 그린 | — | [ ] |
+| 코드 정리 | - `any` 타입 전수 검색 → 명시적 타입으로 교체 | — | [x] |
+|  | - `console.log` 전량 제거 | — | [x] |
+| Storybook | - W3 Day 1~6 산출물 중 Storybook story 미작성 컴포넌트 보강 | `src/stories/` | [x] |
+| 코드 리뷰 | - `frontend-code-reviewer` 에이전트 1바퀴 — punch list 수집 및 즉시 수정 | — | [x] |
+| 검증 | - `pnpm build` 번들 사이즈 확인 (지도 청크 분리 여부) | — | [x] |
+|  | - `pnpm lint && npx tsc --noEmit && pnpm build` 그린 | — | [x] |
 
 > 산출물: 커밋이 깨끗한 상태로 W4 백엔드 연동 진입 준비 완료
 

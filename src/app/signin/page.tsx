@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { signIn, providerMap } from '@/auth';
 import { AuthError } from 'next-auth';
 import { Button } from '@/components/ui/button';
-import { CutleryRain } from '@/components/features/auth/index';
+import { CutleryRain } from '@/components/features/signin/index';
 
 const SIGNIN_ERROR_URL = '/error';
 

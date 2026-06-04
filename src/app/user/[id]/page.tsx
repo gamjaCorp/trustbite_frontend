@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { BackHeader } from '@/components/common/layout/back-header';
-import { UserProfileView } from '@/components/features/user-profile/index';
+import { UserProfileView } from '@/components/features/user/index';
 import { getUserProfile } from '@/data/mock-other-user';
 
 export default async function UserProfilePage({

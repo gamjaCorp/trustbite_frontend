@@ -19,7 +19,7 @@ import {
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useImagePreview } from '@/hooks/use-image-preview';
 import { cn } from '@/lib/utils';
-import { CutleryRain } from '../auth/index';
+import { CutleryRain } from '../signin/index';
 import { onboardingSchema, NICKNAME_MIN, NICKNAME_MAX, type OnboardingValues } from './schema';
 
 // 온보딩 프로필 설정 폼 — 닉네임·프로필 사진 입력, 제출 시 홈으로 이동 (백엔드 저장은 W4)

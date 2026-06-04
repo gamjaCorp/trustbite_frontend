@@ -69,6 +69,8 @@ src/stories/{PascalCase}.stories.tsx  모든 스토리가 평탄하게 여기 �
 src/auth.ts + src/proxy.ts       NextAuth v5 (proxy는 middleware alias)
 ```
 
+**feature 폴더 네이밍**: `features/<name>`의 `name`은 해당 라우트 세그먼트와 일치시킨다 (루트 `/`는 `home`). 여러 라우트가 공유하는 feature만 도메인 이름(`follow`, `review-write`) 사용.
+
 **재사용 우선순위**: 무언가 만들기 전에 `core/` → `ui/` → 신규 생성 순서로 탐색한다. 리뷰어 에이전트가 이 순서를 체크한다.
 
 ## 네이밍·Import 컨벤션
