@@ -7,6 +7,7 @@ export default function MyFollowersPage() {
   return (
     <FollowListView
       mode="self"
+      myId={profile.id}
       subjectName={profile.name}
       initialTab="followers"
       basePath="/profile"

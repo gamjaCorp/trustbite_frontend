@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Sparkles, Utensils, MapPin, Users, Repeat, type LucideIcon } from 'lucide-react';
 import {
   Radar,
@@ -51,7 +51,7 @@ function StatCard({ icon: Icon, label, main, mainClass, count, unit, sub }: Stat
       <p className={`text-headline-2 leading-tight ${mainClass ?? 'text-foreground'}`}>
         {main}
         {count !== undefined && (
-          <span className="text-body-3 text-muted-foreground font-normal ml-1">
+          <span className="text-body-3 text-muted-foreground ml-1">
             · {count}{unit}
           </span>
         )}
@@ -131,7 +131,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
   const basisCount = reviewCount ?? entries.length;
 
   // 레이더 축 라벨에 점수를 함께 표기 — "맛 (4.5)"
-  const renderRadarTick = ({ x = 0, y = 0, payload, textAnchor }: RadarTickProps) => {
+  const renderRadarTick = useCallback(({ x = 0, y = 0, payload, textAnchor }: RadarTickProps) => {
     const entry = radarData.find((d) => d.subject === payload?.value);
     return (
       <text
@@ -145,7 +145,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
         {payload?.value} ({entry?.score ?? 0})
       </text>
     );
-  };
+  }, [radarData]);
 
   if (entries.length === 0) return null;
 

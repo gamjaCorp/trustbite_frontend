@@ -35,7 +35,7 @@ export function FollowToggleButton({
       }}
       className={cn(
         'gap-1.5 rounded-xl shrink-0',
-        size === 'sm' ? 'h-7 px-2.5 text-label-3' : 'h-8 px-3 text-label-2',
+        size === 'sm' ? 'h-10 px-2.5 text-label-3' : 'h-10 px-3 text-label-2',
         following
           ? 'bg-card text-foreground border border-border hover:bg-muted'
           : 'bg-foreground text-background hover:bg-foreground/90',

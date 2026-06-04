@@ -1,14 +1,13 @@
 import { mockRankList } from '@/data/mock-restaurant';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
-import { getLevelDef, getNextLevelDef } from '@/lib/domain/grade-levels';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
-
-const CURRENT_LEVEL: GradeLevel = 3;
-const BASE_TRUST_SCORE = 72;
-const REMAINING_REVIEWS_FOR_NEXT_GRADE = 19;
-const CURRENT_GRADE_REVIEW_COUNT = 11;
-const CURRENT_GRADE_REVIEW_TARGET = getNextLevelDef(CURRENT_LEVEL)?.reviewMin ?? getLevelDef(CURRENT_LEVEL).reviewMin;
-const NEXT_GRADE_NAME = getNextLevelDef(CURRENT_LEVEL)?.label ?? '';
+import {
+  CURRENT_LEVEL,
+  BASE_TRUST_SCORE,
+  REMAINING_REVIEWS_FOR_NEXT_GRADE,
+  CURRENT_GRADE_REVIEW_COUNT,
+  CURRENT_GRADE_REVIEW_TARGET,
+  NEXT_GRADE_NAME,
+} from '@/data/mock-review-config';
 
 export default function NewReviewPage() {
   const myTopRestaurants = [...mockRankList]

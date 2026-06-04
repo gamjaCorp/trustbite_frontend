@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { NICKNAME_MIN, NICKNAME_MAX } from '@/lib/domain/profile';
 
 // 온보딩 닉네임·프로필 사진 검증 schema
-export const NICKNAME_MIN = 2;
-export const NICKNAME_MAX = 12;
+export { NICKNAME_MIN, NICKNAME_MAX };
 
 export const onboardingSchema = z.object({
   nickname: z

@@ -21,7 +21,7 @@ interface MapViewProps {
 }
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
-// --palette-brand (#ff7a00) 참조 — Kakao SDK fillColor는 string 전용이라 CSS 변수 직접 사용 불가
+// TODO: primary 토큰(#ff7a00) 하드코딩 — Kakao SDK fillColor가 CSS 변수 미지원, primary 컬러 변경 시 함께 수정
 const CIRCLE_COLOR = '#ff7a00';
 // onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
 const VIEWPORT_MOVE_RATIO = 0.3;
@@ -248,21 +248,14 @@ function KakaoMap({
                 rank={entry.rank}
                 showRank={entry.hasRealData ?? false}
               />
-              {(() => {
-                const isActive = activeId === entry.id;
-                const showLabel = isActive || level <= LABEL_VISIBLE_LEVEL;
-                if (!showLabel) return null;
-                return (
-                  <span className={cn(
-                    'absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border px-2 py-0.5 shadow-card',
-                    isActive
-                      ? 'border-primary bg-background/95 text-foreground text-label-3'
-                      : 'border-border bg-background/95 text-foreground text-label-3',
-                  )}>
-                    {entry.name}
-                  </span>
-                );
-              })()}
+              {(activeId === entry.id || level <= LABEL_VISIBLE_LEVEL) && (
+                <span className={cn(
+                  'absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border px-2 py-0.5 shadow-card bg-background/95 text-foreground text-label-3',
+                  activeId === entry.id ? 'border-primary' : 'border-border',
+                )}>
+                  {entry.name}
+                </span>
+              )}
             </div>
           </button>
         </CustomOverlayMap>

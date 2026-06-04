@@ -1,5 +1,5 @@
 - [core/ 컴포넌트는 단일 .tsx 파일 (폴더+배럴 금지)](feedback_core_flat_files.md) — CLAUDE.md 컨벤션과 충돌하는 사용자 선호
-- [타입 파일은 src/types/에 위치 (src/lib/types/ 아님)](project_types_location.md) — 프로젝트 실제 관행
+- [타입 파일은 src/lib/types/에 위치 (src/types/ 아님)](project_types_location.md) — 리팩토링 후 현재 관행 확인됨
 - [trustScore 표시에 text-palette-green 직접 사용 반복 패턴](feedback_palette_direct_use.md) — text-success 시맨틱 토큰으로 대체 권장
 - [북마크 버튼 tap target: w-7 h-7 (28px) 반복 위반](feedback_tap_target_size.md) — 44px 이상 필수
 - [mock 시드 데이터와 스토어 initialItems 이중 정의 패턴](project_mock_data_duplication.md) — WISHLIST_SEED_IDS와 스토어 hardcode가 분리되어 데드코드 발생

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Check, Camera } from 'lucide-react';
 
@@ -63,12 +63,12 @@ export function OnboardingForm() {
   };
 
   // TODO: 1차 MVP 제외 — 닉네임·아바타 백엔드 저장 (W4 연동)
-  const onValid = (_data: OnboardingValues) => {
+  const onValid = () => {
     router.push('/');
   };
 
-  // 버튼 활성: RHF isValid는 첫 렌더 직후 false일 수 있어 watch로 직접 계산
-  const watchedNickname = form.watch('nickname');
+  // 버튼 활성: RHF isValid는 첫 렌더 직후 false일 수 있어 useWatch로 직접 계산
+  const watchedNickname = useWatch({ control: form.control, name: 'nickname' });
   const trimmedLen = (watchedNickname ?? '').trim().length;
   const canSubmit = trimmedLen >= NICKNAME_MIN && trimmedLen <= NICKNAME_MAX;
 
@@ -112,7 +112,7 @@ export function OnboardingForm() {
                   onClick={() => fileInputRef.current?.click()}
                   aria-label="프로필 이미지 변경"
                   className={cn(
-                    'absolute bottom-0 right-0 w-7 h-7 rounded-full',
+                    'absolute bottom-0 right-0 w-9 h-9 rounded-full',
                     'bg-primary text-primary-foreground flex items-center justify-center',
                     'ring-2 ring-background hover:bg-primary/80 transition-colors',
                   )}

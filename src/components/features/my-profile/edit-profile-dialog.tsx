@@ -18,9 +18,7 @@ import {
 import { UserAvatar } from '@/components/core/user-avatar';
 import { useMyProfileMock } from '@/stores/my-profile-mock-store';
 import type { MyProfile } from '@/lib/types/user';
-
-const NICKNAME_MIN = 2;
-const NICKNAME_MAX = 12;
+import { NICKNAME_MIN, NICKNAME_MAX } from '@/lib/domain/profile';
 
 interface FormProps {
   profile: MyProfile;
@@ -86,7 +84,7 @@ function EditProfileForm({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             aria-label="프로필 이미지 변경"
-            className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-foreground text-background flex items-center justify-center ring-2 ring-background hover:bg-foreground/80 transition-colors"
+            className="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-foreground text-background flex items-center justify-center ring-2 ring-background hover:bg-foreground/80 transition-colors"
           >
             <Camera className="w-3.5 h-3.5" />
           </button>

@@ -1,6 +1,6 @@
 // TODO: 1차 MVP 제외 — Kakao Local 임시 합성 어댑터. 백엔드 도착 시 삭제
 import type { Category, RegionalRankEntry, SceneTag, VisitStatus } from '@/lib/types/restaurant';
-import type { KakaoPlace } from '@/api/kakao-local';
+import type { KakaoPlace } from '@/api/kakao/kakao-local';
 
 // mulberry32 결정론적 RNG
 function hash(str: string): number {

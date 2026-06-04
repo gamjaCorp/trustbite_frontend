@@ -3,7 +3,7 @@
 // TODO: 1차 MVP 제외 — Kakao Local 임시 훅. 백엔드 도착 시 교체
 
 import { useQuery } from '@tanstack/react-query';
-import { searchPlacesByRadius, searchPlacesByKeyword } from '@/api/kakao-local';
+import { searchPlacesByRadius, searchPlacesByKeyword } from '@/api/kakao/kakao-local';
 import { synthesizeEntry } from '@/lib/mock/synthesize-restaurant';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import type { SearchArea } from '@/lib/geo';

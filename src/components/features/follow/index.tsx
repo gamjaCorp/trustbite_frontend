@@ -4,7 +4,6 @@
 import { useRouter } from 'next/navigation';
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { getMyProfile } from '@/data/mock-my-profile';
 import type { FollowTabKey, FollowedUser } from '@/lib/types/follow';
 
 import { FollowEmpty } from './follow-empty';
@@ -12,6 +11,7 @@ import { FollowUserRow } from './follow-user-row';
 
 interface Props {
   mode: 'self' | 'other';
+  myId: string; // 본인 row에 팔로우 버튼을 숨기기 위해 상위에서 주입
   subjectName: string;
   initialTab: FollowTabKey;
   basePath: string;
@@ -21,6 +21,7 @@ interface Props {
 
 export function FollowListView({
   mode,
+  myId,
   subjectName,
   initialTab,
   basePath,
@@ -28,7 +29,6 @@ export function FollowListView({
   following,
 }: Props) {
   const router = useRouter();
-  const myId = getMyProfile().id;
 
   function handleTabChange(value: string) {
     router.replace(`${basePath}/${value}`, { scroll: false });
