@@ -1,5 +1,3 @@
-'use client';
-
 import { Camera, FileText, TrendingUp } from 'lucide-react';
 import {
   Sheet,

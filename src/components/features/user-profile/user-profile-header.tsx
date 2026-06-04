@@ -1,6 +1,4 @@
 // 다른 사용자 프로필 상단 카드 — 이름·등급·팔로워/팔로잉·팔로우 버튼
-import { useRouter } from 'next/navigation';
-
 import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
@@ -15,8 +13,6 @@ interface Props {
 
 // 다른 유저 프로필 헤더 — 아바타·닉네임·팔로우 버튼 + 팔로워/팔로잉 수
 export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Props) {
-  const router = useRouter();
-
   return (
     <ProfileHeaderCard
       avatarInitial={profile.name[0]}
@@ -38,8 +34,8 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
       followerCount={profile.followerCount}
       followingCount={profile.followingCount}
       followStatsSize="md"
-      onClickFollowers={() => router.push(`/user/${profile.id}/followers`)}
-      onClickFollowing={() => router.push(`/user/${profile.id}/following`)}
+      followersHref={`/user/${profile.id}/followers`}
+      followingHref={`/user/${profile.id}/following`}
       bottomRight={
         profile.mutualFollowing ? (
           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">

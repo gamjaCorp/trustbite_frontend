@@ -1,65 +1,45 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ChevronRight, Eye } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
-import { useAuthStatus } from '@/hooks/use-auth-status';
-import { EditProfileDialog } from './edit-profile-dialog';
+import { EditProfileButton } from './edit-profile-button';
 import type { MyProfile } from '@/lib/types/user';
 
 interface Props {
   profile: MyProfile;
+  sessionName?: string; // auth()에서 읽은 세션 닉네임
+  sessionImage?: string; // auth()에서 읽은 세션 아바타 URL
 }
 
-// 내 프로필 요약 카드 (아바타, 닉네임, 팔로우 통계)
-export function ProfileSummaryCard({ profile }: Props) {
-  const router = useRouter();
-  const { user } = useAuthStatus();
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
+// 내 프로필 요약 카드 (아바타, 닉네임, 팔로우 통계) — server component
+export function ProfileSummaryCard({ profile, sessionName, sessionImage }: Props) {
   return (
-    <>
-      <ProfileHeaderCard
-        avatarInitial={user?.name?.slice(0, 1) ?? '?'}
-        avatarUrl={user?.image ?? undefined}
-        title={
-          <>
-            <span className="text-title-1 text-foreground truncate">{user?.name}</span>
-            <UserGradeMark level={profile.level} size="sm" showLabel />
-          </>
-        }
-        subtitle={`${profile.email} · ${profile.joinedAt}`}
-        rightAction={
-          <Button
-            variant="outline"
-            size="sm"
-            className="shrink-0 rounded-full"
-            onClick={() => setIsEditOpen(true)}
-          >
-            편집
-          </Button>
-        }
-        followerCount={profile.followerCount}
-        followingCount={profile.followingCount}
-        onClickFollowers={() => router.push('/profile/followers')}
-        onClickFollowing={() => router.push('/profile/following')}
-        bottomRight={
-          <Link
-            href="/my-places"
-            className="inline-flex items-center gap-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>내 미식 가이드 보기</span>
-            <ChevronRight className="w-3 h-3" />
-          </Link>
-        }
-      />
-      <EditProfileDialog open={isEditOpen} onOpenChange={setIsEditOpen} profile={profile} />
-    </>
+    <ProfileHeaderCard
+      avatarInitial={sessionName?.slice(0, 1) ?? '?'}
+      avatarUrl={sessionImage}
+      title={
+        <>
+          <span className="text-title-1 text-foreground truncate">{sessionName}</span>
+          <UserGradeMark level={profile.level} size="sm" showLabel />
+        </>
+      }
+      subtitle={`${profile.email} · ${profile.joinedAt}`}
+      rightAction={<EditProfileButton profile={profile} />}
+      followerCount={profile.followerCount}
+      followingCount={profile.followingCount}
+      followersHref="/profile/followers"
+      followingHref="/profile/following"
+      bottomRight={
+        <Link
+          href="/my-places"
+          className="inline-flex items-center gap-1 text-label-3 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Eye className="w-3.5 h-3.5" />
+          <span>내 미식 가이드 보기</span>
+          <ChevronRight className="w-3 h-3" />
+        </Link>
+      }
+    />
   );
 }

@@ -26,16 +26,14 @@ const meta = {
       options: ['sm', 'md'],
       description: '팔로우 통계 크기',
     },
-    onClickFollowers: { control: false },
-    onClickFollowing: { control: false },
+    followersHref: { control: 'text', description: '팔로워 목록 경로' },
+    followingHref: { control: 'text', description: '팔로잉 목록 경로' },
     bottomRight: { control: false, description: '하단 우측 슬롯' },
   },
 } satisfies Meta<typeof ProfileHeaderCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-const noop = () => undefined;
 
 export const Default: Story = {
   name: 'Default — 기본 (아바타 이니셜)',
@@ -44,8 +42,8 @@ export const Default: Story = {
     title: <span className="text-headline-3">보람</span>,
     followerCount: 124,
     followingCount: 38,
-    onClickFollowers: noop,
-    onClickFollowing: noop,
+    followersHref: '/profile/followers',
+    followingHref: '/profile/following',
   },
 };
 
@@ -58,8 +56,8 @@ export const WithAvatar: Story = {
     subtitle: '@boram',
     followerCount: 124,
     followingCount: 38,
-    onClickFollowers: noop,
-    onClickFollowing: noop,
+    followersHref: '/profile/followers',
+    followingHref: '/profile/following',
   },
 };
 
@@ -71,8 +69,8 @@ export const WithBottomRight: Story = {
     subtitle: '@boram',
     followerCount: 124,
     followingCount: 38,
-    onClickFollowers: noop,
-    onClickFollowing: noop,
+    followersHref: '/profile/followers',
+    followingHref: '/profile/following',
     bottomRight: (
       <button className="text-label-2 text-muted-foreground border border-border rounded-md px-3 py-1.5">
         팔로우
@@ -89,7 +87,7 @@ export const SmallStats: Story = {
     followerCount: 8,
     followingCount: 3,
     followStatsSize: 'sm',
-    onClickFollowers: noop,
-    onClickFollowing: noop,
+    followersHref: '/profile/followers',
+    followingHref: '/profile/following',
   },
 };

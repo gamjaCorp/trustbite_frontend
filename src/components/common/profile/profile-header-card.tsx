@@ -1,5 +1,3 @@
-'use client';
-
 // 프로필 헤더 카드 공통 셸 — /profile, /user/[id]에서 공유
 import type { ReactNode } from 'react';
 
@@ -16,8 +14,8 @@ interface Props {
   followerCount: number;
   followingCount: number;
   followStatsSize?: 'sm' | 'md';
-  onClickFollowers: () => void;
-  onClickFollowing: () => void;
+  followersHref: string; // 팔로워 목록 경로
+  followingHref: string; // 팔로잉 목록 경로
   bottomRight?: ReactNode;
 }
 
@@ -30,8 +28,8 @@ export function ProfileHeaderCard({
   followerCount,
   followingCount,
   followStatsSize = 'md',
-  onClickFollowers,
-  onClickFollowing,
+  followersHref,
+  followingHref,
   bottomRight,
 }: Props) {
   return (
@@ -54,8 +52,8 @@ export function ProfileHeaderCard({
           followerCount={followerCount}
           followingCount={followingCount}
           size={followStatsSize}
-          onClickFollowers={onClickFollowers}
-          onClickFollowing={onClickFollowing}
+          followersHref={followersHref}
+          followingHref={followingHref}
         />
         {bottomRight}
       </div>

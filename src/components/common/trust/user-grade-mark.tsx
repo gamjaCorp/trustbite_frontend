@@ -1,5 +1,3 @@
-'use client';
-
 // 사용자 이름 옆에 붙이는 등급 아이콘 — showLabel=false면 hover 툴팁, true면 인라인 텍스트
 import { getLevelDef } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
