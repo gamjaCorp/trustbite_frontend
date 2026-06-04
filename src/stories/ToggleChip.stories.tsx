@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { ToggleChip } from '@/components/common/toggle-chip';
+import { ToggleChip } from '@/components/common/display/toggle-chip';
 
 const meta = {
-  title: 'Common/ToggleChip',
+  title: 'Common/Display/ToggleChip',
   component: ToggleChip,
   parameters: {
     layout: 'centered',

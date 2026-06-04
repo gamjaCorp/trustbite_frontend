@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { SectionHeader } from '@/components/common/section-header';
+import { SectionHeader } from '@/components/common/display/section-header';
 
 const meta = {
-  title: 'Common/SectionHeader',
+  title: 'Common/Display/SectionHeader',
   component: SectionHeader,
   parameters: {
     layout: 'padded',

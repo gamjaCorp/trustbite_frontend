@@ -1,10 +1,10 @@
 'use client';
 
-import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
-import { TasteProfileSection } from '@/components/common/taste-profile-section';
-import { StatsStrip } from '@/components/common/stats-strip';
-import { SectionHeader } from '@/components/common/section-header';
-import { DividedList } from '@/components/common/divided-list';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row';
+import { TasteProfileSection } from '@/components/common/profile/taste-profile-section';
+import { StatsStrip } from '@/components/common/display/stats-strip';
+import { SectionHeader } from '@/components/common/display/section-header';
+import { DividedList } from '@/components/common/display/divided-list';
 import { getLevelDef } from '@/lib/domain/grade-levels';
 import { getTrustToneClass } from '@/lib/domain/trust-score';
 import { useFollowMock } from '@/stores/follow-mock-store';

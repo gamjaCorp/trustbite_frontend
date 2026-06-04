@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';

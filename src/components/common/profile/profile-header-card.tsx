@@ -4,7 +4,7 @@
 import type { ReactNode } from 'react';
 
 import { UserAvatar } from '@/components/core/user-avatar';
-import { Surface } from './surface';
+import { Surface } from '../display/surface';
 import { FollowStatsRow } from './follow-stats-row';
 
 interface Props {

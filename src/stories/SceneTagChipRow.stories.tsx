@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
+import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 import { OCCASIONS } from '@/lib/domain/category';
 
 const meta = {
-  title: 'Common/SceneTagChipRow',
+  title: 'Common/Display/SceneTagChipRow',
   component: SceneTagChipRow,
   parameters: {
     layout: 'padded',

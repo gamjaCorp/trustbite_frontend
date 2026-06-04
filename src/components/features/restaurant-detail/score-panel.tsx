@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { RestaurantDetail } from '@/lib/types/restaurant';
-import { TrustScoreBadge } from '@/components/common/trust-score-badge';
-import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
-import { Surface } from '@/components/common/surface';
+import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
+import { TrustScoreSheet } from '@/components/common/trust/trust-score-sheet';
+import { Surface } from '@/components/common/display/surface';
 import { SCORE_LABELS } from '@/lib/domain/score-labels';
 
 interface Props {

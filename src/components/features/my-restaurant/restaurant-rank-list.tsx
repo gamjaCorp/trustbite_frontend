@@ -5,14 +5,14 @@ import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
 import { RegionalRankEntry, Category, SceneTag } from '@/lib/types/restaurant';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/core/empty-state';
-import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
-import { SectionHeader } from '@/components/common/section-header';
-import { DividedList } from '@/components/common/divided-list';
-import { CategoryChipRow } from '@/components/common/category-chip-row';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row';
+import { SectionHeader } from '@/components/common/display/section-header';
+import { DividedList } from '@/components/common/display/divided-list';
+import { CategoryChipRow } from '@/components/common/category/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import { SelectList } from '@/components/core/select-list';
 import { IconButton } from '@/components/core/icon-button';
-import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
+import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 import MyRankFilterProvider, {
   useMyRankCategory,
   useMyRankFilterActions,

@@ -1,12 +1,12 @@
 'use client';
 
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
-import { IntroCard } from '@/components/common/intro-card';
+import { IntroCard } from './intro-card';
 import { usePinRowSync } from './hooks/use-pin-row-sync';
 import { useRankList } from './hooks/use-rank-list';
-import { RankFilterControls } from './rank-filter-controls';
-import { RankMapBlock } from './rank-map-block';
-import { RankResultList } from './rank-result-list';
+import { RankFilterControls } from './filters/rank-filter-controls';
+import { RankMapBlock } from './map/rank-map-block';
+import { RankResultList } from './list/rank-result-list';
 import RegionRankProvider from '@/stores/region-rank-store';
 
 interface Props {

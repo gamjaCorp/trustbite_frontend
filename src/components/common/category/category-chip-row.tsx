@@ -14,7 +14,7 @@ interface CategoryChipRowProps {
 // 카테고리 칩 가로 스크롤 행 — 활성 시 Check 아이콘 + CATEGORY_STYLE 색상
 export function CategoryChipRow({ category, onCategoryChange, categories }: CategoryChipRowProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
       {categories.map((c) => {
         const active = category === c;
         const Icon = CATEGORY_ICON[c];

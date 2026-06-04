@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { type SceneTag } from '@/lib/types/restaurant';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
-import { SectionHeader } from '@/components/common/section-header';
-import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
+import { SectionHeader } from '@/components/common/display/section-header';
+import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 
 const SORT_OPTIONS: SelectListItem[] = [
   { value: 'trust', label: '신뢰도순' },

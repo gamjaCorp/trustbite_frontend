@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { ChevronRight, PencilLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { StatsStrip } from '@/components/common/stats-strip';
+import { StatsStrip } from '@/components/common/display/stats-strip';
 import { MyPlacesTabs } from '@/components/features/my-restaurant/index';
 import { mockStats5, mockRankList } from '@/data/mock-restaurant';
 import { getMyProfile } from '@/data/mock-my-profile';

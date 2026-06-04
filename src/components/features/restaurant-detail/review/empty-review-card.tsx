@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Surface } from '@/components/common/surface';
+import { Surface } from '@/components/common/display/surface';
 import { EmptyState } from '@/components/core/empty-state';
 
 interface Props {

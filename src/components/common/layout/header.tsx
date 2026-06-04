@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
@@ -52,7 +52,7 @@ export function Header() {
                 className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
               >
                 <UserAvatar initial={user?.name?.slice(0, 1) ?? '?'} imageUrl={user?.image || undefined} size="sm" />
-                <span className="text-title-3 text-foreground">{user?.name}</span>
+                <span className="hidden sm:inline text-title-3 text-foreground truncate max-w-32">{user?.name}</span>
                 <UserGradeMark level={profile.level} size="sm" />
               </Link>
             ) : (

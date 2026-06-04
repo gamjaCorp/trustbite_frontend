@@ -3,9 +3,9 @@
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import { Button } from '@/components/ui/button';
-import { DividedList } from '@/components/common/divided-list';
-import { SectionHeader } from '@/components/common/section-header';
-import { PlaceListRow, toPlaceListRowData } from '@/components/common/place-list-row';
+import { DividedList } from '@/components/common/display/divided-list';
+import { SectionHeader } from '@/components/common/display/section-header';
+import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { RegionRankEmpty } from './region-rank-empty';
 import { RegionRankSkeleton } from './region-rank-skeleton';

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { ProfileHeaderCard } from '@/components/common/profile-header-card';
+import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 
 const meta = {
-  title: 'Common/ProfileHeaderCard',
+  title: 'Common/Profile/ProfileHeaderCard',
   component: ProfileHeaderCard,
   parameters: {
     layout: 'padded',

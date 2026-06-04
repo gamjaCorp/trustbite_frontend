@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { FollowStatsRow } from '@/components/common/follow-stats-row';
+import { FollowStatsRow } from '@/components/common/profile/follow-stats-row';
 
 const meta = {
-  title: 'Common/FollowStatsRow',
+  title: 'Common/Profile/FollowStatsRow',
   component: FollowStatsRow,
   parameters: {
     layout: 'centered',

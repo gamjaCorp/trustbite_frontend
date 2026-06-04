@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
-import { Surface } from '@/components/common/surface';
-import { RestaurantIdentityRow } from '@/components/common/restaurant-identity-row';
-import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
+import { Surface } from '@/components/common/display/surface';
+import { RestaurantIdentityRow } from '@/components/common/restaurant/restaurant-identity-row';
+import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
 import { useReviewActions } from '@/stores/review-write-store';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 

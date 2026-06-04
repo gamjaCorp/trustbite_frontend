@@ -7,9 +7,9 @@ import {
   useRankFocusedEntry,
   useRankPendingArea,
 } from '@/stores/region-rank-store';
-import { MapView } from './explore/index';
-import { SearchThisArea } from './explore/search-this-area';
-import { LoadMoreButton } from './explore/load-more-button';
+import { MapView } from './map-view';
+import { SearchThisArea } from './search-this-area';
+import { LoadMoreButton } from './load-more-button';
 
 interface RankMapBlockProps {
   entries: RegionalRankEntry[]; // 랭크 부여된 결과 (핀 표시용)

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { DividedList } from '@/components/common/divided-list';
+import { DividedList } from '@/components/common/display/divided-list';
 
 const meta = {
-  title: 'Common/DividedList',
+  title: 'Common/Display/DividedList',
   component: DividedList,
   parameters: {
     layout: 'padded',

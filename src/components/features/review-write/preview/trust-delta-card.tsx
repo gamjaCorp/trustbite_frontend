@@ -3,7 +3,7 @@
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
-import { Surface } from '@/components/common/surface';
+import { Surface } from '@/components/common/display/surface';
 import { getTrustToneClass } from '@/lib/domain/trust-score';
 import {
   useReviewIsEditMode,

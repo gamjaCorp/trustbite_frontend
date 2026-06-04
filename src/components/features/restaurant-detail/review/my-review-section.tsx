@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SectionHeader } from '@/components/common/section-header';
+import { SectionHeader } from '@/components/common/display/section-header';
 import { DeleteReviewDialog } from './delete-review-dialog';
 import { DimensionScoreRow } from './dimension-score-row';
 import { VisitOrdinalChip } from './visit-ordinal-chip';

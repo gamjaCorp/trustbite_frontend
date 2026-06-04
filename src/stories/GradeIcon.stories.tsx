@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { GradeIcon } from '@/components/common/grade-icon';
+import { GradeIcon } from '@/components/common/trust/grade-icon';
 import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 const LEVELS = GRADE_LEVELS.map((d) => d.level) as GradeLevel[];
 
 const meta = {
-  title: 'Common/GradeIcon',
+  title: 'Common/Trust/GradeIcon',
   component: GradeIcon,
   parameters: {
     layout: 'centered',

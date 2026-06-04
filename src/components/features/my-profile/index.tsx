@@ -1,6 +1,6 @@
 import type { MyProfile } from '@/lib/types/user';
 
-import { Surface } from '@/components/common/surface';
+import { Surface } from '@/components/common/display/surface';
 import { GradeGuideCard } from './grade-guide/index';
 import { PointsAndListsRow } from './rows/points-and-lists-row';
 import { ProfileFooter } from './profile-footer';

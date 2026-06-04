@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 import { Category, MyRestaurantEntry } from '@/lib/types/restaurant';
 import { CATEGORY_TEXT_STYLE } from '@/lib/domain/category';
-import { Surface } from '@/components/common/surface';
+import { Surface } from '@/components/common/display/surface';
 
 interface Props {
   entries: MyRestaurantEntry[];

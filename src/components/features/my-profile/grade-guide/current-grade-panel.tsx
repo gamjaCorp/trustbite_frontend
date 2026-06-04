@@ -1,8 +1,8 @@
 import { getLevelDef } from '@/lib/domain/grade-levels';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 
-import { GradeIcon } from '@/components/common/grade-icon';
-import { StatCell } from '@/components/common/stat-cell';
+import { GradeIcon } from '@/components/common/trust/grade-icon';
+import { StatCell } from '@/components/common/display/stat-cell';
 import { cn } from '@/lib/utils';
 
 interface Props {

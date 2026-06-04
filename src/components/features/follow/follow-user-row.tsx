@@ -1,9 +1,9 @@
 // 팔로워/팔로잉 목록의 유저 한 행 — 아바타·이름·등급·신뢰도·팔로우 버튼
 import Link from 'next/link';
 
-import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
-import { TrustScoreBadge } from '@/components/common/trust-score-badge';
+import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
 import type { FollowedUser } from '@/lib/types/follow';
 
 import { FollowToggleButton } from './follow-toggle-button';

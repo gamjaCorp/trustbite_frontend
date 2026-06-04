@@ -8,7 +8,6 @@ export default function Home() {
   return (
     <>
       <div className="max-w-5xl mx-auto px-6 pt-4 pb-24 space-y-6">
-        {/* TODO: 1차 MVP 제외 — 실시간 평가 섹션 */}
         <RegionRankList />
       </div>
 

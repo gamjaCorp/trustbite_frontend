@@ -1,12 +1,12 @@
 'use client';
 
-import { SceneTagChipRow } from '@/components/common/scene-tag-chip-row';
+import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 import {
   useRankActions,
   useRankCategory,
   useRankOccasions,
 } from '@/stores/region-rank-store';
-import { CategoryChipRow } from '@/components/common/category-chip-row';
+import { CategoryChipRow } from '@/components/common/category/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import type { SceneTag } from '@/lib/types/restaurant';
 import { SearchAutocomplete } from './search-autocomplete';

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ThumbsUp } from 'lucide-react';
 import { DetailedReview } from '@/lib/types/restaurant';
-import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { DimensionScoreRow } from './dimension-score-row';
 import { VisitOrdinalChip } from './visit-ordinal-chip';

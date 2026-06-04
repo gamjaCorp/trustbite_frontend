@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { CategoryBadge } from '@/components/common/category-badge';
+import { CategoryBadge } from '@/components/common/category/category-badge';
 import type { Category } from '@/lib/types/restaurant';
 
 interface Props {

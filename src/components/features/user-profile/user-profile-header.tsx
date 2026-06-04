@@ -1,8 +1,8 @@
 // 다른 사용자 프로필 상단 카드 — 이름·등급·팔로워/팔로잉·팔로우 버튼
 import { useRouter } from 'next/navigation';
 
-import { ProfileHeaderCard } from '@/components/common/profile-header-card';
-import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { FollowToggleButton } from '@/components/features/follow/follow-toggle-button';
 import type { UserProfile } from '@/lib/types/user';

@@ -10,13 +10,13 @@ import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
-import { TrustScoreBadge } from '@/components/common/trust-score-badge';
-import { TrustScoreSheet } from '@/components/common/trust-score-sheet';
-import { CategoryBadge } from '@/components/common/category-badge';
-import { RankMedal } from '@/components/common/rank-medal';
-import { ScoreStars } from '@/components/common/score-stars';
+import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
+import { TrustScoreSheet } from '@/components/common/trust/trust-score-sheet';
+import { CategoryBadge } from '@/components/common/category/category-badge';
+import { RankMedal } from '@/components/common/display/rank-medal';
+import { ScoreStars } from '@/components/common/display/score-stars';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
-import { RestaurantThumbnail } from '@/components/common/restaurant-thumbnail';
+import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
 import type {
   Category,
   RatingScores,
