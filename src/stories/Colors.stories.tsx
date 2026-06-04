@@ -48,10 +48,6 @@ function SwatchGrid({ children }: { children: React.ReactNode }) {
   return <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">{children}</div>;
 }
 
-function GroupLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-headline-3 text-foreground mt-8 mb-4 first:mt-0">{children}</p>;
-}
-
 // ── 데이터 ──────────────────────────────────────────────────
 
 const PRIMITIVES = [

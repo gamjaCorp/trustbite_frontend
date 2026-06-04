@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
 import { Progress } from '@/components/ui/progress';
-import { getLevelDef } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { getLevelDef } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
-import { GradeIcon } from '@/components/common/grade-icon';
+import { GradeIcon } from '@/components/common/trust/grade-icon';
 
 interface Props {
   currentLevel: GradeLevel;
@@ -15,6 +15,7 @@ interface Props {
   remainingReviewsForNextGrade: number;
 }
 
+// 등급 진행 카드 — 현재 등급과 다음 등급까지 남은 리뷰 수 시각화
 export function GradeProgressCard({
   currentLevel,
   currentGradeReviewCount,

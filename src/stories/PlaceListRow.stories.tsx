@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { PlaceListRow, toPlaceListRowData, toPlaceListRowDataFromDetail } from '@/components/common/place-list-row';
+import { PlaceListRow, toPlaceListRowData, toPlaceListRowDataFromDetail } from '@/components/common/restaurant/place-list-row/index';
 import { mockRankList } from '@/data/mock-restaurant';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 
@@ -8,7 +8,7 @@ const myEntry = { ...mockRankList[0], rank: 1 };
 const wishlistDetail = getRestaurantDetail('1')!;
 
 const meta: Meta<typeof PlaceListRow> = {
-  title: 'Common/PlaceListRow',
+  title: 'Common/Restaurant/PlaceListRow',
   component: PlaceListRow,
   parameters: {
     layout: 'padded',

@@ -2,11 +2,13 @@ import { FollowListView } from '@/components/features/follow/index';
 import { getFollowers, getFollowing } from '@/data/mock-follow';
 import { getMyProfile } from '@/data/mock-my-profile';
 
+// 내 팔로워 목록 페이지
 export default function MyFollowersPage() {
   const profile = getMyProfile();
   return (
     <FollowListView
       mode="self"
+      myId={profile.id}
       subjectName={profile.name}
       initialTab="followers"
       basePath="/profile"

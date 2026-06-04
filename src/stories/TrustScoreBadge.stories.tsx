@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { TrustScoreBadge } from '@/components/common/trust-score-badge';
+import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
 
 const meta = {
-  title: 'Common/TrustScoreBadge',
+  title: 'Common/Trust/TrustScoreBadge',
   component: TrustScoreBadge,
   parameters: {
     layout: 'centered',

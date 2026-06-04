@@ -1,16 +1,13 @@
 import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
-// import { mockRealtimeReviews } from '@/data/mock-restaurant';
-// import { RealtimeReviews } from '@/components/features/ranking/realtime-reviews';
-import { RegionRankList } from '@/components/features/ranking/index';
+import { RegionRankList } from '@/components/features/home/index';
 import { Button } from '@/components/ui/button';
 
+// 홈 — 지역 기반 맛집 랭킹 목록 + 지도 탐색 진입점
 export default function Home() {
   return (
     <>
       <div className="max-w-5xl mx-auto px-6 pt-4 pb-24 space-y-6">
-        {/* 실시간 평가 — 홈의 "지도↔리스트 동기화" 모델과 분리되어 일단 비활성화. 부활 시 import 두 줄 + 아래 라인 해제. */}
-        {/* <RealtimeReviews reviews={mockRealtimeReviews} /> */}
         <RegionRankList />
       </div>
 

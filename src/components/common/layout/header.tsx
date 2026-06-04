@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { UserGradeMark } from '@/components/common/user-grade-mark';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
+import { UserAvatar } from '@/components/core/user-avatar';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
@@ -16,18 +16,15 @@ const NAV_TABS = [
   { label: '나의 맛집', href: '/my-places', requiresAuth: true },
 ] as const;
 
+// 글로벌 헤더 — 하단 탭 내비게이션과 로그인/아바타 영역
 export function Header() {
   const pathname = usePathname();
   const profile = getMyProfile();
   const { isAuthed, user } = useAuthStatus();
   const [myPlacesDialogOpen, setMyPlacesDialogOpen] = useState(false);
 
-  // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다. 로그인/온보딩은 미니 랜딩.
-  if (
-    pathname.startsWith('/restaurant/') ||
-    pathname.startsWith('/user/') ||
-    pathname === '/onboarding'
-  )
+  // 맛집 상세·사용자 프로필은 자체 헤더를 따로 렌더링한다.
+  if (pathname.startsWith('/restaurant/') || pathname.startsWith('/user/'))
     return null;
 
   return (
@@ -54,13 +51,8 @@ export function Header() {
                 href="/profile"
                 className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
               >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.image ?? ''} alt="프로필" />
-                  <AvatarFallback className="bg-primary-subtle text-primary text-label-3">
-                    {user?.name?.slice(0, 1) ?? '?'}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-title-3 text-foreground">{user?.name}</span>
+                <UserAvatar initial={user?.name?.slice(0, 1) ?? '?'} imageUrl={user?.image || undefined} size="sm" />
+                <span className="hidden sm:inline text-title-3 text-foreground truncate max-w-32">{user?.name}</span>
                 <UserGradeMark level={profile.level} size="sm" />
               </Link>
             ) : (

@@ -24,6 +24,7 @@ interface Props {
   disabled?: boolean;
 }
 
+// 드롭다운 선택 목록 — Select 프리미티브 래퍼
 export function SelectList({
   value,
   onValueChange,

@@ -28,7 +28,7 @@ export default async function RootLayout({
       <body className={`${jetbrainsMono.variable} antialiased`}>
         <Providers session={session}>
           <Header />
-          <main className="min-h-screen bg-background">{children}</main>
+          <main className="min-h-[calc(100vh-var(--header-height))] bg-background">{children}</main>
         </Providers>
       </body>
     </html>

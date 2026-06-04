@@ -14,6 +14,7 @@ interface Props {
   hideHeader?: boolean;
 }
 
+// 사진 업로드 그리드 — 최대 4장, 미리보기+삭제 인터페이스
 export function PhotoUploadGrid({ maxSlots = 4, hideHeader = false }: Props) {
   const photos = useReviewPhotos();
   const { addPhotos, removePhoto } = useReviewActions();
@@ -91,7 +92,7 @@ export function PhotoUploadGrid({ maxSlots = 4, hideHeader = false }: Props) {
               type="button"
               onClick={() => handleRemove(idx)}
               aria-label={`사진 ${idx + 1} 삭제`}
-              className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/70 text-background flex items-center justify-center hover:bg-foreground transition-colors"
+              className="absolute top-1 right-1 w-8 h-8 rounded-full bg-foreground/70 text-background flex items-center justify-center hover:bg-foreground transition-colors after:absolute after:content-[''] after:-inset-1.5"
             >
               <X className="w-3.5 h-3.5" />
             </button>

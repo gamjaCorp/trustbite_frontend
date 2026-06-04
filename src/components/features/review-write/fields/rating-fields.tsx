@@ -30,6 +30,7 @@ function RatingRow({ dim, label }: { dim: 'taste' | 'value' | 'vibe'; label: str
   );
 }
 
+// 평점 입력 필드 묶음 — 종합 점수 + 차원별 점수 (맛·가성비·분위기)
 export function RatingFields() {
   return (
     <div className="space-y-2">

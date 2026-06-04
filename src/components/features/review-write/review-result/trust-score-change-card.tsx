@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import { formatDelta } from '@/lib/format';
 import { Progress } from '@/components/ui/progress';
 import type { TrustBreakdown } from '@/stores/review-write-store';
 
@@ -12,10 +13,7 @@ interface Props {
   breakdown: TrustBreakdown;
 }
 
-function formatDelta(value: number): string {
-  return value % 1 === 0 ? value.toFixed(0) : value.toFixed(1);
-}
-
+// 신뢰도 점수 변화 카드 — 리뷰 제출 후 점수 증가를 애니메이션으로 표시
 export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown }: Props) {
   const [displayScore, setDisplayScore] = useState(baseTrustScore);
   const [progressValue, setProgressValue] = useState(0);

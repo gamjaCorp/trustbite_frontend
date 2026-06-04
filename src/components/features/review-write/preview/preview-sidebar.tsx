@@ -1,6 +1,6 @@
 import { RankingPreview } from './ranking-preview';
 import { TrustDeltaCard } from './trust-delta-card';
-import type { RegionalRankEntry } from '@/types/restaurant';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 
 interface Props {
   myTopRestaurants: RegionalRankEntry[];
@@ -10,6 +10,7 @@ interface Props {
   onSubmit: () => void;
 }
 
+// 리뷰 작성 데스크톱 사이드바 — 현재 입력 내용을 실시간으로 미리보기
 export function PreviewSidebar({
   myTopRestaurants,
   baseScore,

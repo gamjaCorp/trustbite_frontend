@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { GradeIcon } from '@/components/common/grade-icon';
-import { GRADE_LEVELS } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { GradeIcon } from '@/components/common/trust/grade-icon';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 const LEVELS = GRADE_LEVELS.map((d) => d.level) as GradeLevel[];
 
 const meta = {
-  title: 'Common/GradeIcon',
+  title: 'Common/Trust/GradeIcon',
   component: GradeIcon,
   parameters: {
     layout: 'centered',
@@ -25,7 +25,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg'],
       description: '아이콘 크기',
     },
     variant: {
@@ -72,7 +72,7 @@ export const AllSizes: Story = {
   parameters: { layout: 'padded' },
   render: () => (
     <div className="flex items-end gap-4">
-      {(['xs', 'sm', 'md', 'lg'] as const).map((size) => (
+      {(['sm', 'md', 'lg'] as const).map((size) => (
         <div key={size} className="flex flex-col items-center gap-1.5">
           <GradeIcon level={3} size={size} />
           <span className="text-label-3 text-muted-foreground">{size}</span>

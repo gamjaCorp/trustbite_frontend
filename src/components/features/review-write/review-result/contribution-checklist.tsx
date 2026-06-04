@@ -1,6 +1,6 @@
 import { CheckCircle2 } from 'lucide-react';
 
-import { Surface } from '@/components/common/surface';
+import { Surface } from '@/components/common/display/surface';
 import type { TrustBreakdown } from '@/stores/review-write-store';
 
 interface Props {

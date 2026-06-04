@@ -2,28 +2,21 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import ReviewWriteProvider, {
   type ReviewDraft,
   type ReviewResultSnapshot,
   type SelectedRestaurant,
-  type TrustBreakdown,
-  LONG_TEXT_THRESHOLD,
-  TRUST_DELTA,
   useReviewActions,
   useReviewIsEditMode,
-  useReviewIsValid,
-  useReviewPhotoCount,
   useReviewPhotos,
   useReviewText,
-  useReviewTextLength,
-  useReviewTrustDelta,
   useSelectedRestaurant,
 } from '@/stores/review-write-store';
-import type { RegionalRankEntry } from '@/types/restaurant';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { buildReviewSnapshot } from './build-review-snapshot';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 import { ReviewResultDialog } from './review-result/index';
 
 import { TargetRestaurantCard } from './fields/target-restaurant-card';
@@ -34,6 +27,8 @@ import { ReviewTextField } from './fields/review-text-field';
 import { PhotoUploadGrid } from './fields/photo-upload-grid';
 import { LocationVerifyBanner } from './fields/location-verify-banner';
 import { PreviewSidebar } from './preview/preview-sidebar';
+import { ReviewHint, ReviewCharCount, PhotoHint } from './fields/field-hints';
+import { MobileSubmitBar } from './fields/mobile-submit-bar';
 
 interface Props {
   initialSelectedRestaurant?: SelectedRestaurant | null;
@@ -48,6 +43,7 @@ interface Props {
   currentGradeReviewTarget: number;
 }
 
+// 리뷰 작성 폼 진입점 — Provider로 스토어를 초기화하고 내부 뷰에 주입
 export function ReviewWriteForm({ initialSelectedRestaurant, initialDraft, ...rest }: Props) {
   return (
     <ReviewWriteProvider
@@ -84,40 +80,17 @@ function ReviewWriteFormInner({
 
   const handleSubmit = () => {
     if (!selected) return;
-
-    const hasPhoto = photos.length > 0;
-    const hasLongText = text.length >= LONG_TEXT_THRESHOLD;
-    const breakdown: TrustBreakdown = {
-      consistency: TRUST_DELTA.consistency,
-      photo: hasPhoto ? TRUST_DELTA.photo : null,
-      longText: hasLongText ? TRUST_DELTA.longText : null,
-      total:
-        TRUST_DELTA.consistency +
-        (hasPhoto ? TRUST_DELTA.photo : 0) +
-        (hasLongText ? TRUST_DELTA.longText : 0),
-    };
-    const nextTrustScore = Math.min(100, baseTrustScore + breakdown.total);
-
-    const snapshot: ReviewResultSnapshot = {
-      restaurantId: selected.id,
-      baseTrustScore,
-      nextTrustScore,
-      breakdown,
+    const snapshot = buildReviewSnapshot({
+      selected,
       photoCount: photos.length,
+      text,
+      baseTrustScore,
       currentLevel,
-      currentGradeReviewCount: currentGradeReviewCount + 1,
+      currentGradeReviewCount,
       currentGradeReviewTarget,
       nextGradeName,
-      remainingReviewsForNextGrade: Math.max(0, remainingReviewsForNextGrade - 1),
-      // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
-      // pointsEarned: 5 + (hasPhoto ? 3 : 0) + (text.length >= 100 ? 2 : 0),
-      // pointReasons: [
-      //   { label: '리뷰', value: 5 },
-      //   ...(hasPhoto ? [{ label: '사진', value: 3 }] : []),
-      //   ...(text.length >= 100 ? [{ label: '100자', value: 2 }] : []),
-      // ],
-    };
-
+      remainingReviewsForNextGrade,
+    });
     setResultSnapshot(snapshot);
     setResultOpen(true);
   };
@@ -249,74 +222,3 @@ function FieldGroup({
   );
 }
 
-// 리뷰 100자 돌파 힌트 — 라벨 바로 옆
-function ReviewHint() {
-  const length = useReviewTextLength();
-  const reached = length >= LONG_TEXT_THRESHOLD;
-  if (!reached) return null;
-  return (
-    <span className="inline-flex items-center gap-0.5 text-primary font-semibold">
-      <Check className="w-3 h-3" />
-      {LONG_TEXT_THRESHOLD}자 돌파 +{TRUST_DELTA.longText}%
-    </span>
-  );
-}
-
-// 리뷰 글자수 — 우측 표시
-function ReviewCharCount() {
-  const length = useReviewTextLength();
-  return <span>{length}자</span>;
-}
-
-// 사진 첨부 힌트 — 라벨 바로 옆
-function PhotoHint() {
-  const count = useReviewPhotoCount();
-  const reached = count > 0;
-  return (
-    <span className={cn('flex items-center gap-0.5 transition-colors', reached ? 'text-primary font-semibold' : '')}>
-      {reached && <Check className="w-3 h-3" />}
-      사진 첨부 +{TRUST_DELTA.photo}%
-    </span>
-  );
-}
-
-// 모바일 전용 하단 고정 제출 바 — lg 이상에서는 사이드바 CTA 사용
-function MobileSubmitBar({
-  onSubmit,
-  baseTrustScore,
-}: {
-  onSubmit: () => void;
-  baseTrustScore: number;
-}) {
-  const isValid = useReviewIsValid();
-  const delta = useReviewTrustDelta();
-  const next = Math.min(100, baseTrustScore + delta);
-  const isEditMode = useReviewIsEditMode();
-
-  // 신뢰도 프리뷰(좌)와 CTA(우)를 한 행에 배치해 수직 공간을 절약
-  return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-sm lg:hidden">
-      <div className="mx-auto flex max-w-5xl items-center gap-3">
-        <div className="flex flex-col">
-          <span className="text-caption-2 text-muted-foreground">신뢰도</span>
-          <span className="text-title-2 text-foreground">
-            {baseTrustScore}% → <span className="text-primary">{next.toFixed(0)}%</span>
-          </span>
-        </div>
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={!isValid}
-          className={cn(
-            'ml-auto h-12 rounded-xl px-6 text-label-1 transition-colors',
-            isValid
-              ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
-              : 'bg-muted text-muted-foreground cursor-not-allowed',
-          )}
-        >
-          {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
-        </button>
-      </div>
-    </div>
-  );
-}

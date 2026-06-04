@@ -2,11 +2,11 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { ChevronRight, PencilLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { StatsStrip } from '@/components/common/stats-strip';
-import { MyPlacesTabs } from '@/components/features/my-restaurant/index';
+import { StatsStrip } from '@/components/common/display/stats-strip';
+import { MyPlacesTabs } from '@/components/features/my-places/index';
 import { mockStats5, mockRankList } from '@/data/mock-restaurant';
 import { getMyProfile } from '@/data/mock-my-profile';
-import { getLevelDef } from '@/lib/grade-levels';
+import { getLevelDef } from '@/lib/domain/grade-levels';
 
 type Props = { searchParams: Promise<{ tab?: string }> };
 

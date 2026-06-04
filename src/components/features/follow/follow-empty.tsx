@@ -1,14 +1,8 @@
 // 팔로워/팔로잉 목록이 비어 있을 때 표시하는 상태 컴포넌트
 import { Users } from 'lucide-react';
 
-import {
-  Empty,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-  EmptyDescription,
-} from '@/components/ui/empty';
-import type { FollowTabKey } from '@/types/follow';
+import { EmptyState } from '@/components/core/empty-state';
+import type { FollowTabKey } from '@/lib/types/follow';
 
 interface Props {
   mode: 'self' | 'other';
@@ -39,6 +33,7 @@ const MESSAGES: Record<'self' | 'other', Record<FollowTabKey, { title: string; d
   },
 };
 
+// 팔로우 목록 빈 상태 — mode·tab에 따른 안내 메시지 표시
 export function FollowEmpty({ mode, tab, subjectName }: Props) {
   const msg = MESSAGES[mode][tab];
   const title =
@@ -49,14 +44,10 @@ export function FollowEmpty({ mode, tab, subjectName }: Props) {
       : msg.title;
 
   return (
-    <Empty className="border-0 py-16">
-      <EmptyHeader>
-        <EmptyMedia variant="icon">
-          <Users />
-        </EmptyMedia>
-        <EmptyTitle className="text-body-1">{title}</EmptyTitle>
-        {msg.desc && <EmptyDescription>{msg.desc}</EmptyDescription>}
-      </EmptyHeader>
-    </Empty>
+    <EmptyState
+      icon={Users}
+      title={<span className="text-body-1">{title}</span>}
+      description={msg.desc || undefined}
+    />
   );
 }

@@ -4,8 +4,11 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
+import type { Category, RegionalRankEntry, SceneTag } from '@/lib/types/restaurant';
 import type { SearchArea } from '@/lib/geo';
+
+// 페이지네이션 단위 — use-rank-list도 이 값을 import해서 사용 (SSOT)
+export const PAGE_SIZE = 30;
 
 type CategoryFilter = Category | 'all';
 type ResolvedKeyword = { query: string; keyword: string | undefined };
@@ -18,6 +21,9 @@ interface RegionRankState {
   appliedArea: SearchArea | null; // 현재 검색에 사용 중인 영역 (중심 + 반경) — 원 고정 기준
   resolvedKeyword: ResolvedKeyword | null; // 검색어 휴리스틱 판정 결과 (지명인지, 키워드 필터인지)
   focusedEntry: RegionalRankEntry | null; // 자동완성에서 확정된 가게 — 비어 있으면 일반 모드
+  pendingArea: SearchArea | null; // 재검색 대기 영역 (지도 드래그/줌 후, 적용 전)
+  currentRegion: string | null; // 지도 중심 역지오코딩 행정구역명
+  visibleCount: number; // 페이지네이션 — 현재 공개 항목 수
 }
 
 interface RegionRankActions {
@@ -33,6 +39,14 @@ interface RegionRankActions {
   navigateToArea: (center: { lat: number; lng: number }, matchedQuery: string) => void;
   // X 버튼·ESC 시 검색어 + 키워드 필터 + focus 동시 초기화
   resetSearch: () => void;
+  // 재검색 대기 영역 설정 (null 허용 — 확정·focus 진입 시 초기화)
+  setPendingArea: (area: SearchArea | null) => void;
+  // 역지오코딩 행정구역명 갱신
+  setCurrentRegion: (region: string | null) => void;
+  // pendingArea를 appliedArea로 승격 + pendingArea 초기화 + visibleCount 리셋
+  applyPendingArea: () => void;
+  // 페이지네이션 한 단계 더 (visibleCount += PAGE_SIZE)
+  loadMore: () => void;
 }
 
 type RegionRankStore = RegionRankState & { action: RegionRankActions };
@@ -50,10 +64,15 @@ export default function RegionRankProvider({ children }: { children: ReactNode }
       appliedArea: null,
       resolvedKeyword: null,
       focusedEntry: null,
+      pendingArea: null,
+      currentRegion: null,
+      visibleCount: PAGE_SIZE,
       action: {
-        setCategory: (c) => set({ category: c }),
+        // 카테고리 변경 → 결과셋 교체이므로 visibleCount 리셋
+        setCategory: (c) => set({ category: c, visibleCount: PAGE_SIZE }),
         // query가 바뀌면 이전 확정 키워드 필터·focus도 함께 초기화 (입력 수정 시 stale 상태 방지)
-        setQuery: (q) => set({ query: q, resolvedKeyword: null, focusedEntry: null }),
+        setQuery: (q) =>
+          set({ query: q, resolvedKeyword: null, focusedEntry: null, visibleCount: PAGE_SIZE }),
         setActiveId: (id) => set({ activeId: id }),
         toggleOccasion: (tag) =>
           set((s) => {
@@ -62,11 +81,22 @@ export default function RegionRankProvider({ children }: { children: ReactNode }
             else next.add(tag);
             return { occasions: next };
           }),
-        setAppliedArea: (area) => set({ appliedArea: area }),
+        // 새 영역 검색 → 결과셋 교체이므로 pendingArea 초기화 + visibleCount 리셋
+        setAppliedArea: (area) =>
+          set({ appliedArea: area, pendingArea: null, visibleCount: PAGE_SIZE }),
         setResolvedKeyword: (resolved) => set({ resolvedKeyword: resolved }),
         // Focus 모드 진입: 단일 엔트리 고정 + activeId로 지도 클로즈업 + 입력창에 가게명
+        // pendingArea도 초기화 — focus 중엔 재검색 버튼이 뜨지 않아야 함
         enterFocus: (entry) =>
-          set({ focusedEntry: entry, activeId: entry.id, query: entry.name, resolvedKeyword: null }),
+          set({
+            focusedEntry: entry,
+            activeId: entry.id,
+            query: entry.name,
+            resolvedKeyword: null,
+            pendingArea: null,
+            visibleCount: PAGE_SIZE,
+          }),
+        // 지명 이동: 중심 교체(반경 유지) + keyword 비움 + 검색창 초기화 + pendingArea·visibleCount 리셋
         navigateToArea: (center, matchedQuery) =>
           set((s) => ({
             appliedArea: s.appliedArea
@@ -76,8 +106,29 @@ export default function RegionRankProvider({ children }: { children: ReactNode }
             focusedEntry: null,
             activeId: null,
             query: '',
+            pendingArea: null,
+            visibleCount: PAGE_SIZE,
           })),
-        resetSearch: () => set({ query: '', resolvedKeyword: null, focusedEntry: null, activeId: null }),
+        // 검색 전체 초기화: pendingArea·visibleCount도 함께 리셋
+        resetSearch: () =>
+          set({
+            query: '',
+            resolvedKeyword: null,
+            focusedEntry: null,
+            activeId: null,
+            pendingArea: null,
+            visibleCount: PAGE_SIZE,
+          }),
+        setPendingArea: (area) => set({ pendingArea: area }),
+        setCurrentRegion: (region) => set({ currentRegion: region }),
+        // pendingArea를 appliedArea로 승격 + pendingArea 초기화 + visibleCount 리셋
+        applyPendingArea: () =>
+          set((s) =>
+            s.pendingArea
+              ? { appliedArea: s.pendingArea, pendingArea: null, visibleCount: PAGE_SIZE }
+              : {},
+          ),
+        loadMore: () => set((s) => ({ visibleCount: s.visibleCount + PAGE_SIZE })),
       },
     })),
   );
@@ -98,4 +149,7 @@ export const useRankOccasions = () => useRegionRankStore((s) => s.occasions);
 export const useRankAppliedArea = () => useRegionRankStore((s) => s.appliedArea);
 export const useRankResolvedKeyword = () => useRegionRankStore((s) => s.resolvedKeyword);
 export const useRankFocusedEntry = () => useRegionRankStore((s) => s.focusedEntry);
+export const useRankPendingArea = () => useRegionRankStore((s) => s.pendingArea);
+export const useRankCurrentRegion = () => useRegionRankStore((s) => s.currentRegion);
+export const useRankVisibleCount = () => useRegionRankStore((s) => s.visibleCount);
 export const useRankActions = () => useRegionRankStore((s) => s.action);

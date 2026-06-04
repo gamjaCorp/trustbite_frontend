@@ -8,37 +8,48 @@ import { cn } from '@/lib/utils';
 import { useFollowMock } from '@/stores/follow-mock-store';
 
 interface Props {
-  targetUserId: string;
+  targetUserId?: string; // controlled 모드에서는 생략 가능
+  isFollowing?: boolean; // 미제공 시 store에서 읽음
+  onToggle?: () => void; // 미제공 시 store toggle 호출
   size?: 'sm' | 'md';
 }
 
-export function FollowToggleButton({ targetUserId, size = 'sm' }: Props) {
-  const isFollowing = useFollowMock((s) => s.isFollowing(targetUserId));
-  const toggle = useFollowMock((s) => s.toggle);
+// 팔로우/팔로잉 토글 버튼 — 낙관적 업데이트로 즉시 상태 전환
+export function FollowToggleButton({
+  targetUserId,
+  isFollowing: controlledFollowing,
+  onToggle,
+  size = 'sm',
+}: Props) {
+  const storeFollowing = useFollowMock((s) => s.isFollowing(targetUserId ?? ''));
+  const storeToggle = useFollowMock((s) => s.toggle);
+
+  const following = controlledFollowing ?? storeFollowing;
+  const handleToggle = onToggle ?? (() => storeToggle(targetUserId ?? ''));
 
   return (
     <Button
       size="sm"
       onClick={(e) => {
         e.preventDefault();
-        toggle(targetUserId);
+        handleToggle();
       }}
       className={cn(
-        'gap-1 rounded-xl shrink-0',
-        size === 'sm' ? 'h-7 px-2.5 text-label-3' : 'h-8 px-3 text-label-2',
-        isFollowing
+        'gap-1.5 rounded-xl shrink-0',
+        size === 'sm' ? 'h-10 px-2.5 text-label-3' : 'h-10 px-3 text-label-2',
+        following
           ? 'bg-card text-foreground border border-border hover:bg-muted'
           : 'bg-foreground text-background hover:bg-foreground/90',
       )}
     >
-      {isFollowing ? (
+      {following ? (
         <>
-          <UserCheck className="w-3 h-3" />
+          <UserCheck className="w-3.5 h-3.5" />
           팔로잉
         </>
       ) : (
         <>
-          <UserPlus className="w-3 h-3" />
+          <UserPlus className="w-3.5 h-3.5" />
           팔로우
         </>
       )}

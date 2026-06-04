@@ -1,11 +1,11 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { Surface } from '@/components/common/surface';
-import { RankMedal } from '@/components/common/rank-medal';
-import { ScoreStars } from '@/components/common/score-stars';
+import { Surface } from '@/components/common/display/surface';
+import { RankMedal } from '@/components/common/display/rank-medal';
+import { ScoreStars } from '@/components/common/display/score-stars';
 import { useReviewAvgScore, useSelectedRestaurant } from '@/stores/review-write-store';
-import type { RegionalRankEntry } from '@/types/restaurant';
+import type { RegionalRankEntry } from '@/lib/types/restaurant';
 
 interface Props {
   myTopRestaurants: RegionalRankEntry[];

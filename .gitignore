@@ -48,3 +48,6 @@ storybook-static
 
 # claude plans
 .claude/plans/
+
+# serena mcp cache
+.serena/

@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { UserGradeMark } from '@/components/common/user-grade-mark';
-import { GRADE_LEVELS } from '@/lib/grade-levels';
-import type { GradeLevel } from '@/lib/grade-levels';
+import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
+import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 const LEVELS = GRADE_LEVELS.map((d) => d.level) as GradeLevel[];
 
 const meta = {
-  title: 'Common/UserGradeMark',
+  title: 'Common/Trust/UserGradeMark',
   component: UserGradeMark,
   parameters: {
     layout: 'centered',
@@ -57,8 +57,8 @@ export const WithLabel: Story = {
 };
 
 export const Small: Story = {
-  name: 'Small — xs 크기',
-  args: { level: 3, showLabel: false, size: 'xs' },
+  name: 'Small — sm 크기',
+  args: { level: 3, showLabel: false, size: 'sm' },
 };
 
 export const AllLevels: Story = {

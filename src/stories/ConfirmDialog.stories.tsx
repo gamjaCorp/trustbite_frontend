@@ -4,10 +4,10 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 import { Trash2, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ConfirmDialog } from '@/components/common/confirm-dialog';
+import { ConfirmDialog } from '@/components/core/confirm-dialog';
 
 const meta = {
-  title: 'Common/ConfirmDialog',
+  title: 'Core/ConfirmDialog',
   component: ConfirmDialog,
   parameters: {
     layout: 'centered',
