@@ -16,6 +16,7 @@ const NAV_TABS = [
   { label: '나의 맛집', href: '/my-places', requiresAuth: true },
 ] as const;
 
+// 글로벌 헤더 — 하단 탭 내비게이션과 로그인/아바타 영역
 export function Header() {
   const pathname = usePathname();
   const profile = getMyProfile();

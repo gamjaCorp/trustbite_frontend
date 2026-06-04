@@ -14,6 +14,7 @@ interface Props {
   size?: 'sm' | 'md';
 }
 
+// 팔로우/팔로잉 토글 버튼 — 낙관적 업데이트로 즉시 상태 전환
 export function FollowToggleButton({
   targetUserId,
   isFollowing: controlledFollowing,

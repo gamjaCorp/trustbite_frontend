@@ -22,6 +22,7 @@ function StarRow({ score }: { score: number }) {
   );
 }
 
+// 실시간 리뷰 카드 슬라이더 — 최근 작성된 리뷰를 자동 스크롤로 표시
 export function RealtimeReviews({ reviews }: Props) {
   if (reviews.length === 0) return null;
 

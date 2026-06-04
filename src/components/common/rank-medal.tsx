@@ -8,6 +8,7 @@ interface Props extends ComponentPropsWithoutRef<'span'> {
   fallbackTone?: 'muted' | 'paper';
 }
 
+// 순위 메달 칩 — 1~3위 금·은·동, 그 외는 숫자 칩으로 표시
 export function RankMedal({ rank, fallbackTone = 'muted', className, ...rest }: Props) {
   const fallback =
     fallbackTone === 'paper' ? 'bg-paper-edge text-ink/70' : 'bg-muted text-muted-foreground';

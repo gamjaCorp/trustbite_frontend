@@ -6,6 +6,7 @@ import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import { CategoryPin } from '@/components/common/category-pin';
 import { type SearchArea, haversine, computeViewportRadius } from '@/lib/geo';
+import { SDK_PRIMARY_COLOR } from '@/lib/kakao-sdk-colors';
 import { cn } from '@/lib/utils';
 
 export type { SearchArea };
@@ -21,8 +22,8 @@ interface MapViewProps {
 }
 
 const DEFAULT_CENTER = { lat: 37.555, lng: 126.97 };
-// TODO: primary 토큰(#ff7a00) 하드코딩 — Kakao SDK fillColor가 CSS 변수 미지원, primary 컬러 변경 시 함께 수정
-const CIRCLE_COLOR = '#ff7a00';
+// Kakao SDK는 CSS 변수를 받지 못함 — src/lib/kakao-sdk-colors.ts에서 단일 출처로 관리
+const CIRCLE_COLOR = SDK_PRIMARY_COLOR;
 // onIdle에서 이 비율 미만 이동은 재검색 버튼을 띄우지 않음
 const VIEWPORT_MOVE_RATIO = 0.3;
 // 카카오 줌 1단계는 반경을 약 2배/절반으로 바꿈 — 0.35면 한 단계 줌도 확실히 감지

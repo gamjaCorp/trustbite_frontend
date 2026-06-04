@@ -84,7 +84,7 @@ function EditProfileForm({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             aria-label="프로필 이미지 변경"
-            className="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-foreground text-background flex items-center justify-center ring-2 ring-background hover:bg-foreground/80 transition-colors"
+            className="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-foreground text-background flex items-center justify-center ring-2 ring-background hover:bg-foreground/80 transition-colors after:absolute after:content-[''] after:-inset-1"
           >
             <Camera className="w-3.5 h-3.5" />
           </button>
@@ -133,6 +133,7 @@ interface Props {
   profile: MyProfile;
 }
 
+// 프로필 편집 다이얼로그 — 닉네임·아바타 이미지 수정 (로컬 미리보기, 저장은 W4)
 export function EditProfileDialog({ open, onOpenChange, profile }: Props) {
   const { nickname, avatarUrl, setNickname, setAvatarUrl } = useMyProfileMock();
 

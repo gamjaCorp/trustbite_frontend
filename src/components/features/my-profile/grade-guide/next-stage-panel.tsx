@@ -12,6 +12,7 @@ interface Props {
   trustScore: number;
 }
 
+// 다음 등급 패널 — 현재 등급에서 다음 등급까지 남은 조건 표시
 export function NextStagePanel({ level, reviewCount, trustScore }: Props) {
   const next = getNextLevelDef(level);
   const progress = getProgressToNext(level, reviewCount, trustScore);

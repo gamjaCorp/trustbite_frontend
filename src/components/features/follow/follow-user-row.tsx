@@ -13,6 +13,7 @@ interface Props {
   hideFollowAction?: boolean;
 }
 
+// 팔로우 목록 단일 행 — 아바타·이름·등급 + 팔로우 토글 버튼
 export function FollowUserRow({ user, hideFollowAction = false }: Props) {
   return (
     <li className="border-b border-border last:border-0">
@@ -24,7 +25,7 @@ export function FollowUserRow({ user, hideFollowAction = false }: Props) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="text-body-1 font-semibold text-foreground truncate">{user.name}</span>
+            <span className="text-title-1 text-foreground truncate">{user.name}</span>
             <UserGradeMark level={user.level} size="sm" showLabel />
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">

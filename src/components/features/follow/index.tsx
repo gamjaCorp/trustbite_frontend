@@ -19,6 +19,7 @@ interface Props {
   following: FollowedUser[];
 }
 
+// 팔로워·팔로잉 목록 뷰 — self/other 모드로 탭 전환 제공
 export function FollowListView({
   mode,
   myId,

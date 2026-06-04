@@ -33,6 +33,7 @@ export function SearchInput({ value, onValueChange, placeholder, className, ...r
         value={value}
         onChange={(e) => onValueChange(e.target.value)}
         placeholder={placeholder}
+        aria-label={rest['aria-label'] ?? placeholder}
         {...rest}
       />
     </InputGroup>

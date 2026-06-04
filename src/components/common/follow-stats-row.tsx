@@ -11,6 +11,7 @@ interface Props {
   onClickFollowing?: () => void;
 }
 
+// 팔로워·팔로잉 수 표시 행 — 클릭 시 각 목록으로 이동
 export function FollowStatsRow({
   followerCount,
   followingCount,

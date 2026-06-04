@@ -1,5 +1,6 @@
 import type { MyProfile } from '@/lib/types/user';
 
+import { Surface } from '@/components/common/surface';
 import { GradeGuideCard } from './grade-guide/index';
 import { PointsAndListsRow } from './rows/points-and-lists-row';
 import { ProfileFooter } from './profile-footer';
@@ -13,11 +14,12 @@ interface Props {
   profile: MyProfile;
 }
 
+// 내 프로필 뷰 — 등급 가이드·설정 목록·로그아웃을 세로로 배치
 export function MyProfileView({ profile }: Props) {
   return (
     <div className="max-w-4xl mx-auto px-8 pt-8 pb-16 space-y-4">
       <ProfileSummaryCard profile={profile} />
-      <section className="rounded-2xl bg-card border border-border overflow-hidden">
+      <Surface as="section" variant="bordered" padding="none" className="overflow-hidden">
         <GradeGuideCard profile={profile} />
         <div className="border-t border-border">
           <PointsAndListsRow profile={profile} />
@@ -44,7 +46,7 @@ export function MyProfileView({ profile }: Props) {
             <LogoutRow />
           </ProfileSection>
         </div>
-      </section>
+      </Surface>
       <ProfileFooter />
     </div>
   );

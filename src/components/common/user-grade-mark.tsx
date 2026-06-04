@@ -15,6 +15,7 @@ interface Props {
   className?: string;
 }
 
+// 유저 등급 마크 — 레벨에 따른 색상 배지 + 선택적 라벨
 export function UserGradeMark({ level, showLabel = false, size = 'sm', className }: Props) {
   const def = getLevelDef(level);
   const tooltip = `Lv.${level} · ${def.label}`;

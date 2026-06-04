@@ -114,6 +114,7 @@ export function SearchAutocomplete({ className }: Props) {
         {/* 검색 입력 필드 — base-ui Input이 InputGroupInput을 렌더 대상으로 사용 */}
         <BaseCombobox.Input
           render={<InputGroupInput />}
+          aria-label="맛집, 지역, 메뉴 검색"
           placeholder="맛집, 지역, 메뉴 검색"
           onFocus={() => {
             // 포커스 시 기존 결과가 있으면 다시 열기 (ESC 후 재포커스 대응)

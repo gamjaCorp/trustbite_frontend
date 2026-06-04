@@ -15,6 +15,7 @@ interface Props {
   remainingReviewsForNextGrade: number;
 }
 
+// 등급 진행 카드 — 현재 등급과 다음 등급까지 남은 리뷰 수 시각화
 export function GradeProgressCard({
   currentLevel,
   currentGradeReviewCount,

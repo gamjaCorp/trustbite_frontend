@@ -88,6 +88,7 @@ function MyReviewVisit({
   );
 }
 
+// 내 리뷰 섹션 — 로그인한 유저의 이 가게 리뷰 표시 + 수정/삭제 메뉴
 export function MyReviewSection({ review, restaurantId }: Props) {
   const { isAuthed } = useAuthStatus();
   if (!isAuthed) return null;

@@ -69,6 +69,7 @@ interface PlaceListRowProps {
   ownerName?: string;
 }
 
+// 가게 목록 행 — regional(랭킹)/my(내 랭킹)/wishlist(가고 싶은 곳) 3개 variant 지원
 export function PlaceListRow({
   data,
   variant,
@@ -127,7 +128,10 @@ export function PlaceListRow({
           active && 'bg-primary-subtle/40',
           onFocusMap && 'cursor-pointer',
         )}
+        role={onFocusMap ? 'button' : undefined}
+        tabIndex={onFocusMap ? 0 : undefined}
         onClick={() => onFocusMap?.(id)}
+        onKeyDown={onFocusMap ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onFocusMap(id); } } : undefined}
       >
         {/* ① 좌측 머리 — wishlist: 큰 북마크 토글 / regional·my: 랭크 메달 (minimal 시 생략) */}
         {variant === 'wishlist' ? (
@@ -135,7 +139,7 @@ export function PlaceListRow({
             type="button"
             onClick={() => onRemoveFromWishlist?.(id)}
             aria-label="북마크 해제"
-            className="shrink-0 self-center w-10 h-10 rounded-full flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all shadow-sm"
+            className="shrink-0 self-center w-11 h-11 rounded-full flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all shadow-sm"
           >
             <Bookmark className="w-5 h-5 fill-current" />
           </button>
@@ -181,7 +185,7 @@ export function PlaceListRow({
                 triggerBookmark();
               }}
               className={cn(
-                'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm',
+                'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm after:absolute after:content-[""] after:-inset-2',
                 bookmarked && isAuthed
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-background/85 text-ink/70 hover:bg-background',
@@ -203,7 +207,7 @@ export function PlaceListRow({
             </div>
             {/* 모바일용 평점 인라인 표시 — minimal 시 신규 칩 */}
             {minimal && variant === 'regional' ? (
-              <span className="sm:hidden inline-flex items-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2 shrink-0">신규</span>
+              <span className="sm:hidden inline-flex items-center px-2 py-0.5 rounded-chip bg-muted text-secondary-foreground text-caption-2 shrink-0">신규</span>
             ) : (variant === 'my' ? myAvgScore : communityAvgScore) != null ? (
               <ScoreStars
                 score={(variant === 'my' ? myAvgScore : communityAvgScore)!}
@@ -297,7 +301,7 @@ export function PlaceListRow({
             <ScoreStars score={(variant === 'my' ? myAvgScore : communityAvgScore)!} size="lg" />
           ) : null}
           {minimal ? (
-            <span className="mt-2 inline-flex items-center justify-center px-2 py-0.5 rounded-chip bg-muted text-muted-foreground text-caption-2">리뷰 부족</span>
+            <span className="mt-2 inline-flex items-center justify-center px-2 py-0.5 rounded-chip bg-muted text-secondary-foreground text-caption-2">리뷰 부족</span>
           ) : showTrustScore && trustScore != null ? (
             <div onClick={(e) => e.stopPropagation()}>
               <TrustScoreBadge

@@ -27,7 +27,7 @@ export function RestaurantThumbnail({ src, alt, category, showLabel = true, clas
         )}
       >
         <Icon className="size-6" strokeWidth={1.5} aria-hidden />
-        {showLabel && <span className="text-[10px] leading-none">이미지 없음</span>}
+        {showLabel && <span className="text-caption-2 leading-none">이미지 없음</span>}
       </div>
     );
   }

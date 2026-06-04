@@ -10,6 +10,7 @@ interface Props<T> {
   listClassName?: string;
 }
 
+// 구분선 리스트 — 아이템 사이에 border-t 구분선을 자동으로 삽입하는 범용 목록
 export function DividedList<T>({ items, renderItem, keyFn, listClassName }: Props<T>) {
   return (
     <ul className={cn(listClassName)}>

@@ -42,7 +42,7 @@ export function IntroCard() {
       <button
         onClick={dismiss}
         aria-label="닫기"
-        className="absolute top-3 right-3 p-1 rounded-full text-primary/60 hover:text-primary hover:bg-primary/10 transition-colors z-10"
+        className="absolute top-0 right-0 w-11 h-11 rounded-full flex items-center justify-center text-primary/60 hover:text-primary hover:bg-primary/10 transition-colors z-10"
       >
         <X className="w-4 h-4" />
       </button>
@@ -57,7 +57,7 @@ export function IntroCard() {
           <br />
           맛없었던 적, 있죠?
         </p>
-        <p className="text-body-1 font-semibold text-muted-foreground mt-1">
+        <p className="text-title-1 text-muted-foreground mt-1">
           같은 4.5점도 누가 줬느냐에 따라 무게가 달라요
         </p>
       </div>

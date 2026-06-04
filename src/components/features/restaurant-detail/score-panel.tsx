@@ -29,6 +29,7 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
   );
 }
 
+// 점수 패널 — 음식점 종합 평점·신뢰도 점수·고신뢰 리뷰어 비중 표시
 export function ScorePanel({ detail }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
 

@@ -15,6 +15,7 @@ const GRID_STYLE: React.CSSProperties = {
   backgroundSize: '40px 40px',
 };
 
+// 위치 섹션 — 주소·약도 지도·복사 버튼 모음
 export function LocationSection({ detail }: Props) {
   const displayAddress = detail.roadAddress || detail.address;
 

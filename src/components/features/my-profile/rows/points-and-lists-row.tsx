@@ -6,6 +6,7 @@ interface Props {
   profile: MyProfile;
 }
 
+// 포인트·공유 목록 행 — 적립 포인트와 공유 지도 개수를 표시하는 정보 행
 export function PointsAndListsRow({ profile }: Props) {
   const sharedListLabel = [
     ...profile.sharedListPreview,

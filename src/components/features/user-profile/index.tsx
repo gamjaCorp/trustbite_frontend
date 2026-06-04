@@ -17,6 +17,7 @@ interface Props {
   profile: UserProfile;
 }
 
+// 다른 유저 프로필 뷰 — 헤더·미각 레이더·랭킹 리스트 표시
 export function UserProfileView({ profile }: Props) {
   const isFollowing = useFollowMock((s) => s.isFollowing(profile.id));
   const toggle = useFollowMock((s) => s.toggle);

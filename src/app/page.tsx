@@ -3,6 +3,7 @@ import { PencilLine } from 'lucide-react';
 import { RegionRankList } from '@/components/features/ranking/index';
 import { Button } from '@/components/ui/button';
 
+// 홈 — 지역 기반 맛집 랭킹 목록 + 지도 탐색 진입점
 export default function Home() {
   return (
     <>

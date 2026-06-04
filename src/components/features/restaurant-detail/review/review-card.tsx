@@ -13,6 +13,7 @@ interface Props {
   review: DetailedReview;
 }
 
+// 리뷰 카드 — 유저 아바타·점수·태그·본문·사진을 한 카드에 표시
 export function ReviewCard({ review }: Props) {
   return (
     <article className="px-6 py-4 border-t border-border first:border-t-0">

@@ -199,13 +199,13 @@ Day 1에서 실 Google 로그인을 붙였지만 분기 로직·세션 정책이
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 공통 컴포넌트 점검 | - `core/`(2개)·`common/`(24개) 재사용 우선순위(`core→ui→new`)·`core=ui 래퍼 한정` 규칙 준수 점검 | `src/components/{core,common}/` | [ ] |
-|  | - `common/` 내 중복·유사 컴포넌트 통합 가능 여부 점검 (배지/마크/스타 계열 등) | `src/components/common/` | [ ] |
-| 토큰 점검 | - 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 5건 이하로 정리 | — | [ ] |
-|  | - 컬러 토큰 — arbitrary hex 0건 (Google 로고/Pin SVG 예외만) | — | [ ] |
-|  | - 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관 적용 | — | [ ] |
-|  | - 스페이싱 — `[px]` 임의값 사용처 정당화 확인 | — | [ ] |
-|  | - 로딩/빈/에러 톤 일관 (Skeleton/Empty/Error) | — | [ ] |
+| 공통 컴포넌트 점검 | - `core/`(2개)·`common/`(24개) 재사용 우선순위(`core→ui→new`)·`core=ui 래퍼 한정` 규칙 준수 점검 | `src/components/{core,common}/` | [x] |
+|  | - `common/` 내 중복·유사 컴포넌트 통합 가능 여부 점검 (배지/마크/스타 계열 등) | `src/components/common/` | [x] |
+| 토큰 점검 | - 시맨틱 타이포 — raw `text-{xs,sm,...} font-*` 잔존 5건 이하로 정리 | — | [x] |
+|  | - 컬러 토큰 — arbitrary hex 0건 (Google 로고/Pin SVG 예외만) | — | [x] |
+|  | - 카드 톤 통일 — `p-4`, `shadow-card`, `rounded-card` 일관 적용 | — | [x] |
+|  | - 스페이싱 — `[px]` 임의값 사용처 정당화 확인 | — | [x] |
+|  | - 로딩/빈/에러 톤 일관 (Skeleton/Empty/Error) | — | [x] |
 | 접근성 | - 접근성 1차 — 텍스트 대비, 클릭 영역 ≥ 44px, `alt` 텍스트 | — | [ ] |
 |  | - 컴포넌트 함수 위 한 줄 한국어 설명 주석 점검 | — | [ ] |
 | 레이아웃 | - `/review/new` 데스크톱 2컬럼 — 데스크톱만 사이드바, 모바일 단일 컬럼 | — | [ ] |

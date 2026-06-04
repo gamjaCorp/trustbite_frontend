@@ -9,6 +9,7 @@ interface Props {
   profile: MyProfile;
 }
 
+// 등급 가이드 카드 — 현재 등급·진행도·다음 단계 패널을 담는 셸
 export function GradeGuideCard({ profile }: Props) {
   const level = profile.level;
 

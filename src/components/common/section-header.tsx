@@ -17,6 +17,7 @@ const SIZE_CLS: Record<NonNullable<Props['size']>, string> = {
   h3: 'text-headline-3',
 };
 
+// 섹션 헤더 — 제목·부제목·오른쪽 액션 슬롯이 있는 섹션 상단 헤더
 export function SectionHeader({ title, subtitle, rightAction, size = 'h2', className }: Props) {
   const Tag = size as 'h1' | 'h2' | 'h3';
   return (

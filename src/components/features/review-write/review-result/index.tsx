@@ -25,6 +25,7 @@ interface Props {
   onViewMyReview: () => void;
 }
 
+// 리뷰 작성 완료 다이얼로그 — 점수 변화·등급 진행·포인트 획득 요약
 export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview }: Props) {
   return (
     <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onWriteMore(); }}>

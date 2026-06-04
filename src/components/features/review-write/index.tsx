@@ -45,6 +45,7 @@ interface Props {
   currentGradeReviewTarget: number;
 }
 
+// 리뷰 작성 폼 진입점 — Provider로 스토어를 초기화하고 내부 뷰에 주입
 export function ReviewWriteForm({ initialSelectedRestaurant, initialDraft, ...rest }: Props) {
   return (
     <ReviewWriteProvider

@@ -14,6 +14,7 @@ interface Props {
   reviewCount?: number;
 }
 
+// 내 맛집 탭 — 나의 랭킹·가고 싶은 곳 탭 전환 뷰
 export function MyPlacesTabs({ initialTab, entries, reviewCount }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();

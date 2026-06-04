@@ -5,6 +5,7 @@ import { signOut } from 'next-auth/react';
 
 import { ProfileListRow } from './profile-list-row';
 
+// 로그아웃 행 — 탭하면 signOut을 호출하는 설정 목록 행
 export function LogoutRow() {
   return (
     <ProfileListRow

@@ -10,6 +10,7 @@ interface Props {
 // chip-slot(24px) + gap(4px) + icon-center(24px)
 const CONNECTOR_TOP_PX = 52;
 
+// 전체 등급 타임라인 — Lv1~6 단계를 수직으로 나열하고 현재 등급 강조
 export function AllGradesTimeline({ currentLevel }: Props) {
   const nextLevel = currentLevel < 6 ? ((currentLevel + 1) as GradeLevel) : null;
 

@@ -16,6 +16,7 @@ const TEXT_CLS = {
   lg: 'text-headline-2 text-foreground',
 } as const;
 
+// 별점 표시 — 0~5 점수를 별 아이콘 + 숫자로 표시
 export function ScoreStars({ score, size = 'md', className, textClassName }: Props) {
   return (
     <span className={cn('inline-flex items-center gap-1', className)}>

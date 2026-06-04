@@ -9,6 +9,7 @@ import {
   NEXT_GRADE_NAME,
 } from '@/data/mock-review-config';
 
+// 리뷰 작성 페이지
 export default function NewReviewPage() {
   const myTopRestaurants = [...mockRankList]
     .sort((a, b) => b.avgScore - a.avgScore)

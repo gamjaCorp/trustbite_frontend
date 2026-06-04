@@ -5,6 +5,7 @@ interface Props {
   children: ReactNode;
 }
 
+// 프로필 내 그룹 섹션 — 제목 + 구분선으로 감싸는 목록 영역
 export function ProfileSection({ title, children }: Props) {
   return (
     <div>

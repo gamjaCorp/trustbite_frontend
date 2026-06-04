@@ -11,6 +11,7 @@ interface Props {
   trustScore: number;
 }
 
+// 현재 등급 패널 — 등급 아이콘·이름·현재 리뷰 수·신뢰도 수치 표시
 export function CurrentGradePanel({ level, reviewCount, trustScore }: Props) {
   const def = getLevelDef(level);
 

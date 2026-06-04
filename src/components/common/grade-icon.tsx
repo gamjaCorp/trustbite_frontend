@@ -19,6 +19,7 @@ const SIZE_MAP = {
   lg: { circle: 'w-20 h-20', icon: 'w-9 h-9' },
 } satisfies Record<Size, { circle: string; icon: string }>;
 
+// 등급 원형 아이콘 — 레벨별 색상·아이콘을 원에 담아 표시
 export function GradeIcon({
   level,
   size = 'md',

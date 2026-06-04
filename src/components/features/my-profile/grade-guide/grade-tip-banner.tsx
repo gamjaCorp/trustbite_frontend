@@ -1,5 +1,6 @@
 import { Lightbulb } from 'lucide-react';
 
+// 등급 팁 배너 — 신뢰도 점수 높이는 방법 안내 고정 배너
 export function GradeTipBanner() {
   return (
     <div className="bg-primary-subtle px-8 py-4 flex items-center gap-3">

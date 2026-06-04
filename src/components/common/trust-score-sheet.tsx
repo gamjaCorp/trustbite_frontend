@@ -22,6 +22,7 @@ interface Props {
   reviewCount: number;
 }
 
+// 신뢰도 점수 상세 설명 바텀시트 — 점수 계산 방식·등급 기준 안내
 export function TrustScoreSheet({
   open,
   onOpenChange,

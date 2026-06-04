@@ -38,6 +38,7 @@ const ICON_TONE_CLS: Record<NonNullable<Props['iconTone']>, string> = {
   destructive: 'bg-destructive/10 text-destructive',
 };
 
+// 확인/취소 다이얼로그 — 위험 동작 전 사용자 의사 확인
 export function ConfirmDialog({
   open,
   onOpenChange,

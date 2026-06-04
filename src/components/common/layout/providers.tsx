@@ -10,6 +10,7 @@ import { Toaster, toast } from 'sonner';
 import { ApiError } from '@/network/base';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
+// 전역 Provider 셸 — SessionProvider·QueryClient·Sonner·TooltipProvider를 트리에 주입
 export function Providers({
   children,
   session,

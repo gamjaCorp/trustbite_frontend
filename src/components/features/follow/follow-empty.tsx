@@ -33,6 +33,7 @@ const MESSAGES: Record<'self' | 'other', Record<FollowTabKey, { title: string; d
   },
 };
 
+// 팔로우 목록 빈 상태 — mode·tab에 따른 안내 메시지 표시
 export function FollowEmpty({ mode, tab, subjectName }: Props) {
   const msg = MESSAGES[mode][tab];
   const title =

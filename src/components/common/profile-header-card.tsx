@@ -4,6 +4,7 @@
 import type { ReactNode } from 'react';
 
 import { UserAvatar } from '@/components/core/user-avatar';
+import { Surface } from './surface';
 import { FollowStatsRow } from './follow-stats-row';
 
 interface Props {
@@ -34,7 +35,7 @@ export function ProfileHeaderCard({
   bottomRight,
 }: Props) {
   return (
-    <section className="rounded-2xl bg-card border border-border px-8 py-6">
+    <Surface as="section" variant="bordered" padding="none" className="px-8 py-6">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
           <UserAvatar initial={avatarInitial} imageUrl={avatarUrl} size="lg" />
@@ -58,6 +59,6 @@ export function ProfileHeaderCard({
         />
         {bottomRight}
       </div>
-    </section>
+    </Surface>
   );
 }

@@ -15,6 +15,7 @@ interface Props {
   items: StatsStripItem[];
 }
 
+// 통계 스트립 — 수평으로 나열된 수치(리뷰 수·점수 등) 요약 카드
 export function StatsStrip({ items }: Props) {
   return (
     <Surface variant="elevated" padding="none" className="flex divide-x divide-border overflow-hidden">

@@ -13,6 +13,7 @@ interface Props {
   breakdown: TrustBreakdown;
 }
 
+// 신뢰도 점수 변화 카드 — 리뷰 제출 후 점수 증가를 애니메이션으로 표시
 export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown }: Props) {
   const [displayScore, setDisplayScore] = useState(baseTrustScore);
   const [progressValue, setProgressValue] = useState(0);

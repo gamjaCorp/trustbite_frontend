@@ -19,6 +19,7 @@ const ICON_MAP: Partial<Record<Category, LucideIcon>> = {
 
 const DEFAULT_ICON = Utensils;
 
+// 카카오 지도 위에 올라가는 카테고리 핀 SVG — active 시 브랜드 컬러·확대
 export function CategoryPin({ category, active = false, rank, showRank = false }: Props) {
   const Icon = ICON_MAP[category] ?? DEFAULT_ICON;
   const size = active ? 36 : 26;

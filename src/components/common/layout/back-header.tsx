@@ -11,6 +11,7 @@ import { UserAvatar } from '@/components/core/user-avatar';
 import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
+// 뒤로가기 헤더 — 상세·폼 페이지 상단 고정 헤더 (뒤로가기 + 사용자 정보)
 export function BackHeader() {
   const router = useRouter();
   const { isAuthed, user } = useAuthStatus();

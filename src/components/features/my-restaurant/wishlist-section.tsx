@@ -21,6 +21,7 @@ const SORT_ITEMS = [
   { value: 'trust', label: '신뢰도순' },
 ];
 
+// 가고 싶은 곳 섹션 — 위시리스트 목록 + 방문 후 랭킹 이동 안내 배너
 export function WishlistSection() {
   const items = useWishlistMock((s) => s.items);
   const remove = useWishlistMock((s) => s.remove);
@@ -76,7 +77,7 @@ export function WishlistSection() {
             type="button"
             aria-label="배너 닫기"
             onClick={() => setShowBanner(false)}
-            className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+            className="shrink-0 relative text-muted-foreground hover:text-foreground transition-colors after:absolute after:content-[''] after:-inset-3.5"
           >
             <X className="w-4 h-4" />
           </button>

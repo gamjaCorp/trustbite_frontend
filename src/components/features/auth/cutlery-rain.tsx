@@ -33,6 +33,7 @@ const RAIN_ITEMS = [
   { type: 'fork',  left: '30%', delay: '3.5s',   duration: '9s',   scale: 1.1, opacity: 0.7 },
 ] as const;
 
+// 로그인 배경 장식 — 포크·나이프가 위에서 내려오는 애니메이션 (aria-hidden)
 export function CutleryRain() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">

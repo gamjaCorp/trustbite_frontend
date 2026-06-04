@@ -5,6 +5,7 @@ interface Props {
   pointReasons: Array<{ label: string; value: number }>;
 }
 
+// 포인트 획득 카드 — 리뷰 제출로 얻은 포인트와 이유 목록 표시
 export function PointsEarnedCard({ pointsEarned, pointReasons }: Props) {
   const reasonText = pointReasons.map((r) => `${r.label} ${r.value}`).join(' + ');
 

@@ -13,6 +13,7 @@ interface Props {
   onToggleFollow: () => void;
 }
 
+// 다른 유저 프로필 헤더 — 아바타·닉네임·팔로우 버튼 + 팔로워/팔로잉 수
 export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Props) {
   const router = useRouter();
 

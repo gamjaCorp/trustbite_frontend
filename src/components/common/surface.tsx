@@ -1,5 +1,5 @@
 // 카드 셸 CVA — variant(card/elevated/bordered/subtle/ring)로 배경·테두리 패턴 표준화
-import type { ComponentProps } from 'react';
+import type { ComponentPropsWithoutRef, ElementType } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
@@ -27,11 +27,22 @@ const surfaceVariants = cva('rounded-2xl', {
   defaultVariants: { variant: 'card', padding: 'md' },
 });
 
-type Props = ComponentProps<'div'> & VariantProps<typeof surfaceVariants>;
+type Props<T extends ElementType = 'div'> = {
+  as?: T; // 렌더할 HTML 요소 (기본 'div') — section/article 등 시맨틱 요소 지원
+} & ComponentPropsWithoutRef<T> &
+  VariantProps<typeof surfaceVariants>;
 
-export function Surface({ className, variant, padding, ...props }: Props) {
+// 카드 셸 CVA 렌더러 — variant와 as prop으로 배경·테두리·요소 타입 결정
+export function Surface<T extends ElementType = 'div'>({
+  as,
+  className,
+  variant,
+  padding,
+  ...props
+}: Props<T>) {
+  const Tag = as ?? 'div';
   return (
-    <div
+    <Tag
       className={cn(surfaceVariants({ variant, padding }), className)}
       {...props}
     />

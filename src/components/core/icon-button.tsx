@@ -27,7 +27,10 @@ export function IconButton({
       type="button"
       variant={active ? 'default' : variant}
       size={size}
-      className={cn('rounded-full', className)}
+      className={cn(
+        'rounded-full relative after:absolute after:content-[""] after:-inset-1',
+        className,
+      )}
       {...rest}
     >
       <Icon className={cn('w-4 h-4', iconClassName)} />
