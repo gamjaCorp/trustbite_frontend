@@ -14,7 +14,7 @@
 
 | Day | 날짜 | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|---|
-| Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /auth/login` · `needsOnboarding` · 온보딩 영속화 (프론트 세션 연결은 W3 완료) | [ ] |
+| Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /api/auth/session/google` · accessToken 갱신 · 온보딩 영속화 (BFF — token은 서버 전용) | [ ] |
 | Day 2 | — | `/profile` + `/profile/grade` 데이터 레이어 | `useMyProfile`, `useGradeProgress`, mock 삭제 | [ ] |
 | Day 3 | — | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | [ ] |
 | Day 4 | — | `/review/new` mutation + 인증 가드 + 에러 페이지 | `useSubmitReview`, middleware 매처, `not-found/error.tsx` | [ ] |
@@ -26,18 +26,26 @@
 
 ## Day 1 — 실 인증 — 백엔드 연동
 
-프론트 세션 연결(W3 완료) 위에 백엔드 인증 흐름을 추가. `auth-mock-store`는 W3에서 이미 제거됨.
+> 토큰 정책: BFF — accessToken은 클라 비노출, 서버에서만 접근 (`docs/spec/auth/token.md`)
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 인증 callbacks | - `callbacks.signIn` — 백엔드 `POST /auth/login` 호출, 신규 사용자 `needsOnboarding: true` 처리 | `src/auth.ts` | [ ] |
-|  | - `callbacks.jwt` — `userId`, `accessToken`, `needsOnboarding` 추가 저장 | `src/auth.ts` | [ ] |
-|  | - `callbacks.session` — 백엔드 필드 → session 노출 | `src/auth.ts` | [ ] |
-| 온보딩 | - `/onboarding` — `POST /users/onboarding` submit 후 `/` 이동, 기존 사용자는 곧장 `/` | `src/app/onboarding/page.tsx` | [ ] |
-|  | - 비로그인 → Google → 신규 사용자 → `/onboarding` → `/` 흐름 확인 | — | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 토큰 발급 | - `callbacks.jwt` — Google `account.id_token`으로 `POST /api/auth/session/google` 호출, `accessToken`·`needsOnboarding`·만료시각을 JWT에 저장 | `src/auth.ts` | [ ] |
+|  | - 백엔드 refreshToken `Set-Cookie` 헤더를 브라우저로 forward (`cookies().set()`) | `src/auth.ts` | [ ] |
+|  | - `callbacks.session` — `needsOnboarding` 등 비민감 필드만 노출. **accessToken은 session에 넣지 않음** | `src/auth.ts`, `src/lib/types/next-auth.d.ts` | [ ] |
+|  | - `authedFetch` — `session.accessToken` 대신 서버 전용 JWT 복호화(`auth()`)로 토큰 획득하도록 수정 | `src/network/server.ts` | [ ] |
+|  | - env 정리 — `NEXT_PUBLIC_API_BASE_URL` → `BACKEND_API_URL` (서버 전용) | `src/network/base.ts`, `.env.local` | [ ] |
+| 토큰 갱신 | - `callbacks.jwt` — accessToken 만료(30분) 감지 시 `POST /api/auth/refresh` 호출해 갱신 | `src/auth.ts` | [ ] |
+|  | - 갱신 실패(refreshToken 만료·401) 시 세션 무효화 → 재로그인 유도 | `src/auth.ts` | [ ] |
+| 온보딩 | - `POST /users/me/onboarding` Server Action — 닉네임 전송, avatarUrl은 업로드 방식 미정이므로 null + TODO | `src/app/onboarding/actions.ts` (신규) | [ ] |
+|  | - 온보딩 폼 submit → Server Action 연결, 성공 시 세션 `needsOnboarding` 갱신 후 `/` 이동 | `src/components/features/onboarding/index.tsx` | [ ] |
+|  | - 미들웨어 onboarding gate — `needsOnboarding: true`이면 `/onboarding` 강제, 완료 사용자의 `/onboarding` 접근은 `/`로 리다이렉트 | `src/proxy.ts` | [ ] |
+| 확인·검증 | - 비로그인 → Google → 신규 `/onboarding` → `/` 흐름 + 재로그인 시 온보딩 skip 확인 | — | [ ] |
+|  | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
 
-> 산출물: 인증 흐름이 실 백엔드 위에서 동작
+> ⚠️ RSC 렌더 중에는 `cookies().set()` 불가 — refresh의 Set-Cookie forward는 Route Handler 컨텍스트에서만 가능 (`token.md` "set-cookie forward 함의"). 구현 시 갱신 경로 설계에 반영.
+
+> 산출물: BFF 구조로 인증 흐름이 실 백엔드 위에서 동작. accessToken이 클라에 노출되지 않음.
 
 ---
 
@@ -150,7 +158,7 @@ PRD 핵심 루프 3개를 직접 따라가며 버그를 잡고 스테이징 배�
 | 플로우 1-3 | - 리뷰 카드 닉네임 클릭 → `/user/[id]` | — | [ ] |
 |  | - 팔로우 버튼 UI 확인 (1차: UI만) | — | [ ] |
 |  | - 맛집 랭킹 잠금 메시지 확인 | — | [ ] |
-| 배포 | - env 최종 확인: `NEXT_PUBLIC_API_BASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_KAKAO_MAP_KEY` | — | [ ] |
+| 배포 | - env 최종 확인: `BACKEND_API_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_KAKAO_MAP_KEY` | — | [ ] |
 |  | - `pnpm build` 로컬 최종 확인 | — | [ ] |
 |  | - Vercel 스테이징 배포 + 도메인/HTTPS 확인 | — | [ ] |
 |  | - 배포된 URL에서 플로우 1-1, 1-2 빠르게 재확인 | — | [ ] |
