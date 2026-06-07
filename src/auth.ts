@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { Provider } from 'next-auth/providers';
+import { postGoogleSession } from './api/auth/auth';
 
 const providers: Provider[] = [Google];
 
@@ -25,8 +26,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     maxAge: 60 * 60 * 24 * 30, // 30일 (NextAuth 기본값을 명시적으로 고정)
   },
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) token.id = user.id;
+
+      if (account) {
+        const idToken = account?.id_token;
+        if (!idToken) return token;
+
+        const data = await postGoogleSession(idToken);
+
+        if (data?.accessToken) {
+          token.accessToken = data.accessToken;
+          token.needsOnboarding = data.needsOnboarding;
+          token.accessTokenExpires = JSON.parse(atob(data.accessToken.split('.')[1])).exp * 1000;
+        }
+      }
       return token;
     },
     session({ session, token }) {
