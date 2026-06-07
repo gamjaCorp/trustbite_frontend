@@ -25,7 +25,9 @@
 
 ## 엔드포인트 1 — `POST /api/auth/session/google`
 
-Google OAuth 완료 직후 호출한다. 백엔드는 id_token을 검증하고 사용자를 등록(최초) 또는 조회(재로그인)한 뒤 서비스 토큰을 발급한다. refreshToken은 응답 body가 아닌 HttpOnly 쿠키로 자동 설정된다.
+Google OAuth 완료 직후 호출한다. 백엔드는 id_token을 검증하고 사용자를 등록(최초) 또는 조회(재로그인)한 뒤 서비스 토큰을 발급한다.
+
+> **설계 결정**: refreshToken을 응답 body에 포함한다 (Set-Cookie 방식 불채택). BFF 구조에서 NextAuth jwt 콜백이 서버→서버로 호출하면 백엔드의 Set-Cookie 헤더가 브라우저까지 전달되지 않는 문제가 있어, body로 받아 NextAuth JWT(암호화 쿠키)에 저장하는 방식으로 확정.
 
 ### 요청
 
@@ -42,7 +44,8 @@ Content-Type: application/json
 
 | 필드 | 타입 | 설명 |
 |---|---|---|
-| `accessToken` | string | 서비스 전용 JWT |
+| `accessToken` | string | 서비스 전용 JWT (30분) |
+| `refreshToken` | string | 갱신용 토큰 (7일) |
 | `needsOnboarding` | boolean | `true`이면 온보딩 화면으로 이동 |
 
 ### 에러
@@ -57,13 +60,25 @@ Content-Type: application/json
 
 ## 엔드포인트 1-1 — `POST /api/auth/refresh`
 
-accessToken 만료 시 호출한다. 인증 불필요. 브라우저가 HttpOnly 쿠키의 refreshToken을 자동으로 전송한다.
+accessToken 만료 시 호출한다. refreshToken을 body로 전달한다.
+
+### 요청
+
+```
+POST /api/auth/refresh
+Content-Type: application/json
+```
+
+| 필드 | 타입 | 설명 |
+|---|---|---|
+| `refreshToken` | string | 발급받은 refresh 토큰 |
 
 ### 응답 (200 OK)
 
 | 필드 | 타입 | 설명 |
 |---|---|---|
 | `accessToken` | string | 갱신된 서비스 JWT |
+| `refreshToken` | string | 갱신된 refresh 토큰 |
 | `needsOnboarding` | boolean | 항상 `false` |
 
 ### 에러
