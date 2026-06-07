@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { Provider } from 'next-auth/providers';
-import { postGoogleSession } from './api/auth/auth';
+import { postGoogleSession, postRefreshToken } from './api/auth/auth';
 
 const providers: Provider[] = [Google];
 
@@ -26,10 +26,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     maxAge: 60 * 60 * 24 * 30, // 30일 (NextAuth 기본값을 명시적으로 고정)
   },
   callbacks: {
+    // 로그인, 세션 읽을때마다 호출
     async jwt({ token, user, account }) {
       if (user) token.id = user.id;
+      // 로그인 된 상태
+      if (!account) {
+        if (token?.accessTokenExpires && Date.now() < token.accessTokenExpires) {
+          return token;
+        } else {
+          if (!token?.accessTokenExpires) {
+            return token;
+          }
 
-      if (account) {
+          // 토큰 갱신 필요
+          try {
+            const res = await postRefreshToken(token.refreshToken!);
+            token.accessToken = res.accessToken;
+            token.refreshToken = res.refreshToken;
+            token.accessTokenExpires = JSON.parse(atob(res.accessToken.split('.')[1])).exp * 1000;
+            token.error = undefined;
+          } catch {
+            token.error = 'RefreshTokenExpired';
+          }
+        }
+      }
+      // 로그인 안된 상태
+      else {
         const idToken = account?.id_token;
         if (!idToken) return token;
 
@@ -37,6 +59,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (data?.accessToken) {
           token.accessToken = data.accessToken;
+          token.refreshToken = data.refreshToken;
           token.needsOnboarding = data.needsOnboarding;
           token.accessTokenExpires = JSON.parse(atob(data.accessToken.split('.')[1])).exp * 1000;
         }
@@ -45,6 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session({ session, token }) {
       if (token.id) session.user.id = token.id as string;
+      session.needsOnboarding = token.needsOnboarding;
       return session;
     },
   },
