@@ -72,12 +72,15 @@ TrustBite는 비로그인 상태에서도 탐색·상세 조회가 가능하다.
 
 ## 6. 세션 유지 정책
 
-로그인 후 **30일** 동안 세션이 유지된다. 만료 후에는 다시 로그인해야 한다.
+- **NextAuth 세션**: 7일 (rolling). 이게 "로그인 유지"의 실체.
+- **백엔드 accessToken**: 30분. 만료(401) 시 refreshToken으로 자동 갱신.
+- **백엔드 refreshToken**: HttpOnly 쿠키. 7일 (NextAuth 세션 만료와 맞춤).
+- refreshToken까지 만료되면 재로그인이 필요하다.
 
 ---
 
 ## 7. 미정 항목
 
 - **프로필 사진 용량·형식 제한**: 최대 파일 크기, 허용 형식(JPEG/PNG/WEBP 등) 확정 필요.
-- **세션 갱신(refresh) 정책**: 만료 임박 시 자동 갱신 여부 미정.
-- **서버측 라우트 보호**: 현재 클라이언트 분기에만 의존 중. 서버 미들웨어 가드 적용 시점 및 범위 미정.
+- **서버측 라우트 보호**: onboarding gate는 미들웨어(`src/proxy.ts`)로 처리 확정. 그 외 인증 필요 라우트(`/profile`, `/my-places`, `/review/*`) 목록은 확정 필요.
+- **로그아웃 엔드포인트**: `POST /api/auth/logout` 명세 미확정 (refreshToken 쿠키 무효화 여부 포함).

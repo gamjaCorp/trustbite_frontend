@@ -10,9 +10,9 @@ TrustBite에서 "토큰"은 목적이 다른 3개 층으로 나뉜다. 섞이면
 
 | 층 | 무엇 | 담당 역할 | 비고 |
 |---|---|---|---|
-| ① NextAuth 세션 (쿠키 JWT) | 우리 서비스의 로그인 상태 | **로그인 유지 전담** — 30일, 사용할 때마다 갱신(rolling) | 이게 "로그인 유지"의 실체 |
+| ① NextAuth 세션 (쿠키 JWT) | 우리 서비스의 로그인 상태 | **로그인 유지 전담** — 7일, 사용할 때마다 갱신(rolling) | 이게 "로그인 유지"의 실체 |
 | ② Google access/refresh token | Google API를 대리 호출할 때 쓰는 출입증 | **우리는 미사용** | 구글 캘린더·드라이브 등 외부 Google API 호출 시에만 필요 |
-| ③ 백엔드 accessToken | 우리 서비스 API(`/restaurants`, `/reviews` 등)의 출입증 | 로그인 사용자가 API 호출 시 `Authorization: Bearer`로 전달 | 수명 정책은 미정 — 아래 참조 |
+| ③ 백엔드 accessToken | 우리 서비스 API(`/restaurants`, `/reviews` 등)의 출입증 | 로그인 사용자가 API 호출 시 `Authorization: Bearer`로 전달 | 30분. refreshToken(7일)으로 갱신 |
 
 ---
 
@@ -24,7 +24,7 @@ TrustBite에서 "토큰"은 목적이 다른 3개 층으로 나뉜다. 섞이면
 
 ```
 Google 로그인 성공
-  → auth.ts 의 jwt 콜백에서 POST /auth/login 호출 → 백엔드 accessToken 받음
+  → auth.ts 의 jwt 콜백에서 POST /api/auth/session/google 호출 → 백엔드 accessToken 받음
   → token.accessToken = accessToken   (JWT 쿠키에 저장, 서버에서만 복호화)
 ```
 
@@ -72,7 +72,7 @@ httpOnly 세션 쿠키는 **JS가 값을 읽을 수는 없지만, 같은 출처 
 
 - TrustBite는 Google 로그인을 "로그인 시점의 신원 확인"으로만 사용한다. Google OAuth 완료 후에는 우리 서버에서만 데이터를 주고받으며, 이후 Google API를 추가로 호출하지 않는다.
 - Google refresh token이 필요 없으므로 애초에 요청하지 않는다. (offline access 미설정)
-- 로그인 유지는 ①(NextAuth 세션, 30일 rolling)이 담당한다. Google 토큰 만료와 무관하게 동작한다.
+- 로그인 유지는 ①(NextAuth 세션, 7일 rolling)이 담당한다. Google 토큰 만료와 무관하게 동작한다.
 
 ### Google 심사 부담도 없다
 
@@ -80,18 +80,31 @@ httpOnly 세션 쿠키는 **JS가 값을 읽을 수는 없지만, 같은 출처 
 
 ---
 
-## 백엔드 accessToken 수명 정책 (미결정)
+## 백엔드 accessToken 수명 정책 — (B) 확정
 
-로그인 유지는 ①이 해결했지만, 백엔드 API 출입증(③)의 수명을 어떻게 설정하느냐에 따라 후속 설계가 달라진다. 두 선택지:
+백엔드가 **(B) 짧은 accessToken + refreshToken** 구조로 확정했다.
 
-| 선택지 | 설명 | 장점 | 단점 |
-|---|---|---|---|
-| **(A) 길게 1개** (예: 30일) | NextAuth 세션과 수명을 맞춤 | 단순. 별도 갱신 로직 불필요 | 토큰 강제 무효화(도난·로그아웃) 어려움 |
-| **(B) 짧게 + 자체 refreshToken** (예: 1시간 + 30일) | 보안 강화 | "모든 기기 로그아웃", 도난 토큰 즉시 차단 가능 | NextAuth `jwt` 콜백에 만료 감지·갱신 로직 필요 |
+- **accessToken**: 30분. 브라우저에 노출하지 않음.
+- **refreshToken**: HttpOnly 쿠키로 서버가 자동 발급. 유효 기간 7일. JS에서 읽을 수 없음.
+- **갱신 endpoint**: `POST /api/auth/refresh` (인증 불필요. 쿠키 자동 전송). → `{ accessToken, needsOnboarding: false }`
 
-이 결정이 정해지면 아래 항목들이 함께 확정된다:
-- `POST /auth/logout`(서버 denylist) 필요 여부
-- 백엔드 refreshToken 제공 여부 및 갱신 endpoint
-- NextAuth `jwt` 콜백 갱신 로직 추가 여부
+### 갱신 흐름
 
-Google과 전혀 무관하게 자유롭게 결정할 수 있다.
+```
+[브라우저] → /api/auth/refresh (Next route handler)
+                  │ 브라우저가 HttpOnly refreshToken 쿠키 자동 동봉
+                  ▼
+            [Next 서버] 백엔드 POST /api/auth/refresh 중계
+                  │ 새 accessToken + 갱신된 refreshToken 쿠키
+                  ▼
+            NextAuth JWT token.accessToken 갱신
+```
+
+### set-cookie forward 함의
+
+NextAuth `jwt` callback(서버)이 백엔드를 직접 호출하면, 백엔드의 `Set-Cookie` 응답이 **브라우저까지 전달되지 않는다**. refreshToken을 브라우저에 저장하려면 응답의 `set-cookie` 헤더를 next/headers `cookies().set()`으로 forward해야 한다. Next.js Route Handler 컨텍스트에서만 가능.
+
+### 이 결정에 따라 확정된 항목
+
+- `POST /auth/logout` (refreshToken denylist 여부) — 로그아웃 명세는 아직 미정.
+- NextAuth `jwt` callback에 만료 감지·refresh 호출 로직 추가 필요.
