@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Check, Camera } from 'lucide-react';
+import { completeOnboarding } from '@/app/onboarding/actions';
 
 import { UserAvatar } from '@/components/core/user-avatar';
 import {
@@ -21,11 +21,14 @@ import { useImagePreview } from '@/hooks/use-image-preview';
 import { cn } from '@/lib/utils';
 import { CutleryRain } from '../signin/index';
 import { onboardingSchema, NICKNAME_MIN, NICKNAME_MAX, type OnboardingValues } from './schema';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // 온보딩 프로필 설정 폼 — 닉네임·프로필 사진 입력, 제출 시 홈으로 이동 (백엔드 저장은 W4)
 export function OnboardingForm() {
-  const router = useRouter();
   const { user } = useAuthStatus();
+  const { update } = useSession();
+  const router = useRouter();
 
   const form = useForm<OnboardingValues>({
     resolver: standardSchemaResolver(onboardingSchema),
@@ -44,8 +47,9 @@ export function OnboardingForm() {
   const { previewUrl: draftAvatarUrl, handleFileChange } = useImagePreview(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // TODO: 1차 MVP 제외 — 닉네임·아바타 백엔드 저장 (W4 연동)
-  const onValid = () => {
+  const onValid = async (data: OnboardingValues) => {
+    await completeOnboarding(data.nickname);
+    await update(); // 클라이언트 세션 갱신
     router.push('/');
   };
 

@@ -16,7 +16,7 @@ export const providerMap = providers
   })
   .filter((provider) => provider.id !== 'credentials');
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
   providers,
   pages: {
     signIn: '/signin',
@@ -27,7 +27,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     // 로그인, 세션 읽을때마다 호출
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger, session }) {
+      if (trigger === 'update') {
+        if (session?.needsOnboarding !== undefined) token.needsOnboarding = session.needsOnboarding;
+        if (session?.user?.name !== undefined) token.name = session.user.name;
+        return token;
+      }
+
       if (user) token.id = user.id;
       // 로그인 된 상태
       if (!account) {
@@ -68,7 +74,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session({ session, token }) {
       if (token.id) session.user.id = token.id as string;
+      if (token.name) session.user.name = token.name;
+      console.log('😌', token);
       session.needsOnboarding = token.needsOnboarding;
+
       return session;
     },
   },

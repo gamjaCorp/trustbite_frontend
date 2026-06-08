@@ -161,3 +161,34 @@ Google 로그인 → jwt 콜백
 ### 미정 항목
 
 - `POST /api/auth/logout` 명세 미확정 (refreshToken denylist 여부 포함).
+
+---
+
+## 온보딩 게이트 구현
+
+### proxy.ts — 미들웨어 리다이렉트
+
+Next.js 16에서 `middleware.ts`가 `proxy.ts`로 변경됨. `auth()`를 콜백으로 감싸면 `req.auth`로 세션에 접근 가능.
+
+```
+요청 → proxy.ts
+  req.auth?.needsOnboarding === true  → /onboarding 리다이렉트
+  req.auth가 있고 needsOnboarding === false, 현재 /onboarding  → / 리다이렉트
+  그 외 → 통과
+```
+
+matcher에서 `api`, `_next/static`, `_next/image`, `favicon.ico`, `signin` 제외 — NextAuth 내부 Route Handler와 정적 파일 요청이 미들웨어를 거치지 않도록 함.
+
+### auth.ts — 세션 업데이트
+
+온보딩 완료 후 JWT 쿠키의 `needsOnboarding`을 갱신하려면 `unstable_update`를 사용.
+
+```
+Server Action에서 unstable_update({ needsOnboarding: false }) 호출
+  → jwt 콜백 재실행 (trigger === 'update')
+  → token.needsOnboarding = false
+  → NextAuth가 JWT 쿠키 재암호화
+  → 다음 요청부터 proxy.ts가 /onboarding 차단 해제
+```
+
+`jwt` 콜백에서 `trigger === 'update'`일 때 `session` 파라미터로 `unstable_update()`에 넘긴 값이 들어옴. 이 분기를 콜백 최상단에 두어 기존 로그인/갱신 로직과 분리.
