@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { IntroCard } from '@/components/features/home/intro-card';
+import { IntroCard } from '@/app/(home)/_components/intro-card';
 
 const meta = {
   title: 'Features/Ranking/IntroCard',

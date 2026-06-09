@@ -51,3 +51,6 @@ storybook-static
 
 # serena mcp cache
 .serena/
+
+# claude local settings (전역 ignore 우회)
+!/.claude/settings.local.json

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
-import { RegionRankList } from '@/components/features/home/index';
+import { RegionRankList } from './_components';
 import { Button } from '@/components/ui/button';
 
 // 홈 — 지역 기반 맛집 랭킹 목록 + 지도 탐색 진입점

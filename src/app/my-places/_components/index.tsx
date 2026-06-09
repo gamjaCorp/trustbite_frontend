@@ -1,7 +1,7 @@
 // 나의 맛집 페이지 탭 — 나의 랭킹 / 가고 싶은 서브탭 (server component)
-import { RestaurantRankList } from '@/components/features/my-places/restaurant-rank-list';
+import { RestaurantRankList } from './restaurant-rank-list';
 import { TasteProfileSection } from '@/components/common/profile/taste-profile-section';
-import { WishlistSection } from '@/components/features/my-places/wishlist-section';
+import { WishlistSection } from './wishlist-section';
 import { RegionalRankEntry } from '@/lib/types/restaurant';
 
 import { MyPlacesTabsNav } from './my-places-tabs-nav';

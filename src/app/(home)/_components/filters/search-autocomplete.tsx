@@ -19,7 +19,7 @@ import {
 import { useRankActions, useRankFocusedEntry, useRankQuery } from '@/stores/region-rank-store';
 import { synthesizeEntryFromSuggest } from '@/lib/mock/synthesize-restaurant';
 import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
-import { useSearchSuggest, type SuggestItem } from '../hooks/use-search-suggest';
+import { useSearchSuggest, type SuggestItem } from '../../_hooks/use-search-suggest';
 
 interface Props {
   className?: string;

@@ -7,8 +7,8 @@ import { findPlaceInCache } from '@/lib/mock/find-place-in-cache';
 import { synthesizeDetailFromEntry } from '@/lib/mock/synthesize-restaurant-detail';
 import { BackHeader } from '@/components/common/layout/back-header';
 
-import { useLocationMeta } from './hooks/use-location-meta';
-import { useNearestStation } from './hooks/use-nearest-station';
+import { useLocationMeta } from '../_hooks/use-location-meta';
+import { useNearestStation } from '../_hooks/use-nearest-station';
 import { PhotoGallery } from './photo/photo-gallery';
 import { RestaurantSummary } from './restaurant-summary';
 import { ScorePanel } from './score-panel';

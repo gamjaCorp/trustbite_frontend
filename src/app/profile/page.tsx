@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { MyProfileView } from '@/components/features/profile/index';
+import { MyProfileView } from './_components';
 import { getMyProfile } from '@/data/mock-my-profile';
 
 // 내 프로필 페이지 — 등급·점수·설정 메뉴

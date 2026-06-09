@@ -19,8 +19,8 @@ import {
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useImagePreview } from '@/hooks/use-image-preview';
 import { cn } from '@/lib/utils';
-import { CutleryRain } from '../signin/index';
-import { onboardingSchema, NICKNAME_MIN, NICKNAME_MAX, type OnboardingValues } from './schema';
+import { CutleryRain } from '@/components/common/cutlery-rain';
+import { onboardingSchema, NICKNAME_MIN, NICKNAME_MAX, type OnboardingValues } from '../_lib/schema';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 

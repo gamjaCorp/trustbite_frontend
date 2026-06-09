@@ -39,21 +39,27 @@ npx tsc --noEmit       # 타입 검사
 ## 디렉터리 구조
 
 ```
-src/app                         Next App Router
+src/app/<route>/
+  page.tsx                      라우트 진입점 (얇게 유지)
+  _components/                  라우트 전용 UI 컴포넌트. 진입점 index.tsx 필수.
+  _hooks/                       라우트 전용 훅 (해당 시)
+  _lib/                         라우트 전용 도메인 로직 — 검증 스키마·데이터 변환 등 UI 아닌 실행 코드 (해당 시)
 src/components/ui/              shadcn (수정 금지)
 src/components/core/            ui/ 프리미티브를 감싸는 공통 컴포넌트
-src/components/features/<feat>/ 페이지 단위. 진입점 index.tsx 필수. hooks/·schema.ts 포함 가능.
-src/components/common/          두 개 이상 feature가 공유하는 컴포넌트
+src/components/features/<feat>/ 여러 라우트가 공유하는 feature 단위 (follow/, review-write/ 등 완결된 기능)
+src/components/common/          여러 라우트가 공유하는 작은 UI 프리미티브 (badge, chip, header 등)
 src/api/<feature>/              publicFetch·authedFetch·Server Action (feature별 하위 폴더)
-src/hooks/use-*.ts              여러 feature가 공유하는 범용 훅
+src/hooks/use-*.ts              여러 라우트가 공유하는 범용 훅
 src/stores/<name>-store.tsx     Zustand + Context 스토어
-src/lib/                        유틸 함수·타입 정의·비즈니스 로직
+src/lib/                        전역 재사용 유틸·타입·비즈니스 로직 (_lib/는 route-local, src/lib/는 전역)
 src/data/                       개발용 mock 데이터
 src/stories/                    Storybook 스토리 (평탄 구조)
 src/auth.ts + src/proxy.ts      NextAuth v5
 ```
 
-**feature 폴더 네이밍**: 라우트 세그먼트와 일치 (루트 `/`는 `home`). 여러 라우트가 공유하는 feature만 도메인 이름 사용.
+**colocation 규칙**: 한 라우트에서만 쓰이는 컴포넌트·훅·로직은 해당 라우트의 `_components/`·`_hooks/`·`_lib/`에 둔다. `_`로 시작하는 폴더는 Next.js Private Folder라 URL 세그먼트가 되지 않는다. 여러 라우트가 공유할 때 — 완결된 feature 단위면 `src/components/features/`, 작은 UI 프리미티브면 `src/components/common/`으로 올린다.
+
+**Route Group**: 루트(`/`) 페이지는 `app/(home)/`에 격리. `(home)` 폴더는 URL에 영향 없이 홈 전용임을 명시. 새 그룹 추가 시 `app/(그룹명)/` 패턴 사용.
 
 **재사용 우선순위**: `core/` → `ui/` → 신규 생성.
 
