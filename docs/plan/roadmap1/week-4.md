@@ -15,9 +15,9 @@
 | Day | 날짜 | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|---|
 | Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /api/auth/session/google` · accessToken 갱신 · 온보딩 영속화 (BFF — token은 서버 전용) | [x] |
-| Day 2 | — | `/profile` + `/profile/grade` 데이터 레이어 | `useMyProfile`, `useGradeProgress`, mock 삭제 | [ ] |
-| Day 3 | — | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | [ ] |
-| Day 4 | — | `/review/new` mutation + 인증 가드 + 에러 페이지 | `useSubmitReview`, middleware 매처, `not-found/error.tsx` | [ ] |
+| Day 2 | — | 프로필 수정 — 닉네임 실 API 연동 | `updateMyProfile` Server Action, RHF+zod 모달, mock store 제거 | [ ] |
+| Day 3 | — | `/review/new` mutation + 인증 가드 + 에러 페이지 | `submitReview` Server Action, middleware 매처, `not-found/error.tsx` | [ ] |
+| Day 4 | — | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | [ ] |
 | Day 5 | — | `/my-places` + 탐색 탭 검색/필터 | `useMyRanking`, `useSearchRestaurants` (디바운스/URL) | [ ] |
 | Day 6 | — | `/user/[id]` + Wishlist mutation + mock 전량 삭제 | `useUserProfile`, `useToggleBookmark`, mock-* 0개 | [ ] |
 | Day 7 | — | 통합 QA + 스테이징 배포 + 회고 | PRD 플로우 1-1/1-2/1-3 수동 테스트, Vercel 스테이징 URL | [ ] |
@@ -57,23 +57,42 @@
 
 ---
 
-## Day 2 — `/profile` + `/profile/grade` 데이터 레이어
-
-두 화면 모두 `src/api/user/` / `src/hooks/user/`에 들어가는 짝이라 같은 날 처리.
+## Day 2 — 프로필 수정 — 닉네임 실 API 연동
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 타입·API | - `MyProfileResponse`, `GradeProgressResponse` 타입 정의 | `src/lib/types/user/response.ts` | [ ] |
-|  | - `getMyProfile()`, `getGradeProgress()` API 함수 작성 (`authedFetch`, `no-store`) | `src/api/user/user.ts` (신규) | [ ] |
-| 페이지 전환 | - `/profile` 페이지를 **Server Component**로 전환 — API 함수 직접 호출, Suspense 로딩, 에러('다시 시도' 버튼) | `src/app/profile/page.tsx`, `src/app/profile/loading.tsx` (신규) | [ ] |
-|  | - `mock-my-profile.ts` 흡수 후 삭제 | `src/data/mock-my-profile.ts` (삭제) | [ ] |
-| 확인 | - 브라우저 3상태 확인: 로딩 → 정상 → 에러 강제 | — | [ ] |
+| 스키마 | - `editProfileSchema` + `EditProfileValues` 타입 정의 (nickname만, avatar 제외) | `src/app/profile/_lib/schema.ts` (신규) | [ ] |
+| Server Action | - `updateMyProfile(nickname)` — `PATCH /api/users/me` + `unstable_update` 세션 갱신 | `src/app/profile/actions.ts` (신규) | [ ] |
+| 다이얼로그 | - `edit-profile-dialog.tsx` — `useState`+수동검증 → RHF+zod, mock store → 실 Server Action, 이미지 변경 UI 제거 | `src/app/profile/_components/edit-profile-dialog.tsx` | [ ] |
+| 정리 | - `my-profile-mock-store.tsx` 삭제 + 참조처 정리 | `src/stores/my-profile-mock-store.tsx` (삭제) | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+|  | - 닉네임 수정 저장 → 헤더 즉시 반영 확인 | — | [ ] |
 
-> 산출물: `/profile`이 Server Component + authedFetch로 동작. 이후 화면의 마이그 템플릿
+> 산출물: 편집 모달이 실 `PATCH /api/users/me`를 호출하고 변경된 닉네임이 세션→헤더에 반영
 
 ---
 
-## Day 3 — `/restaurant/[id]` 마이그
+## Day 3 — `/review/new` mutation + 인증 가드 + 에러 페이지
+
+| 그룹 | 할 일 | 관련 파일 | 상태 |
+|---|---|---|---|
+| 타입·API | - `CreateReviewRequest`, `ReviewSubmitResult` 타입 정의 | `src/lib/types/review/request.ts`, `response.ts` (신규) | [ ] |
+|  | - `submitReview(data)` **Server Action** 작성 (multipart 사진 포함) + 성공 후 `revalidateTag('restaurant')` | `src/app/review/actions.ts` (신규) | [ ] |
+|  | - `getReviewResult(reviewId)` API 함수 작성 (`authedFetch`) | `src/api/review/review.ts` (신규) | [ ] |
+| 폼 연결 | - 폼 submit → Server Action 호출 + 제출 중 버튼 disabled + Spinner | `src/components/features/review-write/index.tsx` | [ ] |
+|  | - 결과 Dialog에 서버 fetch(reviewId) 연결 + 로딩 스켈레톤 | `src/components/features/review-write/review-result/index.tsx` | [ ] |
+| 인증 가드 | - middleware에 `/profile`, `/my-places`, `/review/*` 인증 가드 추가 | `src/proxy.ts` | [ ] |
+|  | - 비로그인 → `/signin?next=<원래 경로>` 리다이렉트 + 로그인 후 `next` 쿼리로 복귀 | `src/proxy.ts`, `src/app/signin/page.tsx` | [ ] |
+| 에러 페이지 | - 404 페이지 (TrustBite 톤) | `src/app/not-found.tsx` (신규) | [ ] |
+|  | - 전역 에러 페이지 + '다시 시도' 버튼 | `src/app/error.tsx` (신규) | [ ] |
+|  | - 맛집 상세 전용 에러 페이지 | `src/app/restaurant/[id]/error.tsx` (신규) | [ ] |
+| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+
+> 산출물: 폼 → mutation → 결과 흐름 정식화 + 인증 가드 + 에러 페이지
+
+---
+
+## Day 4 — `/restaurant/[id]` 마이그
 
 가장 복잡한 화면. 표준 7단계 적용 + 비로그인 분기 정합.
 
@@ -89,24 +108,24 @@
 
 ---
 
-## Day 4 — `/review/new` mutation + 인증 가드 + 에러 페이지
+## Day 4 — `/profile` 수정 + 읽기 데이터 레이어 (백엔드 필드 추가 후)
+
+> 백엔드가 팔로워/팔로잉·활동지역·등급 진척 필드를 추가한 뒤 진행. 그 전에는 수정(mutation)만 먼저 처리.
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 타입·API | - `CreateReviewRequest`, `ReviewSubmitResult` 타입 정의 | `src/lib/types/review/request.ts`, `response.ts` (신규) | [ ] |
-|  | - `submitReview(data)` **Server Action** 작성 (multipart 사진 포함) + 성공 후 `revalidateTag('restaurant')` | `src/app/review/actions.ts` (신규) | [ ] |
-|  | - `getReviewResult(reviewId)` API 함수 작성 (`authedFetch`) | `src/api/review/review.ts` (신규) | [ ] |
-| 폼 연결 | - 폼 submit → Server Action 호출 + 제출 중 버튼 disabled + Spinner | `src/components/features/review/review-write-form.tsx` | [ ] |
-|  | - 결과 Dialog에 서버 fetch(reviewId) 연결 + 로딩 스켈레톤 | `src/components/features/review/review-result-dialog.tsx` | [ ] |
-| 인증 가드 | - middleware에 `/profile`, `/my-places`, `/review/*` 인증 가드 추가 | `src/proxy.ts` | [ ] |
-|  | - 비로그인 → `/signin?next=<원래 경로>` 리다이렉트 + 로그인 후 `next` 쿼리로 복귀 | `src/proxy.ts`, `src/app/signin/page.tsx` | [ ] |
-| 리뷰 fallback | - `/restaurant/[id]/review/new` 페이지에 mock 외 가게 ID fallback 처리 — `synthesizeDetailFromEntry(null, id)` 로 placeholder 진행하거나 `/review/new` redirect. 임시로 카드 링크는 `/review/new`로 우회 중 | `app/restaurant/[id]/review/new/page.tsx`, `common/place-list-row.tsx` | [ ] |
-| 에러 페이지 | - 404 페이지 (TrustBite 톤) | `src/app/not-found.tsx` (신규) | [ ] |
-|  | - 전역 에러 페이지 + '다시 시도' 버튼 | `src/app/error.tsx` (신규) | [ ] |
-|  | - 맛집 상세 전용 에러 페이지 | `src/app/restaurant/[id]/error.tsx` (신규) | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 프로필 수정 | - `editProfileSchema` + `EditProfileValues` 타입 정의 (nickname만, avatar 제외) | `src/app/profile/_lib/schema.ts` (신규) | [ ] |
+|  | - `updateMyProfile(nickname)` Server Action — `PATCH /api/users/me` + `unstable_update` 세션 갱신 | `src/app/profile/actions.ts` (신규) | [ ] |
+|  | - `edit-profile-dialog.tsx` — `useState`+수동검증 → RHF+zod, mock store → 실 Server Action, 이미지 변경 UI 제거 | `src/app/profile/_components/edit-profile-dialog.tsx` | [ ] |
+|  | - `my-profile-mock-store.tsx` 삭제 + 참조처 정리 | `src/stores/my-profile-mock-store.tsx` (삭제) | [ ] |
+| 읽기 마이그 | - `MyProfileResponse`, `GradeProgressResponse` 타입 정의 (백엔드 필드 확정 후) | `src/lib/types/user/response.ts` | [ ] |
+|  | - `getMyProfile()`, `getGradeProgress()` API 함수 작성 (`authedFetch`, `no-store`) | `src/api/user/user.ts` | [ ] |
+|  | - `/profile` 페이지를 **Server Component**로 전환 — API 함수 직접 호출, Suspense 로딩, 에러('다시 시도' 버튼) | `src/app/profile/page.tsx`, `src/app/profile/loading.tsx` (신규) | [ ] |
+|  | - `mock-my-profile.ts` 흡수 후 삭제 | `src/data/mock-my-profile.ts` (삭제) | [ ] |
+| 확인 | - 닉네임 수정 저장 → 헤더 즉시 반영 확인 | — | [ ] |
+|  | - 브라우저 3상태 확인: 로딩 → 정상 → 에러 강제 | — | [ ] |
 
-> 산출물: 폼 → mutation → 결과 흐름 정식화 + 인증 가드 + 에러 페이지
+> 산출물: `/profile` 수정이 실 PATCH에 연결. 읽기는 백엔드 필드 확정 후 완결.
 
 ---
 
