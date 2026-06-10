@@ -20,7 +20,12 @@ import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useImagePreview } from '@/hooks/use-image-preview';
 import { cn } from '@/lib/utils';
 import { CutleryRain } from '@/components/common/cutlery-rain';
-import { onboardingSchema, NICKNAME_MIN, NICKNAME_MAX, type OnboardingValues } from '../_lib/schema';
+import {
+  onboardingSchema,
+  NICKNAME_MIN,
+  NICKNAME_MAX,
+  type OnboardingValues,
+} from '../_lib/schema';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -48,7 +53,8 @@ export function OnboardingForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onValid = async (data: OnboardingValues) => {
-    await completeOnboarding(data.nickname);
+    // TODO: 임시로 google 이미지 전송
+    await completeOnboarding(data.nickname, user?.image ?? undefined);
     await update(); // 클라이언트 세션 갱신
     router.push('/');
   };

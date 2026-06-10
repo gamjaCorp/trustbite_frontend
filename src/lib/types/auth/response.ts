@@ -3,3 +3,7 @@ export interface GoogleSessionResponse {
   refreshToken: string;
   needsOnboarding: boolean;
 }
+
+export interface TokenRefreshResponse {
+  accessToken: string;
+}

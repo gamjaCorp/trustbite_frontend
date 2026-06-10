@@ -1,4 +1,4 @@
-import { GoogleSessionResponse } from '@/lib/types/auth/response';
+import { GoogleSessionResponse, TokenRefreshResponse } from '@/lib/types/auth/response';
 import { publicFetch } from '@/network/server';
 
 export function postGoogleSession(idToken: string): Promise<GoogleSessionResponse> {
@@ -8,7 +8,7 @@ export function postGoogleSession(idToken: string): Promise<GoogleSessionRespons
   });
 }
 
-export function postRefreshToken(refreshToken: string): Promise<GoogleSessionResponse> {
+export function postRefreshToken(refreshToken: string): Promise<TokenRefreshResponse> {
   return publicFetch('/api/auth/refresh', {
     method: 'POST',
     body: JSON.stringify({ refreshToken }),

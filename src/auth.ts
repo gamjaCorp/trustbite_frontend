@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { Provider } from 'next-auth/providers';
 import { postGoogleSession, postRefreshToken } from './api/auth/auth';
+import { AUTH_ERROR } from './lib/types/auth/error';
 
 const providers: Provider[] = [Google];
 
@@ -23,7 +24,7 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
   },
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24 * 30, // 30일 (NextAuth 기본값을 명시적으로 고정)
+    maxAge: 60 * 60 * 24 * 7, // 7일
   },
   callbacks: {
     // 로그인, 세션 읽을때마다 호출
@@ -34,7 +35,6 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
         return token;
       }
 
-      if (user) token.id = user.id;
       // 로그인 된 상태
       if (!account) {
         if (token?.accessTokenExpires && Date.now() < token.accessTokenExpires) {
@@ -46,13 +46,14 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
 
           // 토큰 갱신 필요
           try {
-            const res = await postRefreshToken(token.refreshToken!);
-            token.accessToken = res.accessToken;
-            token.refreshToken = res.refreshToken;
-            token.accessTokenExpires = JSON.parse(atob(res.accessToken.split('.')[1])).exp * 1000;
+            const data = await postRefreshToken(token.refreshToken!);
+            token.accessToken = data.accessToken;
+            const payload = JSON.parse(atob(data.accessToken.split('.')[1]));
+            token.id = String(payload.sub);
+            token.accessTokenExpires = payload.exp * 1000;
             token.error = undefined;
           } catch {
-            token.error = 'RefreshTokenExpired';
+            token.error = AUTH_ERROR.REFRESH_TOKEN_EXPIRED;
           }
         }
       }
@@ -67,7 +68,9 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
           token.accessToken = data.accessToken;
           token.refreshToken = data.refreshToken;
           token.needsOnboarding = data.needsOnboarding;
-          token.accessTokenExpires = JSON.parse(atob(data.accessToken.split('.')[1])).exp * 1000;
+          const payload = JSON.parse(atob(data.accessToken.split('.')[1]));
+          token.id = String(payload.sub);
+          token.accessTokenExpires = payload.exp * 1000;
         }
       }
       return token;
@@ -75,8 +78,8 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
     session({ session, token }) {
       if (token.id) session.user.id = token.id as string;
       if (token.name) session.user.name = token.name;
-      console.log('😌', token);
       session.needsOnboarding = token.needsOnboarding;
+      session.error = token.error;
 
       return session;
     },
