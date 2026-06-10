@@ -1,5 +1,15 @@
 import type { RegionalRankEntry } from './restaurant';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+import type { GradeLevel, GradeName } from '@/lib/domain/grade-levels';
+
+export interface MyProfileResponse {
+  userId: number;
+  email: string;
+  nickname: string;
+  picture: string | null;
+  grade: GradeName;
+  trustScore: number;
+  reviewCount: number;
+}
 
 interface MutualFollowing {
   displayName: string;

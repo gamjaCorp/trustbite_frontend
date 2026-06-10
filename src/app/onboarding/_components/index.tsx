@@ -56,6 +56,7 @@ export function OnboardingForm() {
     // TODO: 임시로 google 이미지 전송
     await completeOnboarding(data.nickname, user?.image ?? undefined);
     await update(); // 클라이언트 세션 갱신
+    router.refresh();
     router.push('/');
   };
 

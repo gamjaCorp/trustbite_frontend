@@ -1,7 +1,23 @@
 import { Award, Bookmark, ChefHat, Coffee, Crosshair, Sprout } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
+export type GradeName = 'SPROUT' | 'REGULAR' | 'COLLECTOR' | 'HUNTER' | 'GOURMET' | 'MICHELIN';
+
 export type GradeLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+const GRADE_NAME_TO_LEVEL: Record<GradeName, GradeLevel> = {
+  SPROUT: 1,
+  REGULAR: 2,
+  COLLECTOR: 3,
+  HUNTER: 4,
+  GOURMET: 5,
+  MICHELIN: 6,
+};
+
+export function gradeNameToLevel(name: GradeName) {
+  return GRADE_NAME_TO_LEVEL[name];
+}
+
 type GradeCondition = 'INSTANT' | 'OR' | 'AND';
 
 export interface GradeLevelDef {
@@ -22,7 +38,11 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     reviewMin: 0,
     trustMin: 0,
     condition: 'INSTANT',
-    toneClass: { bg: 'bg-palette-green/15', text: 'text-palette-green', ring: 'ring-palette-green/30' },
+    toneClass: {
+      bg: 'bg-palette-green/15',
+      text: 'text-palette-green',
+      ring: 'ring-palette-green/30',
+    },
   },
   {
     level: 2,
@@ -40,7 +60,11 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     reviewMin: 10,
     trustMin: 40,
     condition: 'AND',
-    toneClass: { bg: 'bg-palette-blue/15', text: 'text-palette-blue', ring: 'ring-palette-blue/30' },
+    toneClass: {
+      bg: 'bg-palette-blue/15',
+      text: 'text-palette-blue',
+      ring: 'ring-palette-blue/30',
+    },
   },
   {
     level: 4,
@@ -49,7 +73,11 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     reviewMin: 30,
     trustMin: 60,
     condition: 'AND',
-    toneClass: { bg: 'bg-palette-amber/15', text: 'text-palette-amber', ring: 'ring-palette-amber/30' },
+    toneClass: {
+      bg: 'bg-palette-amber/15',
+      text: 'text-palette-amber',
+      ring: 'ring-palette-amber/30',
+    },
   },
   {
     level: 5,
@@ -67,7 +95,11 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     reviewMin: 150,
     trustMin: 90,
     condition: 'AND',
-    toneClass: { bg: 'bg-palette-amber/15', text: 'text-palette-amber', ring: 'ring-palette-amber/30' },
+    toneClass: {
+      bg: 'bg-palette-amber/15',
+      text: 'text-palette-amber',
+      ring: 'ring-palette-amber/30',
+    },
   },
 ] as const;
 
@@ -96,8 +128,10 @@ export function getProgressToNext(
   const next = getNextLevelDef(level);
   if (!next) return null;
 
-  const reviewPct = next.reviewMin === 0 ? 100 : Math.min(100, Math.round((reviewCount / next.reviewMin) * 100));
-  const trustPct = next.trustMin === 0 ? 100 : Math.min(100, Math.round((trustScore / next.trustMin) * 100));
+  const reviewPct =
+    next.reviewMin === 0 ? 100 : Math.min(100, Math.round((reviewCount / next.reviewMin) * 100));
+  const trustPct =
+    next.trustMin === 0 ? 100 : Math.min(100, Math.round((trustScore / next.trustMin) * 100));
   const reviewMet = reviewCount >= next.reviewMin;
   const trustMet = trustScore >= next.trustMin;
   const satisfiedForNext = next.condition === 'OR' ? reviewMet || trustMet : reviewMet && trustMet;

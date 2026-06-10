@@ -14,7 +14,7 @@
 
 | Day | 날짜 | 목표 | 주요 산출물 | 완료 |
 |---|---|---|---|---|
-| Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /api/auth/session/google` · accessToken 갱신 · 온보딩 영속화 (BFF — token은 서버 전용) | [ ] |
+| Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /api/auth/session/google` · accessToken 갱신 · 온보딩 영속화 (BFF — token은 서버 전용) | [x] |
 | Day 2 | — | `/profile` + `/profile/grade` 데이터 레이어 | `useMyProfile`, `useGradeProgress`, mock 삭제 | [ ] |
 | Day 3 | — | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | [ ] |
 | Day 4 | — | `/review/new` mutation + 인증 가드 + 에러 페이지 | `useSubmitReview`, middleware 매처, `not-found/error.tsx` | [ ] |
@@ -30,18 +30,26 @@
 
 | 그룹 | 할 일 | 관련 파일 | 상태 |
 |---|---|---|---|
-| 토큰 발급 | - `callbacks.jwt` — Google `account.id_token`으로 `POST /api/auth/session/google` 호출, `accessToken`·`needsOnboarding`·만료시각을 JWT에 저장 | `src/auth.ts` | [ ] |
-|  | - 백엔드 refreshToken `Set-Cookie` 헤더를 브라우저로 forward (`cookies().set()`) | `src/auth.ts` | [ ] |
-|  | - `callbacks.session` — `needsOnboarding` 등 비민감 필드만 노출. **accessToken은 session에 넣지 않음** | `src/auth.ts`, `src/lib/types/next-auth.d.ts` | [ ] |
-|  | - `authedFetch` — `session.accessToken` 대신 서버 전용 JWT 복호화(`auth()`)로 토큰 획득하도록 수정 | `src/network/server.ts` | [ ] |
-|  | - env 정리 — `NEXT_PUBLIC_API_BASE_URL` → `BACKEND_API_URL` (서버 전용) | `src/network/base.ts`, `.env.local` | [ ] |
-| 토큰 갱신 | - `callbacks.jwt` — accessToken 만료(30분) 감지 시 `POST /api/auth/refresh` 호출해 갱신 | `src/auth.ts` | [ ] |
-|  | - 갱신 실패(refreshToken 만료·401) 시 세션 무효화 → 재로그인 유도 | `src/auth.ts` | [ ] |
-| 온보딩 | - `POST /users/me/onboarding` Server Action — 닉네임 전송, avatarUrl은 업로드 방식 미정이므로 null + TODO | `src/app/onboarding/actions.ts` (신규) | [ ] |
-|  | - 온보딩 폼 submit → Server Action 연결, 성공 시 세션 `needsOnboarding` 갱신 후 `/` 이동 | `src/components/features/onboarding/index.tsx` | [ ] |
-|  | - 미들웨어 onboarding gate — `needsOnboarding: true`이면 `/onboarding` 강제, 완료 사용자의 `/onboarding` 접근은 `/`로 리다이렉트 | `src/proxy.ts` | [ ] |
-| 확인·검증 | - 비로그인 → Google → 신규 `/onboarding` → `/` 흐름 + 재로그인 시 온보딩 skip 확인 | — | [ ] |
-|  | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 토큰 발급 | - `callbacks.jwt` — Google `account.id_token`으로 `POST /api/auth/session/google` 호출, `accessToken`·`needsOnboarding`·만료시각을 JWT에 저장 | `src/auth.ts` | [x] |
+|  | - 백엔드 refreshToken은 body로 수신 (Set-Cookie 미사용) — `token.refreshToken`에 저장, 7일 유효 | `src/auth.ts` | [x] |
+|  | - `callbacks.session` — `needsOnboarding`·`error` 노출. **accessToken은 session에 넣지 않음** | `src/auth.ts`, `src/lib/types/next-auth.d.ts` | [x] |
+|  | - `authedFetch` — `getToken()`으로 JWT 직접 복호화해 accessToken 획득 (server-only) | `src/network/server.ts` | [x] |
+|  | - env 정리 — `BACKEND_API_URL` (서버 전용) + `.env.example` 커밋 | `src/network/base.ts`, `.env.local` | [x] |
+| 토큰 갱신 | - `callbacks.jwt` — accessToken 만료(30분) 감지 시 `POST /api/auth/refresh` 호출해 갱신 | `src/auth.ts` | [x] |
+|  | - 갱신 실패(refreshToken 만료·401) 시 `token.error = 'RefreshTokenExpired'` → 미들웨어에서 `/signin` 리다이렉트 | `src/auth.ts`, `src/proxy.ts` | [x] |
+|  | - 🐞 refresh 버그 수정 — `postRefreshToken` 반환 타입이 `GoogleSessionResponse`라 refreshToken 덮어쓰던 문제 → `TokenRefreshResponse` 분리 | `src/lib/types/auth/response.ts`, `src/api/auth/auth.ts` | [x] |
+|  | - 백엔드 userId 정합 — `token.id`를 Google id 대신 accessToken `sub` 클레임으로 설정 (로그인·갱신 모두 일관) | `src/auth.ts` | [x] |
+|  | - 세션 `maxAge` 7일 정합 (백엔드 refreshToken 수명과 일치) | `src/auth.ts` | [x] |
+| 온보딩 | - `PATCH /api/users/me/onboarding` Server Action — 닉네임 + Google 이미지 URL 전송 (파일 업로드는 2차) | `src/app/onboarding/actions.ts` | [x] |
+|  | - 온보딩 폼 submit → Server Action 연결, 성공 시 세션 `needsOnboarding` 갱신 후 `/` 이동 | `src/app/onboarding/_components/index.tsx` | [x] |
+|  | - 미들웨어 onboarding gate — `needsOnboarding: true`이면 `/onboarding` 강제, 완료 사용자의 `/onboarding` 접근은 `/`로 리다이렉트 | `src/proxy.ts` | [x] |
+| 헤더 연동 | - 설계 확정: `/api/users/me`는 세션 미저장. 프로필은 매 요청 `authedFetch` 조회 (stale 방지 + 쿠키 4KB) | — | [x] |
+|  | - `GradeName` 유니온 + `MyProfileResponse` 타입 추가 | `src/lib/types/user.ts` | [x] |
+|  | - `gradeNameToLevel()` — enum 이름 → `GradeLevel` 숫자 변환 (API 경계 anti-corruption) | `src/lib/domain/grade-levels.ts` | [x] |
+|  | - `getMyProfile()` API 함수 (`authedFetch`, server-only) | `src/api/user/user.ts` | [x] |
+|  | - 헤더 서버/클라이언트 3분할: `header/index.tsx`(서버, auth+fetch) · `nav-tabs.tsx`(클라) · `user-auth-button.tsx`(서버) | `src/components/common/layout/header/` | [x] |
+| 확인·검증 | - 비로그인 → Google → 신규 `/onboarding` → `/` 흐름 + 재로그인 시 온보딩 skip 확인 | — | [x] |
+|  | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
 
 > ⚠️ RSC 렌더 중에는 `cookies().set()` 불가 — refresh의 Set-Cookie forward는 Route Handler 컨텍스트에서만 가능 (`token.md` "set-cookie forward 함의"). 구현 시 갱신 경로 설계에 반영.
 
