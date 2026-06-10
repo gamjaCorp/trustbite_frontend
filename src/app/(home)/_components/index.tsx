@@ -2,8 +2,8 @@
 
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import { IntroCard } from './intro-card';
-import { usePinRowSync } from './hooks/use-pin-row-sync';
-import { useRankList } from './hooks/use-rank-list';
+import { usePinRowSync } from '../_hooks/use-pin-row-sync';
+import { useRankList } from '../_hooks/use-rank-list';
 import { RankFilterControls } from './filters/rank-filter-controls';
 import { RankMapBlock } from './map/rank-map-block';
 import { RankResultList } from './list/rank-result-list';

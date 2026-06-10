@@ -10,7 +10,7 @@
 > **이번 주 원칙**
 > - 새 화면도 `src/data/mock-*.ts`에 mock 데이터 두고 페이지가 직접 import (기존 패턴 유지)
 > - `src/api/`, `src/hooks/`, `src/lib/types/` 신규 폴더 생성 금지 (W2에서)
-> - 컴포넌트 폴더 구조는 `src/components/features/<feature>/`로 통일
+> - 페이지 전용 컴포넌트는 `app/<route>/_components/`, 훅은 `_hooks/`, 도메인 로직은 `_lib/`에 colocate. 다중 라우트 공유는 `src/components/common/`.
 
 ---
 

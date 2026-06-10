@@ -13,7 +13,7 @@ export class ApiError extends Error {
 }
 
 // 백엔드 base URL — 서버 래퍼에서 경로 앞에 붙인다. 미설정 시 빈 문자열로 폴백.
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
+export const API_BASE_URL = process.env.BACKEND_API_URL ?? '';
 
 // 공통 응답 파서 — 2xx면 본문을 반환하고 그 외엔 ApiError를 던진다
 export async function parseResponse<T>(res: Response): Promise<T> {
@@ -31,11 +31,7 @@ export async function parseResponse<T>(res: Response): Promise<T> {
   }
 
   if (!res.ok) {
-    throw new ApiError(
-      res.status,
-      body?.code,
-      body?.message ?? `요청 실패 (${res.status})`,
-    );
+    throw new ApiError(res.status, body?.code, body?.message ?? `요청 실패 (${res.status})`);
   }
 
   return body as T;

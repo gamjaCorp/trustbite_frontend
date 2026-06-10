@@ -10,9 +10,9 @@ TrustBite에서 "토큰"은 목적이 다른 3개 층으로 나뉜다. 섞이면
 
 | 층 | 무엇 | 담당 역할 | 비고 |
 |---|---|---|---|
-| ① NextAuth 세션 (쿠키 JWT) | 우리 서비스의 로그인 상태 | **로그인 유지 전담** — 30일, 사용할 때마다 갱신(rolling) | 이게 "로그인 유지"의 실체 |
+| ① NextAuth 세션 (쿠키 JWT) | 우리 서비스의 로그인 상태 | **로그인 유지 전담** — 7일, 사용할 때마다 갱신(rolling) | 이게 "로그인 유지"의 실체 |
 | ② Google access/refresh token | Google API를 대리 호출할 때 쓰는 출입증 | **우리는 미사용** | 구글 캘린더·드라이브 등 외부 Google API 호출 시에만 필요 |
-| ③ 백엔드 accessToken | 우리 서비스 API(`/restaurants`, `/reviews` 등)의 출입증 | 로그인 사용자가 API 호출 시 `Authorization: Bearer`로 전달 | 수명 정책은 미정 — 아래 참조 |
+| ③ 백엔드 accessToken | 우리 서비스 API(`/restaurants`, `/reviews` 등)의 출입증 | 로그인 사용자가 API 호출 시 `Authorization: Bearer`로 전달 | 30분. refreshToken(7일)으로 갱신 |
 
 ---
 
@@ -24,11 +24,10 @@ TrustBite에서 "토큰"은 목적이 다른 3개 층으로 나뉜다. 섞이면
 
 ```
 Google 로그인 성공
-  → auth.ts 의 jwt 콜백에서 POST /auth/login 호출 → 백엔드 accessToken 받음
-  → token.accessToken = accessToken   (JWT 쿠키에 저장, 서버에서만 복호화)
+  → auth.ts 의 jwt 콜백에서 POST /api/auth/session/google 호출
+  → 응답: { accessToken, refreshToken, needsOnboarding }
+  → token.accessToken, token.refreshToken, token.accessTokenExpires 저장 (JWT 쿠키에 저장, 서버에서만 복호화)
 ```
-
-현재 `auth.ts`의 `jwt` 콜백은 `token.id`만 담고 있다. W4에서 `token.accessToken` 저장 단계를 추가한다.
 
 ### 노출: 브라우저(클라이언트)에는 토큰을 노출하지 않는다 (BFF 방식 채택)
 
@@ -72,7 +71,7 @@ httpOnly 세션 쿠키는 **JS가 값을 읽을 수는 없지만, 같은 출처 
 
 - TrustBite는 Google 로그인을 "로그인 시점의 신원 확인"으로만 사용한다. Google OAuth 완료 후에는 우리 서버에서만 데이터를 주고받으며, 이후 Google API를 추가로 호출하지 않는다.
 - Google refresh token이 필요 없으므로 애초에 요청하지 않는다. (offline access 미설정)
-- 로그인 유지는 ①(NextAuth 세션, 30일 rolling)이 담당한다. Google 토큰 만료와 무관하게 동작한다.
+- 로그인 유지는 ①(NextAuth 세션, 7일 rolling)이 담당한다. Google 토큰 만료와 무관하게 동작한다.
 
 ### Google 심사 부담도 없다
 
@@ -80,18 +79,116 @@ httpOnly 세션 쿠키는 **JS가 값을 읽을 수는 없지만, 같은 출처 
 
 ---
 
-## 백엔드 accessToken 수명 정책 (미결정)
+## 세션 쿠키 생성 흐름 (NextAuth 내부)
 
-로그인 유지는 ①이 해결했지만, 백엔드 API 출입증(③)의 수명을 어떻게 설정하느냐에 따라 후속 설계가 달라진다. 두 선택지:
+세션 쿠키는 NextAuth가 자동으로 생성한다. 직접 만들 필요 없다.
 
-| 선택지 | 설명 | 장점 | 단점 |
-|---|---|---|---|
-| **(A) 길게 1개** (예: 30일) | NextAuth 세션과 수명을 맞춤 | 단순. 별도 갱신 로직 불필요 | 토큰 강제 무효화(도난·로그아웃) 어려움 |
-| **(B) 짧게 + 자체 refreshToken** (예: 1시간 + 30일) | 보안 강화 | "모든 기기 로그아웃", 도난 토큰 즉시 차단 가능 | NextAuth `jwt` 콜백에 만료 감지·갱신 로직 필요 |
+```
+1. Google 로그인 완료
+        ↓
+2. NextAuth가 jwt 콜백 호출
+   → token.accessToken, token.needsOnboarding 등 저장
+        ↓
+3. NextAuth가 token을 AUTH_SECRET으로 암호화
+   → httpOnly 쿠키(authjs.session-token)로 브라우저에 Set-Cookie
+        ↓
+4. 이후 모든 요청마다 브라우저가 쿠키 자동 전송
+        ↓
+5. 서버에서 getToken() 호출
+   → 쿠키 읽어 복호화 → JWT payload(token.accessToken 등) 반환
+```
 
-이 결정이 정해지면 아래 항목들이 함께 확정된다:
-- `POST /auth/logout`(서버 denylist) 필요 여부
-- 백엔드 refreshToken 제공 여부 및 갱신 endpoint
-- NextAuth `jwt` 콜백 갱신 로직 추가 여부
+`getToken()`은 네트워크 호출이 아니라 로컬 복호화다. `auth()`는 session 콜백까지 거치므로 `accessToken`을 꺼낼 수 없고, `getToken()`은 JWT 원본에 직접 접근하므로 서버 전용 필드도 읽을 수 있다.
 
-Google과 전혀 무관하게 자유롭게 결정할 수 있다.
+---
+
+## 백엔드 accessToken 수명 정책 — 확정
+
+- **accessToken**: 30분. 브라우저에 노출하지 않음. JWT 내부 `exp` 클레임으로 만료 시각 파싱.
+- **refreshToken**: 응답 body로 전달. 유효 기간 7일. NextAuth JWT(암호화 쿠키)에만 저장.
+
+### Set-Cookie 방식을 채택하지 않은 이유
+
+처음엔 백엔드가 refreshToken을 HttpOnly Set-Cookie로 발급하는 설계를 검토했다. 그러나 BFF 구조에서 다음 문제가 발견됐다.
+
+```
+jwt 콜백 (서버) → 백엔드 POST /api/auth/session/google
+                       ↓ 응답: Set-Cookie: refreshToken=xxx
+               받는 주체가 브라우저가 아니라 Next 서버의 fetch
+               (fetch는 쿠키 저장소가 없어 그냥 버려짐)
+                       ↓
+           브라우저에 refreshToken 쿠키 없음
+                       ↓
+           갱신 시도 → 백엔드 "refreshToken이 없습니다" → 실패
+```
+
+쿠키는 응답을 직접 받은 주체만 저장한다. BFF에서 백엔드 응답을 받는 것은 브라우저가 아니라 Next 서버이므로, Set-Cookie가 자동으로는 브라우저에 도달하지 않는다.
+
+**Set-Cookie forward 우회안 검토** — Next 서버가 Set-Cookie를 파싱해 `cookies().set()`으로 브라우저에 재전달하는 방식은 단계별로 가능 여부가 갈린다.
+
+| 시점 | 가능 여부 | 이유 |
+|---|---|---|
+| 로그인 시 쿠키 심기 | ✅ | OAuth 콜백은 Route Handler — `cookies().set()` 허용 |
+| 갱신 시 쿠키 읽기 | ✅ | `cookies()` 읽기는 RSC 렌더 중에도 허용 |
+| 갱신 시 rotation된 새 refreshToken 저장 | ❌ | 갱신은 Server Component의 `auth()` 호출 중(RSC 렌더 중) 일어나 `cookies().set()` 불가 |
+
+갱신 시점은 우리가 통제할 수 없으므로(렌더 중 `auth()` 호출이 트리거), 이 방식은 **refreshToken rotation을 포기해야만** 성립한다. 보안 수준은 body 방식과 동등한데(브라우저 저장 형태만 별도 쿠키 vs NextAuth JWT 내부 차이) rotation 포기 + Set-Cookie 파싱/forward 코드 비용을 추가로 내는 셈이다.
+
+**결론**: refreshToken을 응답 body로 받아 NextAuth JWT에 함께 저장한다. NextAuth JWT 자체가 AUTH_SECRET으로 암호화된 httpOnly 쿠키이므로 보안 수준은 동등하고, rotation도 token 객체 갱신만으로 처리된다.
+
+### 실제 구현 흐름
+
+```
+[최초 로그인]
+Google 로그인 → jwt 콜백
+  → POST /api/auth/session/google (idToken 전달)
+  → 응답: { accessToken, refreshToken, needsOnboarding }
+  → token.accessToken, token.refreshToken, token.accessTokenExpires, token.needsOnboarding 저장
+  → NextAuth가 token을 AUTH_SECRET으로 암호화 → httpOnly 쿠키(authjs.session-token)로 브라우저에 전달
+
+[세션 읽기 — accessToken 유효]
+요청 → jwt 콜백
+  → Date.now() < token.accessTokenExpires → token 그대로 반환
+
+[세션 읽기 — accessToken 만료]
+요청 → jwt 콜백
+  → Date.now() >= token.accessTokenExpires
+  → POST /api/auth/refresh (token.refreshToken 전달)
+  → 성공: token.accessToken, token.refreshToken, token.accessTokenExpires 갱신
+  → 실패(401): token.error = 'RefreshTokenExpired' → 재로그인 유도
+```
+
+### 미정 항목
+
+- `POST /api/auth/logout` 명세 미확정 (refreshToken denylist 여부 포함).
+
+---
+
+## 온보딩 게이트 구현
+
+### proxy.ts — 미들웨어 리다이렉트
+
+Next.js 16에서 `middleware.ts`가 `proxy.ts`로 변경됨. `auth()`를 콜백으로 감싸면 `req.auth`로 세션에 접근 가능.
+
+```
+요청 → proxy.ts
+  req.auth?.needsOnboarding === true  → /onboarding 리다이렉트
+  req.auth가 있고 needsOnboarding === false, 현재 /onboarding  → / 리다이렉트
+  그 외 → 통과
+```
+
+matcher에서 `api`, `_next/static`, `_next/image`, `favicon.ico`, `signin` 제외 — NextAuth 내부 Route Handler와 정적 파일 요청이 미들웨어를 거치지 않도록 함.
+
+### auth.ts — 세션 업데이트
+
+온보딩 완료 후 JWT 쿠키의 `needsOnboarding`을 갱신하려면 `unstable_update`를 사용.
+
+```
+Server Action에서 unstable_update({ needsOnboarding: false }) 호출
+  → jwt 콜백 재실행 (trigger === 'update')
+  → token.needsOnboarding = false
+  → NextAuth가 JWT 쿠키 재암호화
+  → 다음 요청부터 proxy.ts가 /onboarding 차단 해제
+```
+
+`jwt` 콜백에서 `trigger === 'update'`일 때 `session` 파라미터로 `unstable_update()`에 넘긴 값이 들어옴. 이 분기를 콜백 최상단에 두어 기존 로그인/갱신 로직과 분리.

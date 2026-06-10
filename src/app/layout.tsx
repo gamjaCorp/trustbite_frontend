@@ -4,7 +4,7 @@ import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
 import { auth } from '@/auth';
 import { Providers } from '@/components/common/layout/providers';
-import { Header } from '@/components/common/layout/header';
+import { Header } from '@/components/common/layout/header/index';
 
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
