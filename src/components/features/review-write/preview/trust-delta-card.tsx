@@ -10,6 +10,7 @@ import {
   useReviewIsValid,
   useReviewTrustDelta,
 } from '@/stores/review-write-store';
+import { computeNextTrustScore } from '@/lib/domain/trust-delta';
 
 interface Props {
   baseScore: number;
@@ -29,7 +30,7 @@ export function TrustDeltaCard({
   const isValid = useReviewIsValid();
   const isEditMode = useReviewIsEditMode();
 
-  const next = Math.min(100, baseScore + delta);
+  const next = computeNextTrustScore(baseScore, delta);
   const tone = getTrustToneClass(next);
 
   return (
@@ -43,13 +44,9 @@ export function TrustDeltaCard({
       </header>
 
       <div className="mt-2 flex items-baseline gap-2">
-        <span className="text-headline-1 text-muted-foreground">
-          {baseScore}%
-        </span>
+        <span className="text-headline-1 text-muted-foreground">{baseScore}%</span>
         <span className="text-muted-foreground">→</span>
-        <span className={cn('text-display-1', tone.text)}>
-          {next.toFixed(0)}%
-        </span>
+        <span className={cn('text-display-1', tone.text)}>{next.toFixed(0)}%</span>
       </div>
 
       <Progress value={next} className={cn('mt-3 h-2', tone.bg)} />
@@ -78,26 +75,15 @@ export function TrustDeltaCard({
         {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
       </button>
 
-        <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">
+      <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">
         {nextGradeName}까지 리뷰{' '}
-        <span className="font-semibold text-foreground">
-          {remainingReviewsForNextGrade}
-        </span>
-        개 남음
+        <span className="font-semibold text-foreground">{remainingReviewsForNextGrade}</span>개 남음
       </p>
     </Surface>
   );
 }
 
-function PointChip({
-  label,
-  points,
-  active,
-}: {
-  label: string;
-  points: number;
-  active: boolean;
-}) {
+function PointChip({ label, points, active }: { label: string; points: number; active: boolean }) {
   return (
     <span
       className={cn(

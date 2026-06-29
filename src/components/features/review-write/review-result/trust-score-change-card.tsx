@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { formatDelta } from '@/lib/format';
 import { Progress } from '@/components/ui/progress';
-import type { TrustBreakdown } from '@/stores/review-write-store';
+import type { TrustBreakdown } from '@/lib/domain/trust-delta';
 
 interface Props {
   baseTrustScore: number;
@@ -51,9 +51,7 @@ export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown
       </div>
 
       <div className="flex items-baseline gap-2">
-        <span className="text-label-1 text-muted-foreground line-through">
-          {baseTrustScore}%
-        </span>
+        <span className="text-label-1 text-muted-foreground line-through">{baseTrustScore}%</span>
         <span className={cn('text-display-1 text-success')}>
           {displayScore}
           <span className="text-headline-1">%</span>

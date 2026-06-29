@@ -8,6 +8,7 @@ import type { Category, SceneTag } from '@/lib/types/restaurant';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 import { reviewSchema } from '@/components/features/review-write/schema';
+import { computeTrustBreakdown, TrustBreakdown } from '@/lib/domain/trust-delta';
 
 export interface ReviewDraft {
   taste: number;
@@ -17,20 +18,6 @@ export interface ReviewDraft {
   text: string;
   photos: { previewUrl: string }[];
 }
-
-export const LONG_TEXT_THRESHOLD = 100;
-export const TRUST_DELTA = {
-  consistency: 1.5,
-  photo: 2.1,
-  longText: 1.4,
-} as const;
-
-export type TrustBreakdown = {
-  consistency: number;
-  photo: number | null;
-  longText: number | null;
-  total: number;
-};
 
 export type ReviewResultSnapshot = {
   restaurantId: string;
@@ -128,8 +115,7 @@ export default function ReviewWriteProvider({
           set((s) => ({
             photos: [...s.photos, ...urls.map((previewUrl) => ({ previewUrl }))],
           })),
-        removePhoto: (idx) =>
-          set((s) => ({ photos: s.photos.filter((_, i) => i !== idx) })),
+        removePhoto: (idx) => set((s) => ({ photos: s.photos.filter((_, i) => i !== idx) })),
         reset: () => set({ selectedRestaurant: null, isEditMode: false, ...emptyState }),
       },
     })),
@@ -144,8 +130,7 @@ const useReviewWriteStore = <T,>(selector: (s: ReviewWriteStore) => T): T => {
   return useStore(store, selector);
 };
 
-export const useSelectedRestaurant = () =>
-  useReviewWriteStore((s) => s.selectedRestaurant);
+export const useSelectedRestaurant = () => useReviewWriteStore((s) => s.selectedRestaurant);
 export const useReviewRating = (dim: 'taste' | 'value' | 'vibe') =>
   useReviewWriteStore((s) => s[dim]);
 export const useReviewSceneTags = () => useReviewWriteStore((s) => s.sceneTags);
@@ -174,10 +159,7 @@ export const useReviewIsValid = () =>
 
 export const useReviewTrustDelta = () =>
   useReviewWriteStore((s) => {
-    let delta = TRUST_DELTA.consistency;
-    if (s.photos.length > 0) delta += TRUST_DELTA.photo;
-    if (s.text.length >= LONG_TEXT_THRESHOLD) delta += TRUST_DELTA.longText;
-    return delta;
+    return computeTrustBreakdown({ photoCount: s.photos.length, textLength: s.text.length }).total;
   });
 
 export const useReviewTextLength = () => useReviewWriteStore((s) => s.text.length);

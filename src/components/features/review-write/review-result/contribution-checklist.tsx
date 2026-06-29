@@ -1,7 +1,7 @@
 import { CheckCircle2 } from 'lucide-react';
 
 import { Surface } from '@/components/common/display/surface';
-import type { TrustBreakdown } from '@/stores/review-write-store';
+import type { TrustBreakdown } from '@/lib/domain/trust-delta';
 
 interface Props {
   breakdown: TrustBreakdown;
@@ -30,9 +30,7 @@ export function ContributionChecklist({ breakdown, photoCount }: Props) {
               <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
               <span className="text-body-2 text-foreground">{item.label}</span>
             </div>
-            <span className="text-label-2 text-success shrink-0">
-              +{item.value.toFixed(1)}%
-            </span>
+            <span className="text-label-2 text-success shrink-0">+{item.value.toFixed(1)}%</span>
           </li>
         ))}
       </ul>
