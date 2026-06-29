@@ -41,11 +41,5 @@ export function buildReviewSnapshot({
     nextGradeName,
     remainingReviewsForNextGrade: Math.max(0, remainingReviewsForNextGrade - 1),
     // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
-    // pointsEarned: 5 + (hasPhoto ? 3 : 0) + (text.length >= 100 ? 2 : 0),
-    // pointReasons: [
-    //   { label: '리뷰', value: 5 },
-    //   ...(hasPhoto ? [{ label: '사진', value: 3 }] : []),
-    //   ...(text.length >= 100 ? [{ label: '100자', value: 2 }] : []),
-    // ],
   };
 }

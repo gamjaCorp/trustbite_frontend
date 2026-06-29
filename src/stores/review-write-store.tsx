@@ -31,8 +31,6 @@ export type ReviewResultSnapshot = {
   nextGradeName: string;
   remainingReviewsForNextGrade: number;
   // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
-  // pointsEarned: number;
-  // pointReasons: Array<{ label: string; value: number }>;
 };
 
 export interface SelectedRestaurant {

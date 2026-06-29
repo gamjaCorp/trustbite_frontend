@@ -50,16 +50,7 @@ export function TrustDeltaCard({
       </div>
 
       <Progress value={next} className={cn('mt-3 h-2', tone.bg)} />
-
       {/* TODO: 1차 MVP 제외 — 포인트 적립 칩 (포인트 시스템 3차 MVP) */}
-      <div aria-disabled="true" className="mt-4 opacity-35 cursor-not-allowed">
-        <p className="text-caption-2 text-muted-foreground mb-2">포인트 시스템 준비 중</p>
-        <div className="flex flex-wrap gap-1.5">
-          <PointChip label="리뷰" points={5} active={false} />
-          <PointChip label="사진" points={3} active={false} />
-          <PointChip label="100자" points={2} active={false} />
-        </div>
-      </div>
 
       <button
         type="button"
@@ -80,20 +71,5 @@ export function TrustDeltaCard({
         <span className="font-semibold text-foreground">{remainingReviewsForNextGrade}</span>개 남음
       </p>
     </Surface>
-  );
-}
-
-function PointChip({ label, points, active }: { label: string; points: number; active: boolean }) {
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1 rounded-chip px-2.5 py-1 text-label-3 transition-colors',
-        active
-          ? 'bg-success-subtle text-success ring-1 ring-success/30'
-          : 'bg-muted text-muted-foreground',
-      )}
-    >
-      +{points} P {label}
-    </span>
   );
 }
