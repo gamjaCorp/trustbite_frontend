@@ -3,11 +3,8 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 import { Check, Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  TRUST_DELTA,
-  useReviewActions,
-  useReviewPhotos,
-} from '@/stores/review-write-store';
+import { useReviewActions, useReviewPhotos } from '@/stores/review-write-store';
+import { TRUST_DELTA } from '@/lib/domain/trust-delta';
 
 interface Props {
   maxSlots?: number;
@@ -68,14 +65,7 @@ export function PhotoUploadGrid({ maxSlots = 4, hideHeader = false }: Props) {
         </div>
       )}
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        hidden
-        onChange={handleChange}
-      />
+      <input ref={inputRef} type="file" accept="image/*" multiple hidden onChange={handleChange} />
 
       <div className="grid grid-cols-4 gap-2">
         {photos.map((photo, idx) => (
@@ -107,9 +97,7 @@ export function PhotoUploadGrid({ maxSlots = 4, hideHeader = false }: Props) {
             aria-label="사진 추가"
           >
             <Plus className="w-5 h-5" />
-            {photos.length === 0 && (
-              <span className="text-caption-2">최대 {maxSlots}장</span>
-            )}
+            {photos.length === 0 && <span className="text-caption-2">최대 {maxSlots}장</span>}
           </button>
         )}
       </div>
