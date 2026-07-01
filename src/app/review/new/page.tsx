@@ -1,13 +1,6 @@
 import { mockRankList } from '@/data/mock-restaurant';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
-import {
-  CURRENT_LEVEL,
-  BASE_TRUST_SCORE,
-  REMAINING_REVIEWS_FOR_NEXT_GRADE,
-  CURRENT_GRADE_REVIEW_COUNT,
-  CURRENT_GRADE_REVIEW_TARGET,
-  NEXT_GRADE_NAME,
-} from '@/data/mock-review-config';
+import { MOCK_GRADE_CONTEXT } from '@/data/mock-review-config';
 
 // 리뷰 작성 페이지
 export default function NewReviewPage() {
@@ -19,12 +12,7 @@ export default function NewReviewPage() {
     <ReviewWriteForm
       candidates={mockRankList}
       myTopRestaurants={myTopRestaurants}
-      baseTrustScore={BASE_TRUST_SCORE}
-      remainingReviewsForNextGrade={REMAINING_REVIEWS_FOR_NEXT_GRADE}
-      nextGradeName={NEXT_GRADE_NAME}
-      currentLevel={CURRENT_LEVEL}
-      currentGradeReviewCount={CURRENT_GRADE_REVIEW_COUNT}
-      currentGradeReviewTarget={CURRENT_GRADE_REVIEW_TARGET}
+      gradeContext={MOCK_GRADE_CONTEXT}
     />
   );
 }

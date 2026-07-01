@@ -5,14 +5,7 @@ import { mockRankList } from '@/data/mock-restaurant';
 import { BackHeader } from '@/components/common/layout/back-header';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
 import type { ReviewDraft, SelectedRestaurant } from '@/components/features/review-write/stores/review-write-store';
-import {
-  CURRENT_LEVEL,
-  BASE_TRUST_SCORE,
-  REMAINING_REVIEWS_FOR_NEXT_GRADE,
-  CURRENT_GRADE_REVIEW_COUNT,
-  CURRENT_GRADE_REVIEW_TARGET,
-  NEXT_GRADE_NAME,
-} from '@/data/mock-review-config';
+import { MOCK_GRADE_CONTEXT } from '@/data/mock-review-config';
 
 export default async function ReviewWritePage({
   params,
@@ -60,12 +53,7 @@ export default async function ReviewWritePage({
         initialDraft={initialDraft}
         candidates={mockRankList}
         myTopRestaurants={myTopRestaurants}
-        baseTrustScore={BASE_TRUST_SCORE}
-        remainingReviewsForNextGrade={REMAINING_REVIEWS_FOR_NEXT_GRADE}
-        nextGradeName={NEXT_GRADE_NAME}
-        currentLevel={CURRENT_LEVEL}
-        currentGradeReviewCount={CURRENT_GRADE_REVIEW_COUNT}
-        currentGradeReviewTarget={CURRENT_GRADE_REVIEW_TARGET}
+        gradeContext={MOCK_GRADE_CONTEXT}
       />
     </>
   );

@@ -16,9 +16,10 @@ import ReviewWriteProvider, {
 } from './stores/review-write-store';
 import { buildReviewSnapshot } from './build-review-snapshot';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+import type { GradeContext } from './type/grade-context';
 import { ReviewResultDialog } from './review-result/index';
 
+import { FieldGroup } from './fields/field-group';
 import { TargetRestaurantCard } from './fields/target-restaurant-card';
 import { RestaurantPicker } from './fields/restaurant-picker';
 import { RatingFields } from './fields/rating-fields';
@@ -35,15 +36,10 @@ interface Props {
   initialDraft?: ReviewDraft | null;
   candidates: RegionalRankEntry[];
   myTopRestaurants: RegionalRankEntry[];
-  baseTrustScore: number;
-  remainingReviewsForNextGrade: number;
-  nextGradeName: string;
-  currentLevel: GradeLevel;
-  currentGradeReviewCount: number;
-  currentGradeReviewTarget: number;
+  gradeContext: GradeContext;
 }
 
-// 리뷰 작성 폼 진입점 — Provider로 스토어를 초기화하고 내부 뷰에 주입
+// 리뷰 작성 폼 진입점
 export function ReviewWriteForm({ initialSelectedRestaurant, initialDraft, ...rest }: Props) {
   return (
     <ReviewWriteProvider
@@ -55,18 +51,11 @@ export function ReviewWriteForm({ initialSelectedRestaurant, initialDraft, ...re
   );
 }
 
-type InnerProps = Omit<Props, 'initialSelectedRestaurant'>;
+type InnerProps = Omit<Props, 'initialSelectedRestaurant' | 'initialDraft'>;
 
-function ReviewWriteFormInner({
-  candidates,
-  myTopRestaurants,
-  baseTrustScore,
-  remainingReviewsForNextGrade,
-  nextGradeName,
-  currentLevel,
-  currentGradeReviewCount,
-  currentGradeReviewTarget,
-}: InnerProps) {
+function ReviewWriteFormInner({ candidates, myTopRestaurants, gradeContext }: InnerProps) {
+  const { baseTrustScore, nextGradeName, remainingReviewsForNextGrade } = gradeContext;
+
   const router = useRouter();
   const selected = useSelectedRestaurant();
   const { reset } = useReviewActions();
@@ -84,12 +73,7 @@ function ReviewWriteFormInner({
       selected,
       photoCount: photos.length,
       text,
-      baseTrustScore,
-      currentLevel,
-      currentGradeReviewCount,
-      currentGradeReviewTarget,
-      nextGradeName,
-      remainingReviewsForNextGrade,
+      gradeContext,
     });
     setResultSnapshot(snapshot);
     setResultOpen(true);
@@ -173,13 +157,7 @@ function ReviewWriteFormInner({
   );
 }
 
-function DimmedWhilePicking({
-  dimmed,
-  children,
-}: {
-  dimmed: boolean;
-  children: React.ReactNode;
-}) {
+function DimmedWhilePicking({ dimmed, children }: { dimmed: boolean; children: React.ReactNode }) {
   return (
     <div
       aria-hidden={dimmed || undefined}
@@ -193,32 +171,3 @@ function DimmedWhilePicking({
     </div>
   );
 }
-
-function FieldGroup({
-  label,
-  hint,
-  required,
-  labelRight,
-  children,
-}: {
-  label: string;
-  hint?: React.ReactNode;
-  required?: boolean;
-  labelRight?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <div className="mb-3 flex items-center gap-2">
-        <span className="text-title-2 text-foreground">
-          {label}
-          {required && <span className="ml-0.5 text-destructive" aria-hidden>*</span>}
-        </span>
-        {hint && <span className="text-caption-2 text-muted-foreground flex items-center gap-1">· {hint}</span>}
-        {labelRight && <span className="ml-auto text-caption-2 text-muted-foreground">{labelRight}</span>}
-      </div>
-      {children}
-    </div>
-  );
-}
-
