@@ -4,7 +4,7 @@ import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 import { mockRankList } from '@/data/mock-restaurant';
 import { BackHeader } from '@/components/common/layout/back-header';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
-import type { ReviewDraft, SelectedRestaurant } from '@/stores/review-write-store';
+import type { ReviewDraft, SelectedRestaurant } from '@/components/features/review-write/stores/review-write-store';
 import {
   CURRENT_LEVEL,
   BASE_TRUST_SCORE,

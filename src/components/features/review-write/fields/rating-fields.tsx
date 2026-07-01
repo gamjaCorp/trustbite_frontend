@@ -1,7 +1,7 @@
 'use client';
 
 import { StarRatingInput } from './star-rating-input';
-import { useReviewActions, useReviewRating } from '@/stores/review-write-store';
+import { useReviewActions, useReviewRating } from '../stores/review-write-store';
 
 const DIMENSIONS: Array<{ key: 'taste' | 'value' | 'vibe'; label: string }> = [
   { key: 'taste', label: '맛' },

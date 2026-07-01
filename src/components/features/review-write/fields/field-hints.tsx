@@ -2,7 +2,7 @@
 
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useReviewPhotoCount, useReviewTextLength } from '@/stores/review-write-store';
+import { useReviewPhotoCount, useReviewTextLength } from '../stores/review-write-store';
 import { LONG_TEXT_THRESHOLD, TRUST_DELTA } from '@/lib/domain/trust-delta';
 
 // 리뷰 100자 돌파 힌트 — FieldGroup hint 슬롯에 배치

@@ -13,7 +13,7 @@ import ReviewWriteProvider, {
   useReviewPhotos,
   useReviewText,
   useSelectedRestaurant,
-} from '@/stores/review-write-store';
+} from './stores/review-write-store';
 import { buildReviewSnapshot } from './build-review-snapshot';
 import type { RegionalRankEntry } from '@/lib/types/restaurant';
 import type { GradeLevel } from '@/lib/domain/grade-levels';

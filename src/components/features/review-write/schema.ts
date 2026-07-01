@@ -15,10 +15,8 @@ export const reviewSchema = z.object({
   taste: ratingField,
   value: ratingField,
   vibe: ratingField,
-  // 텍스트는 제출 필수 아님 — 100자 이상은 신뢰도 보너스(LONG_TEXT_THRESHOLD) 기준일 뿐
-  text: z.string(),
-  // 사진은 선택(0~4장). 첨부 시 최대 4장
-  photos: z
+  text: z.string(), // 텍스트는 제출 필수 아님 — 100자 이상은 신뢰도 보너스(LONG_TEXT_THRESHOLD) 기준일 뿐
+  photos: z // 사진은 선택(0~4장). 첨부 시 최대 4장
     .array(z.object({ previewUrl: z.string() }))
     .max(PHOTO_MAX, `사진은 최대 ${PHOTO_MAX}장까지 첨부할 수 있어요`),
 });

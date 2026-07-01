@@ -5,7 +5,7 @@ import {
   useRankActions,
   useRankCategory,
   useRankOccasions,
-} from '@/stores/region-rank-store';
+} from '../stores/region-rank-store';
 import { CategoryChipRow } from '@/components/common/category/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
 import type { SceneTag } from '@/lib/types/restaurant';

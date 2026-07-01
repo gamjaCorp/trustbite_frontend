@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { formatDelta } from '@/lib/format';
-import type { ReviewResultSnapshot } from '@/stores/review-write-store';
+import type { ReviewResultSnapshot } from '../stores/review-write-store';
 
 import { TrustScoreChangeCard } from './trust-score-change-card';
 import { ContributionChecklist } from './contribution-checklist';
