@@ -9,7 +9,7 @@ import {
   useReviewIsEditMode,
   useReviewIsValid,
   useReviewTrustDelta,
-} from '@/stores/review-write-store';
+} from '../stores/review-write-store';
 import { computeNextTrustScore } from '@/lib/domain/trust-delta';
 
 interface Props {

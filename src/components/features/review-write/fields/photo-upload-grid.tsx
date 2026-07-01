@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 import { Check, Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useReviewActions, useReviewPhotos } from '@/stores/review-write-store';
+import { useReviewActions, useReviewPhotos } from '../stores/review-write-store';
 import { TRUST_DELTA } from '@/lib/domain/trust-delta';
 
 interface Props {

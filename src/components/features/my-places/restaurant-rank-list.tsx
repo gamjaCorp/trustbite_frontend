@@ -15,7 +15,7 @@ import MyRankFilterProvider, {
   useMyRankFilterActions,
   useMyRankRegion,
   useMyRankSort,
-} from '@/stores/my-rank-filter-store';
+} from './stores/my-rank-filter-store';
 import { RankFilterBar } from './rank-filter-bar';
 
 const SORT_ITEMS = [

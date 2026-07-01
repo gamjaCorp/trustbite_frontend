@@ -1,17 +1,13 @@
 // 리뷰 제출 시 신뢰도 변화 + 결과 snapshot 구성 — 순수 함수, UI 의존 없음
-import type { ReviewResultSnapshot, SelectedRestaurant } from '@/stores/review-write-store';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+import type { ReviewResultSnapshot, SelectedRestaurant } from './stores/review-write-store';
 import { computeTrustBreakdown, computeNextTrustScore } from '@/lib/domain/trust-delta';
+import type { GradeContext } from './type/grade-context';
+
 interface BuildSnapshotParams {
   selected: SelectedRestaurant;
   photoCount: number; // photos.length — File 객체가 아닌 개수만 필요
   text: string;
-  baseTrustScore: number;
-  currentLevel: GradeLevel;
-  currentGradeReviewCount: number;
-  currentGradeReviewTarget: number;
-  nextGradeName: string;
-  remainingReviewsForNextGrade: number;
+  gradeContext: GradeContext;
 }
 
 // 리뷰 제출 결과 snapshot 생성
@@ -19,13 +15,17 @@ export function buildReviewSnapshot({
   selected,
   photoCount,
   text,
-  baseTrustScore,
-  currentLevel,
-  currentGradeReviewCount,
-  currentGradeReviewTarget,
-  nextGradeName,
-  remainingReviewsForNextGrade,
+  gradeContext,
 }: BuildSnapshotParams): ReviewResultSnapshot {
+  const {
+    baseTrustScore,
+    currentLevel,
+    currentGradeReviewCount,
+    currentGradeReviewTarget,
+    nextGradeName,
+    remainingReviewsForNextGrade,
+  } = gradeContext;
+
   const breakdown = computeTrustBreakdown({ photoCount, textLength: text.length });
   const nextTrustScore = computeNextTrustScore(baseTrustScore, breakdown.total);
 

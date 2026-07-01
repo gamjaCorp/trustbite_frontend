@@ -1,7 +1,7 @@
 'use client';
 
 import { Textarea } from '@/components/ui/textarea';
-import { useReviewActions, useReviewText } from '@/stores/review-write-store';
+import { useReviewActions, useReviewText } from '../stores/review-write-store';
 
 // 리뷰 내용 자유 입력 텍스트 필드
 export function ReviewTextField() {

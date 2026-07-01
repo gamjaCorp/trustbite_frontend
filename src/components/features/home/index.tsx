@@ -7,7 +7,7 @@ import { useRankList } from './hooks/use-rank-list';
 import { RankFilterControls } from './filters/rank-filter-controls';
 import { RankMapBlock } from './map/rank-map-block';
 import { RankResultList } from './list/rank-result-list';
-import RegionRankProvider from '@/stores/region-rank-store';
+import RegionRankProvider from './stores/region-rank-store';
 
 interface Props {
   entries?: RegionalRankEntry[]; // entries가 없으면 Kakao Local API에서 자동으로 가져옴 (Storybook·테스트는 직접 주입 가능)
