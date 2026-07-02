@@ -2,12 +2,8 @@
 
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  LONG_TEXT_THRESHOLD,
-  TRUST_DELTA,
-  useReviewPhotoCount,
-  useReviewTextLength,
-} from '@/stores/review-write-store';
+import { useReviewPhotoCount, useReviewTextLength } from '../stores/review-write-store';
+import { LONG_TEXT_THRESHOLD, TRUST_DELTA } from '@/lib/domain/trust-delta';
 
 // 리뷰 100자 돌파 힌트 — FieldGroup hint 슬롯에 배치
 export function ReviewHint() {
@@ -33,7 +29,12 @@ export function PhotoHint() {
   const count = useReviewPhotoCount();
   const reached = count > 0;
   return (
-    <span className={cn('flex items-center gap-0.5 transition-colors', reached ? 'text-primary font-semibold' : '')}>
+    <span
+      className={cn(
+        'flex items-center gap-0.5 transition-colors',
+        reached ? 'text-primary font-semibold' : '',
+      )}
+    >
       {reached && <Check className="w-3 h-3" />}
       사진 첨부 +{TRUST_DELTA.photo}%
     </span>

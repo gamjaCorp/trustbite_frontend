@@ -1,11 +1,12 @@
 'use client';
 
+import { computeNextTrustScore } from '@/lib/domain/trust-delta';
 import { cn } from '@/lib/utils';
 import {
   useReviewIsEditMode,
   useReviewIsValid,
   useReviewTrustDelta,
-} from '@/stores/review-write-store';
+} from '../stores/review-write-store';
 
 interface Props {
   onSubmit: () => void;
@@ -16,10 +17,10 @@ interface Props {
 export function MobileSubmitBar({ onSubmit, baseTrustScore }: Props) {
   const isValid = useReviewIsValid();
   const delta = useReviewTrustDelta();
-  const next = Math.min(100, baseTrustScore + delta);
+  const next = computeNextTrustScore(baseTrustScore, delta);
+
   const isEditMode = useReviewIsEditMode();
 
-  // 신뢰도 프리뷰(좌)와 CTA(우)를 한 행에 배치해 수직 공간을 절약
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-sm lg:hidden">
       <div className="mx-auto flex max-w-5xl items-center gap-3">

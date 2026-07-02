@@ -9,7 +9,7 @@ import {
   useMyRankCategory,
   useMyRankFilterActions,
   useMyRankOccasions,
-} from '@/stores/my-rank-filter-store';
+} from './stores/my-rank-filter-store';
 
 // my-places 전체 랭킹용 카테고리·상황 필터 바 — 상단 sticky
 export function RankFilterBar() {

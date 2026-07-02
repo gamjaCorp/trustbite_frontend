@@ -39,22 +39,21 @@ npx tsc --noEmit       # 타입 검사
 ## 디렉터리 구조
 
 ```
-src/app/<route>/
-  page.tsx                      라우트 진입점 (얇게 유지)
-  _components/                  라우트 전용 UI 컴포넌트. 진입점 index.tsx 필수.
-  _hooks/                       라우트 전용 훅 (해당 시)
-  _lib/                         라우트 전용 도메인 로직 — 검증 스키마·데이터 변환 등 UI 아닌 실행 코드 (해당 시)
-src/components/ui/              shadcn (수정 금지)
-src/components/core/            ui/ 프리미티브를 감싸는 공통 컴포넌트
-src/components/features/<feat>/ 여러 라우트가 공유하는 feature 단위 (follow/, review-write/ 등 완결된 기능)
-src/components/common/          여러 라우트가 공유하는 작은 UI 프리미티브 (badge, chip, header 등)
-src/api/<feature>/              publicFetch·authedFetch·Server Action (feature별 하위 폴더)
-src/hooks/use-*.ts              여러 라우트가 공유하는 범용 훅
-src/stores/<name>-store.tsx     Zustand + Context 스토어
-src/lib/                        전역 재사용 유틸·타입·비즈니스 로직 (_lib/는 route-local, src/lib/는 전역)
-src/data/                       개발용 mock 데이터
-src/stories/                    Storybook 스토리 (평탄 구조)
-src/auth.ts + src/proxy.ts      NextAuth v5
+src/app                          Next App Router
+src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 features/(가까운 도메인) 또는 common/에 둔다. ui는 shadcn (직접 수정 금지)
+src/components/features/<feat>/  feature = 페이지 단위. 진입점 파일은 반드시 index.tsx.
+src/components/features/<feat>/hooks/use-*.ts  해당 feature(페이지)에만 쓰이는 훅은 feature 폴더 안 hooks/에 배치.
+src/components/features/<feat>/stores/<name>-store.tsx  해당 feature에서만 쓰이는 Zustand + Context 스토어. 여러 feature가 공유하면 src/stores/로 승격.
+src/components/features/<feat>/schema.ts       해당 feature에서만 쓰이는 zod schema는 feature 폴더 안에 배치. 여러 feature가 공유하게 되면 그때 src/lib/으로 승격.
+src/components/common/          두 개 이상 feature에서 공유하는 컴포넌트. feature에 귀속시키면 교차 의존이 생기는 경우.
+src/api/<feature>/<feature>.ts   fetch 기반 API 함수 (publicFetch/authedFetch/Server Action, feature별 하위 폴더)
+src/hooks/use-*.ts               여러 feature에서 공유하는 범용 훅 (예: use-debounced-value, use-auth-status, use-mobile)
+src/stores/<name>-store.tsx      여러 feature가 공유하는 Zustand + Context 스토어
+src/lib                          유틸 함수 (utils.ts/cn, geo.ts, category.ts 등 비즈니스 로직)
+src/types                        전역 타입 정의 (restaurant.ts, user.ts, follow.ts 등)
+src/data                         개발용 mock 데이터
+src/stories/{PascalCase}.stories.tsx  모든 스토리가 평탄하게 여기 모임
+src/auth.ts + src/proxy.ts       NextAuth v5 (proxy는 middleware alias)
 ```
 
 **colocation 규칙**: 한 라우트에서만 쓰이는 컴포넌트·훅·로직은 해당 라우트의 `_components/`·`_hooks/`·`_lib/`에 둔다. `_`로 시작하는 폴더는 Next.js Private Folder라 URL 세그먼트가 되지 않는다. 여러 라우트가 공유할 때 — 완결된 feature 단위면 `src/components/features/`, 작은 UI 프리미티브면 `src/components/common/`으로 올린다.
@@ -101,6 +100,7 @@ MVP 미포함 코드 위에 표시:
 **모든 task에 적용.** Claude는 코드를 직접 작성하지 않는다. 사용자가 순서대로 모든 코드를 작성하도록 유도한다.
 
 **흐름:**
+
 1. **계획 공유** — task를 2~5개 구현 단계로 쪼개 순서와 이유를 먼저 설명한다.
 2. **단계별 요청** — 한 번에 한 단계씩 Learn by Doing 형식(Context / Your Task / Guidance)으로 요청한다. 사용자 응답 전 다음 단계로 넘어가지 않는다.
 3. **검토 후 다음** — 사용자가 제출한 코드를 검토하고 인사이트를 한 줄 공유한 뒤, 다음 단계를 요청한다.

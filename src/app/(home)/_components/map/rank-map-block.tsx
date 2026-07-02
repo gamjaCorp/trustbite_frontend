@@ -6,7 +6,7 @@ import {
   useRankAppliedArea,
   useRankFocusedEntry,
   useRankPendingArea,
-} from '@/stores/region-rank-store';
+} from '../stores/region-rank-store';
 import { MapView } from './map-view';
 import { SearchThisArea } from './search-this-area';
 import { LoadMoreButton } from './load-more-button';

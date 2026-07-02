@@ -12,7 +12,7 @@ import {
   useRankPendingArea,
   useRankResolvedKeyword,
   useRankVisibleCount,
-} from '@/stores/region-rank-store';
+} from '../stores/region-rank-store';
 import { useNearbyPlaces } from './use-nearby-places';
 
 interface Options {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useReviewActions, useReviewSceneTags } from '@/stores/review-write-store';
+import { useReviewActions, useReviewSceneTags } from '../stores/review-write-store';
 import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 import type { SceneTag } from '@/lib/types/restaurant';
 

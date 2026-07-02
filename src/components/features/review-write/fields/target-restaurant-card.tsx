@@ -4,7 +4,7 @@ import { Pencil } from 'lucide-react';
 import { Surface } from '@/components/common/display/surface';
 import { RestaurantIdentityRow } from '@/components/common/restaurant/restaurant-identity-row';
 import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
-import { useReviewActions, useSelectedRestaurant } from '@/stores/review-write-store';
+import { useReviewActions, useSelectedRestaurant } from '../stores/review-write-store';
 
 // 리뷰 작성 대상 음식점 선택 카드
 export function TargetRestaurantCard() {

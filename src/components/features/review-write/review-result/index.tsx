@@ -3,20 +3,14 @@
 import { Check } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { formatDelta } from '@/lib/format';
-import type { ReviewResultSnapshot } from '@/stores/review-write-store';
+import type { ReviewResultSnapshot } from '../stores/review-write-store';
 
 import { TrustScoreChangeCard } from './trust-score-change-card';
 import { ContributionChecklist } from './contribution-checklist';
 import { GradeProgressCard } from './grade-progress-card';
 // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
-// import { PointsEarnedCard } from './points-earned-card';
 
 interface Props {
   open: boolean;
@@ -25,15 +19,18 @@ interface Props {
   onViewMyReview: () => void;
 }
 
-// 리뷰 작성 완료 다이얼로그 — 점수 변화·등급 진행·포인트 획득 요약
+// 리뷰 작성 완료 다이얼로그 — 점수 변화·등급 진행 요약
 export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview }: Props) {
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onWriteMore(); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onWriteMore();
+      }}
+    >
       <DialogContent className="max-w-sm p-0 gap-0 rounded-3xl overflow-hidden">
         <DialogTitle className="sr-only">리뷰 제출 결과</DialogTitle>
-        <DialogDescription className="sr-only">
-          신뢰도 변화와 획득 포인트를 확인하세요
-        </DialogDescription>
+        <DialogDescription className="sr-only">신뢰도 변화를 확인하세요</DialogDescription>
 
         <div className="overflow-y-auto max-h-[90vh] px-5 pt-10 pb-6 space-y-4">
           <div className="flex flex-col items-center gap-2 pb-3">
@@ -56,10 +53,7 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview
             breakdown={snapshot.breakdown}
           />
 
-          <ContributionChecklist
-            breakdown={snapshot.breakdown}
-            photoCount={snapshot.photoCount}
-          />
+          <ContributionChecklist breakdown={snapshot.breakdown} photoCount={snapshot.photoCount} />
 
           <GradeProgressCard
             currentLevel={snapshot.currentLevel}
@@ -70,10 +64,6 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview
           />
 
           {/* TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11) */}
-          {/* <PointsEarnedCard
-            pointsEarned={snapshot.pointsEarned}
-            pointReasons={snapshot.pointReasons}
-          /> */}
 
           <div className="flex gap-3 pt-3">
             <Button
@@ -83,10 +73,7 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview
             >
               리뷰 하나 더 쓰기
             </Button>
-            <Button
-              className="flex-1 h-12 text-title-2 rounded-xl"
-              onClick={onViewMyReview}
-            >
+            <Button className="flex-1 h-12 text-title-2 rounded-xl" onClick={onViewMyReview}>
               내가 쓴 리뷰 확인하기
             </Button>
           </div>
