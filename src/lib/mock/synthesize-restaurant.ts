@@ -1,5 +1,5 @@
 // TODO: 1차 MVP 제외 — Kakao Local 임시 합성 어댑터. 백엔드 도착 시 삭제
-import type { Category, RegionalRankEntry, SceneTag, VisitStatus } from '@/lib/types/restaurant';
+import type { Category, RegionalRankEntry, SceneTag, VisitStatus } from '@/types/restaurant';
 import type { KakaoPlace } from '@/api/kakao/kakao-local';
 
 // mulberry32 결정론적 RNG
@@ -176,7 +176,7 @@ export function synthesizeEntryFromSuggest(item: {
 }
 
 // TODO: 1차 MVP 제외 — 실제 mock 상세 데이터가 있는 place ID에 대해 카드 필드 덮어쓰기
-const MOCK_ENTRY_OVERRIDES: Record<string, Partial<import('@/lib/types/restaurant').RegionalRankEntry>> = {
+const MOCK_ENTRY_OVERRIDES: Record<string, Partial<import('@/types/restaurant').RegionalRankEntry>> = {
   '1309119533': {
     name: '카레당',
     category: '일식',

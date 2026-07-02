@@ -1,6 +1,6 @@
 // 카카오 지도 뷰 — appKey 유무 게이트 후 KakaoMap에 위임
 import { MapPin } from 'lucide-react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import { type SearchArea } from '@/lib/geo';
 import { KakaoMap } from './kakao-map';
 

@@ -4,7 +4,7 @@ import { ChevronRight, Eye } from 'lucide-react';
 import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { EditProfileButton } from './edit-profile-button';
-import type { MyProfile } from '@/lib/types/user';
+import type { MyProfile } from '@/types/user';
 
 interface Props {
   profile: MyProfile;

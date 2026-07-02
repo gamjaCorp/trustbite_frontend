@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { type SceneTag } from '@/lib/types/restaurant';
+import { type SceneTag } from '@/types/restaurant';
 import { SelectList, type SelectListItem } from '@/components/core/select-list';
 import { SectionHeader } from '@/components/common/display/section-header';
 import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';

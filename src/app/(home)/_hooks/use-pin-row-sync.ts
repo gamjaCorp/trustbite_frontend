@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useMemo, useRef } from 'react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
-import { useRankActiveId, useRankActions } from '../stores/region-rank-store';
+import type { RegionalRankEntry } from '@/types/restaurant';
+import { useRankActiveId, useRankActions } from '../_lib/region-rank-store';
 
 interface UsePinRowSyncOptions {
   entries: RegionalRankEntry[]; // 현재 화면에 표시 중인 (랭크 부여된) 결과 목록

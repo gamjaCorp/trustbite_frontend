@@ -2,7 +2,7 @@
 
 import { ChevronDown } from 'lucide-react';
 
-import type { DetailedReview } from '@/lib/types/restaurant';
+import type { DetailedReview } from '@/types/restaurant';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 

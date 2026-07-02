@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { RestaurantDetail } from '@/lib/types/restaurant';
+import { RestaurantDetail } from '@/types/restaurant';
 import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust/trust-score-sheet';
 import { Surface } from '@/components/common/display/surface';

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 
-import { MyReview } from '@/lib/types/restaurant';
+import { MyReview } from '@/types/restaurant';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 

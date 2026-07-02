@@ -2,7 +2,7 @@
 import { Users } from 'lucide-react';
 
 import { EmptyState } from '@/components/core/empty-state';
-import type { FollowTabKey } from '@/lib/types/follow';
+import type { FollowTabKey } from '@/types/follow';
 
 interface Props {
   mode: 'self' | 'other';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import {
   PAGE_SIZE,
   useRankActions,
@@ -12,7 +12,7 @@ import {
   useRankPendingArea,
   useRankResolvedKeyword,
   useRankVisibleCount,
-} from '../stores/region-rank-store';
+} from '../_lib/region-rank-store';
 import { useNearbyPlaces } from './use-nearby-places';
 
 interface Options {

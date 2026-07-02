@@ -5,7 +5,7 @@ import { UserCheck, UserPlus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useFollowMock } from '@/stores/follow-mock-store';
+import { useFollowMock } from './stores/follow-mock-store';
 
 interface Props {
   targetUserId?: string; // controlled 모드에서는 생략 가능

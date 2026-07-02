@@ -3,7 +3,7 @@ import { ProfileHeaderCard } from '@/components/common/profile/profile-header-ca
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { FollowToggleButton } from '@/components/features/follow/follow-toggle-button';
-import type { UserProfile } from '@/lib/types/user';
+import type { UserProfile } from '@/types/user';
 
 interface Props {
   profile: UserProfile;

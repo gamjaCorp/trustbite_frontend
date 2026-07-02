@@ -2,7 +2,7 @@
 
 import { Bookmark, Phone, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { RestaurantDetail } from '@/lib/types/restaurant';
+import { RestaurantDetail } from '@/types/restaurant';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { IconButton } from '@/components/core/icon-button';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';

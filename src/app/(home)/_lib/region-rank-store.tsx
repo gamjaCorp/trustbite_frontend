@@ -4,7 +4,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, RegionalRankEntry, SceneTag } from '@/lib/types/restaurant';
+import type { Category, RegionalRankEntry, SceneTag } from '@/types/restaurant';
 import type { SearchArea } from '@/lib/geo';
 
 // 페이지네이션 단위 — use-rank-list도 이 값을 import해서 사용 (SSOT)

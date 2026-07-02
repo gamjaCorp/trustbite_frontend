@@ -5,10 +5,10 @@ import {
   useRankActions,
   useRankCategory,
   useRankOccasions,
-} from '../stores/region-rank-store';
+} from '../../_lib/region-rank-store';
 import { CategoryChipRow } from '@/components/common/category/category-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
-import type { SceneTag } from '@/lib/types/restaurant';
+import type { SceneTag } from '@/types/restaurant';
 import { SearchAutocomplete } from './search-autocomplete';
 
 // 검색창 + 카테고리 칩 + 상황 칩 묶음 — store hook 직접 소비

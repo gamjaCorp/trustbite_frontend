@@ -1,4 +1,4 @@
-import { GoogleSessionResponse, TokenRefreshResponse } from '@/lib/types/auth/response';
+import { GoogleSessionResponse, TokenRefreshResponse } from '@/types/auth/response';
 import { publicFetch } from '@/network/server';
 
 export function postGoogleSession(idToken: string): Promise<GoogleSessionResponse> {

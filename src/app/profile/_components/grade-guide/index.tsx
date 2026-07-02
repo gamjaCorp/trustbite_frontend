@@ -1,4 +1,4 @@
-import type { MyProfile } from '@/lib/types/user';
+import type { MyProfile } from '@/types/user';
 
 import { AllGradesTimeline } from './all-grades-timeline';
 import { CurrentGradePanel } from './current-grade-panel';

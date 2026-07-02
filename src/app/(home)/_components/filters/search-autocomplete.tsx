@@ -16,7 +16,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group';
-import { useRankActions, useRankFocusedEntry, useRankQuery } from '../stores/region-rank-store';
+import { useRankActions, useRankFocusedEntry, useRankQuery } from '../../_lib/region-rank-store';
 import { synthesizeEntryFromSuggest } from '@/lib/mock/synthesize-restaurant';
 import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
 import { useSearchSuggest, type SuggestItem } from '../../_hooks/use-search-suggest';

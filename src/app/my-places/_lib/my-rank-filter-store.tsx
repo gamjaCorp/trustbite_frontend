@@ -4,7 +4,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, SceneTag, SortKey } from '@/lib/types/restaurant';
+import type { Category, SceneTag, SortKey } from '@/types/restaurant';
 
 interface MyRankFilterState {
   sort: SortKey; // 정렬 기준 (기본 'score')

@@ -17,7 +17,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { SCORE_LABELS } from '@/lib/domain/score-labels';
-import type { RatingScores, SceneTag, VisitStatus } from '@/lib/types/restaurant';
+import type { RatingScores, SceneTag, VisitStatus } from '@/types/restaurant';
 
 // my variant 하단 — 세부 점수 + 방문 정보 + 수정 링크
 export function MyFooter({

@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/core/empty-state';
 import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row/index';
@@ -15,7 +15,7 @@ import MyRankFilterProvider, {
   useMyRankFilterActions,
   useMyRankRegion,
   useMyRankSort,
-} from './stores/my-rank-filter-store';
+} from '../_lib/my-rank-filter-store';
 import { RankFilterBar } from './rank-filter-bar';
 
 const SORT_ITEMS = [

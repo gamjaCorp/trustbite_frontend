@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import type { FollowTabKey } from '@/lib/types/follow';
+import type { FollowTabKey } from '@/types/follow';
 
 interface FollowTabsProps {
   initialTab: FollowTabKey; // 현재 활성 탭 (라우트 기반)

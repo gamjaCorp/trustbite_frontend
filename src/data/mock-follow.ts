@@ -1,6 +1,6 @@
 // TODO: 1차 MVP 제외 — 백엔드 follow API 연동 시 제거 (W11 / 3차 MVP)
 import type { GradeLevel } from '@/lib/domain/grade-levels';
-import type { FollowedUser } from '@/lib/types/follow';
+import type { FollowedUser } from '@/types/follow';
 
 const allUsers: FollowedUser[] = [
   {

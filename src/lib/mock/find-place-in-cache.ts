@@ -1,6 +1,6 @@
 // TODO: 1차 MVP 제외 — 백엔드 상세 API 도착 시 삭제
 import type { QueryClient } from '@tanstack/react-query';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 
 // React Query 캐시에서 ID로 맛집 entry 조회
 export function findPlaceInCache(

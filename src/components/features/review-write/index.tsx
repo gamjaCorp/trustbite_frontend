@@ -14,9 +14,9 @@ import ReviewWriteProvider, {
   useReviewText,
   useSelectedRestaurant,
 } from './stores/review-write-store';
-import { buildReviewSnapshot } from './build-review-snapshot';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
-import type { GradeContext } from './type/grade-context';
+import { buildReviewSnapshot } from './lib/build-review-snapshot';
+import type { RegionalRankEntry } from '@/types/restaurant';
+import type { GradeContext } from './lib/grade-context';
 import { ReviewResultDialog } from './review-result/index';
 
 import { FieldGroup } from './fields/field-group';

@@ -25,7 +25,7 @@ import type {
   VisitStatus,
   RegionalRankEntry,
   RestaurantDetail,
-} from '@/lib/types/restaurant';
+} from '@/types/restaurant';
 import { MyFooter, RegionalFooter, WishlistFooter } from './footers';
 
 export interface PlaceListRowData {

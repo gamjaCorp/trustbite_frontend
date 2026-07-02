@@ -11,7 +11,7 @@ import { PlaceListRow, toPlaceListRowDataFromDetail } from '@/components/common/
 import { SectionHeader } from '@/components/common/display/section-header';
 import { DividedList } from '@/components/common/display/divided-list';
 import { IconButton } from '@/components/core/icon-button';
-import type { RestaurantDetail } from '@/lib/types/restaurant';
+import type { RestaurantDetail } from '@/types/restaurant';
 
 type WishlistSortKey = 'recent' | 'score' | 'trust';
 

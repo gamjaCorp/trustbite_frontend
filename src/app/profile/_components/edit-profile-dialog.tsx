@@ -17,8 +17,8 @@ import {
 } from '@/components/ui/dialog';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { useImagePreview } from '@/hooks/use-image-preview';
-import { useMyProfileMock } from './stores/my-profile-mock-store';
-import type { MyProfile } from '@/lib/types/user';
+import { useMyProfileMock } from '../_lib/my-profile-mock-store';
+import type { MyProfile } from '@/types/user';
 import { NICKNAME_MIN, NICKNAME_MAX } from '@/lib/domain/profile';
 
 interface FormProps {

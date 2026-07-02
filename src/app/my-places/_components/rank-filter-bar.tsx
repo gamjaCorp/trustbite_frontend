@@ -1,7 +1,7 @@
 'use client';
 
 // my-places 랭킹 sticky 필터바 — 카테고리 칩 + 상황 칩 행 (top에 고정)
-import type { Category, SceneTag } from '@/lib/types/restaurant';
+import type { Category, SceneTag } from '@/types/restaurant';
 import { CategoryChipRow } from '@/components/common/category/category-chip-row';
 import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row';
 import { CATEGORIES, OCCASIONS } from '@/lib/domain/category';
@@ -9,7 +9,7 @@ import {
   useMyRankCategory,
   useMyRankFilterActions,
   useMyRankOccasions,
-} from './stores/my-rank-filter-store';
+} from '../_lib/my-rank-filter-store';
 
 // my-places 전체 랭킹용 카테고리·상황 필터 바 — 상단 sticky
 export function RankFilterBar() {

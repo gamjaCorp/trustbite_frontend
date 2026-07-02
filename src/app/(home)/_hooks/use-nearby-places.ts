@@ -5,7 +5,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { searchPlacesByRadius, searchPlacesByKeyword } from '@/api/kakao/kakao-local';
 import { synthesizeEntry } from '@/lib/mock/synthesize-restaurant';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import type { SearchArea } from '@/lib/geo';
 
 export interface NearbyPlacesInput {

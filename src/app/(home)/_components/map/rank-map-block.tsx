@@ -1,12 +1,12 @@
 'use client';
 
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import {
   useRankActions,
   useRankAppliedArea,
   useRankFocusedEntry,
   useRankPendingArea,
-} from '../stores/region-rank-store';
+} from '../../_lib/region-rank-store';
 import { MapView } from './map-view';
 import { SearchThisArea } from './search-this-area';
 import { LoadMoreButton } from './load-more-button';

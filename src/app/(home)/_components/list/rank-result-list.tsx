@@ -1,7 +1,7 @@
 'use client';
 
 import { MapPin } from 'lucide-react';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import { Button } from '@/components/ui/button';
 import { DividedList } from '@/components/common/display/divided-list';
 import { SectionHeader } from '@/components/common/display/section-header';

@@ -4,7 +4,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { StoreApi, createStore, useStore } from 'zustand';
 
-import type { Category, SceneTag } from '@/lib/types/restaurant';
+import type { Category, SceneTag } from '@/types/restaurant';
 import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 import { reviewSchema } from '@/components/features/review-write/schema';

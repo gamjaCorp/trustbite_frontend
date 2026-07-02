@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": ["WebSearch", "Bash", "WebFetch", "mcp__shrimp-task-manager__list_tasks"],
+    "defaultMode": "plan",
+    "language": "korean"
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["context7"],
+  "plansDirectory": ".claude/plans/",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "outputStyle": "Learning"
+}

@@ -3,7 +3,7 @@
 // 카카오 지도 SDK 로딩 + 렌더링 담당 내부 컴포넌트 (MapView에서 appKey 게이트 통과 후 사용)
 import { useEffect, useRef, useState } from 'react';
 import { Circle, CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
-import type { RegionalRankEntry } from '@/lib/types/restaurant';
+import type { RegionalRankEntry } from '@/types/restaurant';
 import { CategoryPin } from '@/components/common/category/category-pin';
 import { type SearchArea, haversine, computeViewportRadius } from '@/lib/geo';
 import { SDK_PRIMARY_COLOR } from '@/lib/kakao-sdk-colors';

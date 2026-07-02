@@ -2,7 +2,7 @@
 import { RestaurantRankList } from './restaurant-rank-list';
 import { TasteProfileSection } from '@/components/common/profile/taste-profile-section';
 import { WishlistSection } from './wishlist-section';
-import { RegionalRankEntry } from '@/lib/types/restaurant';
+import { RegionalRankEntry } from '@/types/restaurant';
 
 import { MyPlacesTabsNav } from './my-places-tabs-nav';
 

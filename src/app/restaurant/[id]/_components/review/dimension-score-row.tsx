@@ -1,6 +1,6 @@
 // 리뷰 차원 점수 인라인 표시 — 맛/가성비/분위기 레이블+점수 행
 import { cn } from '@/lib/utils';
-import type { RatingScores } from '@/lib/types/restaurant';
+import type { RatingScores } from '@/types/restaurant';
 import { SCORE_LABELS } from '@/lib/domain/score-labels';
 
 interface Props {

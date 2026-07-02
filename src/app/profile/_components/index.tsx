@@ -1,4 +1,4 @@
-import type { MyProfile } from '@/lib/types/user';
+import type { MyProfile } from '@/types/user';
 
 import { Surface } from '@/components/common/display/surface';
 import { GradeGuideCard } from './grade-guide/index';

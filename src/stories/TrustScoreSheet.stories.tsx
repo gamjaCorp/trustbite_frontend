@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TrustScoreSheet } from '@/components/common/trust/trust-score-sheet';
-import type { TrustBreakdown } from '@/lib/types/restaurant';
+import type { TrustBreakdown } from '@/types/restaurant';
 
 const mockBreakdown: TrustBreakdown = {
   photoRatio: 0.72,

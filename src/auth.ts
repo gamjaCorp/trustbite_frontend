@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { Provider } from 'next-auth/providers';
 import { postGoogleSession, postRefreshToken } from './api/auth/auth';
-import { AUTH_ERROR } from './lib/types/auth/error';
+import { AUTH_ERROR } from './types/auth/error';
 
 const providers: Provider[] = [Google];
 

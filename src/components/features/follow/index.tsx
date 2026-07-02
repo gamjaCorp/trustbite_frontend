@@ -1,5 +1,5 @@
 // 팔로워·팔로잉 탭 + 목록 컨테이너 — 본인/타 유저 공용 (server component)
-import type { FollowTabKey, FollowedUser } from '@/lib/types/follow';
+import type { FollowTabKey, FollowedUser } from '@/types/follow';
 
 import { FollowEmpty } from './follow-empty';
 import { FollowTabs } from './follow-tabs';

@@ -2,7 +2,7 @@
 
 // 음식점 상세 페이지용 단일 핀 정적 지도 미리보기 — 드래그·줌 비활성
 import { CustomOverlayMap, Map, useKakaoLoader } from 'react-kakao-maps-sdk';
-import type { Category, Coordinates } from '@/lib/types/restaurant';
+import type { Category, Coordinates } from '@/types/restaurant';
 import { CategoryPin } from '@/components/common/category/category-pin';
 
 interface Props {

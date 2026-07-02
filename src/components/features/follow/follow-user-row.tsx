@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
-import type { FollowedUser } from '@/lib/types/follow';
+import type { FollowedUser } from '@/types/follow';
 
 import { FollowToggleButton } from './follow-toggle-button';
 

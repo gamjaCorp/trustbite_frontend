@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { NextResponse } from 'next/server';
-import { AUTH_ERROR } from './lib/types/auth/error';
+import { AUTH_ERROR } from './types/auth/error';
 
 export const proxy = auth((req) => {
   const { pathname } = req.nextUrl;

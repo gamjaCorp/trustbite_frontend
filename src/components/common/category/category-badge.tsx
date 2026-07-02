@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { CATEGORY_STYLE } from '@/lib/domain/category';
-import type { Category } from '@/lib/types/restaurant';
+import type { Category } from '@/types/restaurant';
 
 interface Props {
   category: Category;

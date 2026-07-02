@@ -1,5 +1,5 @@
 // TODO: 1차 MVP 제외 — 백엔드 상세 API 도착 시 삭제
-import type { RegionalRankEntry, RestaurantDetail } from '@/lib/types/restaurant';
+import type { RegionalRankEntry, RestaurantDetail } from '@/types/restaurant';
 
 // RegionalRankEntry(또는 null)를 RestaurantDetail placeholder로 변환
 export function synthesizeDetailFromEntry(
