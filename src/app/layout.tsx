@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { Session } from 'next-auth';
 import { JetBrains_Mono } from 'next/font/google';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
@@ -22,7 +23,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  // stale 세션 쿠키 복호화 실패(JWTSessionError) 시 앱 크래시 대신 로그아웃 상태로 degrade
+  let session: Session | null = null;
+  try {
+    session = await auth();
+  } catch {
+    // stale 쿠키 복호화 실패 — 로그아웃 상태(null)로 렌더
+  }
+
   return (
     <html lang="ko" suppressHydrationWarning>
       <body className={`${jetbrainsMono.variable} antialiased`}>

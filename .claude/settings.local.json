@@ -1,12 +1,25 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
-    "allow": ["WebSearch", "Bash", "WebFetch", "mcp__shrimp-task-manager__list_tasks"],
+    "allow": [
+      "WebSearch",
+      "Bash",
+      "WebFetch",
+      "mcp__shrimp-task-manager__list_tasks",
+      "mcp__ide__getDiagnostics",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm build *)"
+    ],
     "defaultMode": "plan",
     "language": "korean"
   },
   "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": ["context7"],
-  "plansDirectory": ".claude/plans/",
+  "enabledMcpjsonServers": [
+    "context7"
+  ],
   "hooks": {
     "Stop": [
       {
@@ -31,9 +44,6 @@
       }
     ]
   },
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
-  "outputStyle": "Learning"
+  "outputStyle": "Learning",
+  "plansDirectory": ".claude/plans/"
 }
