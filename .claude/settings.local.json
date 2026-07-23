@@ -1,0 +1,49 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash",
+      "WebFetch",
+      "mcp__shrimp-task-manager__list_tasks",
+      "mcp__ide__getDiagnostics",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm build *)"
+    ],
+    "defaultMode": "plan",
+    "language": "korean"
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "context7"
+  ],
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "Learning",
+  "plansDirectory": ".claude/plans/"
+}

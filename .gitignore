@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -40,5 +41,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+
+# storybook
 *storybook.log
 storybook-static
+
+# claude plans
+.claude/plans/
+
+# serena mcp cache
+.serena/
+
+# claude local settings (전역 ignore 우회)
+!/.claude/settings.local.json

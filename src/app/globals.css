@@ -1,14 +1,25 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'Pretendard Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono);
+  --color-paper: var(--paper);
+  --color-paper-edge: var(--paper-edge);
+  --color-ink: var(--ink);
+
+  /* ── shadcn 기본 색상 ── */
+  --color-primary-subtle: var(--primary-subtle);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-info: var(--info);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -38,6 +49,28 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  /* ── TrustBite: Primitive Palette ── */
+  --color-palette-brand: var(--palette-brand);
+  --color-palette-brand-subtle: var(--palette-brand-subtle);
+  --color-palette-green: var(--palette-green);
+  --color-palette-green-subtle: var(--palette-green-subtle);
+  --color-palette-amber: var(--palette-amber);
+  --color-palette-amber-subtle: var(--palette-amber-subtle);
+  --color-palette-blue: var(--palette-blue);
+  --color-palette-blue-subtle: var(--palette-blue-subtle);
+  --color-palette-red: var(--palette-red);
+  --color-palette-red-subtle: var(--palette-red-subtle);
+  --color-palette-gray: var(--palette-gray);
+  --color-palette-gray-subtle: var(--palette-gray-subtle);
+  --color-palette-gold: var(--palette-gold);
+  --color-palette-gold-subtle: var(--palette-gold-subtle);
+  --color-palette-silver: var(--palette-silver);
+  --color-palette-silver-subtle: var(--palette-silver-subtle);
+  --color-palette-bronze: var(--palette-bronze);
+  --color-palette-bronze-subtle: var(--palette-bronze-subtle);
+
+  /* ── 라운딩 ── */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -45,17 +78,85 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --radius-chip: var(--radius-chip);
+  --radius-card: var(--radius-card);
+  --radius-modal: var(--radius-modal);
+
+  /* ── 그림자 ── */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-card: var(--shadow-card);
 }
 
 :root {
-  --radius: 0.625rem;
+  /* ── 라운딩 (토스/당근 스타일 — 둥글고 귀엽게) ── */
+  --radius: 0.75rem; /* 기본 12px */
+  --radius-chip: 9999px; /* pill — 태그, 배지 */
+  --radius-card: 1rem; /* 16px — 카드 */
+  --radius-modal: 1.5rem; /* 24px — 바텀시트/모달 */
+
+  /* ── 그림자 (토스 스타일 — 은은하고 부드럽게) ── */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.04), 0 2px 8px 0 rgb(0 0 0 / 0.06);
+
+  /* ── 레이아웃 상수 ── */
+  --header-height: 91px; /* Header 컴포넌트 고정 높이 — sticky offset용 */
+
+  /* ───────────────────────────────────────────
+   * Tier 1 — Primitive Palette (SSOT)
+   * 색 자체만 정의. 라이트/다크는 여기서만 변경.
+   * Tier 2 토큰(semantic)은 이 값을 var()로만 참조.
+   * 도메인 매핑(카테고리·등급)은 src/lib/*에서 직접 palette 클래스 참조.
+   * ─────────────────────────────────────────── */
+  --palette-brand: #ff7a00;
+  --palette-brand-subtle: #fff3e6;
+  --palette-green: #22c55e;
+  --palette-green-subtle: #ecfdf5;
+  --palette-amber: #f59e0b;
+  --palette-amber-subtle: oklch(0.965 0.02 75);
+  --palette-blue: #3b82f6;
+  --palette-blue-subtle: oklch(0.965 0.015 245);
+  --palette-red: #ef4444;
+  --palette-red-subtle: oklch(0.965 0.015 22);
+  --palette-gray: #9ca3af;
+  --palette-gray-subtle: oklch(0.955 0 0);
+  --palette-gold: #f5b800;
+  --palette-gold-subtle: oklch(0.965 0.025 85);
+  --palette-silver: #a8b2bf;
+  --palette-silver-subtle: oklch(0.965 0.005 250);
+  --palette-bronze: #c47a3d;
+  --palette-bronze-subtle: oklch(0.965 0.025 55);
+
+  /* ───────────────────────────────────────────
+   * Tier 2 — Semantic (의미 기반 토큰)
+   * ─────────────────────────────────────────── */
+  --primary: var(--palette-brand);
+  --primary-subtle: var(--palette-brand-subtle);
+  --success: var(--palette-green);
+  --success-subtle: var(--palette-green-subtle);
+  --warning: var(--palette-amber);
+  --info: var(--palette-blue);
+  --error: var(--palette-red);
+
+  /* ── Field Book: 종이톤 사이드바/시트 배경 ── */
+  --paper: oklch(0.987 0.008 80); /* warm off-white */
+  --paper-edge: oklch(0.93 0.015 80); /* paper edge shadow tint */
+  --ink: oklch(0.35 0.02 50); /* 좌표·마이크로 텍스트용 warm gray */
+
+  /* ── shadcn 기본 색상 ── */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -83,14 +184,26 @@
 }
 
 .dark {
+  /* ── Primitive Palette (다크 — 어두운 배경 가독성 확보) ── */
+  --palette-brand: #ff8c1a;
+  --palette-green: #4ade80;
+  --palette-amber: #fbb740;
+  --palette-blue: #60a5fa;
+  --palette-red: #f87171;
+  --palette-gray: #d1d5db;
+  --palette-gold: #fbcb47;
+  --palette-silver: #c8d0db;
+  --palette-bronze: #d9925a;
+  /* subtle 값들은 라이트와 동일하게 유지 (다크 배경에서 사용처 발생 시 별도 정의) */
+
+  /* ── shadcn 기본 색상 (다크) ── */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -114,6 +227,19 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ── Field Book: 다크 paper tone ── */
+  --paper: oklch(0.22 0.01 60);
+  --paper-edge: oklch(0.32 0.015 60);
+  --ink: oklch(0.75 0.015 60);
+
+  /* ── 그림자 (다크 — 불투명도 높여 가시성 확보) ── */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.2);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.35), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.06), 0 2px 8px 0 rgb(0 0 0 / 0.3);
 }
 
 @layer base {
@@ -123,4 +249,238 @@
   body {
     @apply bg-background text-foreground;
   }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility topographic-lines {
+  background-image: repeating-radial-gradient(
+    ellipse at 30% 50%,
+    transparent 0,
+    transparent 14px,
+    color-mix(in oklab, var(--ink) 8%, transparent) 14px,
+    color-mix(in oklab, var(--ink) 8%, transparent) 15px
+  );
+}
+
+@utility pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+/* ── IntroCard 애니메이션 ── */
+
+/* 오른쪽 별: 2.4s마다 한 번 흔들림 (앞 20%만 wiggle, 나머지 idle) */
+@utility animate-wiggle {
+  animation: wiggle 2.4s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  5%        { transform: rotate(-12deg); }
+  10%       { transform: rotate(12deg); }
+  15%       { transform: rotate(-7deg); }
+  20%       { transform: rotate(0deg); }
+}
+
+/* 왼쪽 별 눈물: 아래로 흘러 사라짐 (1회) */
+@utility animate-tear-fall {
+  animation: tear-fall 1.6s ease-in forwards;
+}
+
+@keyframes tear-fall {
+  0%   { transform: translateY(0);    opacity: 0.85; }
+  60%  { transform: translateY(10px); opacity: 0.6; }
+  100% { transform: translateY(18px); opacity: 0; }
+}
+
+/* /signin 배경 포크/나이프/스푼 비 이펙트 */
+@utility animate-cutlery-fall {
+  animation: cutlery-fall 7s linear infinite;
+}
+
+@keyframes cutlery-fall {
+  0%   { transform: translateY(-10vh) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* 오른쪽 별 윙크: CTA 클릭 보상 */
+@utility animate-star-wink {
+  animation: star-wink 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes star-wink {
+  0%, 100% { transform: scale(1)    rotate(0deg); }
+  30%       { transform: scale(1.4)  rotate(-15deg); }
+  60%       { transform: scale(0.88) rotate(9deg); }
+  80%       { transform: scale(1.12) rotate(-4deg); }
+}
+
+/*
+ * 타이포그래피 매핑 가이드 — raw 조합 대신 아래 이름만 사용
+ *   text-3xl font-bold          → text-display-1  (36px/700)
+ *   text-2xl font-bold/semibold → text-headline-1  (24px/600)
+ *   text-xl  font-bold/semibold → text-headline-2  (20px/600)
+ *   text-lg  font-bold/semibold → text-headline-3  (16px/600)
+ *   text-base font-semibold/bold → text-title-1    (16px/600)
+ *   text-base font-medium       → text-label-1     (16px/500)
+ *   text-sm  font-semibold/bold → text-title-2     (14px/600)
+ *   text-sm  font-medium        → text-title-3     (14px/500)
+ *   text-xs  font-semibold/medium/bold → text-label-3 (12px/500)
+ */
+
+/* Display — 히어로 숫자·대형 강조 */
+@utility text-display-1 {
+  font-size: 2.25rem; /* 36px */
+  line-height: 2.5rem; /* 40px */
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* Headline — 페이지/주요 영역 제목 */
+@utility text-headline-1 {
+  font-size: 1.5rem; /* 24px */
+  line-height: 2rem; /* 32px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-headline-2 {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-headline-3 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Title — 카드·다이얼로그 등 UI 단위 제목 */
+@utility text-title-1 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-title-2 {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-title-3 {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Body — 본문 */
+@utility text-body-1 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+@utility text-body-2 {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+@utility text-body-3 {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Label — 버튼·입력 필드 등 기능적 텍스트 */
+@utility text-label-1 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+@utility text-label-2 {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-label-3 {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Caption — 보조 설명 */
+@utility text-caption-1 {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+@utility text-caption-2 {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.125rem; /* 18px */
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* 0.5px hairline 구분선 — Tailwind 스케일에 없는 값, 토큰화 */
+@utility border-hairline {
+  border-width: 0.5px;
+}
+
+/* 랭크 배지 금은동 shine 효과 — 주기적인 대각선 빛 스위프 */
+@utility badge-shine {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 65%
+    );
+    background-size: 200% 100%;
+    animation: badge-shine-sweep 2.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes badge-shine-sweep {
+  0% { background-position: -100% center; }
+  55%, 100% { background-position: 260% center; }
 }

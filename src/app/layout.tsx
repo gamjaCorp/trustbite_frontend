@@ -1,34 +1,43 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-
-import { Providers } from '@/components/core/providers/index';
-
+import type { Session } from 'next-auth';
+import { JetBrains_Mono } from 'next/font/google';
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
+import { auth } from '@/auth';
+import { Providers } from '@/components/common/layout/providers';
+import { Header } from '@/components/common/layout/header/index';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const jetbrainsMono = JetBrains_Mono({
+  variable: '--font-mono',
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
   title: 'TrustBite',
-  description: '신뢰도 기반 맛집 평가 서비스',
+  description: '믿을 수 있는 별점, 같이 모으는 맛집',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // stale 세션 쿠키 복호화 실패(JWTSessionError) 시 앱 크래시 대신 로그아웃 상태로 degrade
+  let session: Session | null = null;
+  try {
+    session = await auth();
+  } catch {
+    // stale 쿠키 복호화 실패 — 로그아웃 상태(null)로 렌더
+  }
+
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+      <body className={`${jetbrainsMono.variable} antialiased`}>
+        <Providers session={session}>
+          <Header />
+          <main className="min-h-[calc(100vh-var(--header-height))] bg-background">{children}</main>
+        </Providers>
       </body>
     </html>
   );

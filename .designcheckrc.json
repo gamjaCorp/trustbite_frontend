@@ -1,0 +1,20 @@
+{
+  "include": [
+    "src/app/**/*.tsx",
+    "src/components/core/**/*.tsx",
+    "src/components/common/**/*.tsx",
+    "src/components/features/**/*.tsx",
+    "src/lib/domain/category.ts"
+  ],
+  "exclude": [
+    "src/components/ui",
+    "src/lib/kakao-sdk-colors.ts",
+    "src/components/common/category/category-pin.tsx"
+  ],
+  "rules": {
+    "no-raw-color": {
+      "enabled": true,
+      "description": "raw hex(#rgb/#rrggbb/#rrggbbaa)·rgb()/rgba() 사용 금지. globals.css palette 토큰 사용. 예외: Kakao SDK 전달 상수(kakao-sdk-colors.ts), 지도 핀 SVG(category-pin.tsx)"
+    }
+  }
+}
