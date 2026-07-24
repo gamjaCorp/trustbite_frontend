@@ -36,51 +36,9 @@ npx tsc --noEmit       # 타입 검사
 - **Path alias** — `@/*` → `./src/*`
 - **새 라이브러리 설치 금지** — 기존 deps로 해결 가능한지 먼저 확인.
 
-## 디렉터리 구조
+## 아키텍처 (디렉터리 구조·네이밍 컨벤션)
 
-```
-src/app                          Next App Router
-src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 features/(가까운 도메인) 또는 common/에 둔다. ui는 shadcn (직접 수정 금지)
-src/components/features/<feat>/  feature = 페이지 단위. 진입점 파일은 반드시 index.tsx.
-src/components/features/<feat>/hooks/use-*.ts  해당 feature(페이지)에만 쓰이는 훅은 feature 폴더 안 hooks/에 배치.
-src/components/features/<feat>/stores/<name>-store.tsx  해당 feature에서만 쓰이는 Zustand + Context 스토어. 여러 feature가 공유하면 src/stores/로 승격.
-src/components/features/<feat>/schema.ts       해당 feature에서만 쓰이는 zod schema는 feature 폴더 안에 배치. 여러 feature가 공유하게 되면 그때 src/lib/으로 승격.
-src/components/features/<feat>/lib/<name>.ts   해당 feature에서만 쓰이는 순수 로직·타입 (UI/훅/스토어가 아닌 유틸). 여러 feature가 공유하면 src/lib/으로 승격.
-src/components/common/          두 개 이상 feature에서 공유하는 컴포넌트. feature에 귀속시키면 교차 의존이 생기는 경우.
-src/api/<feature>/<feature>.ts   fetch 기반 API 함수 (publicFetch/authedFetch/Server Action, feature별 하위 폴더)
-src/hooks/use-*.ts               여러 feature에서 공유하는 범용 훅 (예: use-debounced-value, use-auth-status, use-mobile)
-src/stores/<name>-store.tsx      여러 feature가 공유하는 Zustand + Context 스토어
-src/lib                          유틸 함수 (utils.ts/cn, geo.ts, category.ts 등 비즈니스 로직)
-src/types                        전역 타입 정의 (restaurant.ts, user.ts, follow.ts 등)
-src/data                         개발용 mock 데이터
-src/stories/{PascalCase}.stories.tsx  모든 스토리가 평탄하게 여기 모임
-src/auth.ts + src/proxy.ts       NextAuth v5 (proxy는 middleware alias)
-```
-
-**colocation 규칙**: 한 라우트에서만 쓰이는 컴포넌트·훅·로직은 해당 라우트의 `_components/`·`_hooks/`·`_lib/`에 둔다. `_`로 시작하는 폴더는 Next.js Private Folder라 URL 세그먼트가 되지 않는다. 여러 라우트가 공유할 때 — 완결된 feature 단위면 `src/components/features/`, 작은 UI 프리미티브면 `src/components/common/`으로 올린다.
-
-**Route Group**: 루트(`/`) 페이지는 `app/(home)/`에 격리. `(home)` 폴더는 URL에 영향 없이 홈 전용임을 명시. 새 그룹 추가 시 `app/(그룹명)/` 패턴 사용.
-
-**재사용 우선순위**: `core/` → `ui/` → 신규 생성.
-
-## 네이밍·Import 컨벤션
-
-- 파일/폴더 kebab-case. 배럴에서 import 시 `/index` suffix 명시.
-- 훅/함수는 named export. default export는 React 컴포넌트·Next.js 규약만.
-- Import 순서: React → 3rd-party → `@/*` → 상대경로.
-- 주석·toast 문구는 한국어. 컴포넌트 함수 위에 한 줄 설명 주석.
-- interface/type 프로퍼티 주석은 해당 줄 오른쪽 인라인 (`// 설명`).
-- `any` 지양.
-
-## Spec 문서 (`docs/spec/{페이지}/`)
-
-```
-index.md          화면 기획
-{기능}.md         기능별 상세 (필요 시)
-backend-spec.md   API 계약
-```
-
-작성 스타일: 짧게 핵심만. 표는 파라미터·API 목록에만. 미정 항목은 별도 섹션. 구현 세부사항(함수명·CSS 클래스) 금지.
+@rules/architecture.md
 
 ## 1차 MVP 범위
 
@@ -92,47 +50,6 @@ MVP 미포함 코드 위에 표시:
 
 ## 로드맵 실행 규칙 (`docs/plan/roadmap1/week-{N}.md`)
 
-### 실행 단위
+task 실행·진행·보고 규칙은 아래 rule 파일로 분리:
 
-**task 1개 단위로만 진행 후 정지.** 빌드 확인(`pnpm build`·`pnpm lint`)은 해당 task에 포함.
-
-### Learn by Doing
-
-**모든 task에 적용.** Claude는 코드를 직접 작성하지 않는다. 사용자가 순서대로 모든 코드를 작성하도록 유도한다.
-
-**흐름:**
-
-1. **계획 공유** — task를 2~5개 구현 단계로 쪼개 순서와 이유를 먼저 설명한다.
-2. **단계별 요청** — 한 번에 한 단계씩 Learn by Doing 형식(Context / Your Task / Guidance)으로 요청한다. 사용자 응답 전 다음 단계로 넘어가지 않는다.
-3. **검토 후 다음** — 사용자가 제출한 코드를 검토하고 인사이트를 한 줄 공유한 뒤, 다음 단계를 요청한다.
-4. **완료** — 모든 단계가 끝나면 task 완료 보고로 마무리한다.
-
-**제약:** Claude가 `TODO(human)` 플레이스홀더를 포함한 어떤 구현 코드도 작성하지 않는다. 파일 생성·타입 정의·import 추가도 사용자에게 요청한다.
-
-### 2단 ask — 침묵=동의 금지
-
-task 종료 후: ① 완료 보고 → 검토 대기 → ② "다음 스텝 시작할까요? — `{요약}`" → 명시적 승인 대기.
-
-### 플랜
-
-플랜은 현재 진행할 task 하나만. 이모지 타이틀 포맷 유지.
-
-### task 완료 보고 형식
-
-```
-## 📋 Task N — (변경 내용 + 전/후 스니펫)
-## 💡 적용한 이유 — 문제 / 왜 이 방식 / 동작 원리
-## 🔜 다음 task — Task N+1: {한 줄 요약}
-```
-
-### 진행 표기
-
-사용자 확인 후 `week-{N}.md` 해당 항목을 `[x]`로 체크. Day 마지막 task 확인 시 일별 요약 테이블 완료 열도 체크.
-
-### 이슈 기록
-
-`week-{N}-issues.md`에 `-` 나열형으로 기록. 본문에는 적지 않는다.
-
-```
-- 핀 클릭이 `<div onClick>` — 키보드 접근 없음 → `<button aria-label>` 로 교체
-```
+@rules/roadmap-task-execution.md
