@@ -8,48 +8,41 @@
 
 > 화면 단위 마이그레이션 표준 7단계: 백엔드 endpoint 확인 → 타입 분할 → API 함수(fetch) → React Query 훅(클라 한정) → 페이지 전환 → 의존성 정리 → 체크
 
+> 표 읽는 법: **할 일**은 무엇을 왜 하는지, **구현 방식**은 어떻게 붙일지(서버/클라·fetch 방식·핵심 엔드포인트)를 짧게. 정확한 파일 경로·함수명은 각 task 진행 시 정한다.
+
 ---
 
 ## 일별 요약
 
-| Day | 날짜 | 목표 | 주요 산출물 | 완료 |
-|---|---|---|---|---|
-| Day 1 | 백엔드 준비 후 | 실 인증 — 백엔드 연동 | `POST /api/auth/session/google` · accessToken 갱신 · 온보딩 영속화 (BFF — token은 서버 전용) | [x] |
-| Day 2 | — | `/profile` + `/profile/grade` 데이터 레이어 | `useMyProfile`, `useGradeProgress`, mock 삭제 | [ ] |
-| Day 3 | — | `/restaurant/[id]` 마이그 | `useRestaurantDetail`, 비로그인 분기 정합 | [ ] |
-| Day 4 | — | `/review/new` mutation + 인증 가드 + 에러 페이지 | `useSubmitReview`, middleware 매처, `not-found/error.tsx` | [ ] |
-| Day 5 | — | `/my-places` + 탐색 탭 검색/필터 | `useMyRanking`, `useSearchRestaurants` (디바운스/URL) | [ ] |
-| Day 6 | — | `/user/[id]` + Wishlist mutation + mock 전량 삭제 | `useUserProfile`, `useToggleBookmark`, mock-* 0개 | [ ] |
-| Day 7 | — | 통합 QA + 스테이징 배포 + 회고 | PRD 플로우 1-1/1-2/1-3 수동 테스트, Vercel 스테이징 URL | [ ] |
+| Day | 목표 | 주요 산출물 | 완료 |
+|---|---|---|---|
+| Day 1 | 실 인증 백엔드 연동 | 구글 로그인·토큰 갱신·온보딩이 실 백엔드 위에서 동작 (토큰은 서버 전용) | [x] |
+| Day 2 | 내 프로필·등급·프로필 수정 연동 | 프로필/등급 화면을 실 API로, 프로필 편집 저장까지. mock 삭제 | [ ] |
+| Day 3 | 맛집 상세 + 리뷰 목록 연동 | 상세와 리뷰를 실 API로, 비로그인 미리보기 분기 | [ ] |
+| Day 4 | 리뷰 작성 제출 + 인증 가드 + 에러 페이지 | 폼 제출→결과 흐름, 로그인 필요 경로 보호, 404/에러 화면 | [ ] |
+| Day 5 | 홈·내 지도·탐색 탭 식당 데이터 + 찜 토글 연동 | 홈 리스트 백엔드 교체(합성 제거), 내 리뷰·레이더, 랭킹/필터, 찜 토글 | [ ] |
+| Day 6 | 타 유저 + 팔로우 연동 + mock 전량 삭제·빌드 (+백엔드 의존 도착 시) | 남 프로필·리뷰·레이더, 팔로우 토글, mock 0개·빌드, 지도 핀·리뷰 검색(도착 시) | [ ] |
+| Day 7 | 통합 QA + 스테이징 배포 + 회고 | 핵심 플로우 수동 테스트, Vercel 스테이징 URL | [ ] |
 
 ---
 
 ## Day 1 — 실 인증 — 백엔드 연동
 
+**목표** — 구글 로그인·토큰 갱신·온보딩을 실 백엔드에 연결한다. 토큰은 서버 전용(BFF).
+
 > 토큰 정책: BFF — accessToken은 클라 비노출, 서버에서만 접근 (`docs/spec/auth/token.md`)
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| 토큰 발급 | - `callbacks.jwt` — Google `account.id_token`으로 `POST /api/auth/session/google` 호출, `accessToken`·`needsOnboarding`·만료시각을 JWT에 저장 | `src/auth.ts` | [x] |
-|  | - 백엔드 refreshToken은 body로 수신 (Set-Cookie 미사용) — `token.refreshToken`에 저장, 7일 유효 | `src/auth.ts` | [x] |
-|  | - `callbacks.session` — `needsOnboarding`·`error` 노출. **accessToken은 session에 넣지 않음** | `src/auth.ts`, `src/lib/types/next-auth.d.ts` | [x] |
-|  | - `authedFetch` — `getToken()`으로 JWT 직접 복호화해 accessToken 획득 (server-only) | `src/network/server.ts` | [x] |
-|  | - env 정리 — `BACKEND_API_URL` (서버 전용) + `.env.example` 커밋 | `src/network/base.ts`, `.env.local` | [x] |
-| 토큰 갱신 | - `callbacks.jwt` — accessToken 만료(30분) 감지 시 `POST /api/auth/refresh` 호출해 갱신 | `src/auth.ts` | [x] |
-|  | - 갱신 실패(refreshToken 만료·401) 시 `token.error = 'RefreshTokenExpired'` → 미들웨어에서 `/signin` 리다이렉트 | `src/auth.ts`, `src/proxy.ts` | [x] |
-|  | - 🐞 refresh 버그 수정 — `postRefreshToken` 반환 타입이 `GoogleSessionResponse`라 refreshToken 덮어쓰던 문제 → `TokenRefreshResponse` 분리 | `src/lib/types/auth/response.ts`, `src/api/auth/auth.ts` | [x] |
-|  | - 백엔드 userId 정합 — `token.id`를 Google id 대신 accessToken `sub` 클레임으로 설정 (로그인·갱신 모두 일관) | `src/auth.ts` | [x] |
-|  | - 세션 `maxAge` 7일 정합 (백엔드 refreshToken 수명과 일치) | `src/auth.ts` | [x] |
-| 온보딩 | - `PATCH /api/users/me/onboarding` Server Action — 닉네임 + Google 이미지 URL 전송 (파일 업로드는 2차) | `src/app/onboarding/actions.ts` | [x] |
-|  | - 온보딩 폼 submit → Server Action 연결, 성공 시 세션 `needsOnboarding` 갱신 후 `/` 이동 | `src/app/onboarding/_components/index.tsx` | [x] |
-|  | - 미들웨어 onboarding gate — `needsOnboarding: true`이면 `/onboarding` 강제, 완료 사용자의 `/onboarding` 접근은 `/`로 리다이렉트 | `src/proxy.ts` | [x] |
-| 헤더 연동 | - 설계 확정: `/api/users/me`는 세션 미저장. 프로필은 매 요청 `authedFetch` 조회 (stale 방지 + 쿠키 4KB) | — | [x] |
-|  | - `GradeName` 유니온 + `MyProfileResponse` 타입 추가 | `src/lib/types/user.ts` | [x] |
-|  | - `gradeNameToLevel()` — enum 이름 → `GradeLevel` 숫자 변환 (API 경계 anti-corruption) | `src/lib/domain/grade-levels.ts` | [x] |
-|  | - `getMyProfile()` API 함수 (`authedFetch`, server-only) | `src/api/user/user.ts` | [x] |
-|  | - 헤더 서버/클라이언트 3분할: `header/index.tsx`(서버, auth+fetch) · `nav-tabs.tsx`(클라) · `user-auth-button.tsx`(서버) | `src/components/common/layout/header/` | [x] |
-| 확인·검증 | - 비로그인 → Google → 신규 `/onboarding` → `/` 흐름 + 재로그인 시 온보딩 skip 확인 | — | [x] |
-|  | - `pnpm lint && npx tsc --noEmit` 그린 | — | [x] |
+| 토큰 발급 | 구글 id_token으로 백엔드 세션(액세스·리프레시 토큰)을 발급받아 JWT에 저장하고, 세션엔 온보딩 여부·에러만 노출한다 (토큰 비노출·쿠키 미사용) | jwt·session 콜백에서 `POST /api/auth/session/google`, 토큰은 JWT에만 보관 | [x] |
+|  | 서버 전용 fetch 래퍼가 JWT를 복호화해 Bearer를 첨부하고, 백엔드 주소는 서버 전용 env로 정리한다 | 서버 래퍼 JWT 복호화 → Bearer, `.env.example` 커밋 | [x] |
+| 토큰 갱신 | 액세스 토큰 만료(30분) 시 자동 갱신하고, 실패(리프레시 만료·401)하면 에러 플래그로 미들웨어가 로그인 화면으로 보낸다 | jwt 콜백에서 `POST /api/auth/refresh`, 실패 시 에러 플래그 → 리다이렉트 | [x] |
+|  | 🐞 갱신 응답 타입을 로그인 응답과 분리하고, 유저 식별자는 sub 클레임으로 통일하며, 세션 수명을 7일로 맞춘다 | 응답 타입 분리 · sub 클레임 식별자 · maxAge 7일 | [x] |
+| 온보딩 | 온보딩에서 닉네임·프로필 사진 URL을 저장하고, 폼 제출을 서버 액션에 연결해 성공 시 세션 갱신 후 홈으로 보낸다 (파일 업로드는 2차) | 서버 액션으로 `PATCH /api/users/me/onboarding` | [x] |
+|  | 온보딩 미완료 유저는 온보딩으로 강제하고, 완료 유저의 온보딩 접근은 홈으로 되돌린다 | 미들웨어 온보딩 게이트 분기 | [x] |
+| 헤더 연동 | 프로필은 세션에 저장하지 않고 매 요청 서버에서 조회하는 함수·타입을 만든다 (stale 방지·쿠키 용량) | 서버 전용 fetch로 `GET /api/users/me` | [x] |
+|  | 등급 이름(enum)을 화면용 숫자로 변환하는 경계 함수를 두고, 헤더를 서버(인증·조회)/클라(탭)/버튼으로 3분할한다 | enum→숫자 변환 + 헤더 3분할 | [x] |
+| 확인·검증 | 비로그인→구글→온보딩→홈 흐름·재로그인 온보딩 skip을 확인하고 린트·타입 검사를 통과시킨다 | 브라우저 수동 확인 + `pnpm lint && npx tsc --noEmit` | [x] |
 
 > ⚠️ RSC 렌더 중에는 `cookies().set()` 불가 — refresh의 Set-Cookie forward는 Route Handler 컨텍스트에서만 가능 (`token.md` "set-cookie forward 함의"). 구현 시 갱신 경로 설계에 반영.
 
@@ -59,122 +52,170 @@
 
 ## Day 2 — `/profile` + `/profile/grade` 데이터 레이어
 
-두 화면 모두 `src/api/user/` / `src/hooks/user/`에 들어가는 짝이라 같은 날 처리.
+**목표** — 내 프로필·등급 화면을 실 API로 옮기고 프로필 수정 저장까지 붙인다.
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+두 화면 모두 같은 유저 도메인 데이터라 같은 날 처리.
+
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| 타입·API | - `MyProfileResponse`, `GradeProgressResponse` 타입 정의 | `src/lib/types/user/response.ts` | [ ] |
-|  | - `getMyProfile()`, `getGradeProgress()` API 함수 작성 (`authedFetch`, `no-store`) | `src/api/user/user.ts` (신규) | [ ] |
-| 페이지 전환 | - `/profile` 페이지를 **Server Component**로 전환 — API 함수 직접 호출, Suspense 로딩, 에러('다시 시도' 버튼) | `src/app/profile/page.tsx`, `src/app/profile/loading.tsx` (신규) | [ ] |
-|  | - `mock-my-profile.ts` 흡수 후 삭제 | `src/data/mock-my-profile.ts` (삭제) | [ ] |
-| 확인 | - 브라우저 3상태 확인: 로딩 → 정상 → 에러 강제 | — | [ ] |
+| 조회 | 로그인한 내 프로필(등급·신뢰도·리뷰 수·팔로워 수 등)을 프로필 화면 데이터로 조회한다 | 서버 전용 fetch로 `GET /api/users/me` (Day 1 함수 재사용) | [ ] |
+|  | 등급 사다리(각 등급 이름·순위·필요 리뷰수·필요 신뢰도)를 조회해 등급 화면에 그린다 | `GET /api/grades` 조회 | [ ] |
+|  | 특정 유저가 쓴 리뷰 목록을 페이지 단위로 조회한다 (내 프로필 TOP3·리뷰에 사용) | `GET /api/ratings/user/{userId}` 페이지 조회 | [ ] |
+|  | 온보딩·프로필 수정에서 닉네임 중복 여부를 실시간으로 확인한다 | `GET /api/users/nickname-check` 조회 | [ ] |
+| 프로필 수정 | 내 닉네임·사진을 수정해 저장한다 (보낸 값만 반영, 성공 시 프로필 다시 불러오기) | 서버 액션으로 `PATCH /api/users/me`, 성공 시 프로필 재검증 | [ ] |
+|  | 프로필 편집 다이얼로그를 저장 동작에 연결하고, 닉네임 중복이면 에러를 표시한다 | 다이얼로그 → 서버 액션, 중복(400) 시 에러 표시 | [ ] |
+| 페이지 전환 | 프로필 화면을 서버 컴포넌트로 바꿔 로딩·에러(다시 시도) 상태를 갖추고, mock 데이터를 실 데이터로 교체·삭제한다 (편집용 mock 스토어 포함) | 서버 컴포넌트 전환(Suspense·에러) + 프로필 mock 제거 | [ ] |
+|  | 등급 화면에서 사다리와 내 진행도(다음 등급까지 부족분)를 함께 그린다 | 등급 사다리 + `/me` 부족분 필드 조합 | [ ] |
+| 확인 | 브라우저에서 로딩→정상→에러 3상태와 프로필 수정 반영을 확인한다 | 브라우저 수동 확인 | [ ] |
 
-> 산출물: `/profile`이 Server Component + authedFetch로 동작. 이후 화면의 마이그 템플릿
+> 산출물: `/profile`·`/profile/grade`·프로필 수정이 Server Component + authedFetch/Server Action으로 동작. 이후 화면의 마이그 템플릿
+> 주의: 등급 진행도 전용 엔드포인트는 없다 — `/me`의 부족분 필드 + 등급 사다리(`GET /api/grades`) 조합으로 계산한다.
 
 ---
 
 ## Day 3 — `/restaurant/[id]` 마이그
 
+**목표** — 맛집 상세와 그 가게 리뷰 목록을 실 API로 옮기고 비로그인 미리보기를 정합화한다.
+
 가장 복잡한 화면. 표준 7단계 적용 + 비로그인 분기 정합.
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| 타입·API | - `RestaurantDetailResponse` 타입 정의 | `src/lib/types/restaurant/response.ts` | [ ] |
-|  | - `getRestaurantDetail(id: string)` API 함수 작성 (`publicFetch`, `tags:['restaurant',id]`, revalidate) | `src/api/restaurant/restaurant.ts` (신규) | [ ] |
-| 페이지 전환 | - 페이지를 **Server Component**로 전환 — API 함수 직접 호출 + 로딩(Suspense) / 404(`notFound()`) | `src/app/restaurant/[id]/page.tsx`, `loading.tsx` (신규) | [ ] |
-|  | - middleware `auth()` 결과로 비로그인 미리보기 분기 일관화 | — | [ ] |
-|  | - `mock-restaurant-detail.ts` 흡수 후 삭제 | `src/data/mock-restaurant-detail.ts` (삭제) | [ ] |
+| 상세·리뷰 조회 | 맛집 상세 정보(위치·가중 평점·신뢰도 지표)를 조회한다. 상세 응답엔 리뷰가 들어있지 않다. | `GET /api/restaurants/{id}` 조회 (Next 캐시 태그) | [ ] |
+|  | 그 가게에 달린 리뷰 목록을 페이지 단위로 따로 불러온다. | 상세와 별도 엔드포인트라 병렬 호출 · `GET /api/ratings/restaurant/{id}` | [ ] |
+| 페이지 전환 | 상세 화면을 서버 컴포넌트로 바꿔 상세와 리뷰를 동시에 불러오고 로딩·없는 가게(404)를 처리하며, mock 데이터를 실 데이터로 교체·삭제한다. | 서버 컴포넌트에서 상세·리뷰 병렬 + 404 처리 + 상세 mock 제거 | [ ] |
+|  | 비로그인은 리뷰 미리보기 2~3개만 보여주고 '더 보기'는 로그인을 유도한다. | 미들웨어 auth() 결과로 미리보기 분기 | [ ] |
 
-> 산출물: `/restaurant/[id]`가 Server Component + publicFetch(Next 캐시)로 동작
+> 산출물: `/restaurant/[id]`가 Server Component + publicFetch(Next 캐시)로 동작. 상세와 리뷰 목록은 별도 엔드포인트라 병렬 fetch
 
 ---
 
 ## Day 4 — `/review/new` mutation + 인증 가드 + 에러 페이지
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+**목표** — 리뷰 작성 제출→결과 흐름을 붙이고, 로그인 필요 경로를 보호하며, 404·에러 화면을 갖춘다.
+
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| 타입·API | - `CreateReviewRequest`, `ReviewSubmitResult` 타입 정의 | `src/lib/types/review/request.ts`, `response.ts` (신규) | [ ] |
-|  | - `submitReview(data)` **Server Action** 작성 (multipart 사진 포함) + 성공 후 `revalidateTag('restaurant')` | `src/app/review/actions.ts` (신규) | [ ] |
-|  | - `getReviewResult(reviewId)` API 함수 작성 (`authedFetch`) | `src/api/review/review.ts` (신규) | [ ] |
-| 폼 연결 | - 폼 submit → Server Action 호출 + 제출 중 버튼 disabled + Spinner | `src/components/features/review/review-write-form.tsx` | [ ] |
-|  | - 결과 Dialog에 서버 fetch(reviewId) 연결 + 로딩 스켈레톤 | `src/components/features/review/review-result-dialog.tsx` | [ ] |
-| 인증 가드 | - middleware에 `/profile`, `/my-places`, `/review/*` 인증 가드 추가 | `src/proxy.ts` | [ ] |
-|  | - 비로그인 → `/signin?next=<원래 경로>` 리다이렉트 + 로그인 후 `next` 쿼리로 복귀 | `src/proxy.ts`, `src/app/signin/page.tsx` | [ ] |
-| 리뷰 fallback | - `/restaurant/[id]/review/new` 페이지에 mock 외 가게 ID fallback 처리 — `synthesizeDetailFromEntry(null, id)` 로 placeholder 진행하거나 `/review/new` redirect. 임시로 카드 링크는 `/review/new`로 우회 중 | `app/restaurant/[id]/review/new/page.tsx`, `common/place-list-row.tsx` | [ ] |
-| 에러 페이지 | - 404 페이지 (TrustBite 톤) | `src/app/not-found.tsx` (신규) | [ ] |
-|  | - 전역 에러 페이지 + '다시 시도' 버튼 | `src/app/error.tsx` (신규) | [ ] |
-|  | - 맛집 상세 전용 에러 페이지 | `src/app/restaurant/[id]/error.tsx` (신규) | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit` 그린 | — | [ ] |
+| 리뷰 제출 | 리뷰(별점·상황·재방문·코멘트·사진 URL 최대 4장)를 백엔드에 제출한다. 제출 응답이 곧 결과 화면 데이터다. | 서버 액션으로 `POST /api/ratings` (JSON), 성공 후 상세 재검증 | [ ] |
+| 폼 연결 | 폼 제출 중에는 버튼을 비활성화하고 스피너를 보여준다. | 제출 중 버튼 disabled + 스피너 | [ ] |
+|  | 결과 다이얼로그는 제출이 돌려준 결과를 바로 받아 신뢰도 게이지·기여·등급 진행바를 그린다 (별도 조회 없음). | 제출 응답을 직접 소비, 추가 fetch 없음 | [ ] |
+| 인증 가드 | 프로필·내 지도·리뷰 작성 경로를 로그인 필수로 막고, 비로그인은 로그인 화면으로 보낸 뒤 로그인하면 원래 가려던 경로로 되돌린다. | 미들웨어 보호 + `?next=` 리다이렉트·복귀 | [ ] |
+| 리뷰 진입 fallback | mock에 없는 가게 ID로 리뷰 작성에 진입하면 placeholder로 진행하거나 리뷰 작성 화면으로 우회한다. (현재 카드 링크는 임시 우회 중) | mock 외 ID는 placeholder 합성 또는 리뷰 작성 화면 우회 | [ ] |
+| 에러 페이지 | 404·전역(다시 시도)·맛집 상세 전용 에러 페이지 3종을 TrustBite 톤으로 만든다. | not-found·전역 error·상세 error 3개 생성 | [ ] |
+| 검증 | 타입 검사와 린트를 통과시킨다. | `pnpm lint && npx tsc --noEmit` | [ ] |
 
 > 산출물: 폼 → mutation → 결과 흐름 정식화 + 인증 가드 + 에러 페이지
+> ⚠️ 사진은 **파일이 아니라 URL 배열**로 보낸다. 파일→URL 업로드 엔드포인트가 백엔드에 없어 사진 첨부는 2차 대기 — 1차는 빈 배열 또는 외부 URL로 제출. 리뷰 결과 조회 엔드포인트도 없어(제출 응답에 결과 포함) 별도 조회는 만들지 않는다.
 
 ---
 
-## Day 5 — `/my-places` + 탐색 탭 검색/필터
+## Day 5 — 홈 `/` + `/my-places` + 탐색 탭 랭킹/필터
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+**목표** — 홈·내 지도·탐색 탭의 식당 데이터를 백엔드 리스트로 옮기고 찜 토글을 연동한다. (백엔드 도착에 걸린 지도 핀·리뷰 검색은 Day 6)
+
+> 선행: 이번 주 첫 클라이언트 훅(React Query) 사용 — `QueryClientProvider`가 셋업돼 있는지 확인, 없으면 추가.
+
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| my-places 마이그 | - `MyRestaurantStats`, `MyRestaurantRankResponse` 타입 정의 | `src/lib/types/restaurant/response.ts` | [ ] |
-|  | - `getMyRanking()`, `getMyStats()` API 함수 작성 (`authedFetch`, `no-store`) | `src/api/restaurant/my-ranking.ts` (신규) | [ ] |
-|  | - `/my-places` 페이지를 **Server Component**로 전환 — API 함수 직접 호출, Suspense 로딩 / 빈 목록 분기 | `src/app/my-places/page.tsx`, `loading.tsx` (신규) | [ ] |
-|  | - `mock-my-places.ts` 흡수 후 삭제 | `src/data/mock-my-places.ts` (삭제) | [ ] |
-| 검색/필터 | - `SearchParams` 타입 정의 (q, region, category[], context[], sort, page) | `src/lib/types/restaurant/request.ts` (신규) | [ ] |
-|  | - `searchRestaurants(params)` API 함수 작성 (`clientFetch`) | `src/api/restaurant/restaurant.ts` | [ ] |
-|  | - 300ms 디바운스 + URL 쿼리 동기화 **React Query 검색 훅** 작성 | `src/hooks/restaurant/use-search-restaurants.ts` (신규) | [ ] |
-|  | - 검색바·지역/정렬/카테고리/상황 필터 → URL 즉시 반영 + '필터 초기화' 버튼 | `src/components/features/map/search-bar.tsx` 등 | [ ] |
-|  | - Kakao Local 임시 어댑터 교체 (자체 백엔드 검색으로) | `src/api/kakao-local.ts` (삭제) | [ ] |
+| 홈 데이터원 교체 | 홈의 식당 리스트를 백엔드 랭킹 리스트로 교체하고, 프론트가 합성하던 데이터를 제거한다. | 홈 데이터원을 `GET /api/restaurants`로 · `synthesize-restaurant` 제거 | [ ] |
+| 내 지도 | 내 신뢰도 상세(점수·상태·사진/장문/최근활동 비율)를 조회해 레이더로 그린다. | `GET /api/trust-score/user/{userId}` 조회 | [ ] |
+|  | 내 지도 화면을 서버 컴포넌트로 바꿔 내 리뷰 목록과 신뢰도 레이더를 함께 불러오고 빈 목록을 분기하며, mock 데이터를 실 데이터로 교체·삭제한다. | 서버 컴포넌트에서 내 리뷰·레이더 병렬 + 빈 목록 분기 + mock 제거 | [ ] |
+| 찜 토글 | 가게를 찜하거나 찜을 해제한다 (중복 호출해도 안전). | `POST/DELETE /api/wishlists/{id}` (멱등) | [ ] |
+|  | 찜 상태를 즉시 바꿔 보여주고 실패하면 되돌린다 (낙관적 업데이트). | React Query 낙관적 토글, 실패 시 롤백 | [ ] |
+|  | 내 지도·상세 화면의 북마크 버튼을 이 토글로 교체한다. | 기존 mock 북마크를 토글 훅으로 교체 | [ ] |
+| 탐색 랭킹·필터 | 맛집 랭킹 리스트를 정렬(랭킹/신뢰도/최신)·카테고리·지역·페이지 조건으로 조회한다. | `GET /api/restaurants` (정렬·카테고리·지역·페이지 쿼리) | [ ] |
+|  | 정렬·카테고리·지역 필터를 URL 쿼리와 동기화하고 '필터 초기화' 버튼을 둔다. | React Query + URL 쿼리 동기화, 필터 초기화 버튼 | [ ] |
 
-> 산출물: `/my-places` + 탐색 탭 검색/필터가 실 백엔드 위에서 동작
+> 산출물: 홈 리스트·`/my-places`·탐색 탭 식당 데이터가 백엔드 리스트 위에서 동작 + 찜 토글 연동 (합성 데이터 제거)
+> ⚠️ 찜 **목록 조회**는 백엔드 미구현(후속 이슈), 찜 **버튼 초기 상태**는 optional-auth 필드(`bookmark`) 필요 → 둘 다 대기(대기 표 참조). 찜하기/해제 토글 동작만 연동.
+> 참고: 백엔드 도착에 걸린 항목(홈 지도 핀 좌표·리뷰 가게 검색)은 Day 6 "백엔드 의존(도착 시)" 그룹으로 모음.
+> ⚠️ **미지원 대기**: 자유 키워드 검색·상황(context) 필터·지도 뷰포트 재검색은 랭킹 API가 지원하지 않는다 → 이슈4(`/restaurants/search`)·이슈5(`/suggest`) 대기.
 
 ---
 
-## Day 6 — `/user/[id]` + Wishlist mutation + mock 전량 삭제
+## Day 6 — `/user/[id]` + Follow + mock 전량 삭제·빌드
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+**목표** — 타 유저 프로필·리뷰·레이더와 팔로우를 연동하고, mock을 0개로 만들어 빌드를 통과시킨다. (백엔드 도착에 걸린 지도 핀·리뷰 검색은 빌드 뒤 "도착 시"로 분리)
+
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| user/[id] 마이그 | - `UserProfileResponse` 타입 정의 | `src/lib/types/user/response.ts` | [ ] |
-|  | - `getUserProfile(id: string)` API 함수 작성 (`publicFetch`, `tags:['user',id]`) | `src/api/user/user.ts` | [ ] |
-|  | - `/user/[id]` 페이지를 **Server Component**로 전환 — API 함수 직접 호출 | `src/app/user/[id]/page.tsx` | [ ] |
-|  | - `mock-other-user.ts` 흡수 후 삭제 | `src/data/mock-other-user.ts` (삭제) | [ ] |
-| Wishlist mutation | - `WishlistItem` 타입 정의 | `src/lib/types/wishlist/type.ts` (신규) | [ ] |
-|  | - `getWishlist()`, `addBookmark(id)`, `removeBookmark(id)` API 함수 작성 (`clientFetch`) | `src/api/wishlist/wishlist.ts` (신규) | [ ] |
-|  | - **React Query** wishlist 조회 훅 + 낙관적 업데이트 toggle 훅 작성 (실패 시 롤백) | `src/hooks/wishlist/use-wishlist.ts`, `use-toggle-bookmark.ts` (신규) | [ ] |
-|  | - wishlist-section, restaurant-header 북마크 → `useToggleBookmark` 교체 | `src/components/features/my-places/wishlist-section.tsx`, `restaurant-detail/restaurant-header.tsx` | [ ] |
-| mock 전량 삭제 | - `wishlist-mock-store.tsx`, `helpful-mock-store.tsx`, `follow-mock-store.tsx`, `my-profile-mock-store.tsx` 제거 | `src/stores/` (삭제) | [ ] |
-|  | - `src/data/mock-*` 파일 0개 확인 (남은 파일 전량 흡수) | `src/data/` (전량 삭제) | [ ] |
-| 검증 | - `pnpm lint && npx tsc --noEmit && pnpm build` 그린 | — | [ ] |
+| 타 유저 프로필 | 다른 유저의 공개 프로필(이메일 제외)을 조회한다. | `GET /api/users/{userId}` 조회 | [ ] |
+|  | 그 유저의 리뷰 목록과 신뢰도 레이더를 (앞서 만든 함수로) 함께 불러온다. | Day 2·5의 리뷰·신뢰도 조회 재사용 | [ ] |
+|  | 타 유저 화면을 서버 컴포넌트로 바꿔 프로필·리뷰·레이더를 동시에 불러오고 로딩·에러 상태를 갖추며, mock 데이터를 실 데이터로 교체·삭제한다. | 서버 컴포넌트에서 병렬 호출 + 로딩·에러 + mock 제거 | [ ] |
+| 팔로우 연동 | 다른 유저를 팔로우하거나 언팔로우한다 (중복 호출해도 안전). | `POST/DELETE /api/users/{id}/follow` (멱등) | [ ] |
+|  | 팔로워·팔로잉 목록을 페이지 단위로 불러온다 (각 항목에 내가 팔로우 중인지 표시). | `GET /api/users/{id}/followers`·`following` 페이지 조회 | [ ] |
+|  | 팔로우 상태를 즉시 바꿔 보여주고 실패하면 되돌리며, 팔로워/팔로잉 수를 갱신한다. | React Query 낙관적 토글 + 카운트 갱신 | [ ] |
+|  | 팔로우 버튼과 팔로워/팔로잉 목록 화면을 실 API에 연결하고 팔로우 mock을 제거한다. | 버튼·목록 화면 연결 + 팔로우 mock 제거 | [ ] |
+| mock 전량 삭제 | 남은 mock 스토어(찜·도움됐어요·팔로우·프로필)와 데이터 파일을 전량 제거해 mock 0개를 확인한다. | mock 스토어·데이터 파일 전량 삭제 후 0개 확인 | [ ] |
+| 검증 (릴리즈 게이트) | 린트·타입 검사·빌드를 모두 통과시킨다. | `pnpm lint && npx tsc --noEmit && pnpm build` | [ ] |
+| 백엔드 의존 (도착 시) | 백엔드 리스트에 좌표가 추가되면 홈 지도에 가게 핀을 찍는다. | 리스트 lat/lng → Kakao Maps 마커 (좌표 필드 추가 의존) | [ ] |
+|  | 리뷰 작성 가게 검색을 백엔드 자동완성으로 바꾸고 Kakao Places 어댑터를 최종 제거한다. | `GET /api/restaurants/suggest`(이슈5) 전환 + `kakao-local` 제거 (엔드포인트 도착 의존) | [ ] |
 
-> 산출물: 1차 MVP 9개 화면이 실 백엔드 API 위에서 동작. mock 파일 0개
+> 산출물: 1차 MVP 9개 화면이 실 백엔드 API 위에서 동작 + 팔로우 실 연동. mock 파일 0개
+> ⚠️ 팔로우 **버튼 초기 상태**(이미 팔로우했는지)는 백엔드 optional-auth 필드(`following`) 필요 — 대기 표 ⓑ 참조. 토글 동작은 가능하나 초기 표시가 이 필드에 의존.
+> 순서 의도: mock 삭제·빌드(릴리즈 게이트)를 먼저 통과시키고, 백엔드 도착에 걸린 항목은 그 뒤 "도착 시"로 둔다 → 빌드가 백엔드 도착에 막히지 않음. 도착 안 하면 Week 5로.
 
 ---
 
 ## Day 7 — 통합 QA + 스테이징 배포 + 회고
 
+**목표** — 핵심 플로우를 손으로 완주해 버그를 잡고 Vercel 스테이징에 배포한 뒤 회고한다.
+
 PRD 핵심 루프 3개를 직접 따라가며 버그를 잡고 스테이징 배포 후 내부 테스트.
 
-| 그룹 | 할 일 | 관련 파일 | 상태 |
+| 그룹 | 할 일 | 구현 방식 | 상태 |
 |---|---|---|---|
-| 플로우 1-1 | - 비로그인 홈 접속 → 탐색 탭 랭킹 확인 | — | [ ] |
-|  | - 맛집 카드 클릭 → 상세 미리보기 (리뷰 2~3개 + CTA) | — | [ ] |
-|  | - '리뷰 더 보기' → 로그인 모달 | — | [ ] |
-|  | - 구글 로그인 → 온보딩 (닉네임/지역) → 완료 | — | [ ] |
-|  | - 로그인 상태 홈 복귀, 인트로 카드 사라짐 | — | [ ] |
-| 플로우 1-2 | - 맛집 상세 → '리뷰 쓰기' CTA | — | [ ] |
-|  | - 리뷰 작성 — 가게 검색·평점·텍스트 100자 이상·사진 업로드 | — | [ ] |
-|  | - 사진 업로드 시 실시간 신뢰도 게이지 변화 확인 | — | [ ] |
-|  | - 제출 → 결과 화면: 게이지 애니메이션·기여·등급 진행바 | — | [ ] |
-| 플로우 1-3 | - 리뷰 카드 닉네임 클릭 → `/user/[id]` | — | [ ] |
-|  | - 팔로우 버튼 UI 확인 (1차: UI만) | — | [ ] |
-|  | - 맛집 랭킹 잠금 메시지 확인 | — | [ ] |
-| 배포 | - env 최종 확인: `BACKEND_API_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_KAKAO_MAP_KEY` | — | [ ] |
-|  | - `pnpm build` 로컬 최종 확인 | — | [ ] |
-|  | - Vercel 스테이징 배포 + 도메인/HTTPS 확인 | — | [ ] |
-|  | - 배포된 URL에서 플로우 1-1, 1-2 빠르게 재확인 | — | [ ] |
-|  | - 3~5명 테스터에게 URL 공유 + 피드백 수집 | — | [ ] |
-|  | - critical 이슈 핫픽스 | — | [ ] |
-|  | - 잘된 것 / 부족한 것 정리 + 2차 MVP 인풋 초안 작성 | `docs/plan/week-5.md` (신규) | [ ] |
+| 플로우 1-1 | 비로그인 홈 접속 → 탐색 탭 랭킹 확인 | — | [ ] |
+|  | 맛집 카드 클릭 → 상세 미리보기 (리뷰 2~3개 + 리뷰 쓰기 버튼) | — | [ ] |
+|  | '리뷰 더 보기' → 로그인 모달 | — | [ ] |
+|  | 구글 로그인 → 온보딩 (닉네임/지역) → 완료 | — | [ ] |
+|  | 로그인 상태로 홈 복귀, 인트로 카드 사라짐 | — | [ ] |
+| 플로우 1-2 | 맛집 상세 → '리뷰 쓰기' 진입 | — | [ ] |
+|  | 리뷰 작성 — 가게 검색·평점·텍스트 100자 이상·사진 | — | [ ] |
+|  | 사진 첨부 시 실시간 신뢰도 게이지 변화 확인 | — | [ ] |
+|  | 제출 → 결과 화면: 게이지 애니메이션·기여·등급 진행바 | — | [ ] |
+| 플로우 1-3 | 리뷰 카드 닉네임 클릭 → 타 유저 프로필로 이동 | — | [ ] |
+|  | 팔로우/언팔로우 실 동작 확인 (즉시 반영 + 팔로워 수 갱신) | — | [ ] |
+|  | 팔로워/팔로잉 목록 진입, '내가 팔로우 중' 표시 정합 확인 | — | [ ] |
+|  | 맛집 랭킹 잠금 메시지 확인 | — | [ ] |
+| 배포 | 배포 전 환경변수 최종 확인 | `BACKEND_API_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_KAKAO_MAP_APP_KEY` | [ ] |
+|  | 로컬 프로덕션 빌드 최종 확인 | `pnpm build` | [ ] |
+|  | Vercel 스테이징 배포 + 도메인/HTTPS 확인 | — | [ ] |
+|  | 배포된 URL에서 핵심 플로우 빠르게 재확인 | — | [ ] |
+|  | 3~5명 테스터에게 URL 공유 + 피드백 수집 | — | [ ] |
+|  | critical 이슈 핫픽스 | — | [ ] |
+|  | 잘된 것 / 부족한 것 정리 + 2차 MVP 인풋 초안 작성 | week-5 회고 문서 작성 | [ ] |
 
 > 산출물: 외부 접근 가능한 Vercel 스테이징 URL + 내부 피드백 수집 시작
+
+---
+
+## 백엔드 의존 — 대기 항목
+
+백엔드 코드(컨트롤러·DTO) 전수 확인 결과, 아래는 프론트가 못 채우는 백엔드 몫이다. 두 종류로 나뉜다.
+
+### ⓐ 아예 없는 엔드포인트 (코드에 없음 · `API_SPEC.md` "미구현 예정")
+
+| 엔드포인트 | 필요 화면(URL) | 대기 중인 기능 | 예정 |
+|---|---|---|---|
+| `GET /api/restaurants/suggest` | `/review/new` · 탐색 탭 검색바 | 리뷰 작성 가게 검색 + 자동완성 (현재 Kakao Places 임시) | 이슈 5 |
+| `GET /api/restaurants/search` | 홈 `/` (지도) | 지도 뷰포트 재검색 + `isBookmarked` (리스트 좌표 추가되면 후순위) | 이슈 4 |
+| `GET /api/wishlists` | `/my-places` (찜 섹션) | 찜 목록 조회 — 토글만 연동됨 | 후속 이슈 |
+| `PUT /api/ratings/{id}` | `/profile` · `/my-places` (내 리뷰) | 리뷰 수정 | Sprint 4 |
+| `DELETE /api/ratings/{id}` | `/profile` · `/my-places` (내 리뷰) | 리뷰 삭제 | Sprint 4 |
+| (사진 업로드 URL 발급) | `/review/new` | 사진 파일→URL 변환 — 엔드포인트 자체가 없음 | 2차 |
+
+### ⓑ 엔드포인트는 있는데 필드가 부족
+
+| 엔드포인트 | 필요 화면(URL) | 필요한 변경 | 대기 중인 기능 |
+|---|---|---|---|
+| `GET /api/restaurants` | 홈 `/` (지도) | 응답 DTO에 위도·경도 추가 (현재 없음) | 홈 지도 가게 핀 |
+| `GET /api/restaurants` | 홈 `/` · 탐색 리스트 | `bookmark` 채우기 (현재 항상 null) | 리스트 카드 찜 상태 |
+| `GET /api/restaurants/{id}` | `/restaurant/[id]` | 응답에 찜 여부(`bookmark`) 추가 (현재 없음) | 찜 버튼 초기 상태 |
+| `GET /api/users/{userId}` | `/user/[id]` | 응답에 팔로우 여부(`following`) 추가 (현재 없음) | 팔로우 버튼 초기 상태 |
+
+> 공통 — 위 `bookmark`·`following`은 **로그인 유저 기준 상태**라 공개 GET에 **optional-auth**가 필요하다(비로그인은 null). 백엔드 이슈4 optional-auth와 함께 처리 가능. 리뷰의 "내 리뷰 여부"는 응답 `userId`로 클라 판별하므로 API 불필요.
+> 참고(비-MVP) — 로그아웃 시 refresh token을 서버에서 무효화하는 엔드포인트는 없다(현재 JWT 만료로만). MVP 허용.
 
 ---
 
@@ -188,6 +229,8 @@ PRD 핵심 루프 3개를 직접 따라가며 버그를 잡고 스테이징 배�
 | 모바일 375 기준 레이아웃 정상 | [ ] |
 | 비로그인/로그인 분기 일관 동작 | [ ] |
 | Vercel 스테이징 URL 접근 가능 | [ ] |
+
+> 홈 지도 가게 핀·리뷰 가게 검색은 백엔드 의존(위 "백엔드 의존 대기") — 도착 시 완료. 그전까지 홈은 리스트 기준으로 동작.
 
 ---
 
