@@ -1,30 +1,34 @@
 import Link from 'next/link';
 import { ChevronRight, Eye } from 'lucide-react';
-
 import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { EditProfileButton } from './edit-profile-button';
-import type { MyProfile } from '@/types/user';
+import { gradeNameToLevel } from '@/lib/domain/grade-levels';
+import type { MyProfileResponse } from '@/types/user';
 
 interface Props {
-  profile: MyProfile;
-  sessionName?: string; // auth()에서 읽은 세션 닉네임
-  sessionImage?: string; // auth()에서 읽은 세션 아바타 URL
+  profile: MyProfileResponse;
+  sessionName?: string;
+  sessionImage?: string;
 }
 
 // 내 프로필 요약 카드 (아바타, 닉네임, 팔로우 통계) — server component
 export function ProfileSummaryCard({ profile, sessionName, sessionImage }: Props) {
+  const createdDate = new Date(profile.createdAt);
+  const joinedAt = `${createdDate.getFullYear()}.${String(createdDate.getMonth() + 1).padStart(2, '0')} 가입`;
+  const name = profile?.nickname ?? sessionName;
+
   return (
     <ProfileHeaderCard
-      avatarInitial={sessionName?.slice(0, 1) ?? '?'}
+      avatarInitial={name.slice(0, 1) ?? '?'}
       avatarUrl={sessionImage}
       title={
         <>
-          <span className="text-title-1 text-foreground truncate">{sessionName}</span>
-          <UserGradeMark level={profile.level} size="sm" showLabel />
+          <span className="text-title-1 text-foreground truncate">{name}</span>
+          <UserGradeMark level={gradeNameToLevel(profile.grade)} size="sm" showLabel />
         </>
       }
-      subtitle={`${profile.email} · ${profile.joinedAt}`}
+      subtitle={`${profile.email}  ${profile.createdAt ? `· ${joinedAt}` : ''}`}
       rightAction={<EditProfileButton profile={profile} />}
       followerCount={profile.followerCount}
       followingCount={profile.followingCount}

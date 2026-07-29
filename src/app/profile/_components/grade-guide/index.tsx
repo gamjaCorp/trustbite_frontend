@@ -1,4 +1,5 @@
-import type { MyProfile } from '@/types/user';
+import type { MyProfileResponse } from '@/types/user';
+import { gradeNameToLevel } from '@/lib/domain/grade-levels';
 
 import { AllGradesTimeline } from './all-grades-timeline';
 import { CurrentGradePanel } from './current-grade-panel';
@@ -6,12 +7,13 @@ import { GradeTipBanner } from './grade-tip-banner';
 import { NextStagePanel } from './next-stage-panel';
 
 interface Props {
-  profile: MyProfile;
+  profile: MyProfileResponse;
 }
 
 // 등급 가이드 카드 — 현재 등급·진행도·다음 단계 패널을 담는 셸
 export function GradeGuideCard({ profile }: Props) {
-  const level = profile.level;
+  const level = gradeNameToLevel(profile.grade);
+  const trustScore = Math.round(profile.trustScore * 100);
 
   return (
     <div>
@@ -19,12 +21,12 @@ export function GradeGuideCard({ profile }: Props) {
         <CurrentGradePanel
           level={level}
           reviewCount={profile.reviewCount}
-          trustScore={profile.trustScore}
+          trustScore={trustScore}
         />
         <NextStagePanel
           level={level}
           reviewCount={profile.reviewCount}
-          trustScore={profile.trustScore}
+          trustScore={trustScore}
         />
       </div>
       <div className="border-t border-border">

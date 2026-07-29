@@ -4,10 +4,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { EditProfileDialog } from './edit-profile-dialog';
-import type { MyProfile } from '@/types/user';
+import { MyProfileResponse } from '@/types/user';
 
 interface Props {
-  profile: MyProfile;
+  profile: MyProfileResponse;
 }
 
 // 프로필 편집 버튼 — 클릭 시 EditProfileDialog 표시 (client island)

@@ -9,6 +9,12 @@ export interface MyProfileResponse {
   grade: GradeName;
   trustScore: number;
   reviewCount: number;
+  nextGrade: GradeName;
+  needCount: number;
+  needScore: number;
+  createdAt: string;
+  followerCount: number;
+  followingCount: number;
 }
 
 interface MutualFollowing {

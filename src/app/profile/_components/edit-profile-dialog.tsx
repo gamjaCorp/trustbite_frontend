@@ -18,11 +18,11 @@ import {
 import { UserAvatar } from '@/components/core/user-avatar';
 import { useImagePreview } from '@/hooks/use-image-preview';
 import { useMyProfileMock } from '../_lib/my-profile-mock-store';
-import type { MyProfile } from '@/types/user';
+import type { MyProfileResponse } from '@/types/user';
 import { NICKNAME_MIN, NICKNAME_MAX } from '@/lib/domain/profile';
 
 interface FormProps {
-  profile: MyProfile;
+  profile: MyProfileResponse;
   initialNickname: string;
   initialAvatarUrl?: string;
   onSave: (nickname: string, avatarUrl: string | undefined) => void;
@@ -61,7 +61,7 @@ function EditProfileForm({
     <>
       <div className="flex flex-col items-center gap-6 py-2">
         <div className="relative">
-          <UserAvatar initial={profile.avatarInitial} imageUrl={draftAvatarUrl} size="xl" />
+          <UserAvatar initial={profile.nickname?.slice(0, 1) ?? '?'} imageUrl={draftAvatarUrl} size="xl" />
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
@@ -112,7 +112,7 @@ function EditProfileForm({
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  profile: MyProfile;
+  profile: MyProfileResponse;
 }
 
 // 프로필 편집 다이얼로그 — 닉네임·아바타 이미지 수정 (로컬 미리보기, 저장은 W4)

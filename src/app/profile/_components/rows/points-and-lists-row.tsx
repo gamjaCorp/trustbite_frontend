@@ -1,20 +1,7 @@
-import type { MyProfile } from '@/types/user';
-
 import { Badge } from '@/components/ui/badge';
 
-interface Props {
-  profile: MyProfile;
-}
-
-// 포인트·공유 목록 행 — 적립 포인트와 공유 지도 개수를 표시하는 정보 행
-export function PointsAndListsRow({ profile }: Props) {
-  const sharedListLabel = [
-    ...profile.sharedListPreview,
-    profile.sharedListExtraCount > 0 ? `+${profile.sharedListExtraCount}` : null,
-  ]
-    .filter(Boolean)
-    .join(' · ');
-
+// 포인트·공유 목록 행 — 적립 포인트와 공유 지도 개수를 표시하는 정보 행 (백엔드 미제공, 준비 중 플레이스홀더)
+export function PointsAndListsRow() {
   const cardBase = 'px-8 py-6 text-left cursor-not-allowed';
 
   return (
@@ -27,13 +14,10 @@ export function PointsAndListsRow({ profile }: Props) {
         </div>
         <div className="opacity-35">
           <p className="text-foreground">
-            <span className="text-headline-1">{profile.points}</span>
+            <span className="text-headline-1">0</span>
             <span className="text-label-1 text-muted-foreground ml-0.5">P</span>
           </p>
-          <p className="text-caption-2 text-muted-foreground mt-1">
-            최근 <span className="font-semibold">+{profile.recentPointDelta}P</span>{' '}
-            · {profile.recentPointReason}
-          </p>
+          <p className="text-caption-2 text-muted-foreground mt-1">준비 중인 기능이에요</p>
         </div>
       </div>
 
@@ -44,10 +28,8 @@ export function PointsAndListsRow({ profile }: Props) {
           <Badge variant="secondary" className="text-caption-2">준비 중</Badge>
         </div>
         <div className="opacity-35">
-          <p className="text-headline-1 text-foreground">
-            {profile.sharedListCount}
-          </p>
-          <p className="text-caption-2 text-muted-foreground mt-1 truncate">{sharedListLabel}</p>
+          <p className="text-headline-1 text-foreground">0</p>
+          <p className="text-caption-2 text-muted-foreground mt-1 truncate">준비 중인 기능이에요</p>
         </div>
       </div>
     </div>
