@@ -1,12 +1,11 @@
-import { getLevelDef } from '@/lib/domain/grade-levels';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';
 
 type Size = 'sm' | 'md' | 'lg';
 type State = 'default' | 'muted' | 'next';
 
 interface Props {
-  level: GradeLevel;
+  name: string; // 등급 이름 (예: 'COLLECTOR') — 서버 grade.name과 매칭
   size?: Size;
   variant?: 'inline' | 'circle';
   state?: State;
@@ -21,13 +20,13 @@ const SIZE_MAP = {
 
 // 등급 원형 아이콘 — 레벨별 색상·아이콘을 원에 담아 표시
 export function GradeIcon({
-  level,
+  name,
   size = 'md',
   variant = 'circle',
   state = 'default',
   className,
 }: Props) {
-  const def = getLevelDef(level);
+  const def = GRADE_LEVELS.find((g) => g.name === name) ?? GRADE_LEVELS[0];
   const Icon = def.icon;
   const isMuted = state === 'muted';
   const isNext = state === 'next';

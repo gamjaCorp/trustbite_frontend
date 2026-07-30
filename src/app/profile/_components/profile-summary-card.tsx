@@ -3,7 +3,6 @@ import { ChevronRight, Eye } from 'lucide-react';
 import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { EditProfileButton } from './edit-profile-button';
-import { gradeNameToLevel } from '@/lib/domain/grade-levels';
 import type { MyProfileResponse } from '@/types/user';
 
 interface Props {
@@ -25,7 +24,7 @@ export function ProfileSummaryCard({ profile, sessionName, sessionImage }: Props
       title={
         <>
           <span className="text-title-1 text-foreground truncate">{name}</span>
-          <UserGradeMark level={gradeNameToLevel(profile.grade)} size="sm" showLabel />
+          <UserGradeMark name={profile.grade} size="sm" showLabel />
         </>
       }
       subtitle={`${profile.email}  ${profile.createdAt ? `· ${joinedAt}` : ''}`}

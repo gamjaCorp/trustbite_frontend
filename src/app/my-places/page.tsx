@@ -1,12 +1,11 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { ChevronRight, PencilLine } from 'lucide-react';
+import { Bookmark, ChevronRight, PencilLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StatsStrip } from '@/components/common/display/stats-strip';
 import { MyPlacesTabs } from './_components';
 import { mockStats5, mockRankList } from '@/data/mock-restaurant';
 import { getMyProfile } from '@/data/mock-my-profile';
-import { getLevelDef } from '@/lib/domain/grade-levels';
 
 type Props = { searchParams: Promise<{ tab?: string }> };
 
@@ -15,7 +14,8 @@ export default async function MyRestaurantPage({ searchParams }: Props) {
   const activeTab = tab === 'wishlist' ? 'wishlist' : 'ranking';
   const { reviewCount, trustScore } = mockStats5;
   const profile = getMyProfile();
-  const levelDef = getLevelDef(profile.level);
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, getLevelDef 제거로 임시 mock 고정값 사용
+  const levelDef = { label: '맛집 수집가', icon: Bookmark, toneClass: { text: 'text-palette-blue' } };
 
   return (
     <>

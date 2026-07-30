@@ -2,20 +2,22 @@ import { FileText, ShieldCheck } from 'lucide-react';
 
 import { GradeIcon } from '@/components/common/trust/grade-icon';
 import { MetricProgressBlock } from '@/components/core/metric-progress-block';
-import { getNextLevelDef, getProgressToNext } from '@/lib/domain/grade-levels';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+import { getProgressToNext, type GradeLevelDef } from '@/lib/domain/grade-levels';
 import { cn } from '@/lib/utils';
 
 interface Props {
-  level: GradeLevel;
+  myGradeData: GradeLevelDef;
+  mergedGrades: GradeLevelDef[];
   reviewCount: number;
   trustScore: number;
 }
 
 // 다음 등급 패널 — 현재 등급에서 다음 등급까지 남은 조건 표시
-export function NextStagePanel({ level, reviewCount, trustScore }: Props) {
-  const next = getNextLevelDef(level);
-  const progress = getProgressToNext(level, reviewCount, trustScore);
+export function NextStagePanel({ myGradeData, mergedGrades, reviewCount, trustScore }: Props) {
+  const next = mergedGrades.find((grade) => grade.rank > myGradeData.rank) ?? null;
+  const progress = next
+    ? getProgressToNext(myGradeData.rank, reviewCount, trustScore, mergedGrades)
+    : null;
 
   if (!next || !progress) {
     return (
@@ -36,8 +38,14 @@ export function NextStagePanel({ level, reviewCount, trustScore }: Props) {
         <div>
           <p className="text-label-2 text-muted-foreground">다음 단계</p>
           <p className="text-title-2 text-foreground mt-1">
-            <span className={cn('inline-flex items-center gap-1 align-middle', next.toneClass.text, 'font-semibold')}>
-              <GradeIcon level={next.level} size="sm" variant="inline" />
+            <span
+              className={cn(
+                'inline-flex items-center gap-1 align-middle',
+                next.toneClass.text,
+                'font-semibold',
+              )}
+            >
+              <GradeIcon name={next.name} size="sm" variant="inline" />
               {next.label}
             </span>
             까지

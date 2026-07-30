@@ -1,42 +1,30 @@
 import { Award, Bookmark, ChefHat, Coffee, Crosshair, Sprout } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-
-export type GradeName = 'SPROUT' | 'REGULAR' | 'COLLECTOR' | 'HUNTER' | 'GOURMET' | 'MICHELIN';
-
-export type GradeLevel = 1 | 2 | 3 | 4 | 5 | 6;
-
-const GRADE_NAME_TO_LEVEL: Record<GradeName, GradeLevel> = {
-  SPROUT: 1,
-  REGULAR: 2,
-  COLLECTOR: 3,
-  HUNTER: 4,
-  GOURMET: 5,
-  MICHELIN: 6,
-};
-
-export function gradeNameToLevel(name: GradeName) {
-  return GRADE_NAME_TO_LEVEL[name];
-}
+import type { Grade } from '@/types/grade';
 
 type GradeCondition = 'INSTANT' | 'OR' | 'AND';
 
-export interface GradeLevelDef {
-  level: GradeLevel;
+// 로컬 표현 정보 — 서버가 주지 않는 값만. 서버 grade와 name으로 매칭한다.
+export interface GradeLocalDef {
+  name: string;
   label: string;
   icon: LucideIcon;
-  reviewMin: number;
-  trustMin: number;
   condition: GradeCondition;
   toneClass: { bg: string; text: string; ring: string };
 }
 
-export const GRADE_LEVELS: readonly GradeLevelDef[] = [
+// 서버 grade 정보 + 로컬 ui표시 병합 결과
+export interface GradeLevelDef extends GradeLocalDef {
+  rank: number;
+  reviewMin: number;
+  trustMin: number;
+}
+
+export const GRADE_LEVELS: readonly GradeLocalDef[] = [
   {
-    level: 1,
+    name: 'SPROUT',
     label: '새싹',
     icon: Sprout,
-    reviewMin: 0,
-    trustMin: 0,
     condition: 'INSTANT',
     toneClass: {
       bg: 'bg-palette-green/15',
@@ -45,20 +33,16 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     },
   },
   {
-    level: 2,
+    name: 'REGULAR',
     label: '단골',
     icon: Coffee,
-    reviewMin: 3,
-    trustMin: 30,
     condition: 'OR',
     toneClass: { bg: 'bg-primary/15', text: 'text-primary', ring: 'ring-primary/30' },
   },
   {
-    level: 3,
+    name: 'COLLECTOR',
     label: '맛집 수집가',
     icon: Bookmark,
-    reviewMin: 10,
-    trustMin: 40,
     condition: 'AND',
     toneClass: {
       bg: 'bg-palette-blue/15',
@@ -67,11 +51,9 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     },
   },
   {
-    level: 4,
+    name: 'HUNTER',
     label: '맛집 헌터',
     icon: Crosshair,
-    reviewMin: 30,
-    trustMin: 60,
     condition: 'AND',
     toneClass: {
       bg: 'bg-palette-amber/15',
@@ -80,20 +62,16 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
     },
   },
   {
-    level: 5,
+    name: 'GOURMET',
     label: '미식가',
     icon: ChefHat,
-    reviewMin: 70,
-    trustMin: 75,
     condition: 'AND',
     toneClass: { bg: 'bg-palette-red/15', text: 'text-palette-red', ring: 'ring-palette-red/30' },
   },
   {
-    level: 6,
+    name: 'MICHELIN',
     label: '미슐랭',
     icon: Award,
-    reviewMin: 150,
-    trustMin: 90,
     condition: 'AND',
     toneClass: {
       bg: 'bg-palette-amber/15',
@@ -103,13 +81,29 @@ export const GRADE_LEVELS: readonly GradeLevelDef[] = [
   },
 ] as const;
 
-export function getLevelDef(level: GradeLevel): GradeLevelDef {
-  return GRADE_LEVELS[level - 1];
+// name으로 로컬 표현 정보 조회
+export function nameTolocalGrade(name: string): GradeLocalDef | undefined {
+  return GRADE_LEVELS.find((grade) => grade.name === name);
 }
 
-export function getNextLevelDef(level: GradeLevel): GradeLevelDef | null {
-  if (level >= 6) return null;
-  return GRADE_LEVELS[level] as GradeLevelDef;
+// 서버 등급 사다리에 로컬 표현(라벨·아이콘·색)을 붙인다 — 순위·문턱값은 서버가 소유하므로 로컬 폴백 없음
+export function mergeGradeLadder(grades: Grade[] | null): GradeLevelDef[] {
+  if (!grades || grades.length === 0) return [];
+
+  return grades
+    .map((grade) => {
+      const local = nameTolocalGrade(grade.name);
+      if (!local) return null; // 로컬에 표현 정보가 없는 등급은 그리지 않는다
+
+      return {
+        ...local,
+        rank: grade.rank,
+        reviewMin: grade.needRatingCount,
+        trustMin: Math.round(grade.needTrustScore * 100),
+      };
+    })
+    .filter((grade): grade is GradeLevelDef => grade !== null)
+    .sort((a, b) => a.rank - b.rank);
 }
 
 interface LevelProgress {
@@ -121,11 +115,12 @@ interface LevelProgress {
 }
 
 export function getProgressToNext(
-  level: GradeLevel,
+  level: number,
   reviewCount: number,
   trustScore: number,
+  mergedGrades: readonly GradeLevelDef[],
 ): LevelProgress | null {
-  const next = getNextLevelDef(level);
+  const next = mergedGrades.find((grade) => grade.rank > level) ?? null;
   if (!next) return null;
 
   const reviewPct =

@@ -9,20 +9,22 @@ import { ProfileSection } from './profile-section';
 import { ProfileSummaryCard } from './profile-summary-card';
 import { ThemeSettingRow } from './rows/theme-setting-row';
 import { LogoutRow } from './rows/logout-row';
+import { Grade } from '@/types/grade';
 
 interface Props {
   profile: MyProfileResponse;
   sessionName?: string;
   sessionImage?: string;
+  grades: Grade[];
 }
 
 // 내 프로필 뷰
-export function MyProfileView({ profile, sessionName, sessionImage }: Props) {
+export function MyProfileView({ profile, sessionName, sessionImage, grades }: Props) {
   return (
     <div className="max-w-4xl mx-auto px-8 pt-8 pb-16 space-y-4">
       <ProfileSummaryCard profile={profile} sessionName={sessionName} sessionImage={sessionImage} />
       <Surface as="section" variant="bordered" padding="none" className="overflow-hidden">
-        <GradeGuideCard profile={profile} />
+        <GradeGuideCard profile={profile} grades={grades} />
         <div className="border-t border-border">
           <PointsAndListsRow />
         </div>

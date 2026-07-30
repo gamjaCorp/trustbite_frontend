@@ -1,4 +1,3 @@
-import type { GradeLevel } from '@/lib/domain/grade-levels';
 import type { MyProfile } from '@/types/user';
 
 const myProfile: MyProfile = {
@@ -7,7 +6,8 @@ const myProfile: MyProfile = {
   avatarInitial: '햄',
   email: 'hamzee@gmail.com',
   joinedAt: '2026.02 가입',
-  level: 3 as GradeLevel,
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시 mock 고정값
+  level: 3,
   followerCount: 142,
   followingCount: 38,
   reviewCount: 11,

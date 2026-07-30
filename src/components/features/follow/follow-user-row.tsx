@@ -26,7 +26,8 @@ export function FollowUserRow({ user, hideFollowAction = false }: Props) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
             <span className="text-title-1 text-foreground truncate">{user.name}</span>
-            <UserGradeMark level={user.level} size="sm" showLabel />
+            {/* Fix: 등급 이름 필요 — 백엔드 grade 응답 필요, 임시 고정값 */}
+            <UserGradeMark name="COLLECTOR" size="sm" showLabel />
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
             <span className="text-caption-2 text-muted-foreground truncate">@{user.handle}</span>

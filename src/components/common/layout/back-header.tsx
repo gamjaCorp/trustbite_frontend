@@ -8,14 +8,12 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
-import { getMyProfile } from '@/data/mock-my-profile';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 
 // 뒤로가기 헤더 — 상세·폼 페이지 상단 고정 헤더 (뒤로가기 + 사용자 정보)
 export function BackHeader() {
   const router = useRouter();
   const { isAuthed, user } = useAuthStatus();
-  const profile = getMyProfile();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
@@ -42,7 +40,8 @@ export function BackHeader() {
             className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
           >
             <span className="text-title-3 text-foreground">{user?.name}</span>
-            <UserGradeMark level={profile.level} size="sm" />
+            {/* Fix: 등급 이름 필요 — 백엔드 grade 응답 필요, 임시 고정값 */}
+            <UserGradeMark name="COLLECTOR" size="sm" />
             <UserAvatar initial={user?.name?.slice(0, 1) ?? '?'} imageUrl={user?.image || undefined} size="sm" className="ml-0.5" />
           </Link>
         ) : (

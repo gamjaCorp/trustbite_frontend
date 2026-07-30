@@ -21,7 +21,8 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
           <h1 className="text-title-1 text-foreground truncate">
             {profile.name}
           </h1>
-          <UserGradeMark level={profile.level} size="sm" showLabel />
+          {/* Fix: 등급 이름 필요 — 백엔드 grade 응답 필요, 임시 고정값 */}
+          <UserGradeMark name="COLLECTOR" size="sm" showLabel />
         </>
       }
       subtitle={`@${profile.handle} · 검증된 맛집 ${profile.curatedCount}곳`}

@@ -1,5 +1,5 @@
 // TODO: 1차 MVP 제외 — 백엔드 follow API 연동 시 제거 (W11 / 3차 MVP)
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+// Fix: 레벨 필요 — 백엔드 rank 응답 필요, 아래 level 값은 임시 mock 고정값
 import type { FollowedUser } from '@/types/follow';
 
 const allUsers: FollowedUser[] = [
@@ -8,7 +8,7 @@ const allUsers: FollowedUser[] = [
     name: '감자먹은 햄찌',
     handle: 'hamzee',
     avatarInitial: '햄',
-    level: 3 as GradeLevel,
+    level: 3,
     trustScore: 77,
     bio: '서울 강남구 맛집 탐방 중',
     followsMeBack: true,
@@ -18,7 +18,7 @@ const allUsers: FollowedUser[] = [
     name: '민서',
     handle: 'minseo_eats',
     avatarInitial: '민',
-    level: 4 as GradeLevel,
+    level: 4,
     trustScore: 85,
     bio: '을지로 골목 탐험 중',
     followsMeBack: true,
@@ -28,7 +28,7 @@ const allUsers: FollowedUser[] = [
     name: '지연',
     handle: 'jiyeon_kitchen',
     avatarInitial: '지',
-    level: 3 as GradeLevel,
+    level: 3,
     trustScore: 72,
     bio: '요리하고 먹고 또 요리하는 사람',
     followsMeBack: false,
@@ -38,7 +38,7 @@ const allUsers: FollowedUser[] = [
     name: '태훈',
     handle: 'taehoon_nom',
     avatarInitial: '태',
-    level: 2 as GradeLevel,
+    level: 2,
     trustScore: 61,
     bio: '홍대·마포 구석구석',
     followsMeBack: false,
@@ -48,7 +48,7 @@ const allUsers: FollowedUser[] = [
     name: '수연',
     handle: 'sooyeon_fork',
     avatarInitial: '수',
-    level: 5 as GradeLevel,
+    level: 5,
     trustScore: 92,
     bio: '미식 취향은 진지하게',
     followsMeBack: true,
@@ -58,7 +58,7 @@ const allUsers: FollowedUser[] = [
     name: '종민',
     handle: 'jongmin_taste',
     avatarInitial: '종',
-    level: 3 as GradeLevel,
+    level: 3,
     trustScore: 68,
     followsMeBack: false,
   },

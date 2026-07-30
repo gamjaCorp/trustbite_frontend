@@ -1,33 +1,33 @@
+'use client';
+
 // 사용자 이름 옆에 붙이는 등급 아이콘 — showLabel=false면 hover 툴팁, true면 인라인 텍스트
-import { getLevelDef } from '@/lib/domain/grade-levels';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
+import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 import { GradeIcon } from './grade-icon';
 
 interface Props {
-  level: GradeLevel;
+  name: string; // 등급 이름 (예: 'COLLECTOR') — 서버 grade.name과 매칭
   showLabel?: boolean;
   size?: 'sm';
   className?: string;
 }
 
-// 유저 등급 마크 — 레벨에 따른 색상 배지 + 선택적 라벨
-export function UserGradeMark({ level, showLabel = false, size = 'sm', className }: Props) {
-  const def = getLevelDef(level);
-  const tooltip = `Lv.${level} · ${def.label}`;
+// 유저 등급 마크 — 등급에 따른 색상 배지 + 선택적 라벨
+export function UserGradeMark({ name, showLabel = false, size = 'sm', className }: Props) {
+  const def = GRADE_LEVELS.find((g) => g.name === name) ?? GRADE_LEVELS[0];
 
   if (showLabel) {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
           <span className={cn('inline-flex items-center gap-1 cursor-default', className)}>
-            <GradeIcon level={level} size={size} variant="inline" />
+            <GradeIcon name={name} size={size} variant="inline" />
             <span className={cn('text-caption-2', def.toneClass.text)}>{def.label}</span>
           </span>
         </TooltipTrigger>
-        <TooltipContent side="top">{tooltip}</TooltipContent>
+        <TooltipContent side="top">{def.label}</TooltipContent>
       </Tooltip>
     );
   }
@@ -36,10 +36,10 @@ export function UserGradeMark({ level, showLabel = false, size = 'sm', className
     <Tooltip>
       <TooltipTrigger asChild>
         <span className={cn('inline-flex items-center cursor-default', className)}>
-          <GradeIcon level={level} size={size} variant="inline" />
+          <GradeIcon name={name} size={size} variant="inline" />
         </span>
       </TooltipTrigger>
-      <TooltipContent side="top">{tooltip}</TooltipContent>
+      <TooltipContent side="top">{def.label}</TooltipContent>
     </Tooltip>
   );
 }

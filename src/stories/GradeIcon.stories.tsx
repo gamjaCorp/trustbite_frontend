@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { GradeIcon } from '@/components/common/trust/grade-icon';
 import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
 
-const LEVELS = GRADE_LEVELS.map((d) => d.level) as GradeLevel[];
+const NAMES = GRADE_LEVELS.map((d) => d.name);
 
 const meta = {
   title: 'Common/Trust/GradeIcon',
@@ -18,10 +17,10 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    level: {
+    name: {
       control: 'select',
-      options: LEVELS,
-      description: '등급 레벨 (1=새싹 ~ 6=미슐랭)',
+      options: NAMES,
+      description: '등급 이름 (SPROUT=새싹 ~ MICHELIN=미슐랭)',
     },
     size: {
       control: 'select',
@@ -45,20 +44,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 3등급 맛집 수집가',
-  args: { level: 3, size: 'md', variant: 'circle', state: 'default' },
+  name: 'Default — 맛집 수집가',
+  args: { name: 'COLLECTOR', size: 'md', variant: 'circle', state: 'default' },
 };
 
 export const AllLevels: Story = {
   name: 'AllLevels — 전체 등급 쇼케이스',
-  args: { level: 1 },
+  args: { name: 'SPROUT' },
   parameters: { layout: 'padded' },
   render: () => (
     <div className="flex gap-4 flex-wrap">
       {GRADE_LEVELS.map((def) => (
-        <div key={def.level} className="flex flex-col items-center gap-1.5">
-          <GradeIcon level={def.level} size="md" />
-          <span className="text-label-3 text-muted-foreground">Lv.{def.level}</span>
+        <div key={def.name} className="flex flex-col items-center gap-1.5">
+          <GradeIcon name={def.name} size="md" />
           <span className="text-label-3">{def.label}</span>
         </div>
       ))}
@@ -67,14 +65,14 @@ export const AllLevels: Story = {
 };
 
 export const AllSizes: Story = {
-  name: 'AllSizes — 크기 비교 (level=3)',
-  args: { level: 3 },
+  name: 'AllSizes — 크기 비교 (맛집 수집가)',
+  args: { name: 'COLLECTOR' },
   parameters: { layout: 'padded' },
   render: () => (
     <div className="flex items-end gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <div key={size} className="flex flex-col items-center gap-1.5">
-          <GradeIcon level={3} size={size} />
+          <GradeIcon name="COLLECTOR" size={size} />
           <span className="text-label-3 text-muted-foreground">{size}</span>
         </div>
       ))}
@@ -84,12 +82,12 @@ export const AllSizes: Story = {
 
 export const InlineVariant: Story = {
   name: 'InlineVariant — 인라인 아이콘',
-  args: { level: 1 },
+  args: { name: 'SPROUT' },
   parameters: { layout: 'padded' },
   render: () => (
     <div className="flex gap-3">
       {GRADE_LEVELS.map((def) => (
-        <GradeIcon key={def.level} level={def.level} size="sm" variant="inline" />
+        <GradeIcon key={def.name} name={def.name} size="sm" variant="inline" />
       ))}
     </div>
   ),
@@ -97,20 +95,20 @@ export const InlineVariant: Story = {
 
 export const MutedState: Story = {
   name: 'MutedState — 비활성 상태',
-  args: { level: 4 },
+  args: { name: 'HUNTER' },
   parameters: { layout: 'padded' },
   render: () => (
     <div className="flex gap-4">
       <div className="flex flex-col items-center gap-1.5">
-        <GradeIcon level={4} size="md" state="default" />
+        <GradeIcon name="HUNTER" size="md" state="default" />
         <span className="text-label-3 text-muted-foreground">default</span>
       </div>
       <div className="flex flex-col items-center gap-1.5">
-        <GradeIcon level={4} size="md" state="muted" />
+        <GradeIcon name="HUNTER" size="md" state="muted" />
         <span className="text-label-3 text-muted-foreground">muted</span>
       </div>
       <div className="flex flex-col items-center gap-1.5">
-        <GradeIcon level={4} size="md" state="next" />
+        <GradeIcon name="HUNTER" size="md" state="next" />
         <span className="text-label-3 text-muted-foreground">next</span>
       </div>
     </div>

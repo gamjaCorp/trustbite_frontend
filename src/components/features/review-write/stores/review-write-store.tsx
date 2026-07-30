@@ -5,7 +5,6 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 import { StoreApi, createStore, useStore } from 'zustand';
 
 import type { Category, SceneTag } from '@/types/restaurant';
-import type { GradeLevel } from '@/lib/domain/grade-levels';
 
 import { reviewSchema } from '@/components/features/review-write/schema';
 import { computeTrustBreakdown, TrustBreakdown } from '@/lib/domain/trust-delta';
@@ -25,7 +24,8 @@ export type ReviewResultSnapshot = {
   nextTrustScore: number;
   breakdown: TrustBreakdown;
   photoCount: number;
-  currentLevel: GradeLevel;
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
+  currentLevel: number;
   currentGradeReviewCount: number;
   currentGradeReviewTarget: number;
   nextGradeName: string;

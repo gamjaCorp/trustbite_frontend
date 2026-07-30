@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { UserGradeMark } from '../../trust/user-grade-mark';
 import { Button } from '@/components/ui/button';
 import type { MyProfileResponse } from '@/types/user';
-import { gradeNameToLevel } from '@/lib/domain/grade-levels';
 
 export function UserAuthButton({ me }: { me: MyProfileResponse | null }) {
   if (me) {
@@ -23,7 +22,7 @@ export function UserAuthButton({ me }: { me: MyProfileResponse | null }) {
           <span className="hidden sm:inline text-title-3 text-foreground truncate max-w-32">
             {me.nickname}
           </span>
-          <UserGradeMark level={gradeNameToLevel(me.grade)} size="sm" />
+          <UserGradeMark name={me.grade} size="sm" />
         </Link>
       </div>
     );

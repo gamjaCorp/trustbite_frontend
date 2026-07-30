@@ -33,7 +33,8 @@ export function ReviewCard({ review }: Props) {
               >
                 {review.reviewerName}
               </Link>
-              <UserGradeMark level={review.reviewerLevel} size="sm" />
+              {/* Fix: 등급 이름 필요 — 백엔드 grade 응답 필요, 임시 고정값 */}
+              <UserGradeMark name="COLLECTOR" size="sm" />
               <VisitOrdinalChip ordinal={review.visitOrdinal} />
             </div>
             <p className="mt-0.5 text-caption-2 text-muted-foreground">

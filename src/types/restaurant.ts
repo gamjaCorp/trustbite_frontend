@@ -1,5 +1,3 @@
-import type { GradeLevel } from '@/lib/domain/grade-levels';
-
 export type Category = '한식' | '일식' | '중식' | '양식' | '분식' | '치킨' | '패스트푸드' | '카페' | '술집' | '기타';
 
 interface TopRestaurant {
@@ -90,7 +88,8 @@ export interface RealtimeReview {
   restaurantName: string;
   reviewerId: string;
   reviewerName: string;
-  reviewerLevel: GradeLevel;
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
+  reviewerLevel: number;
   reviewerTrustScore: number;
   reviewerVisitCount: number;
   score: number;
@@ -116,7 +115,8 @@ export interface DetailedReview {
   reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;
-  reviewerLevel: GradeLevel;
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
+  reviewerLevel: number;
   reviewerTrustScore: number;
   visitOrdinal: number;
   scores: RatingScores;
@@ -152,7 +152,8 @@ interface RepeatVisitReview {
   reviewerId: string;
   reviewerName: string;
   reviewerInitial: string;
-  reviewerLevel: GradeLevel;
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
+  reviewerLevel: number;
   reviewerTrustScore: number;
   visitCount: number;
   visits: RepeatVisitEntry[];

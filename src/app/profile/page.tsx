@@ -1,12 +1,17 @@
 import { auth } from '@/auth';
 import { MyProfileView } from './_components';
 import { getMyProfile } from '@/api/user/user';
+import { getGrades } from '@/api/grade/grade';
 
 // 내 프로필 페이지 — 등급·점수·설정 메뉴
 export default async function MyProfilePage() {
-  const [session, profile] = await Promise.all([auth(), getMyProfile().catch(() => null)]);
+  const [session, profile, grades] = await Promise.all([
+    auth(),
+    getMyProfile().catch(() => null),
+    getGrades().catch(() => null),
+  ]);
 
-  if (!profile) {
+  if (!profile || !grades) {
     return (
       <div className="max-w-4xl mx-auto px-8 pt-24 pb-16 text-center">
         <p className="text-title-2 text-foreground">프로필을 불러오지 못했어요</p>
@@ -22,6 +27,7 @@ export default async function MyProfilePage() {
       profile={profile}
       sessionName={session?.user?.name ?? undefined}
       sessionImage={session?.user?.image ?? undefined}
+      grades={grades}
     />
   );
 }

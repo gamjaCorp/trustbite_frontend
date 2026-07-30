@@ -5,7 +5,7 @@ import { TasteProfileSection } from '@/components/common/profile/taste-profile-s
 import { StatsStrip } from '@/components/common/display/stats-strip';
 import { SectionHeader } from '@/components/common/display/section-header';
 import { DividedList } from '@/components/common/display/divided-list';
-import { getLevelDef } from '@/lib/domain/grade-levels';
+import { Bookmark } from 'lucide-react';
 import { getTrustToneClass } from '@/lib/domain/trust-score';
 import { useFollowMock } from '@/components/features/follow/stores/follow-mock-store';
 import type { UserProfile } from '@/types/user';
@@ -23,7 +23,8 @@ export function UserProfileView({ profile }: Props) {
   const toggle = useFollowMock((s) => s.toggle);
   const topPick = profile.rankings[0];
   const trustTone = getTrustToneClass(profile.trustScore);
-  const levelDef = getLevelDef(profile.level);
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, getLevelDef 제거로 임시 mock 고정값 사용
+  const levelDef = { label: '맛집 수집가', icon: Bookmark, toneClass: { text: 'text-palette-blue' } };
 
   return (
     <div className="max-w-5xl mx-auto px-6 pt-6 pb-24">

@@ -1,15 +1,14 @@
 import type { RegionalRankEntry } from './restaurant';
-import type { GradeLevel, GradeName } from '@/lib/domain/grade-levels';
 
 export interface MyProfileResponse {
   userId: number;
   email: string;
   nickname: string;
   picture: string | null;
-  grade: GradeName;
+  grade: string;
   trustScore: number;
   reviewCount: number;
-  nextGrade: GradeName;
+  nextGrade: string;
   needCount: number;
   needScore: number;
   createdAt: string;
@@ -26,7 +25,8 @@ export interface UserProfile {
   id: string;
   name: string;
   handle: string;
-  level: GradeLevel;
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
+  level: number;
   gradeName: string;
   curatedCount: number;
   followerCount: number;
@@ -47,7 +47,8 @@ export interface MyProfile {
   avatarUrl?: string;
   email: string;
   joinedAt: string;
-  level: GradeLevel;
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
+  level: number;
   followerCount: number;
   followingCount: number;
   reviewCount: number;
