@@ -1,19 +1,23 @@
 import { FollowListView } from '@/components/features/follow/index';
-import { getFollowers, getFollowing } from '@/data/mock-follow';
-import { getMyProfile } from '@/data/mock-my-profile';
+import { getMyProfile } from '@/api/user/user';
+import { auth } from '@/auth';
+import { getFollowings } from '@/api/follow/follow';
 
 // 내 팔로잉 목록 페이지
-export default function MyFollowingPage() {
-  const profile = getMyProfile();
+export default async function MyFollowingPage() {
+  const session = await auth();
+
+  const followings = await getFollowings(Number(session?.user.id));
+
+  if (!followings) return null;
+
   return (
     <FollowListView
       mode="self"
-      myId={profile.id}
-      subjectName={profile.name}
+      myId={String(session?.user.id)}
       initialTab="following"
       basePath="/profile"
-      followers={getFollowers(profile.id)}
-      following={getFollowing(profile.id)}
+      following={followings}
     />
   );
 }

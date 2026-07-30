@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { StatsStrip } from '@/components/common/display/stats-strip';
 import { MyPlacesTabs } from './_components';
 import { mockStats5, mockRankList } from '@/data/mock-restaurant';
-import { getMyProfile } from '@/data/mock-my-profile';
 
 type Props = { searchParams: Promise<{ tab?: string }> };
 
@@ -13,8 +12,8 @@ export default async function MyRestaurantPage({ searchParams }: Props) {
   const { tab } = await searchParams;
   const activeTab = tab === 'wishlist' ? 'wishlist' : 'ranking';
   const { reviewCount, trustScore } = mockStats5;
-  const profile = getMyProfile();
-  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, getLevelDef 제거로 임시 mock 고정값 사용
+  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시 고정값 사용
+  const level = 3;
   const levelDef = { label: '맛집 수집가', icon: Bookmark, toneClass: { text: 'text-palette-blue' } };
 
   return (
@@ -34,7 +33,7 @@ export default async function MyRestaurantPage({ searchParams }: Props) {
                 value: (
                   <span className={`flex items-center gap-1.5 ${levelDef.toneClass.text}`}>
                     <levelDef.icon className="w-5 h-5" />
-                    Lv.{profile.level}
+                    Lv.{level}
                     <span className="text-body-2 text-muted-foreground font-normal">
                       {levelDef.label}
                     </span>

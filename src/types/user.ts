@@ -16,12 +16,12 @@ export interface MyProfileResponse {
   followingCount: number;
 }
 
-interface MutualFollowing {
+export interface MutualFollowing {
   displayName: string;
   extraCount: number;
 }
 
-export interface UserProfile {
+export interface MockUserProfile {
   id: string;
   name: string;
   handle: string;
@@ -40,30 +40,13 @@ export interface UserProfile {
   totalRankCount: number;
 }
 
-export interface MyProfile {
-  id: string;
-  name: string;
-  avatarInitial: string;
-  avatarUrl?: string;
-  email: string;
-  joinedAt: string;
-  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
-  level: number;
+export type UserProfile = {
+  userId: number;
+  nickname: string;
+  picture: string;
+  grade: string;
+  trustScore: number;
+  reviewCount: number;
   followerCount: number;
   followingCount: number;
-  reviewCount: number;
-  trustScore: number;
-  trustScoreThreshold: number;
-  trustScoreMet: boolean;
-  points: number;
-  recentPointDelta: number;
-  recentPointReason: string;
-  sharedListCount: number;
-  sharedListPreview: string[];
-  sharedListExtraCount: number;
-  myReviewCount: number;
-  unlockedGuideUserCount: number;
-  unlockedGuideTier: number;
-  helpfulVoteTier: number;
-  activityRegion: string;
-}
+};

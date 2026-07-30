@@ -4,15 +4,16 @@ import type { FollowTabKey, FollowedUser } from '@/types/follow';
 import { FollowEmpty } from './follow-empty';
 import { FollowTabs } from './follow-tabs';
 import { FollowUserRow } from './follow-user-row';
+import { PageResponse } from '@/types/common';
 
 interface Props {
   mode: 'self' | 'other';
   myId: string; // 본인 row에 팔로우 버튼을 숨기기 위해 상위에서 주입
-  subjectName: string;
+  subjectName?: string;
   initialTab: FollowTabKey;
   basePath: string;
-  followers: FollowedUser[];
-  following: FollowedUser[];
+  followers?: PageResponse<FollowedUser>;
+  following?: PageResponse<FollowedUser>;
 }
 
 // 팔로워·팔로잉 탭 단일 패널 — 빈 상태 or FollowUserRow 목록
@@ -35,7 +36,11 @@ function FollowTabPanel({
   return (
     <ul>
       {users.map((user) => (
-        <FollowUserRow key={user.id} user={user} hideFollowAction={user.id === myId} />
+        <FollowUserRow
+          key={user.userId}
+          user={user}
+          hideFollowAction={String(user.userId) === myId}
+        />
       ))}
     </ul>
   );
@@ -69,13 +74,25 @@ export function FollowListView({
       <FollowTabs
         initialTab={initialTab}
         basePath={basePath}
-        followersCount={followers.length}
-        followingCount={following.length}
+        followersCount={followers?.totalElements ?? 0}
+        followingCount={following?.totalElements ?? 0}
         followersPanel={
-          <FollowTabPanel tab="followers" mode={mode} subjectName={subjectName} myId={myId} users={followers} />
+          <FollowTabPanel
+            tab="followers"
+            mode={mode}
+            subjectName={subjectName ?? ''}
+            myId={myId}
+            users={followers?.content ?? []}
+          />
         }
         followingPanel={
-          <FollowTabPanel tab="following" mode={mode} subjectName={subjectName} myId={myId} users={following} />
+          <FollowTabPanel
+            tab="following"
+            mode={mode}
+            subjectName={subjectName ?? ''}
+            myId={myId}
+            users={following?.content ?? []}
+          />
         }
       />
     </div>

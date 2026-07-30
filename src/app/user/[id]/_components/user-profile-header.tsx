@@ -3,7 +3,7 @@ import { ProfileHeaderCard } from '@/components/common/profile/profile-header-ca
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import { FollowToggleButton } from '@/components/features/follow/follow-toggle-button';
-import type { UserProfile } from '@/types/user';
+import type { UserProfile, MutualFollowing } from '@/types/user';
 
 interface Props {
   profile: UserProfile;
@@ -13,19 +13,23 @@ interface Props {
 
 // 다른 유저 프로필 헤더 — 아바타·닉네임·팔로우 버튼 + 팔로워/팔로잉 수
 export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Props) {
+  // Fix: 유저 이메일 필요
+  const handle = 'user';
+  const curatedCount = 0;
+  // Fix: 맞팔로잉 미리보기 데이터 필요 — 백엔드 미제공, 임시로 렌더 안 함(hasMutualFollowing 고정 false)
+  const hasMutualFollowing = false;
+  const mutualFollowing: MutualFollowing = { displayName: '', extraCount: 0 };
+
   return (
     <ProfileHeaderCard
-      avatarInitial={profile.name[0]}
+      avatarInitial={profile.nickname[0]}
       title={
         <>
-          <h1 className="text-title-1 text-foreground truncate">
-            {profile.name}
-          </h1>
-          {/* Fix: 등급 이름 필요 — 백엔드 grade 응답 필요, 임시 고정값 */}
-          <UserGradeMark name="COLLECTOR" size="sm" showLabel />
+          <h1 className="text-title-1 text-foreground truncate">{profile.nickname}</h1>
+          <UserGradeMark name={profile.grade} size="sm" showLabel />
         </>
       }
-      subtitle={`@${profile.handle} · 검증된 맛집 ${profile.curatedCount}곳`}
+      subtitle={`@${handle} · 검증된 맛집 ${curatedCount}곳`}
       rightAction={
         <>
           <FollowToggleButton isFollowing={isFollowing} onToggle={onToggleFollow} size="md" />
@@ -35,20 +39,16 @@ export function UserProfileHeader({ profile, isFollowing, onToggleFollow }: Prop
       followerCount={profile.followerCount}
       followingCount={profile.followingCount}
       followStatsSize="md"
-      followersHref={`/user/${profile.id}/followers`}
-      followingHref={`/user/${profile.id}/following`}
+      followersHref={`/user/${profile.userId}/followers`}
+      followingHref={`/user/${profile.userId}/following`}
       bottomRight={
-        profile.mutualFollowing ? (
+        hasMutualFollowing ? (
           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
-            <UserAvatar initial={profile.mutualFollowing.displayName[0]} size="xs" />
+            <UserAvatar initial={mutualFollowing.displayName[0]} size="xs" />
             <span className="text-caption-2 text-muted-foreground">
-              <span className="font-semibold text-foreground">
-                {profile.mutualFollowing.displayName}
-              </span>
+              <span className="font-semibold text-foreground">{mutualFollowing.displayName}</span>
               {' 외 내 팔로잉 '}
-              <span className="font-semibold text-foreground">
-                {profile.mutualFollowing.extraCount}
-              </span>
+              <span className="font-semibold text-foreground">{mutualFollowing.extraCount}</span>
               명도 팔로우 중
             </span>
           </div>

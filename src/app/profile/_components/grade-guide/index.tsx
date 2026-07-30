@@ -17,9 +17,6 @@ export function GradeGuideCard({ profile, grades }: Props) {
   const myGradeData = mergedGrades.find((grade) => grade.name === profile.grade);
   const trustScore = Math.round(profile.trustScore * 100);
 
-  console.log(profile);
-  console.log(grades);
-
   if (!myGradeData) {
     return (
       <div className="px-8 py-10 text-center text-body-2 text-muted-foreground">
