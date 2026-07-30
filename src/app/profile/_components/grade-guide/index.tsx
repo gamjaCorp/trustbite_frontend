@@ -32,11 +32,13 @@ export function GradeGuideCard({ profile, grades }: Props) {
   return (
     <div>
       <div className="grid divide-y divide-border sm:grid-cols-[minmax(0,240px)_minmax(0,1fr)] sm:divide-y-0 sm:divide-x">
+        {/* 현재 등급 */}
         <CurrentGradePanel
           myGradeData={myGradeData}
           reviewCount={profile.reviewCount}
           trustScore={trustScore}
         />
+        {/* 다음 단계 */}
         <NextStagePanel
           myGradeData={myGradeData}
           mergedGrades={mergedGrades}
@@ -47,6 +49,7 @@ export function GradeGuideCard({ profile, grades }: Props) {
       <div className="border-t border-border">
         <GradeTipBanner />
       </div>
+      {/* 전체 등급 */}
       <div className="border-t border-border">
         <AllGradesTimeline currentLevel={myGradeData.rank} grades={grades} />
       </div>

@@ -24,7 +24,7 @@ export function ProfileSummaryCard({ profile, sessionName, sessionImage }: Props
       title={
         <>
           <span className="text-title-1 text-foreground truncate">{name}</span>
-          <UserGradeMark name={profile.grade} size="sm" showLabel />
+          <UserGradeMark rank={1} name={profile.grade} size="sm" showLabel />
         </>
       }
       subtitle={`${profile.email}  ${profile.createdAt ? `· ${joinedAt}` : ''}`}

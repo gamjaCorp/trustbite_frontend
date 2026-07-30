@@ -27,26 +27,26 @@ export function CurrentGradePanel({ myGradeData, reviewCount, trustScore }: Prop
         <StatCell
           size="sm"
           label="리뷰"
-          value={
-            <>
-              {reviewCount}
-              <span className="text-caption-2 text-muted-foreground font-sans"> 개</span>
-            </>
-          }
+          value={<StatValue value={reviewCount} unit="개" />}
           className="text-center"
         />
         <StatCell
           size="sm"
           label="신뢰도"
-          value={
-            <>
-              {trustScore}
-              <span className="text-caption-2 text-muted-foreground font-sans"> %</span>
-            </>
-          }
+          value={<StatValue value={trustScore} unit="%" />}
           className="text-center"
         />
       </div>
     </div>
+  );
+}
+
+// 숫자 값 + 단위(개·%)
+function StatValue({ value, unit }: { value: number; unit: string }) {
+  return (
+    <>
+      {value}
+      <span className="text-caption-2 text-muted-foreground font-sans"> {unit}</span>
+    </>
   );
 }

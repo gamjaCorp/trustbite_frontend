@@ -23,7 +23,9 @@ export function MyProfileView({ profile, sessionName, sessionImage, grades }: Pr
   return (
     <div className="max-w-4xl mx-auto px-8 pt-8 pb-16 space-y-4">
       <ProfileSummaryCard profile={profile} sessionName={sessionName} sessionImage={sessionImage} />
+
       <Surface as="section" variant="bordered" padding="none" className="overflow-hidden">
+        {/* 현재 등급, 다음 단계 */}
         <GradeGuideCard profile={profile} grades={grades} />
         <div className="border-t border-border">
           <PointsAndListsRow />

@@ -8,16 +8,17 @@ import { cn } from '@/lib/utils';
 import { GradeIcon } from './grade-icon';
 
 interface Props {
-  name: string; // 등급 이름 (예: 'COLLECTOR') — 서버 grade.name과 매칭
+  name: string;
+  rank?: number;
   showLabel?: boolean;
   size?: 'sm';
   className?: string;
 }
 
 // 유저 등급 마크 — 등급에 따른 색상 배지 + 선택적 라벨
-export function UserGradeMark({ name, showLabel = false, size = 'sm', className }: Props) {
+export function UserGradeMark({ name, rank, showLabel = false, size = 'sm', className }: Props) {
   const def = GRADE_LEVELS.find((g) => g.name === name) ?? GRADE_LEVELS[0];
-
+  const tooltip = rank ? `Lv.${rank} · ${def.label}` : def.label;
   if (showLabel) {
     return (
       <Tooltip>
@@ -27,7 +28,7 @@ export function UserGradeMark({ name, showLabel = false, size = 'sm', className 
             <span className={cn('text-caption-2', def.toneClass.text)}>{def.label}</span>
           </span>
         </TooltipTrigger>
-        <TooltipContent side="top">{def.label}</TooltipContent>
+        <TooltipContent side="top">{tooltip}</TooltipContent>
       </Tooltip>
     );
   }
@@ -39,7 +40,7 @@ export function UserGradeMark({ name, showLabel = false, size = 'sm', className 
           <GradeIcon name={name} size={size} variant="inline" />
         </span>
       </TooltipTrigger>
-      <TooltipContent side="top">{def.label}</TooltipContent>
+      <TooltipContent side="top">{tooltip}</TooltipContent>
     </Tooltip>
   );
 }
