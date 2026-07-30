@@ -3,7 +3,7 @@
 // 편집 버튼 + EditProfileDialog를 캡슐화하는 client island
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { EditProfileDialog } from './edit-profile-dialog';
+import { EditProfileDialog } from './dialog/edit-profile-dialog';
 import { MyProfileResponse } from '@/types/user';
 
 interface Props {

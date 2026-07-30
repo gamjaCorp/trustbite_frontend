@@ -14,10 +14,7 @@ export function useImagePreview(initialUrl?: string) {
 
   // 파일 input onChange 핸들러 — object URL 생성 후 onFileSelected 콜백 호출
   const handleFileChange = useCallback(
-    (
-      e: React.ChangeEvent<HTMLInputElement>,
-      onFileSelected?: (file: File) => void,
-    ) => {
+    (e: React.ChangeEvent<HTMLInputElement>, onFileSelected?: (file: File) => void) => {
       const file = e.target.files?.[0];
       if (!file) return;
       revokePending();

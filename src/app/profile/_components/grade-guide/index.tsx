@@ -1,7 +1,6 @@
 import type { MyProfileResponse } from '@/types/user';
 import type { Grade } from '@/types/grade';
 import { mergeGradeLadder } from '@/lib/domain/grade-levels';
-
 import { AllGradesTimeline } from './all-grades-timeline';
 import { CurrentGradePanel } from './current-grade-panel';
 import { GradeTipBanner } from './grade-tip-banner';
