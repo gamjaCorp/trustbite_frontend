@@ -34,6 +34,8 @@
 
 **예외 — `/auto`:** 사용자가 `/auto`를 입력한 task에 한해 이 규칙을 건너뛰고 Claude가 코드를 직접 구현한다 (일회성, 다음 task부터 자동 복귀). 커맨드 정의는 `.claude/commands/auto.md`.
 
+**예외 — `/auto now`:** 로드맵 task가 아니라 직전 채팅 요청 범위 하나만 대상으로 한다. 이 문서의 `## Learn by Doing`뿐 아니라 `## 실행 단위`(task 단위 → 요청 단위로 대체, build/lint는 유지)·`## task 완료 보고 형식`(짧은 보고로 대체)·`## 2단 ask`(미수행)도 함께 비적용된다. 일회성, 다음 요청부터 자동 복귀. 커맨드 정의는 `.claude/commands/auto.md`.
+
 ## 2단 ask — 침묵=동의 금지
 
 한 task **안에서** Learn by Doing 4단계가 돌고, task가 끝난 뒤 이 2단 ask를 수행한다. task 종료 후: ① 완료 보고 → 검토 대기 → ② "다음 스텝 시작할까요? — `{요약}`" → 명시적 승인 대기.
