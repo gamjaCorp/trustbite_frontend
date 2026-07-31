@@ -1,6 +1,3 @@
-'use client';
-
-import { useFollowMock } from '@/components/features/follow/stores/follow-mock-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
 import { LockedRankingsSection } from './locked-rankings-section';
@@ -10,11 +7,11 @@ interface Props {
   targetUserId: number;
   ownerName: string;
   rankings: RegionalRankEntry[];
+  isFollowing: boolean;
 }
 
 // 랭킹 공개 게이트 — 팔로우 중이면 전체 랭킹, 아니면 인생 맛집 1곳 미리보기 + 잠금 CTA
-export function UserRankingsGate({ targetUserId, ownerName, rankings }: Props) {
-  const isFollowing = useFollowMock((s) => s.isFollowing(targetUserId));
+export function UserRankingsGate({ targetUserId, ownerName, rankings, isFollowing }: Props) {
   const topPick = rankings[0];
 
   if (isFollowing) {

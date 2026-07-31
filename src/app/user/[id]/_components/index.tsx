@@ -15,6 +15,8 @@ interface Props {
 export function UserProfileView({ profile }: Props) {
   // Fix: 리뷰·랭킹 데이터 필요 — GET /api/ratings/user/{userId} 연동 전까지 임시 빈 배열
   const rankings: RegionalRankEntry[] = [];
+  // Fix: isFollowing 데이타 필요
+  const isFollowing = false;
 
   return (
     <div className="max-w-5xl mx-auto px-6 pt-6 pb-24">
@@ -33,6 +35,7 @@ export function UserProfileView({ profile }: Props) {
         targetUserId={profile.userId}
         ownerName={profile.nickname}
         rankings={rankings}
+        isFollowing={isFollowing}
       />
     </div>
   );

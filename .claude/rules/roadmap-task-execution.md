@@ -63,3 +63,7 @@
 ```
 - 핀 클릭이 `<div onClick>` — 키보드 접근 없음 → `<button aria-label>` 로 교체
 ```
+
+## note 기록
+
+로드맵 진행·이슈 기록과 별개로, 대화 중 오간 질문·답변 자체를 남기고 싶으면 `/note`로 `docs/note.md`에 기록한다. 자동 수행 아님 — 사용자가 `/note`를 입력할 때만. 커맨드 정의는 `.claude/commands/note.md`.

@@ -17,11 +17,24 @@ export default async function MyFollowsPage({
   const userId = Number(session?.user.id);
 
   const [profile, list] = await Promise.all([
-    getMyProfile(),
-    initialTab === 'following' ? getFollowings(userId) : getFollowers(userId),
+    getMyProfile().catch(() => null),
+    Number.isNaN(userId)
+      ? Promise.resolve(null)
+      : (initialTab === 'following' ? getFollowings(userId) : getFollowers(userId)).catch(
+          () => null,
+        ),
   ]);
 
-  if (!list) return null;
+  if (!profile || !list) {
+    return (
+      <div className="max-w-4xl mx-auto px-8 pt-24 pb-16 text-center">
+        <p className="text-title-2 text-foreground">목록을 불러오지 못했어요</p>
+        <p className="text-body-2 text-muted-foreground mt-2">
+          로그인 상태와 네트워크 연결을 확인한 뒤 새로고침해 주세요.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <FollowListView

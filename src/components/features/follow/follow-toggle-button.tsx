@@ -1,16 +1,14 @@
 'use client';
 
-// 팔로우/팔로잉 중 상태를 토글하는 소형 버튼
 import { UserCheck, UserPlus } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useFollowMock } from './stores/follow-mock-store';
+import { useOptimistic, useTransition } from 'react';
+import { toggleFollow } from './actions';
 
 interface Props {
   targetUserId?: number;
-  isFollowing?: boolean; // 미제공 시 store에서 읽음
-  onToggle?: () => void; // 미제공 시 store toggle 호출
+  isFollowing: boolean;
   size?: 'sm' | 'md';
 }
 
@@ -18,18 +16,24 @@ interface Props {
 export function FollowToggleButton({
   targetUserId,
   isFollowing: controlledFollowing,
-  onToggle,
   size = 'sm',
 }: Props) {
-  const storeFollowing = useFollowMock((s) => (targetUserId !== undefined ? s.isFollowing(targetUserId) : false));
-  const storeToggle = useFollowMock((s) => s.toggle);
+  const [isPending, startTransition] = useTransition();
+  const [following, setIsFollowing] = useOptimistic(controlledFollowing);
 
-  const following = controlledFollowing ?? storeFollowing;
-  const handleToggle = onToggle ?? (() => targetUserId !== undefined && storeToggle(targetUserId));
+  const handleToggle = () => {
+    if (!targetUserId || controlledFollowing === undefined) return;
+    startTransition(async () => {
+      setIsFollowing(!following);
+
+      await toggleFollow(targetUserId, controlledFollowing);
+    });
+  };
 
   return (
     <Button
       size="sm"
+      disabled={isPending}
       onClick={(e) => {
         e.preventDefault();
         handleToggle();
@@ -40,6 +44,7 @@ export function FollowToggleButton({
         following
           ? 'bg-card text-foreground border border-border hover:bg-muted'
           : 'bg-foreground text-background hover:bg-foreground/90',
+        isPending && 'opacity-60',
       )}
     >
       {following ? (

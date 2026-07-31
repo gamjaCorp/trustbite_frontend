@@ -3,13 +3,13 @@ import { PageResponse } from '@/types/common';
 import { FollowedUser } from '@/types/follow';
 
 export function postFollow(userId: number) {
-  return authedFetch(`/api/users/${userId}/followers`, {
+  return authedFetch(`/api/users/${userId}/follow`, {
     method: 'POST',
   });
 }
 
-export function DeleteFollow(userId: number) {
-  return authedFetch(`/api/users/${userId}/followers`, {
+export function deleteFollow(userId: number) {
+  return authedFetch(`/api/users/${userId}/follow`, {
     method: 'DELETE',
   });
 }

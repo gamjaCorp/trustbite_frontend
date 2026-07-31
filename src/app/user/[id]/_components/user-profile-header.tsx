@@ -15,8 +15,9 @@ export function UserProfileHeader({ profile }: Props) {
   // Fix: 맞팔로잉 미리보기 데이터 필요 — 백엔드 미제공, 임시로 렌더 안 함(hasMutualFollowing 고정 false)
   const hasMutualFollowing = false;
   const mutualFollowing: MutualFollowing = { displayName: '', extraCount: 0 };
+  // Fix: 팔로잉 여부 데이터 필요
+  const isFollowing = false;
 
-  console.log(profile);
   return (
     <ProfileHeaderCard
       avatarInitial={profile.nickname[0]}
@@ -29,7 +30,7 @@ export function UserProfileHeader({ profile }: Props) {
       subtitle={`@${handle} · 검증된 맛집 ${profile.reviewCount}곳`}
       rightAction={
         <>
-          <FollowToggleButton targetUserId={profile.userId} size="md" />
+          <FollowToggleButton isFollowing={isFollowing} targetUserId={profile.userId} size="md" />
           {/* TODO: 1차 MVP 제외 — 더보기(신고·차단 등) 액션 미정의 */}
         </>
       }
