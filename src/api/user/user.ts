@@ -6,5 +6,5 @@ export function getMyProfile(): Promise<MyProfileResponse> {
 }
 
 export function getUserProfile(userId: number): Promise<UserProfile> {
-  return publicFetch(`/api/users/${userId}`);
+  return publicFetch(`/api/users/${userId}`, { next: { revalidate: 60 } });
 }

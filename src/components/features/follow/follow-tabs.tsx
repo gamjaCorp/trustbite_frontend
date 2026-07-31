@@ -1,33 +1,31 @@
 'use client';
 
-// 팔로워·팔로잉 탭 네비게이션 — URL 기반 탭 전환 담당 client 래퍼
+// 팔로워·팔로잉 탭 네비게이션 — ?tab= 쿼리 기반 탭 전환 담당 client 래퍼
 import { useRouter } from 'next/navigation';
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { FollowTabKey } from '@/types/follow';
 
 interface FollowTabsProps {
-  initialTab: FollowTabKey; // 현재 활성 탭 (라우트 기반)
-  basePath: string; // 탭 전환 시 replace 할 경로 prefix
+  initialTab: FollowTabKey; // 현재 활성 탭
+  basePath: string; // 탭 전환 시 ?tab= 쿼리를 붙여 이동할 경로
   followersCount: number; // 팔로워 수 배지
   followingCount: number; // 팔로잉 수 배지
-  followersPanel: React.ReactNode; // 팔로워 목록 (server 렌더)
-  followingPanel: React.ReactNode; // 팔로잉 목록 (server 렌더)
+  panel: React.ReactNode; // 현재 탭의 목록 (server 렌더)
 }
 
-// 팔로워·팔로잉 탭 셸 — useRouter로 URL replace, 패널은 server 렌더 ReactNode로 주입
+// 팔로워·팔로잉 탭 셸 — useRouter로 ?tab= 쿼리 replace, 패널은 현재 탭 하나만 server 렌더 ReactNode로 주입
 export function FollowTabs({
   initialTab,
   basePath,
   followersCount,
   followingCount,
-  followersPanel,
-  followingPanel,
+  panel,
 }: FollowTabsProps) {
   const router = useRouter();
 
   function handleTabChange(value: string) {
-    router.replace(`${basePath}/${value}`, { scroll: false });
+    router.replace(`${basePath}?tab=${value}`, { scroll: false });
   }
 
   return (
@@ -49,13 +47,7 @@ export function FollowTabs({
         </TabsList>
       </div>
 
-      <TabsContent value="followers" className="mt-4">
-        {followersPanel}
-      </TabsContent>
-
-      <TabsContent value="following" className="mt-4">
-        {followingPanel}
-      </TabsContent>
+      <div className="mt-4">{panel}</div>
     </Tabs>
   );
 }

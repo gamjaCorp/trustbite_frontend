@@ -5,11 +5,11 @@ import { FollowToggleButton } from '@/components/features/follow/follow-toggle-b
 interface Props {
   totalCount: number;
   targetName: string;
-  onFollow: () => void;
+  targetUserId: number;
 }
 
 // 팔로우 전 랭킹 잠금 상태 — Lock 아이콘 + 팔로우 CTA만 표시
-export function LockedRankingsSection({ totalCount, targetName, onFollow }: Props) {
+export function LockedRankingsSection({ totalCount, targetName, targetUserId }: Props) {
   return (
     <section className="mt-8 space-y-3">
       <div className="flex items-baseline justify-between px-1">
@@ -28,7 +28,7 @@ export function LockedRankingsSection({ totalCount, targetName, onFollow }: Prop
         <p className="text-caption-2 text-muted-foreground">
           팔로우하면 전체 랭킹이 공개돼요
         </p>
-        <FollowToggleButton isFollowing={false} onToggle={onFollow} size="md" />
+        <FollowToggleButton targetUserId={targetUserId} size="md" />
       </div>
     </section>
   );

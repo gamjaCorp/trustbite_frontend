@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useFollowMock } from './stores/follow-mock-store';
 
 interface Props {
-  targetUserId?: string; // controlled 모드에서는 생략 가능
+  targetUserId?: number;
   isFollowing?: boolean; // 미제공 시 store에서 읽음
   onToggle?: () => void; // 미제공 시 store toggle 호출
   size?: 'sm' | 'md';
@@ -21,11 +21,11 @@ export function FollowToggleButton({
   onToggle,
   size = 'sm',
 }: Props) {
-  const storeFollowing = useFollowMock((s) => s.isFollowing(targetUserId ?? ''));
+  const storeFollowing = useFollowMock((s) => (targetUserId !== undefined ? s.isFollowing(targetUserId) : false));
   const storeToggle = useFollowMock((s) => s.toggle);
 
   const following = controlledFollowing ?? storeFollowing;
-  const handleToggle = onToggle ?? (() => storeToggle(targetUserId ?? ''));
+  const handleToggle = onToggle ?? (() => targetUserId !== undefined && storeToggle(targetUserId));
 
   return (
     <Button

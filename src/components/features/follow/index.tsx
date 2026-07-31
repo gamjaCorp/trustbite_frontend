@@ -1,4 +1,5 @@
 // 팔로워·팔로잉 탭 + 목록 컨테이너 — 본인/타 유저 공용 (server component)
+import { auth } from '@/auth';
 import type { FollowTabKey, FollowedUser } from '@/types/follow';
 
 import { FollowEmpty } from './follow-empty';
@@ -8,54 +9,27 @@ import { PageResponse } from '@/types/common';
 
 interface Props {
   mode: 'self' | 'other';
-  myId: string; // 본인 row에 팔로우 버튼을 숨기기 위해 상위에서 주입
   subjectName?: string;
   initialTab: FollowTabKey;
   basePath: string;
-  followers?: PageResponse<FollowedUser>;
-  following?: PageResponse<FollowedUser>;
-}
-
-// 팔로워·팔로잉 탭 단일 패널 — 빈 상태 or FollowUserRow 목록
-function FollowTabPanel({
-  tab,
-  mode,
-  subjectName,
-  myId,
-  users,
-}: {
-  tab: FollowTabKey;
-  mode: 'self' | 'other';
-  subjectName: string;
-  myId: string;
-  users: FollowedUser[];
-}) {
-  if (users.length === 0) {
-    return <FollowEmpty mode={mode} tab={tab} subjectName={subjectName} />;
-  }
-  return (
-    <ul>
-      {users.map((user) => (
-        <FollowUserRow
-          key={user.userId}
-          user={user}
-          hideFollowAction={String(user.userId) === myId}
-        />
-      ))}
-    </ul>
-  );
+  list: PageResponse<FollowedUser>; // 현재 탭(initialTab)의 목록
+  followersCount: number;
+  followingCount: number;
 }
 
 // 팔로워·팔로잉 목록 뷰 — self/other 모드로 탭 전환 제공
-export function FollowListView({
+export async function FollowListView({
   mode,
-  myId,
   subjectName,
   initialTab,
   basePath,
-  followers,
-  following,
+  list,
+  followersCount,
+  followingCount,
 }: Props) {
+  const session = await auth();
+  const myId = session?.user.id !== undefined ? Number(session.user.id) : undefined;
+
   const title =
     mode === 'self'
       ? initialTab === 'followers'
@@ -64,6 +38,8 @@ export function FollowListView({
       : initialTab === 'followers'
         ? `${subjectName}님의 팔로워`
         : `${subjectName}님의 팔로잉`;
+
+  const users = list.content;
 
   return (
     <div className="max-w-4xl mx-auto pb-24">
@@ -74,25 +50,22 @@ export function FollowListView({
       <FollowTabs
         initialTab={initialTab}
         basePath={basePath}
-        followersCount={followers?.totalElements ?? 0}
-        followingCount={following?.totalElements ?? 0}
-        followersPanel={
-          <FollowTabPanel
-            tab="followers"
-            mode={mode}
-            subjectName={subjectName ?? ''}
-            myId={myId}
-            users={followers?.content ?? []}
-          />
-        }
-        followingPanel={
-          <FollowTabPanel
-            tab="following"
-            mode={mode}
-            subjectName={subjectName ?? ''}
-            myId={myId}
-            users={following?.content ?? []}
-          />
+        followersCount={followersCount}
+        followingCount={followingCount}
+        panel={
+          users.length === 0 ? (
+            <FollowEmpty mode={mode} tab={initialTab} subjectName={subjectName ?? ''} />
+          ) : (
+            <ul>
+              {users.map((user) => (
+                <FollowUserRow
+                  key={user.userId}
+                  user={user}
+                  hideFollowAction={user.userId === myId}
+                />
+              ))}
+            </ul>
+          )
         }
       />
     </div>

@@ -3,18 +3,17 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { getInitialFollowingIds } from '@/data/mock-follow';
 
 type FollowMockState = {
-  followingIds: string[];
-  isFollowing: (userId: string) => boolean;
-  toggle: (userId: string) => void;
+  followingIds: number[];
+  isFollowing: (userId: number) => boolean;
+  toggle: (userId: number) => void;
 };
 
 export const useFollowMock = create<FollowMockState>()(
   persist(
     (set, get) => ({
-      followingIds: getInitialFollowingIds('hamzee'),
+      followingIds: [],
       isFollowing: (userId) => get().followingIds.includes(userId),
       toggle: (userId) =>
         set((s) => ({

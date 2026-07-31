@@ -8,8 +8,6 @@ export default async function userProfilePage({ params }: { params: Promise<{ id
   const { id } = await params;
   const profile = await getUserProfile(Number(id));
 
-  console.log(profile);
-
   if (!profile) notFound();
 
   return (
