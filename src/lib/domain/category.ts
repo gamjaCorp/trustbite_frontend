@@ -12,8 +12,7 @@ import {
   UtensilsCrossed,
   type LucideIcon,
 } from 'lucide-react';
-import { Category, SceneTag } from '@/types/restaurant';
-import type { RatingContext } from '@/types/rating';
+import { Category } from '@/types/restaurant';
 
 export const CATEGORY_STYLE: Record<Category, string> = {
   한식: 'bg-palette-red-subtle text-palette-red',
@@ -56,33 +55,8 @@ export const CATEGORIES: Array<Category | 'all'> = [
   '기타',
 ];
 
-export const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '가족', '친구'];
-
-// 상황 태그(한글) → 백엔드 RatingContext enum 매핑 — 리뷰 제출 경계에서 사용
-const SCENE_TAG_TO_RATING_CONTEXT: Record<SceneTag, RatingContext> = {
-  혼밥: 'ALONE',
-  데이트: 'DATE',
-  회식: 'COMPANY',
-  가족: 'FAMILY',
-  친구: 'FRIEND',
-};
-
-export function sceneTagToRatingContext(tag: SceneTag): RatingContext {
-  return SCENE_TAG_TO_RATING_CONTEXT[tag];
-}
-
-// 백엔드 RatingContext enum → 상황 태그(한글) — 후기 조회 경계에서 사용
-const RATING_CONTEXT_TO_SCENE_TAG: Record<RatingContext, SceneTag> = {
-  ALONE: '혼밥',
-  DATE: '데이트',
-  COMPANY: '회식',
-  FAMILY: '가족',
-  FRIEND: '친구',
-};
-
-export function ratingContextToSceneTag(context: RatingContext): SceneTag | undefined {
-  return RATING_CONTEXT_TO_SCENE_TAG[context];
-}
+// 상황 태그 정의는 scene-tag.ts 하나로 모았다 — 기존 import 경로 유지를 위한 재수출
+export { OCCASIONS, sceneTagToRatingContext, ratingContextToSceneTag } from './scene-tag';
 
 // 백엔드 카테고리 문자열 → 화면 Category. 매핑 실패('분류없음' 등)는 '기타'
 export function toCategory(raw: string | null | undefined): Category {

@@ -1,3 +1,5 @@
+import type { SceneTag } from '@/lib/domain/scene-tag';
+
 export type Category = '한식' | '일식' | '중식' | '양식' | '분식' | '치킨' | '패스트푸드' | '카페' | '술집' | '기타';
 
 interface TopRestaurant {
@@ -117,7 +119,8 @@ export interface RealtimeReview {
 
 /* ── 상세 페이지용 타입 ── */
 
-export type SceneTag = '데이트' | '회식' | '혼밥' | '가족' | '친구';
+// 정의는 lib/domain/scene-tag.ts 하나로 모았다 — 기존 import 경로 유지를 위한 재수출
+export type { SceneTag } from '@/lib/domain/scene-tag';
 
 interface OpeningHours {
   weekday: string;

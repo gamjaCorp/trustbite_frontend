@@ -1,5 +1,6 @@
-// 이용 유형(상황 태그) — 백엔드 RatingContext enum 그대로
-export type RatingContext = 'DATE' | 'FAMILY' | 'ALONE' | 'FRIEND' | 'COMPANY';
+// 이용 유형(상황 태그) — 정의는 lib/domain/scene-tag.ts 하나로 모았다. 기존 import 경로 유지를 위한 재수출
+export type { RatingContext } from '@/lib/domain/scene-tag';
+import type { RatingContext } from '@/lib/domain/scene-tag';
 
 export type RatingRequest = {
   apiPlaceId: number;
