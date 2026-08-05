@@ -58,7 +58,7 @@ export const Interactive: Story = {
   name: 'Interactive — 실제 토글',
   args: { active: false, onClick: () => undefined, children: '태그' },
   render: () => {
-    const tags = ['혼밥', '데이트', '회식', '다이어트'];
+    const tags = ['혼밥', '데이트', '회식', '가족', '친구'];
     const [active, setActive] = useState<Set<string>>(new Set());
     return (
       <div className="flex items-center gap-2">

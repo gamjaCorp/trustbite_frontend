@@ -2,9 +2,13 @@
 
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatDelta } from '@/lib/format';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Surface } from '@/components/common/display/surface';
+import { GradeIcon } from '@/components/common/trust/grade-icon';
 import { getTrustToneClass } from '@/lib/domain/trust-score';
+import { nameTolocalGrade } from '@/lib/domain/grade-levels';
 import {
   useReviewIsEditMode,
   useReviewIsValid,
@@ -15,7 +19,7 @@ import { computeNextTrustScore } from '@/lib/domain/trust-delta';
 interface Props {
   baseScore: number;
   remainingReviewsForNextGrade: number;
-  nextGradeName: string;
+  nextGrade: string; // 다음 등급 enum 이름 — GradeIcon·라벨 매칭에 사용
   onSubmit: () => void;
 }
 
@@ -23,9 +27,10 @@ interface Props {
 export function TrustDeltaCard({
   baseScore,
   remainingReviewsForNextGrade,
-  nextGradeName,
+  nextGrade,
   onSubmit,
 }: Props) {
+  const nextGradeDef = nameTolocalGrade(nextGrade);
   const delta = useReviewTrustDelta();
   const isValid = useReviewIsValid();
   const isEditMode = useReviewIsEditMode();
@@ -46,28 +51,41 @@ export function TrustDeltaCard({
       <div className="mt-2 flex items-baseline gap-2">
         <span className="text-headline-1 text-muted-foreground">{baseScore}%</span>
         <span className="text-muted-foreground">→</span>
-        <span className={cn('text-display-1', tone.text)}>{next.toFixed(0)}%</span>
+        <span className={cn('text-display-1', tone.text)}>{formatDelta(next)}%</span>
       </div>
 
       <Progress value={next} className={cn('mt-3 h-2', tone.bg)} />
       {/* TODO: 1차 MVP 제외 — 포인트 적립 칩 (포인트 시스템 3차 MVP) */}
 
-      <button
+      <Button
         type="button"
         onClick={onSubmit}
         disabled={!isValid}
         className={cn(
-          'mt-4 hidden h-12 w-full rounded-xl text-label-1 transition-colors lg:block',
+          'mt-4 hidden h-12 w-full rounded-xl text-label-1 transition-colors disabled:opacity-100 lg:block',
           isValid
             ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
             : 'bg-muted text-muted-foreground cursor-not-allowed',
         )}
       >
         {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
-      </button>
+      </Button>
 
       <p className="mt-2 hidden text-center text-caption-2 text-muted-foreground lg:block">
-        {nextGradeName}까지 리뷰{' '}
+        {nextGradeDef ? (
+          <span
+            className={cn(
+              'inline-flex items-center gap-1 align-middle font-semibold',
+              nextGradeDef.toneClass.text,
+            )}
+          >
+            <GradeIcon name={nextGrade} size="sm" variant="inline" />
+            {nextGradeDef.label}
+          </span>
+        ) : (
+          nextGrade
+        )}
+        까지 리뷰{' '}
         <span className="font-semibold text-foreground">{remainingReviewsForNextGrade}</span>개 남음
       </p>
     </Surface>

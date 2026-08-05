@@ -1,18 +1,24 @@
 import { mockRankList } from '@/data/mock-restaurant';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
-import { MOCK_GRADE_CONTEXT } from '@/data/mock-review-config';
+import { getMyProfile } from '@/api/user/user';
+import { notFound } from 'next/navigation';
 
 // 리뷰 작성 페이지
-export default function NewReviewPage() {
-  const myTopRestaurants = [...mockRankList]
-    .sort((a, b) => b.avgScore - a.avgScore)
-    .slice(0, 10);
+export default async function NewReviewPage() {
+  const myTopRestaurants = [...mockRankList].sort((a, b) => b.avgScore - a.avgScore).slice(0, 10);
+
+  const profile = await getMyProfile();
+
+  console.log(profile);
+  if (!profile) {
+    notFound();
+  }
 
   return (
     <ReviewWriteForm
       candidates={mockRankList}
       myTopRestaurants={myTopRestaurants}
-      gradeContext={MOCK_GRADE_CONTEXT}
+      profile={profile}
     />
   );
 }

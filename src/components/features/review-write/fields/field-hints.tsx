@@ -5,15 +5,19 @@ import { cn } from '@/lib/utils';
 import { useReviewPhotoCount, useReviewTextLength } from '../stores/review-write-store';
 import { LONG_TEXT_THRESHOLD, TRUST_DELTA } from '@/lib/domain/trust-delta';
 
-// 리뷰 100자 돌파 힌트 — FieldGroup hint 슬롯에 배치
+// 리뷰 글자수 힌트 — FieldGroup hint 슬롯에 배치
 export function ReviewHint() {
   const length = useReviewTextLength();
   const reached = length >= LONG_TEXT_THRESHOLD;
-  if (!reached) return null;
   return (
-    <span className="inline-flex items-center gap-0.5 text-primary font-semibold">
-      <Check className="w-3 h-3" />
-      {LONG_TEXT_THRESHOLD}자 돌파 +{TRUST_DELTA.longText}%
+    <span
+      className={cn(
+        'inline-flex items-center gap-0.5',
+        reached ? 'text-primary font-semibold' : '',
+      )}
+    >
+      {reached && <Check className="w-3 h-3" />}
+      {LONG_TEXT_THRESHOLD}자 이상 작성 시 +{TRUST_DELTA.longText}%
     </span>
   );
 }

@@ -6,7 +6,7 @@ interface Props {
   myTopRestaurants: RegionalRankEntry[];
   baseScore: number;
   remainingReviewsForNextGrade: number;
-  nextGradeName: string;
+  nextGrade: string; // 다음 등급 enum 이름 — TrustDeltaCard가 라벨·아이콘으로 변환
   onSubmit: () => void;
 }
 
@@ -15,7 +15,7 @@ export function PreviewSidebar({
   myTopRestaurants,
   baseScore,
   remainingReviewsForNextGrade,
-  nextGradeName,
+  nextGrade,
   onSubmit,
 }: Props) {
   return (
@@ -23,7 +23,7 @@ export function PreviewSidebar({
       <TrustDeltaCard
         baseScore={baseScore}
         remainingReviewsForNextGrade={remainingReviewsForNextGrade}
-        nextGradeName={nextGradeName}
+        nextGrade={nextGrade}
         onSubmit={onSubmit}
       />
       <RankingPreview myTopRestaurants={myTopRestaurants} />

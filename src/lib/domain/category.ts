@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { Category, SceneTag } from '@/types/restaurant';
+import type { RatingContext } from '@/types/rating';
 
 export const CATEGORY_STYLE: Record<Category, string> = {
   한식: 'bg-palette-red-subtle text-palette-red',
@@ -55,7 +56,20 @@ export const CATEGORIES: Array<Category | 'all'> = [
   '기타',
 ];
 
-export const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '다이어트'];
+export const OCCASIONS: SceneTag[] = ['혼밥', '데이트', '회식', '가족', '친구'];
+
+// 상황 태그(한글) → 백엔드 RatingContext enum 매핑 — 리뷰 제출 경계에서 사용
+const SCENE_TAG_TO_RATING_CONTEXT: Record<SceneTag, RatingContext> = {
+  혼밥: 'ALONE',
+  데이트: 'DATE',
+  회식: 'COMPANY',
+  가족: 'FAMILY',
+  친구: 'FRIEND',
+};
+
+export function sceneTagToRatingContext(tag: SceneTag): RatingContext {
+  return SCENE_TAG_TO_RATING_CONTEXT[tag];
+}
 
 export const CATEGORY_ICON: Record<Category | 'all', LucideIcon> = {
   all: LayoutGrid,

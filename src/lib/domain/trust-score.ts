@@ -1,3 +1,8 @@
+// 신뢰도 원시값(0.0~1.0)을 화면용 소수점 1자리 백분율로 변환 — 부동소수점 오차 방지를 위해 정수가 아닌 1자리까지만 반올림
+export function toTrustPercent(raw: number): number {
+  return Math.round(raw * 1000) / 10;
+}
+
 type TrustTone = 'high' | 'mid' | 'danger';
 
 function getTrustTone(score: number): TrustTone {

@@ -5,7 +5,7 @@ import { mockRankList } from '@/data/mock-restaurant';
 import { BackHeader } from '@/components/common/layout/back-header';
 import { ReviewWriteForm } from '@/components/features/review-write/index';
 import type { ReviewDraft, SelectedRestaurant } from '@/components/features/review-write/stores/review-write-store';
-import { MOCK_GRADE_CONTEXT } from '@/data/mock-review-config';
+import { getMyProfile } from '@/api/user/user';
 
 export default async function ReviewWritePage({
   params,
@@ -17,6 +17,9 @@ export default async function ReviewWritePage({
   const [{ id }, { mode }] = await Promise.all([params, searchParams]);
   const detail = getRestaurantDetail(id);
   if (!detail) notFound();
+
+  const profile = await getMyProfile();
+  if (!profile) notFound();
 
   const myTopRestaurants = [...mockRankList]
     .sort((a, b) => b.avgScore - a.avgScore)
@@ -30,6 +33,11 @@ export default async function ReviewWritePage({
     imageUrl: detail.photos[0],
     subtitle: detail.address,
     visitCount: detail.myReview?.visits.length ?? 0,
+    // Fix: 상세가 아직 mock이라 실 Kakao apiPlaceId가 없음 — Day 4(/restaurant/[id] 마이그)에서 실 값으로 교체
+    apiPlaceId: Number(detail.id),
+    latitude: detail.coordinates.lat,
+    longitude: detail.coordinates.lng,
+    address: detail.address,
   };
 
   const latest = detail.myReview?.visits[0];
@@ -53,7 +61,7 @@ export default async function ReviewWritePage({
         initialDraft={initialDraft}
         candidates={mockRankList}
         myTopRestaurants={myTopRestaurants}
-        gradeContext={MOCK_GRADE_CONTEXT}
+        profile={profile}
       />
     </>
   );

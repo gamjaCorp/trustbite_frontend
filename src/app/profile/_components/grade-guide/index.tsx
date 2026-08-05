@@ -1,6 +1,7 @@
 import type { MyProfileResponse } from '@/types/user';
 import type { Grade } from '@/types/grade';
 import { mergeGradeLadder } from '@/lib/domain/grade-levels';
+import { toTrustPercent } from '@/lib/domain/trust-score';
 import { AllGradesTimeline } from './all-grades-timeline';
 import { CurrentGradePanel } from './current-grade-panel';
 import { GradeTipBanner } from './grade-tip-banner';
@@ -15,7 +16,7 @@ interface Props {
 export function GradeGuideCard({ profile, grades }: Props) {
   const mergedGrades = mergeGradeLadder(grades);
   const myGradeData = mergedGrades.find((grade) => grade.name === profile.grade);
-  const trustScore = Math.round(profile.trustScore * 100);
+  const trustScore = toTrustPercent(profile.trustScore);
 
   if (!myGradeData) {
     return (

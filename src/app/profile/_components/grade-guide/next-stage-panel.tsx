@@ -69,7 +69,7 @@ export function NextStagePanel({ myGradeData, mergedGrades, reviewCount, trustSc
         <MetricProgressBlock
           icon={ShieldCheck}
           iconClassName="text-palette-green"
-          label={`신뢰도 ${next.trustMin}%`}
+          label={`목표 신뢰도 ${next.trustMin}%`}
           met={progress.trustMet}
           remaining={`${trustRemaining}%P 남음`}
           progressValue={progress.trustPct}

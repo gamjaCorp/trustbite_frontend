@@ -11,14 +11,16 @@ import ReviewWriteProvider, {
   useReviewActions,
   useReviewIsEditMode,
   useReviewPhotos,
+  useReviewRating,
+  useReviewSceneTags,
   useReviewText,
   useSelectedRestaurant,
 } from './stores/review-write-store';
 import { buildReviewSnapshot } from './lib/build-review-snapshot';
 import type { RegionalRankEntry } from '@/types/restaurant';
-import type { GradeContext } from './lib/grade-context';
+import type { RatingRequest } from '@/types/rating';
+import { sceneTagToRatingContext } from '@/lib/domain/category';
 import { ReviewResultDialog } from './review-result/index';
-
 import { FieldGroup } from './fields/field-group';
 import { TargetRestaurantCard } from './fields/target-restaurant-card';
 import { RestaurantPicker } from './fields/restaurant-picker';
@@ -30,13 +32,16 @@ import { LocationVerifyBanner } from './fields/location-verify-banner';
 import { PreviewSidebar } from './preview/preview-sidebar';
 import { ReviewHint, ReviewCharCount, PhotoHint } from './fields/field-hints';
 import { MobileSubmitBar } from './fields/mobile-submit-bar';
+import { submitReview } from '@/app/review/new/actions';
+import { MyProfileResponse } from '@/types/user';
+import { toTrustPercent } from '@/lib/domain/trust-score';
 
 interface Props {
   initialSelectedRestaurant?: SelectedRestaurant | null;
   initialDraft?: ReviewDraft | null;
   candidates: RegionalRankEntry[];
   myTopRestaurants: RegionalRankEntry[];
-  gradeContext: GradeContext;
+  profile: MyProfileResponse;
 }
 
 // 리뷰 작성 폼 진입점
@@ -53,28 +58,56 @@ export function ReviewWriteForm({ initialSelectedRestaurant, initialDraft, ...re
 
 type InnerProps = Omit<Props, 'initialSelectedRestaurant' | 'initialDraft'>;
 
-function ReviewWriteFormInner({ candidates, myTopRestaurants, gradeContext }: InnerProps) {
-  const { baseTrustScore, nextGradeName, remainingReviewsForNextGrade } = gradeContext;
-
+function ReviewWriteFormInner({ myTopRestaurants, profile }: InnerProps) {
+  const { nextGrade, needCount } = profile;
+  // trustScore는 0.0~1.0 — 화면은 0~100 스케일이라 변환 필요 (week-4-issues.md 함정)
+  const baseTrustScore = toTrustPercent(profile.trustScore);
   const router = useRouter();
   const selected = useSelectedRestaurant();
   const { reset } = useReviewActions();
   const photos = useReviewPhotos();
   const text = useReviewText();
+
+  const taste = useReviewRating('taste');
+  const value = useReviewRating('value');
+  const vibe = useReviewRating('vibe');
+
+  const sceneTags = useReviewSceneTags();
   const isEditMode = useReviewIsEditMode();
   const isPicking = selected === null;
 
   const [resultSnapshot, setResultSnapshot] = useState<ReviewResultSnapshot | null>(null);
   const [resultOpen, setResultOpen] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selected) return;
+
+    // Fix: photoUrls·revisit·locationVerified는 사진 업로드·재방문 입력·위치 인증 미도입으로 고정값 유지
+    const request: RatingRequest = {
+      apiPlaceId: selected.apiPlaceId,
+      address: selected.address,
+      name: selected.name,
+      latitude: selected.latitude,
+      longitude: selected.longitude,
+      taste,
+      price: value,
+      mood: vibe,
+      revisit: false,
+      ratingContextList: sceneTags.map(sceneTagToRatingContext),
+      locationVerified: false,
+      comment: text,
+      photoUrls: [],
+    };
+    const rating = await submitReview(request);
+
     const snapshot = buildReviewSnapshot({
       selected,
       photoCount: photos.length,
       text,
-      gradeContext,
+      rating,
+      previousTrustScore: baseTrustScore,
     });
+
     setResultSnapshot(snapshot);
     setResultOpen(true);
   };
@@ -102,14 +135,16 @@ function ReviewWriteFormInner({ candidates, myTopRestaurants, gradeContext }: In
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6">
           <section className="space-y-5">
+            {/* 가게 선택 */}
             <FieldGroup
               label="가게"
               hint={isPicking ? '다녀온 음식점을 선택해주세요' : undefined}
               required
             >
-              {isPicking ? <RestaurantPicker candidates={candidates} /> : <TargetRestaurantCard />}
+              {isPicking ? <RestaurantPicker /> : <TargetRestaurantCard />}
             </FieldGroup>
 
+            {/* 평가 */}
             <DimmedWhilePicking dimmed={isPicking}>
               <FieldGroup label="평가" hint="항목별로 선택" required>
                 <RatingFields />
@@ -131,12 +166,13 @@ function ReviewWriteFormInner({ candidates, myTopRestaurants, gradeContext }: In
             </DimmedWhilePicking>
           </section>
 
+          {/* 미리보기 */}
           <DimmedWhilePicking dimmed={isPicking}>
             <PreviewSidebar
               myTopRestaurants={myTopRestaurants}
               baseScore={baseTrustScore}
-              remainingReviewsForNextGrade={remainingReviewsForNextGrade}
-              nextGradeName={nextGradeName}
+              remainingReviewsForNextGrade={needCount}
+              nextGrade={nextGrade}
               onSubmit={handleSubmit}
             />
           </DimmedWhilePicking>

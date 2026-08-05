@@ -31,7 +31,7 @@ export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - t, 3);
-        setDisplayScore(Math.round(start + (end - start) * eased));
+        setDisplayScore(Math.round((start + (end - start) * eased) * 10) / 10);
         if (t < 1) requestAnimationFrame(animate);
       };
 
@@ -51,9 +51,12 @@ export function TrustScoreChangeCard({ baseTrustScore, nextTrustScore, breakdown
       </div>
 
       <div className="flex items-baseline gap-2">
-        <span className="text-label-1 text-muted-foreground line-through">{baseTrustScore}%</span>
+        <span className="text-muted-foreground line-through">
+          <span className="text-headline-2">{formatDelta(baseTrustScore)}</span>
+          <span className="text-label-1">%</span>
+        </span>
         <span className={cn('text-display-1 text-success')}>
-          {displayScore}
+          {formatDelta(displayScore)}
           <span className="text-headline-1">%</span>
         </span>
       </div>

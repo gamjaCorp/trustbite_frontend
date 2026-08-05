@@ -84,7 +84,7 @@ const COMMENTS = [
   '특별한 날 찾게 되는 나만의 맛집',
 ];
 
-const SCENE_TAGS: SceneTag[] = ['데이트', '회식', '혼밥', '다이어트'];
+const SCENE_TAGS: SceneTag[] = ['데이트', '회식', '혼밥', '가족', '친구'];
 const VISIT_STATUSES: VisitStatus[] = ['none', 'none', 'none', 'visited', 'reviewed'];
 
 export function synthesizeEntry(place: KakaoPlace, index: number): RegionalRankEntry {

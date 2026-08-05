@@ -56,10 +56,10 @@ export function ReviewResultDialog({ open, snapshot, onWriteMore, onViewMyReview
           <ContributionChecklist breakdown={snapshot.breakdown} photoCount={snapshot.photoCount} />
 
           <GradeProgressCard
-            currentLevel={snapshot.currentLevel}
+            grade={snapshot.grade}
             currentGradeReviewCount={snapshot.currentGradeReviewCount}
             currentGradeReviewTarget={snapshot.currentGradeReviewTarget}
-            nextGradeName={snapshot.nextGradeName}
+            nextGrade={snapshot.nextGrade}
             remainingReviewsForNextGrade={snapshot.remainingReviewsForNextGrade}
           />
 

@@ -24,11 +24,10 @@ export type ReviewResultSnapshot = {
   nextTrustScore: number;
   breakdown: TrustBreakdown;
   photoCount: number;
-  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시로 number 사용
-  currentLevel: number;
+  grade: string; // 현재 등급 enum 이름 — GradeIcon·라벨 매칭에 사용
   currentGradeReviewCount: number;
   currentGradeReviewTarget: number;
-  nextGradeName: string;
+  nextGrade: string; // 다음 등급 enum 이름
   remainingReviewsForNextGrade: number;
   // TODO: 1차 MVP 제외 — 포인트 시스템(3차 MVP, Week 11)
 };
@@ -41,6 +40,10 @@ export interface SelectedRestaurant {
   imageUrl: string;
   subtitle: string;
   visitCount: number;
+  apiPlaceId: number; // Kakao place id — 리뷰 제출(RatingRequest) 식당 식별에 사용
+  latitude: number;
+  longitude: number;
+  address: string;
 }
 
 interface ReviewPhoto {
