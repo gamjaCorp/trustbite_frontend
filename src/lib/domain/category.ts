@@ -71,6 +71,25 @@ export function sceneTagToRatingContext(tag: SceneTag): RatingContext {
   return SCENE_TAG_TO_RATING_CONTEXT[tag];
 }
 
+// 백엔드 RatingContext enum → 상황 태그(한글) — 후기 조회 경계에서 사용
+const RATING_CONTEXT_TO_SCENE_TAG: Record<RatingContext, SceneTag> = {
+  ALONE: '혼밥',
+  DATE: '데이트',
+  COMPANY: '회식',
+  FAMILY: '가족',
+  FRIEND: '친구',
+};
+
+export function ratingContextToSceneTag(context: RatingContext): SceneTag | undefined {
+  return RATING_CONTEXT_TO_SCENE_TAG[context];
+}
+
+// 백엔드 카테고리 문자열 → 화면 Category. 매핑 실패('분류없음' 등)는 '기타'
+export function toCategory(raw: string | null | undefined): Category {
+  const known = CATEGORIES.find((c) => c !== 'all' && c === raw);
+  return (known as Category) ?? '기타';
+}
+
 export const CATEGORY_ICON: Record<Category | 'all', LucideIcon> = {
   all: LayoutGrid,
   한식: Utensils,

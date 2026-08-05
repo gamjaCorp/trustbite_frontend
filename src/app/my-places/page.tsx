@@ -1,20 +1,34 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { Bookmark, ChevronRight, PencilLine } from 'lucide-react';
+import { ChevronRight, PencilLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StatsStrip } from '@/components/common/display/stats-strip';
+import { GradeCellValue } from '@/components/common/trust/grade-cell-value';
 import { MyPlacesTabs } from './_components';
-import { mockStats5, mockRankList } from '@/data/mock-restaurant';
+import { loadMyRatingsPage } from './_lib/load-my-ratings';
+import { getMyProfile } from '@/api/user/user';
+import { getGrades } from '@/api/grade/grade';
+import { getTrustToneClass, toTrustPercent } from '@/lib/domain/trust-score';
 
 type Props = { searchParams: Promise<{ tab?: string }> };
 
 export default async function MyRestaurantPage({ searchParams }: Props) {
   const { tab } = await searchParams;
   const activeTab = tab === 'wishlist' ? 'wishlist' : 'ranking';
-  const { reviewCount, trustScore } = mockStats5;
-  // Fix: 레벨 필요 — 백엔드 rank 응답 필요, 임시 고정값 사용
-  const level = 3;
-  const levelDef = { label: '맛집 수집가', icon: Bookmark, toneClass: { text: 'text-palette-blue' } };
+
+  const [profile, grades, ratingsPage] = await Promise.all([
+    getMyProfile().catch(() => null),
+    getGrades().catch(() => null),
+    loadMyRatingsPage(0),
+  ]);
+
+  // Lv.N의 N은 등급 사다리 순위 — 로컬 상수가 아니라 서버가 소유한다
+  const gradeRank = grades?.find((g) => g.name === profile?.grade)?.rank;
+
+  // 리뷰 수는 프로필이 원본 — 후기 목록 조회가 실패해도 숫자는 유지된다
+  const reviewCount = profile?.reviewCount ?? ratingsPage.totalElements;
+  // 프로필을 못 불러오면 0%가 아니라 '-' — "신뢰도 없음"과 "신뢰도 0"을 섞지 않는다
+  const trustScore = profile ? toTrustPercent(profile.trustScore) : null;
 
   return (
     <>
@@ -23,22 +37,18 @@ export default async function MyRestaurantPage({ searchParams }: Props) {
           <StatsStrip
             items={[
               { label: '리뷰', value: `${reviewCount}개` },
-              { label: '신뢰도', value: `${trustScore}%`, valueClassName: 'text-primary' },
+              {
+                label: '신뢰도',
+                value: trustScore != null ? `${trustScore}%` : '-',
+                valueClassName: trustScore != null ? getTrustToneClass(trustScore).text : undefined,
+              },
               {
                 label: (
                   <span className="flex items-center gap-0.5">
                     등급 <ChevronRight className="w-3 h-3" />
                   </span>
                 ),
-                value: (
-                  <span className={`flex items-center gap-1.5 ${levelDef.toneClass.text}`}>
-                    <levelDef.icon className="w-5 h-5" />
-                    Lv.{level}
-                    <span className="text-body-2 text-muted-foreground font-normal">
-                      {levelDef.label}
-                    </span>
-                  </span>
-                ),
+                value: <GradeCellValue grade={profile?.grade} rank={gradeRank} />,
                 href: '/profile',
               },
             ]}
@@ -46,7 +56,11 @@ export default async function MyRestaurantPage({ searchParams }: Props) {
         </div>
 
         <Suspense>
-          <MyPlacesTabs initialTab={activeTab} entries={mockRankList} reviewCount={reviewCount} />
+          <MyPlacesTabs
+            initialTab={activeTab}
+            entries={ratingsPage.entries}
+            hasMore={!ratingsPage.last}
+          />
         </Suspense>
       </div>
 

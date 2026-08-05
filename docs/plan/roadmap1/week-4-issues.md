@@ -16,3 +16,10 @@
 - 부모 라우트(`/profile` vs `/user/[id]`)는 합치지 않는다 — 그 둘은 내용이 실제로 다르다(`/profile`은 설정·계정 화면, `/user/[id]`는 공개 소셜 프로필. 공유 표면은 `ProfileHeaderCard` 하나뿐). 부모는 내용이 달라서 갈린 것이고 follows는 내용이 같은데 갈려 있었다 — 판단 기준은 "URL 계층"이 아니라 "렌더하는 내용이 같은가".
 - `features/follow/`는 잔류. `FollowToggleButton`을 `/user/[id]`의 `user-profile-header`·`locked-rankings-section`이 쓰고 있어 여전히 2개 라우트 공유라 콜로케이션 강등 대상이 아니다.
 - `FollowListView`의 `subjectName?: string`이 optional이라 `mode="other"`인데 이름이 없으면 `"undefined님의 팔로워"`가 렌더될 수 있었다 → 판별 유니온(`{ mode: 'self'; subjectName?: never } | { mode: 'other'; subjectName: string }`)으로 타입 차단. Storybook 두 파일이 존재하지 않는 `/profile/followers`를 href 예시로 쓰던 것도 함께 정정.
+- **[백엔드 요청] 유저 후기 목록을 가게 단위로 묶어달라.** `GET /api/ratings/user/{userId}`가 후기 1건 = 1행이라 재방문 리뷰가 있으면 "나의 랭킹"에 같은 가게가 여러 줄로 나온다. 프론트에서 묶으면 페이지 경계를 넘는 중복 제거가 불완전해 반쪽짜리라, 백엔드에서 가게 단위 집계(방문 횟수·평균 점수·최근 방문일 + 그 가게의 리뷰 목록)로 내려주는 게 맞다. 그때까지는 받은 그대로 전량 표시.
+- **[백엔드 요청] `UserRatingResponse`에 `category`·`address`·`thumbnailUrl` 추가.** 현재 가게 정보가 `restaurantId`·`restaurantName`뿐이라, 카드 한 줄(카테고리 배지·지역)을 그리려고 등장하는 가게 수만큼 `GET /api/restaurants/{id}`를 추가 호출한다. 엔티티엔 이미 있는 값들이다.
+- `/api/ratings/**`가 API_SPEC상 "인증 불필요"로 적혀 있으나 `SecurityConfig` permitAll 목록에 없어 실제로는 401이 떨어진다. 컨트롤러의 `@SecurityRequirements`는 Swagger 문서용이라 Spring Security에 영향이 없다 — 프론트는 `authedFetch`로 우회 중. 백엔드에서 문서/설정 중 하나로 정리 필요.
+- 가게 상세(`GET /api/restaurants/{id}`)에 썸네일이 없다(`thumbnailUrl`은 목록 응답에만) — 나의 랭킹 카드 이미지 자리는 빈 값 폴백.
+- rating 목록 API가 정렬을 지원하지 않는다(`PageRequest.of(page, size)`라 `?sort=`가 무시됨) — 순서가 DB 임의다. 화면에서 정렬하지만 페이지네이션과 결합되면 "첫 페이지가 최신"이 보장되지 않는다.
+- `visitCount`("N번째 방문")를 백엔드가 주지 않아 로드된 목록 안에서 계산한다 — 페이지 경계를 넘으면 부정확. 위 가게 단위 집계 요청이 반영되면 해소된다.
+- `RegionalRankEntry.id`는 가게 id를 유지해야 카드 링크·"수정" 경로가 맞는데, 후기 1건 = 1행이면 재방문 시 id가 중복돼 React key로 못 쓴다 → `ratingId?`를 optional로 추가해 행 key 전용으로 사용.

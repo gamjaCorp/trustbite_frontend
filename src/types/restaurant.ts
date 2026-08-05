@@ -63,6 +63,8 @@ export interface TrustBreakdown {
 
 /** 지역 랭킹 탭 — 커뮤니티 데이터 + 방문 상태 포함 (필수) */
 export type RegionalRankEntry = MyRestaurantEntry & {
+  // 후기 1건 = 1행인 목록(내 랭킹)에서 행 key로 쓴다. id는 가게 id라 재방문 시 중복되기 때문
+  ratingId?: number;
   communityAvgScore: number;
   reviewCount: number;
   myStatus: VisitStatus;
@@ -79,6 +81,22 @@ export type RegionalRankEntry = MyRestaurantEntry & {
   categoryGroupName?: string;
   categoryPath?: string;
 };
+
+/** 가게 상세 — GET /api/restaurants/{id} 응답 (썸네일 없음: 목록 API에만 존재) */
+export interface RestaurantDetailResponse {
+  restaurantId: number;
+  apiPlaceId: number;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  weightedScore: number | null; // 리뷰어 trustScore가 없으면 null
+  reliabilityRate: number | null;
+  ratingCount: number | null;
+  category: string; // 매핑 실패 시 '분류없음'
+  trustScore: number | null; // 0~100, 리뷰 없으면 null
+  trustBreakdown: TrustBreakdown | null;
+}
 
 export type SortKey = 'score' | 'recent';
 

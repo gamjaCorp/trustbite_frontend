@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ import MyRankFilterProvider, {
   useMyRankSort,
 } from '../_lib/my-rank-filter-store';
 import { RankFilterBar } from './rank-filter-bar';
+import { loadMoreMyRatings } from '../actions';
 
 const SORT_ITEMS = [
   { value: 'score', label: '점수순' },
@@ -24,24 +25,40 @@ const SORT_ITEMS = [
 ];
 
 interface Props {
-  entries: RegionalRankEntry[];
+  initialEntries: RegionalRankEntry[];
+  initialHasMore: boolean;
 }
 
 // my-places 전체 랭킹 — Provider로 필터 스토어를 서브트리에 제공
-export function RestaurantRankList({ entries }: Props) {
+export function RestaurantRankList({ initialEntries, initialHasMore }: Props) {
   return (
     <MyRankFilterProvider>
-      <RestaurantRankListView entries={entries} />
+      <RestaurantRankListView initialEntries={initialEntries} initialHasMore={initialHasMore} />
     </MyRankFilterProvider>
   );
 }
 
 // 렌더링 전담 — 필터 상태는 store hook으로 직접 구독
-function RestaurantRankListView({ entries }: Props) {
+function RestaurantRankListView({ initialEntries, initialHasMore }: Props) {
   const sort = useMyRankSort();
   const category = useMyRankCategory();
   const region = useMyRankRegion();
   const action = useMyRankFilterActions();
+
+  // 서버가 준 첫 페이지에 "더보기"로 받은 다음 페이지들을 이어붙인다
+  const [entries, setEntries] = useState(initialEntries);
+  const [nextPage, setNextPage] = useState(1);
+  const [hasMore, setHasMore] = useState(initialHasMore);
+  const [isPending, startTransition] = useTransition();
+
+  const handleLoadMore = () => {
+    startTransition(async () => {
+      const result = await loadMoreMyRatings(nextPage);
+      setEntries((prev) => [...prev, ...result.entries]);
+      setNextPage((p) => p + 1);
+      setHasMore(!result.last);
+    });
+  };
 
   const reviewedCount = useMemo(
     () => entries.filter((e) => e.myStatus === 'reviewed').length,
@@ -71,7 +88,7 @@ function RestaurantRankListView({ entries }: Props) {
       {/* 섹션 헤더 */}
       <SectionHeader
         title="전체 랭킹"
-        subtitle={`내가 쓴 리뷰 ${reviewedCount}개 · ${entries.length}곳 방문`}
+        subtitle={`내가 쓴 리뷰 ${reviewedCount}개 · ${new Set(entries.map((e) => e.id)).size}곳 방문`}
         className="px-1"
         rightAction={
           <>
@@ -110,14 +127,29 @@ function RestaurantRankListView({ entries }: Props) {
           }
         />
       ) : (
-        <DividedList
-          items={filteredList}
-          keyFn={(e) => e.id}
-          listClassName="mt-6 border-b border-border"
-          renderItem={(entry, i) => (
-            <PlaceListRow variant="my" data={toPlaceListRowData({ ...entry, rank: i + 1 })} />
+        <>
+          <DividedList
+            items={filteredList}
+            keyFn={(e) => (e.ratingId != null ? String(e.ratingId) : e.id)}
+            listClassName="mt-6 border-b border-border"
+            renderItem={(entry, i) => (
+              <PlaceListRow variant="my" data={toPlaceListRowData({ ...entry, rank: i + 1 })} />
+            )}
+          />
+
+          {hasMore && (
+            <div className="mt-6 flex justify-center">
+              <Button
+                variant="outline"
+                className="rounded-chip"
+                onClick={handleLoadMore}
+                disabled={isPending}
+              >
+                {isPending ? '불러오는 중…' : '더보기'}
+              </Button>
+            </div>
           )}
-        />
+        </>
       )}
     </div>
   );
