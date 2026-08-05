@@ -30,7 +30,7 @@ TrustBite — 신뢰도 기반 맛집 지도 서비스. 프로젝트 컨벤션�
 - [ ] mutation 성공/실패 시 `sonner` toast 피드백이 있는가?
 - [ ] 입력 폼은 `react-hook-form` + `zod` + `@hookform/resolvers/zod` + shadcn `Form` 패턴을 사용했는가?
 - [ ] zod 스키마가 `src/lib/types/<feature>/schema.ts`에 위치하고 한국어 에러 메시지를 포함하는가?
-- [ ] 다단계 폼(`/review/new` 등)은 Zustand store(상태·단계 전이) + RHF(필드 검증) hybrid 분리가 명확한가?
+- [ ] 다단계 폼(`/review` 등)은 Zustand store(상태·단계 전이) + RHF(필드 검증) hybrid 분리가 명확한가?
 
 ### 2. 아키텍처 & 폴더 규칙 (Architecture & Structure)
 - [ ] 컴포넌트 재사용 우선순위를 따랐는가? `core/` → `ui/` → 신규 생성

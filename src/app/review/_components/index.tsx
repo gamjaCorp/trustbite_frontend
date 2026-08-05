@@ -15,8 +15,8 @@ import ReviewWriteProvider, {
   useReviewSceneTags,
   useReviewText,
   useSelectedRestaurant,
-} from './stores/review-write-store';
-import { buildReviewSnapshot } from './lib/build-review-snapshot';
+} from '@/app/review/_lib/review-write-store';
+import { buildReviewSnapshot } from '@/app/review/_lib/build-review-snapshot';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import type { RatingRequest } from '@/types/rating';
 import { sceneTagToRatingContext } from '@/lib/domain/category';
@@ -32,14 +32,13 @@ import { LocationVerifyBanner } from './fields/location-verify-banner';
 import { PreviewSidebar } from './preview/preview-sidebar';
 import { ReviewHint, ReviewCharCount, PhotoHint } from './fields/field-hints';
 import { MobileSubmitBar } from './fields/mobile-submit-bar';
-import { submitReview } from '@/app/review/new/actions';
+import { submitReview } from '@/app/review/actions';
 import { MyProfileResponse } from '@/types/user';
 import { toTrustPercent } from '@/lib/domain/trust-score';
 
 interface Props {
   initialSelectedRestaurant?: SelectedRestaurant | null;
   initialDraft?: ReviewDraft | null;
-  candidates: RegionalRankEntry[];
   myTopRestaurants: RegionalRankEntry[];
   profile: MyProfileResponse;
 }

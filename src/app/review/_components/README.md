@@ -1,7 +1,8 @@
-# review-write feature
+# 리뷰 작성 (`/review`)
 
-리뷰 작성 페이지 (`/review/new`, `/restaurant/[id]/review/new`).  
-두 라우트 모두 `ReviewWriteForm` 진입점 하나를 공유한다.
+리뷰 작성 페이지의 콜로케이션 컴포넌트 묶음.  
+가게 미선택 진입(`/review`)과 특정 가게 진입(`/review?restaurantId=`)을 `ReviewWriteForm` 진입점 하나가 모두 처리한다.  
+스토어·순수 로직·zod 스키마는 라우트 관례에 따라 `../_lib/`에 있다.
 
 ---
 
@@ -17,9 +18,9 @@
 
 ---
 
-## 로직 모듈
+## 로직 모듈 (`../_lib/`)
 
-### `stores/review-write-store.tsx`
+### `review-write-store.tsx`
 
 Zustand + Context 패턴의 feature 전용 store.  
 별점·태그·텍스트·사진을 하나의 store에서 관리하고, selector hook을 통해 컴포넌트에 노출한다.
@@ -45,18 +46,13 @@ Zustand + Context 패턴의 feature 전용 store.
 
 ### `build-review-snapshot.ts`
 
-순수 함수 `buildReviewSnapshot`. store 상태를 받아 `ReviewResultSnapshot`을 계산한다.  
-`computeTrustBreakdown` + `computeNextTrustScore`(`lib/domain/trust-delta`)를 호출하며, UI 의존이 없다.
+순수 함수 `buildReviewSnapshot`. 제출 응답(`RatingResponse`)과 입력 상태를 받아 `ReviewResultSnapshot`을 계산한다.  
+신뢰도·등급 총액은 서버 응답에서 가져오고, 항목별 기여도만 `computeTrustBreakdown` + `computeNextTrustScore`(`lib/domain/trust-delta`)로 로컬 계산한다. UI 의존 없음.
 
 ### `schema.ts`
 
 Zod 스키마 `reviewSchema`. `useReviewIsValid`의 단일 출처.  
 별점은 0.5 단위, 사진은 최대 4장, 텍스트는 제출 필수 아님(100자 이상은 신뢰도 보너스).
-
-### `type/grade-context.ts`
-
-`GradeContext` 인터페이스. 유저 등급·신뢰도 관련 6개 필드를 묶은 타입.  
-page에서 props로 내려오고, `mock-review-config.ts`의 `MOCK_GRADE_CONTEXT`가 현재 목 구현이다.
 
 ---
 
@@ -105,8 +101,8 @@ page에서 props로 내려오고, `mock-review-config.ts`의 `MOCK_GRADE_CONTEXT
 
 ```
 page.tsx (server)
-  └─ MOCK_GRADE_CONTEXT (mock, Day3에 API로 교체)
-  └─ candidates, myTopRestaurants (mock restaurant data)
+  └─ getMyProfile() ── 제출 전 신뢰도·등급 미리보기
+  └─ myTopRestaurants (mock restaurant data — Day5에 API로 교체)
        │
        ▼
 ReviewWriteForm (client boundary)
@@ -116,6 +112,9 @@ ReviewWriteForm (client boundary)
             ├─ PreviewSidebar store read (실시간 미리보기)
             └─ MobileSubmitBar store read
                    │ onSubmit
+                   ▼
+             submitReview (../actions.ts) → POST /api/ratings
+                   │ RatingResponse
                    ▼
              buildReviewSnapshot → ReviewResultSnapshot
                    │

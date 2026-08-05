@@ -6,7 +6,7 @@ import { StoreApi, createStore, useStore } from 'zustand';
 
 import type { Category, SceneTag } from '@/types/restaurant';
 
-import { reviewSchema } from '@/components/features/review-write/schema';
+import { reviewSchema } from './schema';
 import { computeTrustBreakdown, TrustBreakdown } from '@/lib/domain/trust-delta';
 
 export interface ReviewDraft {

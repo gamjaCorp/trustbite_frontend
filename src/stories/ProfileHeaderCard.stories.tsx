@@ -42,8 +42,8 @@ export const Default: Story = {
     title: <span className="text-headline-3">보람</span>,
     followerCount: 124,
     followingCount: 38,
-    followersHref: '/profile/followers',
-    followingHref: '/profile/following',
+    followersHref: '/follow/me?tab=followers',
+    followingHref: '/follow/me?tab=following',
   },
 };
 
@@ -56,8 +56,8 @@ export const WithAvatar: Story = {
     subtitle: '@boram',
     followerCount: 124,
     followingCount: 38,
-    followersHref: '/profile/followers',
-    followingHref: '/profile/following',
+    followersHref: '/follow/me?tab=followers',
+    followingHref: '/follow/me?tab=following',
   },
 };
 
@@ -69,8 +69,8 @@ export const WithBottomRight: Story = {
     subtitle: '@boram',
     followerCount: 124,
     followingCount: 38,
-    followersHref: '/profile/followers',
-    followingHref: '/profile/following',
+    followersHref: '/follow/me?tab=followers',
+    followingHref: '/follow/me?tab=following',
     bottomRight: (
       <button className="text-label-2 text-muted-foreground border border-border rounded-md px-3 py-1.5">
         팔로우
@@ -87,7 +87,7 @@ export const SmallStats: Story = {
     followerCount: 8,
     followingCount: 3,
     followStatsSize: 'sm',
-    followersHref: '/profile/followers',
-    followingHref: '/profile/following',
+    followersHref: '/follow/me?tab=followers',
+    followingHref: '/follow/me?tab=following',
   },
 };

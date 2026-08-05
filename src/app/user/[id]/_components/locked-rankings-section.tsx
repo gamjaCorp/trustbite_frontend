@@ -1,6 +1,6 @@
 import { Lock } from 'lucide-react';
 
-import { FollowToggleButton } from '@/components/features/follow/follow-toggle-button';
+import { FollowToggleButton } from '@/components/common/follow/follow-toggle-button';
 
 interface Props {
   totalCount: number;

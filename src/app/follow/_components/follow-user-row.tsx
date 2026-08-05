@@ -5,7 +5,7 @@ import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
 import type { FollowedUser } from '@/types/follow';
 
-import { FollowToggleButton } from './follow-toggle-button';
+import { FollowToggleButton } from '@/components/common/follow/follow-toggle-button';
 
 interface Props {
   user: FollowedUser;

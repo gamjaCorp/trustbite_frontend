@@ -8,7 +8,7 @@ import {
   useReviewIsEditMode,
   useReviewIsValid,
   useReviewTrustDelta,
-} from '../stores/review-write-store';
+} from '@/app/review/_lib/review-write-store';
 
 interface Props {
   onSubmit: () => void;

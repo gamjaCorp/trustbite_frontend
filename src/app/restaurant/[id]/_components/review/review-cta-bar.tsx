@@ -16,7 +16,7 @@ interface Props {
 export function ReviewCtaBar({ restaurantId, myReview }: Props) {
   const { trigger, dialogProps, isAuthed } = useAuthGatedAction({
     action: () => {},
-    callbackPath: `/restaurant/${restaurantId}/review/new`,
+    callbackPath: `/review?restaurantId=${restaurantId}`,
     description: '로그인하면 리뷰를 쓰고 신뢰도를 쌓을 수 있어요',
   });
   const isRevisit = Boolean(myReview);
@@ -43,7 +43,7 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
 
         {isAuthed ? (
           <Link
-            href={`/restaurant/${restaurantId}/review/new`}
+            href={`/review?restaurantId=${restaurantId}`}
             className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-title-1 text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
           >
             <PencilLine className="w-4 h-4" />

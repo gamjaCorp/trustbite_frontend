@@ -1,5 +1,5 @@
 // 리뷰 제출 시 신뢰도 변화 + 결과 snapshot 구성 — 순수 함수, UI 의존 없음
-import type { ReviewResultSnapshot, SelectedRestaurant } from '../stores/review-write-store';
+import type { ReviewResultSnapshot, SelectedRestaurant } from './review-write-store';
 import { computeTrustBreakdown, computeNextTrustScore } from '@/lib/domain/trust-delta';
 import { toTrustPercent } from '@/lib/domain/trust-score';
 import type { RatingResponse } from '@/types/rating';

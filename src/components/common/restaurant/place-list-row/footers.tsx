@@ -70,7 +70,7 @@ export function MyFooter({
         </div>
         {!ownerName && (
           <Link
-            href={`/restaurant/${id}/review/new?mode=edit`}
+            href={`/review?restaurantId=${id}&mode=edit`}
             className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
           >
             <SquarePen className="w-3 h-3" aria-hidden />
@@ -112,7 +112,7 @@ export function RegionalFooter({
       </button>
       {!minimal && myStatus === 'reviewed' ? (
         <Link
-          href={`/restaurant/${id}/review/new`}
+          href={`/review?restaurantId=${id}`}
           onClick={(e) => e.stopPropagation()}
           className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
         >
@@ -121,7 +121,7 @@ export function RegionalFooter({
         </Link>
       ) : (
         <Link
-          href="/review/new"
+          href="/review"
           onClick={(e) => e.stopPropagation()}
           className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
         >
@@ -168,7 +168,7 @@ export function WishlistFooter({
         )}
       </div>
       <Link
-        href="/review/new"
+        href="/review"
         className="inline-flex items-center gap-1 text-caption-1 text-primary hover:underline shrink-0"
       >
         <PencilLine className="w-3 h-3" aria-hidden />

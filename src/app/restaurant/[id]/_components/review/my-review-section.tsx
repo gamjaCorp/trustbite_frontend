@@ -38,7 +38,7 @@ function MyReviewVisit({
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleEdit = () => {
-    router.push(`/restaurant/${restaurantId}/review/new?mode=edit`);
+    router.push(`/review?restaurantId=${restaurantId}&mode=edit`);
   };
 
   return (

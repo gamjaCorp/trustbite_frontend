@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { Surface } from '@/components/common/display/surface';
 import { RankMedal } from '@/components/common/display/rank-medal';
 import { ScoreStars } from '@/components/common/display/score-stars';
-import { useReviewAvgScore, useSelectedRestaurant } from '../stores/review-write-store';
+import { useReviewAvgScore, useSelectedRestaurant } from '@/app/review/_lib/review-write-store';
 import type { RegionalRankEntry } from '@/types/restaurant';
 
 interface Props {

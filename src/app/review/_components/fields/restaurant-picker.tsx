@@ -10,7 +10,7 @@ import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-t
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { mapCategory } from '@/lib/mock/synthesize-restaurant';
 import { searchPlacesByKeyword, type KakaoPlace } from '@/api/kakao/kakao-local';
-import { useReviewActions } from '../stores/review-write-store';
+import { useReviewActions } from '@/app/review/_lib/review-write-store';
 
 // 리뷰 작성 음식점 검색 및 선택 — Kakao Local 실검색(위치 무관 전국 검색)
 export function RestaurantPicker() {

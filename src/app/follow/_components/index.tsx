@@ -7,15 +7,17 @@ import { FollowTabs } from './follow-tabs';
 import { FollowUserRow } from './follow-user-row';
 import { PageResponse } from '@/types/common';
 
-interface Props {
-  mode: 'self' | 'other';
-  subjectName?: string;
+interface BaseProps {
   initialTab: FollowTabKey;
   basePath: string;
   list: PageResponse<FollowedUser>; // 현재 탭(initialTab)의 목록
   followersCount: number;
   followingCount: number;
 }
+
+// mode='other'일 때만 subjectName이 필요하다 — 판별 유니온으로 누락 시 타입 에러
+type Props = BaseProps &
+  ({ mode: 'self'; subjectName?: never } | { mode: 'other'; subjectName: string });
 
 // 팔로워·팔로잉 목록 뷰 — self/other 모드로 탭 전환 제공
 export async function FollowListView({

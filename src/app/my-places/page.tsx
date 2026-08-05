@@ -54,7 +54,7 @@ export default async function MyRestaurantPage({ searchParams }: Props) {
         asChild
         className="fixed bottom-8 right-8 rounded-chip gap-2 shadow-lg px-5 py-3 h-auto"
       >
-        <Link href="/review/new">
+        <Link href="/review">
           <PencilLine className="w-4 h-4" />
           리뷰 쓰기
         </Link>

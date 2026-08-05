@@ -1,24 +1,73 @@
-import { mockRankList } from '@/data/mock-restaurant';
-import { ReviewWriteForm } from '@/components/features/review-write/index';
-import { getMyProfile } from '@/api/user/user';
 import { notFound } from 'next/navigation';
 
-// 리뷰 작성 페이지
-export default async function NewReviewPage() {
-  const myTopRestaurants = [...mockRankList].sort((a, b) => b.avgScore - a.avgScore).slice(0, 10);
+import { mockRankList } from '@/data/mock-restaurant';
+import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
+import { BackHeader } from '@/components/common/layout/back-header';
+import { ReviewWriteForm } from './_components/index';
+import type {
+  ReviewDraft,
+  SelectedRestaurant,
+} from './_lib/review-write-store';
+import { getMyProfile } from '@/api/user/user';
+
+// 리뷰 작성 페이지 — restaurantId가 있으면 해당 가게로 시작, 없으면 가게 검색부터
+export default async function NewReviewPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ restaurantId?: string; mode?: string }>;
+}) {
+  const { restaurantId, mode } = await searchParams;
 
   const profile = await getMyProfile();
+  if (!profile) notFound();
 
-  console.log(profile);
-  if (!profile) {
-    notFound();
+  const myTopRestaurants = [...mockRankList].sort((a, b) => b.avgScore - a.avgScore).slice(0, 5);
+
+  // 가게 미지정 진입 — 폼이 가게 검색(picker) 모드로 시작한다
+  if (!restaurantId) {
+    return <ReviewWriteForm myTopRestaurants={myTopRestaurants} profile={profile} />;
   }
 
+  const detail = getRestaurantDetail(restaurantId);
+  if (!detail) notFound();
+
+  const initialSelectedRestaurant: SelectedRestaurant = {
+    id: detail.id,
+    name: detail.name,
+    category: detail.category,
+    region: detail.address,
+    imageUrl: detail.photos[0],
+    subtitle: detail.address,
+    visitCount: detail.myReview?.visits.length ?? 0,
+    // Fix: 상세가 아직 mock이라 실 Kakao apiPlaceId가 없음 — Day 4(/restaurant/[id] 마이그)에서 실 값으로 교체
+    apiPlaceId: Number(detail.id),
+    latitude: detail.coordinates.lat,
+    longitude: detail.coordinates.lng,
+    address: detail.address,
+  };
+
+  const latest = detail.myReview?.visits[0];
+  const initialDraft: ReviewDraft | null =
+    mode === 'edit' && latest
+      ? {
+          taste: latest.scores.taste,
+          value: latest.scores.value,
+          vibe: latest.scores.vibe,
+          sceneTags: latest.sceneTags,
+          text: latest.content,
+          photos: (latest.photos ?? []).map((url) => ({ previewUrl: url })),
+        }
+      : null;
+
   return (
-    <ReviewWriteForm
-      candidates={mockRankList}
-      myTopRestaurants={myTopRestaurants}
-      profile={profile}
-    />
+    <>
+      <BackHeader />
+      <ReviewWriteForm
+        initialSelectedRestaurant={initialSelectedRestaurant}
+        initialDraft={initialDraft}
+        myTopRestaurants={myTopRestaurants}
+        profile={profile}
+      />
+    </>
   );
 }

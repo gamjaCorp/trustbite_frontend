@@ -31,8 +31,8 @@ export function ProfileSummaryCard({ profile, sessionName, sessionImage }: Props
       rightAction={<EditProfileButton profile={profile} />}
       followerCount={profile.followerCount}
       followingCount={profile.followingCount}
-      followersHref="/profile/follows?tab=followers"
-      followingHref="/profile/follows?tab=following"
+      followersHref="/follow/me?tab=followers"
+      followingHref="/follow/me?tab=following"
       bottomRight={
         <Link
           href="/my-places"

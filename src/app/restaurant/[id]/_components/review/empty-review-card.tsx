@@ -25,7 +25,7 @@ export function EmptyReviewCard({ restaurantId }: Props) {
           }
           cta={
             <Button asChild className="rounded-chip">
-              <Link href={`/restaurant/${restaurantId}/review/new`}>첫 리뷰 쓰기</Link>
+              <Link href={`/review?restaurantId=${restaurantId}`}>첫 리뷰 쓰기</Link>
             </Button>
           }
           className="py-12"

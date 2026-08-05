@@ -10,7 +10,7 @@ export async function toggleFollow(targetUserId: number, isFollowing: boolean) {
     await postFollow(targetUserId);
   }
   revalidatePath('/profile');
-  revalidatePath('/profile/follows');
+  revalidatePath('/follow/me');
   revalidatePath(`/user/${targetUserId}`);
-  revalidatePath(`/user/${targetUserId}/follows`);
+  revalidatePath(`/follow/${targetUserId}`);
 }

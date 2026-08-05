@@ -52,9 +52,9 @@
 
 | 항목 | 파일 | MVP 단계 |
 |---|---|---|
-| 포인트 적립 칩 (+5P / +3P / +2P) | `features/review-write/trust-delta-card.tsx` | 3차 |
-| 위치 인증 배너 | `features/review-write/location-verify-banner.tsx` | 2차 |
-| 리뷰 결과 포인트 항목 | `features/review-result/review-result-dialog.tsx` | 3차 |
+| 포인트 적립 칩 (+5P / +3P / +2P) | `app/review/_components/preview/trust-delta-card.tsx` | 3차 |
+| 위치 인증 배너 | `app/review/_components/fields/location-verify-banner.tsx` | 2차 |
+| 리뷰 결과 포인트 항목 | `app/review/_components/review-result/index.tsx` | 3차 |
 
 ---
 
@@ -70,7 +70,7 @@
 | Wishlist mock data | `data/mock-wishlist.ts` | 백엔드 wishlist API 연결 시 |
 | Helpful vote mock store | `stores/helpful-mock-store.tsx` | 2차 MVP |
 | My profile mock store | `stores/my-profile-mock-store.tsx` | 백엔드 프로필 API 연동 시 |
-| Review write store 포인트 로직 | `stores/review-write-store.tsx` | 3차 MVP (W11) |
+| Review write store 포인트 로직 | `app/review/_lib/review-write-store.tsx` | 3차 MVP (W11) |
 | Delete review dialog mutation | `features/restaurant/review/delete-review-dialog.tsx` | 백엔드 API 연동 시 |
 
 ---

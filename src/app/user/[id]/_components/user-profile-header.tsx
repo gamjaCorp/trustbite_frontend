@@ -1,7 +1,7 @@
 import { ProfileHeaderCard } from '@/components/common/profile/profile-header-card';
 import { UserGradeMark } from '@/components/common/trust/user-grade-mark';
 import { UserAvatar } from '@/components/core/user-avatar';
-import { FollowToggleButton } from '@/components/features/follow/follow-toggle-button';
+import { FollowToggleButton } from '@/components/common/follow/follow-toggle-button';
 import type { UserProfile, MutualFollowing } from '@/types/user';
 
 interface Props {
@@ -37,8 +37,8 @@ export function UserProfileHeader({ profile }: Props) {
       followerCount={profile.followerCount}
       followingCount={profile.followingCount}
       followStatsSize="md"
-      followersHref={`/user/${profile.userId}/follows?tab=followers`}
-      followingHref={`/user/${profile.userId}/follows?tab=following`}
+      followersHref={`/follow/${profile.userId}?tab=followers`}
+      followingHref={`/follow/${profile.userId}?tab=following`}
       bottomRight={
         hasMutualFollowing ? (
           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
