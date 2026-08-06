@@ -254,7 +254,7 @@ export function TasteProfileSection({ entries, subjectName, aiPersonaText, revie
               <Sparkles className="w-4 h-4" />
               AI 미식 성향 분석
             </p>
-            <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-caption-2 text-secondary-foreground">준비 중</span>
+            <span className="inline-flex items-center rounded-chip bg-muted px-2 py-0.5 text-caption-2 text-secondary-foreground">준비 중</span>
           </div>
           <div className="opacity-35 space-y-1.5">
             <p className="text-body-2 text-foreground leading-relaxed">

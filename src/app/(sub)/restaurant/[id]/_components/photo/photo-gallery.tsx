@@ -30,10 +30,7 @@ export function PhotoGallery({ photos, totalCount }: Props) {
     <div className="relative px-6 pt-6">
       {hasPhotos ? (
         <div className="grid grid-cols-3 grid-rows-2 gap-1.5 h-[220px] sm:h-[240px] rounded-2xl overflow-hidden">
-          <div
-            className="relative row-span-2 col-span-1 cursor-pointer"
-            onClick={() => openAt(0)}
-          >
+          <div className="relative row-span-2 col-span-1 cursor-pointer" onClick={() => openAt(0)}>
             {main ? (
               <Image
                 src={main}
@@ -51,11 +48,7 @@ export function PhotoGallery({ photos, totalCount }: Props) {
           </div>
 
           {thumbs.map((src, i) => (
-            <div
-              key={src}
-              className="relative cursor-pointer"
-              onClick={() => openAt(i + 1)}
-            >
+            <div key={src} className="relative cursor-pointer" onClick={() => openAt(i + 1)}>
               <Image
                 src={src}
                 alt={`사진 ${i + 2}`}
@@ -77,7 +70,7 @@ export function PhotoGallery({ photos, totalCount }: Props) {
         size="xs"
         onClick={() => hasPhotos && openAt(0)}
         disabled={!hasPhotos}
-        className="absolute bottom-3 right-8 gap-1.5 rounded-chip bg-background/90 text-foreground ring-1 ring-border backdrop-blur hover:bg-background"
+        className="absolute bottom-3 right-8 gap-1.5 bg-background/90 text-foreground ring-1 ring-border backdrop-blur hover:bg-background"
       >
         <LayoutGrid className="w-3.5 h-3.5" />
         사진 {totalCount}장 모두 보기

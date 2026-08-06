@@ -90,7 +90,7 @@ export function LocationSection({ detail }: Props) {
 
           <div className="mt-auto pt-3 flex items-center gap-2 self-end">
             {detail.placeUrl && (
-              <Button asChild variant="outline" size="sm" className="rounded-chip gap-1.5">
+              <Button asChild variant="outline" size="sm" className="gap-1.5">
                 <a href={detail.placeUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="w-4 h-4" />
                   카카오맵
@@ -98,7 +98,7 @@ export function LocationSection({ detail }: Props) {
               </Button>
             )}
             {displayAddress && (
-              <Button type="button" variant="outline" size="sm" onClick={handleCopy} className="rounded-chip gap-1.5">
+              <Button type="button" variant="outline" size="sm" onClick={handleCopy} className="gap-1.5">
                 <Copy className="w-4 h-4" />
                 복사
               </Button>

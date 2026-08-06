@@ -102,7 +102,7 @@ export function IntroCard() {
         검증된 리뷰어의 평가일수록 점수에 더 크게 반영돼요
       </p>
       <div className="flex justify-center">
-        <Button size="sm" onClick={handleCta} className="rounded-full px-6 font-bold">
+        <Button size="sm" onClick={handleCta} className="px-6 font-bold">
           둘러볼래요
         </Button>
       </div>

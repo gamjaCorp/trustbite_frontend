@@ -11,7 +11,7 @@ export function RegionRankEmpty() {
       title="이 지역엔 맛집이 없어요"
       description="지도를 옮기거나 다른 검색어·필터로 다시 시도해보세요."
       cta={
-        <Button className="gap-1.5 rounded-chip">
+        <Button className="gap-1.5">
           <Plus className="w-4 h-4" />새 맛집 추가하기
         </Button>
       }

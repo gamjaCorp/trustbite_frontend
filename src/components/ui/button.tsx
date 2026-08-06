@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { Spinner } from '@/components/ui/spinner';
 
 const buttonVariants = cva(
-  "press-scale relative inline-flex shrink-0 items-center justify-center gap-2 rounded-xl text-title-3 whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:not-data-loading:border-transparent disabled:not-data-loading:bg-muted disabled:not-data-loading:text-muted-foreground disabled:not-data-loading:shadow-none aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "press-scale relative inline-flex shrink-0 items-center justify-center gap-2 rounded-lg text-title-3 whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:not-data-loading:border-transparent disabled:not-data-loading:bg-muted disabled:not-data-loading:text-muted-foreground disabled:not-data-loading:shadow-none aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -25,13 +25,13 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline disabled:not-data-loading:bg-transparent',
       },
       size: {
-        default: 'h-10 rounded-lg px-4 text-title-2 has-[>svg]:px-3',
-        xs: "h-8 gap-1 rounded-md px-3 text-label-3 has-[>svg]:px-2 [&_svg:not([class*='size-'])]:size-3",
-        sm: 'h-9 gap-1.5 rounded-lg px-3.5 text-title-3 has-[>svg]:px-3',
+        default: 'h-10 px-4 text-title-2 has-[>svg]:px-3',
+        xs: "h-8 gap-1 rounded-sm px-3 text-label-3 has-[>svg]:px-2 [&_svg:not([class*='size-'])]:size-3",
+        sm: 'h-9 gap-1.5 rounded-md px-3.5 text-title-3 has-[>svg]:px-3',
         lg: 'h-11 px-4 text-title-1 has-[>svg]:px-4',
         icon: 'size-9',
-        'icon-xs': "size-6 rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        'icon-sm': 'size-8 rounded-lg',
+        'icon-xs': "size-6 rounded-sm [&_svg:not([class*='size-'])]:size-3",
+        'icon-sm': 'size-8 rounded-md',
         'icon-lg': 'size-10',
       },
     },

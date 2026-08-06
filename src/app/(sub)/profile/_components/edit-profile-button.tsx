@@ -15,12 +15,7 @@ export function EditProfileButton({ profile }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <Button
-        variant="outline"
-        size="sm"
-        className="rounded-chip"
-        onClick={() => setIsOpen(true)}
-      >
+      <Button variant="outline" size="sm" onClick={() => setIsOpen(true)}>
         편집
       </Button>
       <EditProfileDialog open={isOpen} onOpenChange={setIsOpen} profile={profile} />

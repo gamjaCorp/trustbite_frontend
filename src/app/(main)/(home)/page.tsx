@@ -11,7 +11,7 @@ export default function Home() {
         <RegionRankList />
       </div>
 
-      <Button asChild size="lg" className="fixed bottom-8 right-8 rounded-chip px-5 shadow-lg">
+      <Button asChild size="lg" className="fixed bottom-8 right-8 px-5 shadow-lg">
         <Link href="/review">
           <PencilLine className="w-4 h-4" />
           리뷰 쓰기

@@ -5,7 +5,10 @@ import { UtensilsCrossed, Plus, Share2, MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/core/empty-state';
-import { PlaceListRow, toPlaceListRowData } from '@/components/common/restaurant/place-list-row/index';
+import {
+  PlaceListRow,
+  toPlaceListRowData,
+} from '@/components/common/restaurant/place-list-row/index';
 import { SectionHeader } from '@/components/common/display/section-header';
 import { DividedList } from '@/components/common/display/divided-list';
 import { SelectList } from '@/components/core/select-list';
@@ -121,7 +124,7 @@ function RestaurantRankListView({ initialEntries, initialHasMore }: Props) {
           title="아직 기록한 맛집이 없어요"
           description="첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요."
           cta={
-            <Button className="gap-1.5 rounded-chip">
+            <Button className="gap-1.5">
               <Plus className="w-4 h-4" />새 맛집 추가하기
             </Button>
           }
@@ -139,12 +142,7 @@ function RestaurantRankListView({ initialEntries, initialHasMore }: Props) {
 
           {hasMore && (
             <div className="mt-6 flex justify-center">
-              <Button
-                variant="outline"
-                className="rounded-chip"
-                onClick={handleLoadMore}
-                disabled={isPending}
-              >
+              <Button variant="outline" onClick={handleLoadMore} disabled={isPending}>
                 {isPending ? '불러오는 중…' : '더보기'}
               </Button>
             </div>

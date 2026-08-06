@@ -219,7 +219,7 @@ export function KakaoMap({
               />
               {(activeId === entry.id || level <= LABEL_VISIBLE_LEVEL) && (
                 <span className={cn(
-                  'absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border px-2 py-0.5 shadow-card bg-background/95 text-foreground text-label-3',
+                  'absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-chip border px-2 py-0.5 shadow-card bg-background/95 text-foreground text-label-3',
                   activeId === entry.id ? 'border-primary' : 'border-border',
                 )}>
                   {entry.name}

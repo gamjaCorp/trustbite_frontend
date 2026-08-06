@@ -30,7 +30,7 @@ export function UserAuthButton({ me }: { me: MyProfileResponse | null }) {
 
   return (
     <div className="flex items-center gap-2">
-      <Button asChild size="sm" variant="outline" className="rounded-chip">
+      <Button asChild size="sm" variant="outline" >
         <Link href="/signin">로그인</Link>
       </Button>
     </div>

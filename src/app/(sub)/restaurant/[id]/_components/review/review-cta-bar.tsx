@@ -43,14 +43,14 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
         </div>
 
         {isAuthed ? (
-          <Button asChild size="lg" className="rounded-chip px-5 gap-1.5 hover:brightness-95">
+          <Button asChild size="lg" className="px-5 gap-1.5 hover:brightness-95">
             <Link href={`/review?restaurantId=${restaurantId}`}>
               <PencilLine className="w-4 h-4" />
               {isRevisit ? '재방문 리뷰 쓰기' : '리뷰 쓰기'}
             </Link>
           </Button>
         ) : (
-          <Button type="button" size="lg" onClick={trigger} className="rounded-chip px-5 gap-1.5 hover:brightness-95">
+          <Button type="button" size="lg" onClick={trigger} className="px-5 gap-1.5 hover:brightness-95">
             <PencilLine className="w-4 h-4" />
             리뷰 쓰기
           </Button>

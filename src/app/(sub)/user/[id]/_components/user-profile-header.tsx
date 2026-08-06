@@ -41,7 +41,7 @@ export function UserProfileHeader({ profile }: Props) {
       followingHref={`/follow/${profile.userId}?tab=following`}
       bottomRight={
         hasMutualFollowing ? (
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
+          <div className="inline-flex items-center gap-1.5 rounded-chip bg-muted px-2.5 py-1">
             <UserAvatar initial={mutualFollowing.displayName[0]} size="xs" />
             <span className="text-caption-2 text-muted-foreground">
               <span className="font-semibold text-foreground">{mutualFollowing.displayName}</span>

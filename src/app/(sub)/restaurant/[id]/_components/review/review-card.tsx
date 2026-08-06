@@ -59,7 +59,7 @@ export function ReviewCard({ review }: Props) {
         {/* TODO: 1차 MVP 제외 — 도움됐어요 (커뮤니티 평판 2차 MVP) */}
         <div
           aria-disabled="true"
-          className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-label-3 opacity-35 cursor-not-allowed"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-chip border border-border px-3 py-1 text-label-3 opacity-35 cursor-not-allowed"
         >
           <ThumbsUp className="w-3 h-3" />
           도움됐어요 <span>{review.helpfulCount}</span>

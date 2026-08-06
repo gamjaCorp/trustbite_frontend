@@ -64,7 +64,7 @@ export function PhotoLightbox({ photos, open, onOpenChange, initialIndex = 0 }: 
           <CarouselNext className="right-2" />
         </Carousel>
 
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-foreground/60 px-3 py-1 text-label-3 text-background tabular-nums pointer-events-none">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-chip bg-foreground/60 px-3 py-1 text-label-3 text-background tabular-nums pointer-events-none">
           {current + 1} / {photos.length}
         </div>
       </div>

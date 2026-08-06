@@ -35,12 +35,7 @@ export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }
 
       {remainingReviews > 0 && (
         <div className="px-6 pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={trigger}
-            className="w-full gap-1.5 rounded-chip"
-          >
+          <Button type="button" variant="outline" onClick={trigger} className="w-full gap-1.5">
             리뷰 <span className="">{remainingReviews}</span>개 더 보기
             {isAuthed && <ChevronDown className="w-4 h-4" />}
           </Button>
