@@ -8,7 +8,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'TrustBite 라운딩 토큰. rounded-chip / rounded-card / rounded-modal 3종을 우선 사용한다.',
+        component:
+          'TrustBite 라운딩 토큰. rounded-chip / rounded-card / rounded-modal 3종을 우선 사용한다.',
       },
     },
   },
@@ -61,14 +62,15 @@ const RADIUS_TOKENS = [
 // ── 스토리 ──────────────────────────────────────────────────
 
 export const AllRadius: Story = {
-  name: 'AllRadius — 5종 라운딩 시각 비교',
+  name: 'AllRadius',
+  parameters: { docs: { description: { story: '5종 라운딩 시각 비교' } } },
   render: () => (
     <div className="space-y-6">
       <p className="text-body-2 text-muted-foreground">
         동일 크기 박스에 각 라운딩 토큰을 적용해 비교한다.
         <br />
-        <span className="text-primary">rounded-chip / rounded-card / rounded-modal</span> 3종을
-        우선 사용하고, 그 외는 예외적으로.
+        <span className="text-primary">rounded-chip / rounded-card / rounded-modal</span> 3종을 우선
+        사용하고, 그 외는 예외적으로.
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
         {RADIUS_TOKENS.map((r) => (

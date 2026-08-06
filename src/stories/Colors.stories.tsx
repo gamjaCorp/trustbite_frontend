@@ -51,26 +51,85 @@ function SwatchGrid({ children }: { children: React.ReactNode }) {
 // ── 데이터 ──────────────────────────────────────────────────
 
 const PRIMITIVES = [
-  { bgClass: 'bg-palette-brand', token: 'palette-brand', cssVar: '--palette-brand', note: '#ff7a00 — 주 브랜드 오렌지' },
-  { bgClass: 'bg-palette-brand-subtle', token: 'palette-brand-subtle', cssVar: '--palette-brand-subtle', note: '브랜드 배경 틴트' },
-  { bgClass: 'bg-palette-green', token: 'palette-green', cssVar: '--palette-green', note: '긍정·성공' },
-  { bgClass: 'bg-palette-green-subtle', token: 'palette-green-subtle', cssVar: '--palette-green-subtle', note: '성공 배경 틴트' },
+  {
+    bgClass: 'bg-palette-brand',
+    token: 'palette-brand',
+    cssVar: '--palette-brand',
+    note: '#ff7a00 — 주 브랜드 오렌지',
+  },
+  {
+    bgClass: 'bg-palette-brand-subtle',
+    token: 'palette-brand-subtle',
+    cssVar: '--palette-brand-subtle',
+    note: '브랜드 배경 틴트',
+  },
+  {
+    bgClass: 'bg-palette-green',
+    token: 'palette-green',
+    cssVar: '--palette-green',
+    note: '긍정·성공',
+  },
+  {
+    bgClass: 'bg-palette-green-subtle',
+    token: 'palette-green-subtle',
+    cssVar: '--palette-green-subtle',
+    note: '성공 배경 틴트',
+  },
   { bgClass: 'bg-palette-amber', token: 'palette-amber', cssVar: '--palette-amber', note: '경고' },
-  { bgClass: 'bg-palette-amber-subtle', token: 'palette-amber-subtle', cssVar: '--palette-amber-subtle', note: '경고 배경 틴트' },
+  {
+    bgClass: 'bg-palette-amber-subtle',
+    token: 'palette-amber-subtle',
+    cssVar: '--palette-amber-subtle',
+    note: '경고 배경 틴트',
+  },
   { bgClass: 'bg-palette-blue', token: 'palette-blue', cssVar: '--palette-blue', note: '정보' },
-  { bgClass: 'bg-palette-blue-subtle', token: 'palette-blue-subtle', cssVar: '--palette-blue-subtle', note: '정보 배경 틴트' },
+  {
+    bgClass: 'bg-palette-blue-subtle',
+    token: 'palette-blue-subtle',
+    cssVar: '--palette-blue-subtle',
+    note: '정보 배경 틴트',
+  },
   { bgClass: 'bg-palette-red', token: 'palette-red', cssVar: '--palette-red', note: '오류·위험' },
-  { bgClass: 'bg-palette-red-subtle', token: 'palette-red-subtle', cssVar: '--palette-red-subtle', note: '오류 배경 틴트' },
+  {
+    bgClass: 'bg-palette-red-subtle',
+    token: 'palette-red-subtle',
+    cssVar: '--palette-red-subtle',
+    note: '오류 배경 틴트',
+  },
   { bgClass: 'bg-palette-gray', token: 'palette-gray', cssVar: '--palette-gray', note: '비활성' },
-  { bgClass: 'bg-palette-gray-subtle', token: 'palette-gray-subtle', cssVar: '--palette-gray-subtle', note: '비활성 배경 틴트' },
-  { bgClass: 'bg-palette-gold', token: 'palette-gold', cssVar: '--palette-gold', note: '랭킹 금메달' },
-  { bgClass: 'bg-palette-silver', token: 'palette-silver', cssVar: '--palette-silver', note: '랭킹 은메달' },
-  { bgClass: 'bg-palette-bronze', token: 'palette-bronze', cssVar: '--palette-bronze', note: '랭킹 동메달' },
+  {
+    bgClass: 'bg-palette-gray-subtle',
+    token: 'palette-gray-subtle',
+    cssVar: '--palette-gray-subtle',
+    note: '비활성 배경 틴트',
+  },
+  {
+    bgClass: 'bg-palette-gold',
+    token: 'palette-gold',
+    cssVar: '--palette-gold',
+    note: '랭킹 금메달',
+  },
+  {
+    bgClass: 'bg-palette-silver',
+    token: 'palette-silver',
+    cssVar: '--palette-silver',
+    note: '랭킹 은메달',
+  },
+  {
+    bgClass: 'bg-palette-bronze',
+    token: 'palette-bronze',
+    cssVar: '--palette-bronze',
+    note: '랭킹 동메달',
+  },
 ];
 
 const SEMANTICS = [
   { bgClass: 'bg-primary', token: 'primary', note: '주요 CTA, 강조 요소 (= palette-brand)' },
-  { bgClass: 'bg-primary-subtle', token: 'primary-subtle', note: '주요 배경 틴트 (= palette-brand-subtle)' },
+  {
+    bgClass: 'bg-primary-subtle',
+    token: 'primary-subtle',
+    note: '주요 배경 틴트 (= palette-brand-subtle)',
+  },
   { bgClass: 'bg-success', token: 'success', note: '성공 상태 (= palette-green)' },
   { bgClass: 'bg-success-subtle', token: 'success-subtle', note: '성공 배경 틴트' },
   { bgClass: 'bg-warning', token: 'warning', note: '경고 상태 (= palette-amber)' },
@@ -100,11 +159,12 @@ const DARK_PRIMITIVES = [
 // ── 스토리 ──────────────────────────────────────────────────
 
 export const Primitives: Story = {
-  name: 'Primitives — Tier 1 팔레트 (직접 참조 금지)',
+  parameters: { docs: { description: { story: 'Tier 1 팔레트 (직접 참조 금지)' } } },
   render: () => (
     <div>
       <p className="text-body-2 text-muted-foreground mb-6">
-        Tier 1 원색 정의. 컴포넌트에서는 <span className="text-primary">직접 참조 금지</span> — Semantic 토큰(Tier 2)을 통해서만 사용.
+        Tier 1 원색 정의. 컴포넌트에서는 <span className="text-primary">직접 참조 금지</span> —
+        Semantic 토큰(Tier 2)을 통해서만 사용.
       </p>
       <SwatchGrid>
         {PRIMITIVES.map((s) => (
@@ -116,11 +176,12 @@ export const Primitives: Story = {
 };
 
 export const Semantic: Story = {
-  name: 'Semantic — Tier 2 (컴포넌트에서 사용)',
+  parameters: { docs: { description: { story: 'Tier 2 (컴포넌트에서 사용)' } } },
   render: () => (
     <div>
       <p className="text-body-2 text-muted-foreground mb-6">
-        컴포넌트에서는 이 토큰만 사용한다. Tier 1 Primitive를 var()로 참조하므로 다크모드 전환 시 자동 반영.
+        컴포넌트에서는 이 토큰만 사용한다. Tier 1 Primitive를 var()로 참조하므로 다크모드 전환 시
+        자동 반영.
       </p>
       <SwatchGrid>
         {SEMANTICS.map((s) => (
@@ -132,8 +193,11 @@ export const Semantic: Story = {
 };
 
 export const LightVsDark: Story = {
-  name: 'LightVsDark — 라이트·다크 비교 (Primitive 변형 9종)',
-  parameters: { layout: 'padded' },
+  name: 'LightVsDark',
+  parameters: {
+    layout: 'padded',
+    docs: { description: { story: '라이트·다크 비교 (Primitive 변형 9종)' } },
+  },
   render: () => (
     <div className="space-y-6">
       <p className="text-body-2 text-muted-foreground">

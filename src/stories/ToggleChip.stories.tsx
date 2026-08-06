@@ -9,7 +9,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: '활성/비활성 토글 칩 — filter(상황 필터)·form(리뷰 작성) 두 variant, sm·md 두 크기',
+        component:
+          '활성/비활성 토글 칩 — filter(상황 필터)·form(리뷰 작성) 두 variant, sm·md 두 크기',
       },
     },
   },
@@ -35,27 +36,43 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const FilterInactive: Story = {
-  name: 'Filter — 비활성',
-  args: { active: false, variant: 'filter', size: 'sm', children: '데이트', onClick: () => undefined },
+  name: 'Filter',
+  parameters: { docs: { description: { story: '비활성' } } },
+  args: {
+    active: false,
+    variant: 'filter',
+    size: 'sm',
+    children: '데이트',
+    onClick: () => undefined,
+  },
 };
 
 export const FilterActive: Story = {
-  name: 'Filter — 활성',
-  args: { active: true, variant: 'filter', size: 'sm', children: '데이트', onClick: () => undefined },
+  name: 'Filter',
+  parameters: { docs: { description: { story: '활성' } } },
+  args: {
+    active: true,
+    variant: 'filter',
+    size: 'sm',
+    children: '데이트',
+    onClick: () => undefined,
+  },
 };
 
 export const FormInactive: Story = {
-  name: 'Form — 비활성',
+  name: 'Form',
+  parameters: { docs: { description: { story: '비활성' } } },
   args: { active: false, variant: 'form', size: 'md', children: '혼밥', onClick: () => undefined },
 };
 
 export const FormActive: Story = {
-  name: 'Form — 활성',
+  name: 'Form',
+  parameters: { docs: { description: { story: '활성' } } },
   args: { active: true, variant: 'form', size: 'md', children: '혼밥', onClick: () => undefined },
 };
 
 export const Interactive: Story = {
-  name: 'Interactive — 실제 토글',
+  parameters: { docs: { description: { story: '실제 토글' } } },
   args: { active: false, onClick: () => undefined, children: '태그' },
   render: () => {
     const tags = ['혼밥', '데이트', '회식', '가족', '친구'];
@@ -66,11 +83,17 @@ export const Interactive: Story = {
           <ToggleChip
             key={tag}
             active={active.has(tag)}
-            onClick={() => setActive((prev) => {
-              const next = new Set(prev);
-              if (next.has(tag)) { next.delete(tag); } else { next.add(tag); }
-              return next;
-            })}
+            onClick={() =>
+              setActive((prev) => {
+                const next = new Set(prev);
+                if (next.has(tag)) {
+                  next.delete(tag);
+                } else {
+                  next.add(tag);
+                }
+                return next;
+              })
+            }
             variant="filter"
             size="sm"
           >

@@ -8,7 +8,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: '유저 아바타 — bg-primary-subtle 이니셜 fallback + 선택적 이미지. xs/sm/md/lg/xl 5단계',
+        component:
+          '유저 아바타 — bg-primary-subtle 이니셜 fallback + 선택적 이미지. xs/sm/md/lg/xl 5단계',
       },
     },
   },
@@ -29,12 +30,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 이니셜 fallback',
+  parameters: { docs: { description: { story: '이니셜 fallback' } } },
   args: { initial: '김', size: 'md' },
 };
 
 export const WithImage: Story = {
-  name: 'WithImage — 이미지 있음',
+  name: 'WithImage',
+  parameters: { docs: { description: { story: '이미지 있음' } } },
   args: {
     initial: '김',
     imageUrl: 'https://i.pravatar.cc/150?img=3',
@@ -43,7 +45,7 @@ export const WithImage: Story = {
 };
 
 export const Sizes: Story = {
-  name: 'Sizes — 5가지 크기',
+  parameters: { docs: { description: { story: '5가지 크기' } } },
   args: { initial: '김', size: 'md' },
   render: () => (
     <div className="flex items-end gap-4">
@@ -58,7 +60,8 @@ export const Sizes: Story = {
 };
 
 export const MultipleUsers: Story = {
-  name: 'MultipleUsers — 여러 이니셜',
+  name: 'MultipleUsers',
+  parameters: { docs: { description: { story: '여러 이니셜' } } },
   args: { initial: '김', size: 'md' },
   render: () => (
     <div className="flex items-center gap-2">

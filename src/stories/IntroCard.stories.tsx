@@ -28,5 +28,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 소개 카드 (닫기 가능)',
+  parameters: { docs: { description: { story: '소개 카드 (닫기 가능)' } } },
 };

@@ -46,24 +46,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 툴팁만 (showLabel=false)',
+  parameters: { docs: { description: { story: '툴팁만 (showLabel=false)' } } },
   args: { name: 'COLLECTOR', showLabel: false, size: 'sm' },
 };
 
 export const WithLabel: Story = {
-  name: 'WithLabel — 라벨 인라인',
+  name: 'WithLabel',
+  parameters: { docs: { description: { story: '라벨 인라인' } } },
   args: { name: 'COLLECTOR', showLabel: true, size: 'sm' },
 };
 
 export const Small: Story = {
-  name: 'Small — sm 크기',
+  parameters: { docs: { description: { story: 'sm 크기' } } },
   args: { name: 'COLLECTOR', showLabel: false, size: 'sm' },
 };
 
 export const AllLevels: Story = {
-  name: 'AllLevels — 전체 등급 비교',
+  name: 'AllLevels',
   args: { name: 'SPROUT' },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '전체 등급 비교' } } },
   render: () => (
     <TooltipProvider>
       <div className="flex flex-col gap-4">

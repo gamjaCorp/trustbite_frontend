@@ -35,36 +35,37 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 78점',
+  parameters: { docs: { description: { story: '78점' } } },
   args: { score: 78, size: 'sm', showIcon: true },
 };
 
 export const High: Story = {
-  name: 'High — 높은 신뢰도 (92)',
+  parameters: { docs: { description: { story: '높은 신뢰도 (92)' } } },
   args: { score: 92, size: 'sm', showIcon: true },
 };
 
 export const Mid: Story = {
-  name: 'Mid — 중간 신뢰도 (55)',
+  parameters: { docs: { description: { story: '중간 신뢰도 (55)' } } },
   args: { score: 55, size: 'sm', showIcon: true },
 };
 
 export const Low: Story = {
-  name: 'Low — 낮은 신뢰도 (30)',
+  parameters: { docs: { description: { story: '낮은 신뢰도 (30)' } } },
   args: { score: 30, size: 'sm', showIcon: true },
 };
 
 export const WithoutIcon: Story = {
-  name: 'WithoutIcon — 아이콘 없음',
+  name: 'WithoutIcon',
+  parameters: { docs: { description: { story: '아이콘 없음' } } },
   args: { score: 78, size: 'sm', showIcon: false },
 };
 
 export const Large: Story = {
-  name: 'Large — md 크기',
+  parameters: { docs: { description: { story: 'md 크기' } } },
   args: { score: 78, size: 'md', showIcon: true },
 };
 
 export const Clickable: Story = {
-  name: 'Clickable — 클릭 가능',
+  parameters: { docs: { description: { story: '클릭 가능' } } },
   args: { score: 78, size: 'md', showIcon: true, onClick: () => undefined },
 };

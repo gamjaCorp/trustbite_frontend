@@ -52,7 +52,8 @@ const meta = {
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg', 'xl'],
-      description: '데스크톱 최대 너비 (sm 384 / md 448 / lg 512 / xl 768) — 바텀시트에는 영향 없음',
+      description:
+        '데스크톱 최대 너비 (sm 384 / md 448 / lg 512 / xl 768) — 바텀시트에는 영향 없음',
     },
     mobileSheet: {
       control: 'boolean',
@@ -65,7 +66,8 @@ const meta = {
     secondaryAction: { control: false, description: '보조 버튼 — 누르면 자동으로 닫힌다' },
     footer: {
       control: false,
-      description: '버튼이 폼 상태에 의존할 때의 탈출구 — 주면 primaryAction·secondaryAction을 대체한다',
+      description:
+        '버튼이 폼 상태에 의존할 때의 탈출구 — 주면 primaryAction·secondaryAction을 대체한다',
     },
     children: { control: false, description: '본문 — 넣으면 헤더·푸터 사이의 스크롤 영역이 된다' },
   },
@@ -83,7 +85,7 @@ const BASE_ARGS = {
 
 // title·description·align·size 컨트롤이 실제로 반영되는 유일한 스토리
 export const Default: Story = {
-  name: 'Default — 확인 다이얼로그 (컨트롤 연결)',
+  parameters: { docs: { description: { story: '확인 다이얼로그 (컨트롤 연결)' } } },
   args: BASE_ARGS,
   render: (args) => {
     const [open, setOpen] = useState(false);
@@ -103,7 +105,7 @@ export const Default: Story = {
 };
 
 export const Destructive: Story = {
-  name: 'Destructive — 삭제 확인',
+  parameters: { docs: { description: { story: '삭제 확인' } } },
   args: BASE_ARGS,
   render: () => {
     const [open, setOpen] = useState(false);
@@ -128,7 +130,8 @@ export const Destructive: Story = {
 };
 
 export const LinkAction: Story = {
-  name: 'LinkAction — 가운데 정렬 + 링크 CTA',
+  name: 'LinkAction',
+  parameters: { docs: { description: { story: '가운데 정렬 + 링크 CTA' } } },
   args: { ...BASE_ARGS, align: 'center', description: undefined },
   render: () => {
     const [open, setOpen] = useState(false);
@@ -158,7 +161,8 @@ export const LinkAction: Story = {
 };
 
 export const WithBody: Story = {
-  name: 'WithBody — 높이 제한 + 본문 스크롤',
+  name: 'WithBody',
+  parameters: { docs: { description: { story: '높이 제한 + 본문 스크롤' } } },
   args: BASE_ARGS,
   render: () => {
     const [open, setOpen] = useState(false);
@@ -194,7 +198,8 @@ export const WithBody: Story = {
 };
 
 export const CustomFooter: Story = {
-  name: 'CustomFooter — footer 탈출구',
+  name: 'CustomFooter',
+  parameters: { docs: { description: { story: 'footer 탈출구' } } },
   args: BASE_ARGS,
   render: () => {
     const [open, setOpen] = useState(false);

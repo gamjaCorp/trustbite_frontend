@@ -10,7 +10,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: '상황 태그 배열을 토글 칩 목록으로 렌더 — 레이아웃 래퍼는 부모가 담당. ToggleChip의 컬렉션 래퍼',
+        component:
+          '상황 태그 배열을 토글 칩 목록으로 렌더 — 레이아웃 래퍼는 부모가 담당. ToggleChip의 컬렉션 래퍼',
       },
     },
   },
@@ -37,7 +38,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Filter: Story = {
-  name: 'Filter — 상황 필터 (일부 활성)',
+  parameters: { docs: { description: { story: '상황 필터 (일부 활성)' } } },
   args: { tags: OCCASIONS, isActive: () => false, onToggle: () => undefined },
   render: () => {
     const [active, setActive] = useState(new Set(['데이트']));
@@ -46,11 +47,17 @@ export const Filter: Story = {
         <SceneTagChipRow
           tags={OCCASIONS}
           isActive={(t) => active.has(t)}
-          onToggle={(t) => setActive((prev) => {
-            const next = new Set(prev);
-            if (next.has(t)) { next.delete(t); } else { next.add(t); }
-            return next;
-          })}
+          onToggle={(t) =>
+            setActive((prev) => {
+              const next = new Set(prev);
+              if (next.has(t)) {
+                next.delete(t);
+              } else {
+                next.add(t);
+              }
+              return next;
+            })
+          }
           variant="filter"
           checkPosition="start"
         />
@@ -60,7 +67,7 @@ export const Filter: Story = {
 };
 
 export const Form: Story = {
-  name: 'Form — 리뷰 작성 (form variant)',
+  parameters: { docs: { description: { story: '리뷰 작성 (form variant)' } } },
   args: { tags: OCCASIONS, isActive: () => false, onToggle: () => undefined },
   render: () => {
     const [active, setActive] = useState(new Set<string>());
@@ -69,11 +76,17 @@ export const Form: Story = {
         <SceneTagChipRow
           tags={OCCASIONS}
           isActive={(t) => active.has(t)}
-          onToggle={(t) => setActive((prev) => {
-            const next = new Set(prev);
-            if (next.has(t)) { next.delete(t); } else { next.add(t); }
-            return next;
-          })}
+          onToggle={(t) =>
+            setActive((prev) => {
+              const next = new Set(prev);
+              if (next.has(t)) {
+                next.delete(t);
+              } else {
+                next.add(t);
+              }
+              return next;
+            })
+          }
           variant="form"
           size="md"
           checkPosition="end"
@@ -84,7 +97,8 @@ export const Form: Story = {
 };
 
 export const WithHashPrefix: Story = {
-  name: 'WithHashPrefix — # 접두사 라벨',
+  name: 'WithHashPrefix',
+  parameters: { docs: { description: { story: '# 접두사 라벨' } } },
   args: { tags: OCCASIONS, isActive: () => false, onToggle: () => undefined },
   render: () => {
     const [active, setActive] = useState(new Set(['혼밥']));
@@ -93,11 +107,17 @@ export const WithHashPrefix: Story = {
         <SceneTagChipRow
           tags={OCCASIONS}
           isActive={(t) => active.has(t)}
-          onToggle={(t) => setActive((prev) => {
-            const next = new Set(prev);
-            if (next.has(t)) { next.delete(t); } else { next.add(t); }
-            return next;
-          })}
+          onToggle={(t) =>
+            setActive((prev) => {
+              const next = new Set(prev);
+              if (next.has(t)) {
+                next.delete(t);
+              } else {
+                next.add(t);
+              }
+              return next;
+            })
+          }
           formatLabel={(t) => `#${t}`}
           checkPosition="none"
         />

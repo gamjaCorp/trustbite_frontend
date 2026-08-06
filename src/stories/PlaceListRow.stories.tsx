@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { PlaceListRow, toPlaceListRowData, toPlaceListRowDataFromDetail } from '@/components/common/restaurant/place-list-row/index';
+import {
+  PlaceListRow,
+  toPlaceListRowData,
+  toPlaceListRowDataFromDetail,
+} from '@/components/common/restaurant/place-list-row/index';
 import { mockRankList } from '@/data/mock-restaurant';
 import { getRestaurantDetail } from '@/data/mock-restaurant-detail';
 
@@ -28,7 +32,7 @@ export default meta;
 type Story = StoryObj<typeof PlaceListRow>;
 
 export const Regional: Story = {
-  name: 'Regional — 기본',
+  parameters: { docs: { description: { story: '기본' } } },
   args: {
     variant: 'regional',
     data: toPlaceListRowData(regionalEntry),
@@ -36,7 +40,8 @@ export const Regional: Story = {
 };
 
 export const RegionalNoBookmark: Story = {
-  name: 'Regional — 북마크 없음 (타 유저 프로필)',
+  name: 'Regional',
+  parameters: { docs: { description: { story: '북마크 없음 (타 유저 프로필)' } } },
   args: {
     variant: 'regional',
     data: toPlaceListRowData({ ...regionalEntry, rank: 1 }),
@@ -46,7 +51,8 @@ export const RegionalNoBookmark: Story = {
 };
 
 export const RegionalVisitStats: Story = {
-  name: 'Regional — 방문 통계 표시',
+  name: 'Regional',
+  parameters: { docs: { description: { story: '방문 통계 표시' } } },
   args: {
     variant: 'regional',
     data: toPlaceListRowData(regionalEntry),
@@ -55,7 +61,8 @@ export const RegionalVisitStats: Story = {
 };
 
 export const RegionalActive: Story = {
-  name: 'Regional — Active (지도 연동)',
+  name: 'Regional',
+  parameters: { docs: { description: { story: 'Active (지도 연동)' } } },
   args: {
     variant: 'regional',
     data: toPlaceListRowData(regionalEntry),
@@ -64,7 +71,7 @@ export const RegionalActive: Story = {
 };
 
 export const My: Story = {
-  name: 'My — 나의 맛집',
+  parameters: { docs: { description: { story: '나의 맛집' } } },
   args: {
     variant: 'my',
     data: toPlaceListRowData(myEntry),
@@ -72,7 +79,7 @@ export const My: Story = {
 };
 
 export const Wishlist: Story = {
-  name: 'Wishlist — 위시리스트',
+  parameters: { docs: { description: { story: '위시리스트' } } },
   args: {
     variant: 'wishlist',
     data: toPlaceListRowDataFromDetail(wishlistDetail, { addedAt: '2025-04-01T12:00:00Z' }),

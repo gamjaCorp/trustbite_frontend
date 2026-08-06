@@ -30,11 +30,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — md 크기',
-  args: { followerCount: 124, followingCount: 38, size: 'md', followersHref: '/follow/me?tab=followers', followingHref: '/follow/me?tab=following' },
+  parameters: { docs: { description: { story: 'md 크기' } } },
+  args: {
+    followerCount: 124,
+    followingCount: 38,
+    size: 'md',
+    followersHref: '/follow/me?tab=followers',
+    followingHref: '/follow/me?tab=following',
+  },
 };
 
 export const Small: Story = {
-  name: 'Small — sm 크기',
-  args: { followerCount: 124, followingCount: 38, size: 'sm', followersHref: '/follow/me?tab=followers', followingHref: '/follow/me?tab=following' },
+  parameters: { docs: { description: { story: 'sm 크기' } } },
+  args: {
+    followerCount: 124,
+    followingCount: 38,
+    size: 'sm',
+    followersHref: '/follow/me?tab=followers',
+    followingHref: '/follow/me?tab=following',
+  },
 };

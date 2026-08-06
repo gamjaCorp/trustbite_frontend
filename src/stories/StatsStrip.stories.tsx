@@ -22,7 +22,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 3개 항목',
+  parameters: { docs: { description: { story: '3개 항목' } } },
   args: {
     items: [
       { label: '방문 횟수', value: '42' },
@@ -33,7 +33,8 @@ export const Default: Story = {
 };
 
 export const WithLinks: Story = {
-  name: 'WithLinks — 클릭 가능 항목',
+  name: 'WithLinks',
+  parameters: { docs: { description: { story: '클릭 가능 항목' } } },
   args: {
     items: [
       { label: '방문 횟수', value: '42', href: '/my-places' },
@@ -44,7 +45,8 @@ export const WithLinks: Story = {
 };
 
 export const WithColoredValue: Story = {
-  name: 'WithColoredValue — 색상 강조 값',
+  name: 'WithColoredValue',
+  parameters: { docs: { description: { story: '색상 강조 값' } } },
   args: {
     items: [
       { label: '신뢰도 점수', value: '92%', valueClassName: 'text-success' },

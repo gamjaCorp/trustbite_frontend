@@ -47,19 +47,45 @@ const CATEGORY_COLOR: Record<string, string> = {
 };
 
 const DEFAULTS = [
-  { context: '일반 본문', util: 'text-body-1', meta: '16px / 400', ref: 'Toss 송금/홈 본문 15-17px' },
-  { context: '리스트 1차 텍스트 (매장명·카드 제목)', util: 'text-title-1', meta: '16px / 600', ref: '당근 매물 카드 제목 ~17px' },
-  { context: '리스트 2차 텍스트 (주소·메타)', util: 'text-body-2', meta: '14px / 500', ref: '당근 카드 보조 라인' },
+  {
+    context: '일반 본문',
+    util: 'text-body-1',
+    meta: '16px / 400',
+    ref: 'Toss 송금/홈 본문 15-17px',
+  },
+  {
+    context: '리스트 1차 텍스트 (매장명·카드 제목)',
+    util: 'text-title-1',
+    meta: '16px / 600',
+    ref: '당근 매물 카드 제목 ~17px',
+  },
+  {
+    context: '리스트 2차 텍스트 (주소·메타)',
+    util: 'text-body-2',
+    meta: '14px / 500',
+    ref: '당근 카드 보조 라인',
+  },
   { context: '폼 라벨', util: 'text-title-2', meta: '14px / 600', ref: 'Toss 입력 라벨' },
-  { context: '1차 CTA 버튼 텍스트', util: 'text-label-1', meta: '16px / 500', ref: 'Toss "송금하기" 버튼' },
+  {
+    context: '1차 CTA 버튼 텍스트',
+    util: 'text-label-1',
+    meta: '16px / 500',
+    ref: 'Toss "송금하기" 버튼',
+  },
   { context: '보조 버튼·작은 칩 라벨', util: 'text-label-2', meta: '14px / 600', ref: '—' },
-  { context: '메타·타임스탬프·꼬리표', util: 'text-caption-2', meta: '12px / 400', ref: '(캡션 한정)' },
+  {
+    context: '메타·타임스탬프·꼬리표',
+    util: 'text-caption-2',
+    meta: '12px / 400',
+    ref: '(캡션 한정)',
+  },
 ];
 
 // ── 스토리 ──────────────────────────────────────────────────
 
 export const AllUtilities: Story = {
-  name: 'AllUtilities — 14종 유틸 쇼케이스',
+  name: 'AllUtilities',
+  parameters: { docs: { description: { story: '14종 유틸 쇼케이스' } } },
   render: () => {
     const categories = ['Headline', 'Title', 'Body', 'Label', 'Caption'];
     return (
@@ -80,9 +106,7 @@ export const AllUtilities: Story = {
                       {u.px} / {u.weight} / lh {u.lh}
                     </p>
                   </div>
-                  <p className={cn(u.util, 'text-foreground flex-1')}>
-                    신뢰할 수 있는 맛집 정보
-                  </p>
+                  <p className={cn(u.util, 'text-foreground flex-1')}>신뢰할 수 있는 맛집 정보</p>
                 </div>
               ))}
             </div>
@@ -94,7 +118,7 @@ export const AllUtilities: Story = {
 };
 
 export const Defaults: Story = {
-  name: 'Defaults — Toss·당근 기준 매핑 표',
+  parameters: { docs: { description: { story: 'Toss·당근 기준 매핑 표' } } },
   render: () => (
     <div>
       <p className="text-body-2 text-muted-foreground mb-6">

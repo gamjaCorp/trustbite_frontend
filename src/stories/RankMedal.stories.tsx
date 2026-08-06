@@ -30,26 +30,27 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Gold: Story = {
-  name: 'Gold — 1위 금메달',
+  parameters: { docs: { description: { story: '1위 금메달' } } },
   args: { rank: 1 },
 };
 
 export const Silver: Story = {
-  name: 'Silver — 2위 은메달',
+  parameters: { docs: { description: { story: '2위 은메달' } } },
   args: { rank: 2 },
 };
 
 export const Bronze: Story = {
-  name: 'Bronze — 3위 동메달',
+  parameters: { docs: { description: { story: '3위 동메달' } } },
   args: { rank: 3 },
 };
 
 export const Fallback: Story = {
-  name: 'Fallback — 4위 이상 (muted)',
+  parameters: { docs: { description: { story: '4위 이상 (muted)' } } },
   args: { rank: 7, fallbackTone: 'muted' },
 };
 
 export const FallbackPaper: Story = {
-  name: 'FallbackPaper — 4위 이상 (paper)',
+  name: 'FallbackPaper',
+  parameters: { docs: { description: { story: '4위 이상 (paper)' } } },
   args: { rank: 12, fallbackTone: 'paper' },
 };

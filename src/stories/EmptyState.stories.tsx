@@ -10,7 +10,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: '아이콘·제목·설명·CTA 4슬롯 빈 상태 — Empty 원시 컴포넌트의 반복 구조를 단일 선언으로 축약',
+        component:
+          '아이콘·제목·설명·CTA 4슬롯 빈 상태 — Empty 원시 컴포넌트의 반복 구조를 단일 선언으로 축약',
       },
     },
   },
@@ -27,8 +28,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: 'Default — 제목만',
+export const WithCta: Story = {
+  name: 'WithCta',
+  parameters: { docs: { description: { story: '제목 + 설명 + CTA' } } },
+  args: {
+    icon: UtensilsCrossed,
+    title: '아직 기록한 맛집이 없어요',
+    description: '첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요.',
+    cta: <Button>새 맛집 추가하기</Button>,
+  },
+};
+
+export const TitleOnly: Story = {
+  name: 'TitleOnly',
+  parameters: { docs: { description: { story: '제목만' } } },
   args: {
     icon: UtensilsCrossed,
     title: '아직 기록한 맛집이 없어요',
@@ -36,7 +49,8 @@ export const Default: Story = {
 };
 
 export const WithDescription: Story = {
-  name: 'WithDescription — 제목 + 설명',
+  name: 'WithDescription',
+  parameters: { docs: { description: { story: '제목 + 설명' } } },
   args: {
     icon: Search,
     title: '검색 결과가 없어요',
@@ -44,18 +58,8 @@ export const WithDescription: Story = {
   },
 };
 
-export const WithCta: Story = {
-  name: 'WithCta — 제목 + 설명 + CTA',
-  args: {
-    icon: UtensilsCrossed,
-    title: '아직 기록한 맛집이 없어요',
-    description: '첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요.',
-    cta: <Button className="rounded-chip">새 맛집 추가하기</Button>,
-  },
-};
-
 export const Wishlist: Story = {
-  name: 'Wishlist — 찜 목록 빈 상태',
+  parameters: { docs: { description: { story: '찜 목록 빈 상태' } } },
   args: {
     icon: Heart,
     title: '찜한 맛집이 없어요',
@@ -65,7 +69,7 @@ export const Wishlist: Story = {
 };
 
 export const Review: Story = {
-  name: 'Review — 리뷰 빈 상태',
+  parameters: { docs: { description: { story: '리뷰 빈 상태' } } },
   args: {
     icon: Star,
     title: '아직 리뷰가 없어요',

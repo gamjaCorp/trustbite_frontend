@@ -29,28 +29,29 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — h2',
+  parameters: { docs: { description: { story: 'h2' } } },
   args: { title: '나의 맛집 목록', size: 'h2' },
 };
 
 export const WithSubtitle: Story = {
-  name: 'WithSubtitle — 부제목 포함',
+  name: 'WithSubtitle',
+  parameters: { docs: { description: { story: '부제목 포함' } } },
   args: { title: '신뢰도 점수', subtitle: '리뷰 퀄리티와 활동 기반으로 산정됩니다', size: 'h2' },
 };
 
 export const WithRightAction: Story = {
-  name: 'WithRightAction — 우측 액션',
+  name: 'WithRightAction',
+  parameters: { docs: { description: { story: '우측 액션' } } },
   args: {
     title: '최근 방문',
     size: 'h2',
-    rightAction: (
-      <button className="text-label-2 text-primary">전체 보기</button>
-    ),
+    rightAction: <button className="text-label-2 text-primary">전체 보기</button>,
   },
 };
 
 export const AllSizes: Story = {
-  name: 'AllSizes — h1/h2/h3 비교',
+  name: 'AllSizes',
+  parameters: { docs: { description: { story: 'h1/h2/h3 비교' } } },
   args: { title: '제목 예시' },
   render: () => (
     <div className="w-80 space-y-6">

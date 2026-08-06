@@ -48,18 +48,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 기본 정렬 선택',
+  parameters: { docs: { description: { story: '기본 정렬 선택' } } },
   args: { value: 'score', onValueChange: () => undefined, items: SORT_ITEMS },
   render: () => {
     const [value, setValue] = useState('score');
-    return (
-      <SelectList value={value} onValueChange={setValue} items={SORT_ITEMS} />
-    );
+    return <SelectList value={value} onValueChange={setValue} items={SORT_ITEMS} />;
   },
 };
 
 export const WithIcon: Story = {
-  name: 'WithIcon — 아이콘 포함',
+  name: 'WithIcon',
+  parameters: { docs: { description: { story: '아이콘 포함' } } },
   args: { value: '강남', onValueChange: () => undefined, items: REGION_ITEMS },
   render: () => {
     const [value, setValue] = useState('강남');
@@ -76,23 +75,18 @@ export const WithIcon: Story = {
 };
 
 export const AlignStart: Story = {
-  name: 'AlignStart — 드롭다운 왼쪽 정렬',
+  name: 'AlignStart',
+  parameters: { docs: { description: { story: '드롭다운 왼쪽 정렬' } } },
   args: { value: 'score', onValueChange: () => undefined, items: SORT_ITEMS },
   render: () => {
     const [value, setValue] = useState('score');
-    return (
-      <SelectList
-        value={value}
-        onValueChange={setValue}
-        items={SORT_ITEMS}
-        align="start"
-      />
-    );
+    return <SelectList value={value} onValueChange={setValue} items={SORT_ITEMS} align="start" />;
   },
 };
 
 export const WithPlaceholder: Story = {
-  name: 'WithPlaceholder — 미선택 상태',
+  name: 'WithPlaceholder',
+  parameters: { docs: { description: { story: '미선택 상태' } } },
   args: { value: '', onValueChange: () => undefined, items: REGION_ITEMS },
   render: () => {
     const [value, setValue] = useState('');

@@ -38,7 +38,7 @@ const SampleContent = () => (
 );
 
 export const Default: Story = {
-  name: 'Default — card + md',
+  parameters: { docs: { description: { story: 'card + md' } } },
   args: { variant: 'card', padding: 'md' },
   render: (args) => (
     <Surface {...args}>
@@ -48,7 +48,7 @@ export const Default: Story = {
 };
 
 export const Elevated: Story = {
-  name: 'Elevated — 그림자만',
+  parameters: { docs: { description: { story: '그림자만' } } },
   args: { variant: 'elevated', padding: 'md' },
   render: (args) => (
     <Surface {...args}>
@@ -58,7 +58,7 @@ export const Elevated: Story = {
 };
 
 export const Ring: Story = {
-  name: 'Ring — 테두리만 (그림자 없음)',
+  parameters: { docs: { description: { story: '테두리만 (그림자 없음)' } } },
   args: { variant: 'ring', padding: 'md' },
   render: (args) => (
     <Surface {...args}>
@@ -68,7 +68,7 @@ export const Ring: Story = {
 };
 
 export const Bordered: Story = {
-  name: 'Bordered — border 테두리',
+  parameters: { docs: { description: { story: 'border 테두리' } } },
   args: { variant: 'bordered', padding: 'md' },
   render: (args) => (
     <Surface {...args}>
@@ -78,7 +78,7 @@ export const Bordered: Story = {
 };
 
 export const Subtle: Story = {
-  name: 'Subtle — 주요 강조 배경',
+  parameters: { docs: { description: { story: '주요 강조 배경' } } },
   args: { variant: 'subtle', padding: 'md' },
   render: (args) => (
     <Surface {...args}>
@@ -88,8 +88,8 @@ export const Subtle: Story = {
 };
 
 export const AllVariants: Story = {
-  name: 'AllVariants — variant × padding 쇼케이스',
-  parameters: { layout: 'padded' },
+  name: 'AllVariants',
+  parameters: { layout: 'padded', docs: { description: { story: 'variant × padding 쇼케이스' } } },
   render: () => (
     <div className="space-y-6 p-4">
       {(['card', 'elevated', 'ring', 'bordered', 'subtle'] as const).map((variant) => (

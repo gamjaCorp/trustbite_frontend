@@ -51,11 +51,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 비로그인',
+  parameters: { docs: { description: { story: '비로그인' } } },
   args: { me: null },
 };
 
 export const LoggedIn: Story = {
-  name: 'LoggedIn — 로그인 상태',
+  name: 'LoggedIn',
+  parameters: { docs: { description: { story: '로그인 상태' } } },
   args: { me: MOCK_ME },
 };

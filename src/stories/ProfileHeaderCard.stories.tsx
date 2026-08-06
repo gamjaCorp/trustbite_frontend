@@ -36,7 +36,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 기본 (아바타 이니셜)',
+  parameters: { docs: { description: { story: '기본 (아바타 이니셜)' } } },
   args: {
     avatarInitial: '보',
     title: <span className="text-headline-3">보람</span>,
@@ -48,7 +48,8 @@ export const Default: Story = {
 };
 
 export const WithAvatar: Story = {
-  name: 'WithAvatar — 아바타 이미지',
+  name: 'WithAvatar',
+  parameters: { docs: { description: { story: '아바타 이미지' } } },
   args: {
     avatarInitial: '보',
     avatarUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=boram',
@@ -62,7 +63,8 @@ export const WithAvatar: Story = {
 };
 
 export const WithBottomRight: Story = {
-  name: 'WithBottomRight — 하단 우측 슬롯',
+  name: 'WithBottomRight',
+  parameters: { docs: { description: { story: '하단 우측 슬롯' } } },
   args: {
     avatarInitial: '보',
     title: <span className="text-headline-3">보람</span>,
@@ -80,7 +82,8 @@ export const WithBottomRight: Story = {
 };
 
 export const SmallStats: Story = {
-  name: 'SmallStats — sm 팔로우 통계',
+  name: 'SmallStats',
+  parameters: { docs: { description: { story: 'sm 팔로우 통계' } } },
   args: {
     avatarInitial: '보',
     title: <span className="text-headline-3">보람</span>,

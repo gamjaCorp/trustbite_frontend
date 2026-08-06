@@ -38,22 +38,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 기본 (북마크)',
+  parameters: { docs: { description: { story: '기본 (북마크)' } } },
   args: { icon: Bookmark, 'aria-label': '북마크' },
 };
 
 export const Active: Story = {
-  name: 'Active — 활성 상태',
+  parameters: { docs: { description: { story: '활성 상태' } } },
   args: { icon: Bookmark, 'aria-label': '북마크', active: true, iconClassName: 'fill-current' },
 };
 
 export const Disabled: Story = {
-  name: 'Disabled — 준비 중 기능',
+  parameters: { docs: { description: { story: '준비 중 기능' } } },
   args: { icon: Share2, 'aria-label': '공유', disabled: true },
 };
 
 export const Sizes: Story = {
-  name: 'Sizes — 크기 비교 (44 / 48)',
+  parameters: { docs: { description: { story: '크기 비교 (44 / 48)' } } },
   args: { icon: Heart, 'aria-label': '좋아요' },
   render: () => (
     <div className="flex items-center gap-3">
@@ -68,7 +68,8 @@ export const Sizes: Story = {
 };
 
 export const ShareBookmarkPair: Story = {
-  name: 'ShareBookmarkPair — 공유+북마크 조합 (상세 페이지)',
+  name: 'ShareBookmarkPair',
+  parameters: { docs: { description: { story: '공유+북마크 조합 (상세 페이지)' } } },
   args: { icon: Bookmark, 'aria-label': '북마크' },
   render: () => (
     <div className="flex items-center gap-1.5">

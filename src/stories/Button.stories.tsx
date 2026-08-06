@@ -32,12 +32,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 기본',
+  parameters: { docs: { description: { story: '기본' } } },
   args: { children: '리뷰 등록하기' },
 };
 
 export const Variants: Story = {
-  name: 'Variants — 6종',
+  parameters: { docs: { description: { story: '6종' } } },
   args: { children: '버튼' },
   render: () => (
     <div className="flex flex-wrap items-center gap-3">
@@ -51,7 +51,7 @@ export const Variants: Story = {
 };
 
 export const Sizes: Story = {
-  name: 'Sizes — 높이·radius가 함께 스케일',
+  parameters: { docs: { description: { story: '높이·radius가 함께 스케일' } } },
   args: { children: '버튼' },
   render: () => (
     <div className="flex flex-col gap-6">
@@ -78,7 +78,7 @@ export const Sizes: Story = {
 };
 
 export const Matrix: Story = {
-  name: 'Matrix — variant × 상태 (회귀 확인용)',
+  parameters: { docs: { description: { story: 'variant × 상태 (회귀 확인용)' } } },
   args: { children: '버튼' },
   render: () => (
     <table className="border-separate border-spacing-3">
@@ -115,13 +115,12 @@ export const Matrix: Story = {
 };
 
 export const Loading: Story = {
-  name: 'Loading — 너비 유지',
   args: { children: '리뷰 등록하기', loading: true },
   parameters: {
     docs: {
       description: {
         story:
-          '스피너를 absolute로 얹고 children은 invisible로 남겨 버튼 너비가 그대로다. 같은 문구의 loading/기본 상태를 나란히 두면 폭이 일치한다.',
+          '너비 유지 — 스피너를 absolute로 얹고 children은 invisible로 남겨 버튼 너비가 그대로다. 같은 문구의 loading/기본 상태를 나란히 두면 폭이 일치한다.',
       },
     },
   },
@@ -136,7 +135,8 @@ export const Loading: Story = {
 };
 
 export const WithIcon: Story = {
-  name: 'WithIcon — 아이콘 + 텍스트',
+  name: 'WithIcon',
+  parameters: { docs: { description: { story: '아이콘 + 텍스트' } } },
   args: { children: '리뷰 쓰기' },
   render: () => (
     <div className="flex items-center gap-3">

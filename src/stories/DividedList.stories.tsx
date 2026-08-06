@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 const STRING_ITEMS = ['한식 맛집 A', '일식 맛집 B', '카페 C', '중식 맛집 D'];
 
 export const Default: Story = {
-  name: 'Default — 문자열 목록',
+  parameters: { docs: { description: { story: '문자열 목록' } } },
   args: {
     items: STRING_ITEMS,
     renderItem: (s: unknown) => <div className="py-3 px-1 text-body-2">{s as string}</div>,
@@ -38,9 +38,7 @@ export const Default: Story = {
       <DividedList
         items={STRING_ITEMS}
         keyFn={(s) => s}
-        renderItem={(s) => (
-          <div className="py-3 px-1 text-body-2">{s}</div>
-        )}
+        renderItem={(s) => <div className="py-3 px-1 text-body-2">{s}</div>}
       />
     </div>
   ),
@@ -53,7 +51,8 @@ const ICON_ITEMS = [
 ];
 
 export const WithIcons: Story = {
-  name: 'WithIcons — 아이콘 포함 행',
+  name: 'WithIcons',
+  parameters: { docs: { description: { story: '아이콘 포함 행' } } },
   args: {
     items: ICON_ITEMS,
     renderItem: (i: unknown) => {

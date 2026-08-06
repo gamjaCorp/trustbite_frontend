@@ -30,29 +30,29 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 4.3점',
+  parameters: { docs: { description: { story: '4.3점' } } },
   args: { score: 4.3, size: 'md' },
 };
 
 export const Full: Story = {
-  name: 'Full — 만점 (5.0)',
+  parameters: { docs: { description: { story: '만점 (5.0)' } } },
   args: { score: 5.0, size: 'md' },
 };
 
 export const Half: Story = {
-  name: 'Half — 절반 (3.5)',
+  parameters: { docs: { description: { story: '절반 (3.5)' } } },
   args: { score: 3.5, size: 'md' },
 };
 
 export const Empty: Story = {
-  name: 'Empty — 0점',
+  parameters: { docs: { description: { story: '0점' } } },
   args: { score: 0, size: 'md' },
 };
 
 export const AllSizes: Story = {
-  name: 'AllSizes — 크기 비교',
+  name: 'AllSizes',
   args: { score: 4.3 },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '크기 비교' } } },
   render: () => (
     <div className="flex flex-col gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (

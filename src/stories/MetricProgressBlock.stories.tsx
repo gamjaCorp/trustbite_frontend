@@ -9,7 +9,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: '아이콘·라벨·달성여부·Progress 바 1세트 — 등급 조건 진행률 등에 사용. met true=Check, false=잔여량, undefined=우측 없음',
+        component:
+          '아이콘·라벨·달성여부·Progress 바 1세트 — 등급 조건 진행률 등에 사용. met true=Check, false=잔여량, undefined=우측 없음',
       },
     },
   },
@@ -24,7 +25,10 @@ const meta = {
       description: 'true=달성(Check) | false=미달성(잔여량) | undefined=우측 없음',
     },
     remaining: { control: 'text', description: 'met=false일 때 잔여량 텍스트' },
-    progressValue: { control: { type: 'number', min: 0, max: 100 }, description: '프로그레스 값 (0~100)' },
+    progressValue: {
+      control: { type: 'number', min: 0, max: 100 },
+      description: '프로그레스 값 (0~100)',
+    },
     progressClassName: { control: 'text', description: 'Progress 바 색상 오버라이드' },
   },
 } satisfies Meta<typeof MetricProgressBlock>;
@@ -33,7 +37,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const InProgress: Story = {
-  name: 'InProgress — 진행 중 (미달성)',
+  name: 'InProgress',
+  parameters: { docs: { description: { story: '진행 중 (미달성)' } } },
   args: {
     icon: FileText,
     iconClassName: 'text-palette-amber',
@@ -51,7 +56,7 @@ export const InProgress: Story = {
 };
 
 export const Met: Story = {
-  name: 'Met — 달성 완료',
+  parameters: { docs: { description: { story: '달성 완료' } } },
   args: {
     icon: ShieldCheck,
     iconClassName: 'text-palette-green',
@@ -68,7 +73,8 @@ export const Met: Story = {
 };
 
 export const NoIndicator: Story = {
-  name: 'NoIndicator — 우측 없음 (met=undefined)',
+  name: 'NoIndicator',
+  parameters: { docs: { description: { story: '우측 없음 (met=undefined)' } } },
   args: {
     icon: Star,
     label: '평균 별점',
@@ -82,7 +88,8 @@ export const NoIndicator: Story = {
 };
 
 export const GradeConditions: Story = {
-  name: 'GradeConditions — 등급 조건 2개 세트',
+  name: 'GradeConditions',
+  parameters: { docs: { description: { story: '등급 조건 2개 세트' } } },
   args: { icon: FileText, label: '등급 조건', progressValue: 0 },
   render: () => (
     <div className="w-72 space-y-4">

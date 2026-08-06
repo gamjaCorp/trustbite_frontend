@@ -29,7 +29,10 @@ const meta = {
   argTypes: {
     open: { control: 'boolean', description: '시트 열림 여부' },
     restaurantName: { control: 'text', description: '음식점 이름' },
-    trustScore: { control: { type: 'number', min: 0, max: 100 }, description: '신뢰도 점수 (0~100)' },
+    trustScore: {
+      control: { type: 'number', min: 0, max: 100 },
+      description: '신뢰도 점수 (0~100)',
+    },
     reviewCount: { control: 'number', description: '총 리뷰 수' },
     breakdown: { control: false, description: '신뢰도 구성 비율' },
     onOpenChange: { control: false },
@@ -42,7 +45,7 @@ type Story = StoryObj<typeof meta>;
 const noop = () => undefined;
 
 export const Default: Story = {
-  name: 'Default — 높은 신뢰도 (87)',
+  parameters: { docs: { description: { story: '높은 신뢰도 (87)' } } },
   args: {
     open: true,
     onOpenChange: noop,
@@ -54,7 +57,8 @@ export const Default: Story = {
 };
 
 export const LowTrust: Story = {
-  name: 'LowTrust — 낮은 신뢰도 (28)',
+  name: 'LowTrust',
+  parameters: { docs: { description: { story: '낮은 신뢰도 (28)' } } },
   args: {
     open: true,
     onOpenChange: noop,
@@ -66,7 +70,8 @@ export const LowTrust: Story = {
 };
 
 export const FewReviews: Story = {
-  name: 'FewReviews — 리뷰 적음',
+  name: 'FewReviews',
+  parameters: { docs: { description: { story: '리뷰 적음' } } },
   args: {
     open: true,
     onOpenChange: noop,

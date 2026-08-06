@@ -8,7 +8,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: '음식점 이름 + 카테고리 뱃지 + 부제(지역/주소) 한 쌍 — 리스트 행·카드에서 공통으로 사용',
+        component:
+          '음식점 이름 + 카테고리 뱃지 + 부제(지역/주소) 한 쌍 — 리스트 행·카드에서 공통으로 사용',
       },
     },
   },
@@ -17,7 +18,18 @@ const meta = {
     name: { control: 'text', description: '음식점 이름' },
     category: {
       control: 'select',
-      options: ['한식', '일식', '중식', '양식', '분식', '치킨', '패스트푸드', '카페', '술집', '기타'],
+      options: [
+        '한식',
+        '일식',
+        '중식',
+        '양식',
+        '분식',
+        '치킨',
+        '패스트푸드',
+        '카페',
+        '술집',
+        '기타',
+      ],
       description: '카테고리',
     },
     subtitle: { control: 'text', description: '부제 — 지역, 주소 등' },
@@ -29,7 +41,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 한식 + 지역',
+  parameters: { docs: { description: { story: '한식 + 지역' } } },
   args: {
     name: '을지로 할머니 국밥',
     category: '한식',
@@ -43,7 +55,8 @@ export const Default: Story = {
 };
 
 export const LongName: Story = {
-  name: 'LongName — 긴 이름 truncate',
+  name: 'LongName',
+  parameters: { docs: { description: { story: '긴 이름 truncate' } } },
   args: {
     name: '이름이 아주 길어서 넘칠 수도 있는 레스토랑의 이름입니다',
     category: '양식',
@@ -57,7 +70,7 @@ export const LongName: Story = {
 };
 
 export const Categories: Story = {
-  name: 'Categories — 카테고리별',
+  parameters: { docs: { description: { story: '카테고리별' } } },
   args: { name: '예시', category: '한식', subtitle: '지역' },
   render: () => (
     <div className="space-y-4 w-72">

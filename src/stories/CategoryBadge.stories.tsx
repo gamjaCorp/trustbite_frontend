@@ -29,14 +29,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 한식',
+  parameters: { docs: { description: { story: '한식' } } },
   args: { category: '한식' },
 };
 
 export const AllCategories: Story = {
-  name: 'AllCategories — 전체 카테고리 쇼케이스',
+  name: 'AllCategories',
   args: { category: '한식' },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '전체 카테고리 쇼케이스' } } },
   render: () => (
     <div className="flex flex-wrap gap-2">
       {CATEGORIES.map((cat) => (

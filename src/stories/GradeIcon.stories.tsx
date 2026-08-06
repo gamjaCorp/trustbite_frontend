@@ -44,14 +44,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — 맛집 수집가',
+  parameters: { docs: { description: { story: '맛집 수집가' } } },
   args: { name: 'COLLECTOR', size: 'md', variant: 'circle', state: 'default' },
 };
 
 export const AllLevels: Story = {
-  name: 'AllLevels — 전체 등급 쇼케이스',
+  name: 'AllLevels',
   args: { name: 'SPROUT' },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '전체 등급 쇼케이스' } } },
   render: () => (
     <div className="flex gap-4 flex-wrap">
       {GRADE_LEVELS.map((def) => (
@@ -65,9 +65,9 @@ export const AllLevels: Story = {
 };
 
 export const AllSizes: Story = {
-  name: 'AllSizes — 크기 비교 (맛집 수집가)',
+  name: 'AllSizes',
   args: { name: 'COLLECTOR' },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '크기 비교 (맛집 수집가)' } } },
   render: () => (
     <div className="flex items-end gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -81,9 +81,9 @@ export const AllSizes: Story = {
 };
 
 export const InlineVariant: Story = {
-  name: 'InlineVariant — 인라인 아이콘',
+  name: 'InlineVariant',
   args: { name: 'SPROUT' },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '인라인 아이콘' } } },
   render: () => (
     <div className="flex gap-3">
       {GRADE_LEVELS.map((def) => (
@@ -94,9 +94,9 @@ export const InlineVariant: Story = {
 };
 
 export const MutedState: Story = {
-  name: 'MutedState — 비활성 상태',
+  name: 'MutedState',
   args: { name: 'HUNTER' },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', docs: { description: { story: '비활성 상태' } } },
   render: () => (
     <div className="flex gap-4">
       <div className="flex flex-col items-center gap-1.5">

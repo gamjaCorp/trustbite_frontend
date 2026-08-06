@@ -8,7 +8,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: '라벨·값 쌍의 단위 통계 셀 — StatsStrip 내부 및 단독 사용. md=headline-1(24px), sm=title-1(16px)',
+        component:
+          '라벨·값 쌍의 단위 통계 셀 — StatsStrip 내부 및 단독 사용. md=headline-1(24px), sm=title-1(16px)',
       },
     },
   },
@@ -31,22 +32,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: 'Default — md 크기 (StatsStrip 기본)',
+  parameters: { docs: { description: { story: 'md 크기 (StatsStrip 기본)' } } },
   args: { label: '리뷰', value: '24', size: 'md' },
 };
 
 export const Small: Story = {
-  name: 'Small — sm 크기 (등급 가이드)',
+  parameters: { docs: { description: { story: 'sm 크기 (등급 가이드)' } } },
   args: { label: '리뷰', value: '24개', size: 'sm' },
 };
 
 export const WithLink: Story = {
-  name: 'WithLink — 링크 셀',
+  name: 'WithLink',
+  parameters: { docs: { description: { story: '링크 셀' } } },
   args: { label: '팔로워', value: '128', href: '/followers', size: 'md' },
 };
 
 export const StripLayout: Story = {
-  name: 'StripLayout — StatsStrip 레이아웃 재현',
+  name: 'StripLayout',
+  parameters: { docs: { description: { story: 'StatsStrip 레이아웃 재현' } } },
   args: { label: '라벨', value: '값' },
   render: () => (
     <div className="flex divide-x divide-border border border-border rounded-xl overflow-hidden w-72">
@@ -58,7 +61,8 @@ export const StripLayout: Story = {
 };
 
 export const SmallPair: Story = {
-  name: 'SmallPair — sm 두 개 나란히',
+  name: 'SmallPair',
+  parameters: { docs: { description: { story: 'sm 두 개 나란히' } } },
   args: { label: '라벨', value: '값' },
   render: () => (
     <div className="flex gap-8">
