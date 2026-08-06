@@ -111,6 +111,10 @@
      여기 값은 폴백 — Radix 포탈(body 직속)처럼 그룹 래퍼 밖으로 나가는 노드용 */
   --header-height: 92px;
 
+  /* ── 프레스 피드백 ── */
+  --scale-press: 0.95;
+  --scale-press-row: 0.99;
+
   /* ───────────────────────────────────────────
    * Tier 1 — Primitive Palette (SSOT)
    * 색 자체만 정의. 라이트/다크는 여기서만 변경.
@@ -244,6 +248,22 @@
   --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.06), 0 2px 8px 0 rgb(0 0 0 / 0.3);
 }
 
+/* 마우스는 커서가 이미 클릭 의도를 표시하므로 크기 변화까지 더하면 과잉이다.
+   press-scale 유틸이 이 변수만 참조하므로 컴포넌트별 수정 없이 한 번에 적용된다. */
+@media (min-width: 768px) {
+  :root {
+    --scale-press: 1;
+    --scale-press-row: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --scale-press: 1;
+    --scale-press-row: 1;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -266,6 +286,26 @@
 
 @utility header-h-sub {
   --header-height: 56px;
+}
+
+/* ── 프레스 피드백 ──
+ * transform이 아니라 scale 프로퍼티를 쓴다 — Tailwind v4는 translate/scale을 독립
+ * 프로퍼티로 컴파일하므로, transform으로 쓰면 hover:-translate-y-* 가 사라진다.
+ * tint 오버레이는 두지 않는다. variant가 이미 hover:bg-* 를 선언하고,
+ * ::after 는 히트박스 확장이 쓰는 자리다.
+ * transition은 선언하지 않는다 — 요소가 이미 가진 transition-all 이 scale을 함께 태운다.
+ * transition-colors 만 있는 요소에 붙이면 축소가 애니메이션 없이 튄다. */
+@utility press-scale {
+  &:active {
+    scale: var(--scale-press);
+  }
+}
+
+/* 넓은 면적(행·전폭 바)은 얕게 눌려야 눌린 느낌이 난다 */
+@utility press-scale-row {
+  &:active {
+    scale: var(--scale-press-row);
+  }
 }
 
 @utility scrollbar-hide {

@@ -9,7 +9,7 @@ const MOCK_SESSION = {
 };
 
 const meta = {
-  title: 'Common/Layout/Header',
+  title: 'Common/Header',
   component: Header,
   parameters: {
     layout: 'fullscreen',

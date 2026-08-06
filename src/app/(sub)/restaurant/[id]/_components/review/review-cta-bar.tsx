@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { PencilLine } from 'lucide-react';
 
 import { MyReview } from '@/types/restaurant';
+import { Button } from '@/components/ui/button';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 
@@ -42,22 +43,17 @@ export function ReviewCtaBar({ restaurantId, myReview }: Props) {
         </div>
 
         {isAuthed ? (
-          <Link
-            href={`/review?restaurantId=${restaurantId}`}
-            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-title-1 text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
-          >
-            <PencilLine className="w-4 h-4" />
-            {isRevisit ? '재방문 리뷰 쓰기' : '리뷰 쓰기'}
-          </Link>
+          <Button asChild size="lg" className="rounded-chip px-5 gap-1.5 hover:brightness-95">
+            <Link href={`/review?restaurantId=${restaurantId}`}>
+              <PencilLine className="w-4 h-4" />
+              {isRevisit ? '재방문 리뷰 쓰기' : '리뷰 쓰기'}
+            </Link>
+          </Button>
         ) : (
-          <button
-            type="button"
-            onClick={trigger}
-            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-title-1 text-primary-foreground hover:brightness-95 active:scale-95 transition-all"
-          >
+          <Button type="button" size="lg" onClick={trigger} className="rounded-chip px-5 gap-1.5 hover:brightness-95">
             <PencilLine className="w-4 h-4" />
             리뷰 쓰기
-          </button>
+          </Button>
         )}
       </div>
 

@@ -10,6 +10,7 @@ import { ko } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useWishlistMock } from '@/stores/wishlist-mock-store';
 import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
+import { IconButton } from '@/components/core/icon-button';
 import { TrustScoreBadge } from '@/components/common/trust/trust-score-badge';
 import { TrustScoreSheet } from '@/components/common/trust/trust-score-sheet';
 import { CategoryBadge } from '@/components/common/category/category-badge';
@@ -126,7 +127,6 @@ export function PlaceListRow({
         className={cn(
           'group relative flex items-center gap-3 pl-3 pr-3 py-4 transition-colors hover:bg-muted/30 sm:gap-4 sm:pl-4 sm:pr-4',
           active && 'bg-primary-subtle/40',
-          onFocusMap && 'cursor-pointer',
         )}
         role={onFocusMap ? 'button' : undefined}
         tabIndex={onFocusMap ? 0 : undefined}
@@ -135,14 +135,14 @@ export function PlaceListRow({
       >
         {/* ① 좌측 머리 — wishlist: 큰 북마크 토글 / regional·my: 랭크 메달 (minimal 시 생략) */}
         {variant === 'wishlist' ? (
-          <button
-            type="button"
+          <IconButton
+            icon={Bookmark}
             onClick={() => onRemoveFromWishlist?.(id)}
             aria-label="북마크 해제"
-            className="shrink-0 self-center w-11 h-11 rounded-full flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all shadow-sm"
-          >
-            <Bookmark className="w-5 h-5 fill-current" />
-          </button>
+            variant="default"
+            iconClassName="fill-current"
+            className="self-center shadow-sm"
+          />
         ) : !minimal && rank != null ? (
           <RankMedal
             rank={rank}
@@ -185,7 +185,7 @@ export function PlaceListRow({
                 triggerBookmark();
               }}
               className={cn(
-                'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all active:scale-90 backdrop-blur-sm after:absolute after:content-[""] after:-inset-2',
+                'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all press-scale backdrop-blur-sm after:absolute after:content-[""] after:-inset-2',
                 bookmarked && isAuthed
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-background/85 text-ink/70 hover:bg-background',
@@ -220,7 +220,7 @@ export function PlaceListRow({
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
-            className="self-start inline-flex items-center gap-1 max-w-full text-title-1 text-foreground text-left bg-transparent p-0 hover:underline cursor-pointer"
+            className="self-start inline-flex items-center gap-1 max-w-full text-title-1 text-foreground text-left bg-transparent p-0 hover:underline"
             aria-label={`${name} 상세 보기`}
           >
             <span className="truncate min-w-0">{name}</span>

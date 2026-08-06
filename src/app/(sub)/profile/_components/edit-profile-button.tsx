@@ -18,7 +18,7 @@ export function EditProfileButton({ profile }: Props) {
       <Button
         variant="outline"
         size="sm"
-        className="shrink-0 rounded-full"
+        className="rounded-chip"
         onClick={() => setIsOpen(true)}
       >
         편집

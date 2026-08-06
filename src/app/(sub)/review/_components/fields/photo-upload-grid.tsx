@@ -5,6 +5,7 @@ import { Check, Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useReviewActions, useReviewPhotos } from '../../_lib/review-write-store';
 import { TRUST_DELTA } from '@/lib/domain/trust-delta';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   maxSlots?: number;
@@ -78,14 +79,15 @@ export function PhotoUploadGrid({ maxSlots = 4, hideHeader = false }: Props) {
               alt={`업로드한 사진 ${idx + 1}`}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <button
+            <Button
               type="button"
+              size="icon-sm"
               onClick={() => handleRemove(idx)}
               aria-label={`사진 ${idx + 1} 삭제`}
-              className="absolute top-1 right-1 w-8 h-8 rounded-full bg-foreground/70 text-background flex items-center justify-center hover:bg-foreground transition-colors after:absolute after:content-[''] after:-inset-1.5"
+              className="absolute top-1 right-1 rounded-full bg-foreground/70 text-background hover:bg-foreground after:absolute after:content-[''] after:-inset-1.5"
             >
               <X className="w-3.5 h-3.5" />
-            </button>
+            </Button>
           </div>
         ))}
 

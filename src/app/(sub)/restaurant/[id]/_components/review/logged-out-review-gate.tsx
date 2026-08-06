@@ -6,6 +6,7 @@ import type { DetailedReview } from '@/types/restaurant';
 import { LoginCtaDialog } from '@/components/common/login-cta-dialog';
 import { useAuthGatedAction } from '@/hooks/use-auth-gated-action';
 
+import { Button } from '@/components/ui/button';
 import { ReviewCard } from './review-card';
 
 interface Props {
@@ -34,14 +35,15 @@ export function LoggedOutReviewGate({ reviews, othersReviewCount, restaurantId }
 
       {remainingReviews > 0 && (
         <div className="px-6 pt-4">
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={trigger}
-            className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-3 text-title-3 text-foreground hover:bg-muted transition-colors"
+            className="w-full gap-1.5 rounded-chip"
           >
             리뷰 <span className="">{remainingReviews}</span>개 더 보기
             {isAuthed && <ChevronDown className="w-4 h-4" />}
-          </button>
+          </Button>
           <p className="mt-2 text-center text-caption-2 text-muted-foreground">
             {visibleReviews.length} / {othersReviewCount}개 표시 중 · 신뢰도순
           </p>

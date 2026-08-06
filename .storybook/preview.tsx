@@ -6,9 +6,14 @@ import { SessionProvider } from 'next-auth/react';
 
 const preview: Preview = {
   parameters: {
+    // App Router 전용 저장소 — useRouter/usePathname을 쓰는 컴포넌트가 스토리마다
+    // 이걸 빠뜨리면 렌더가 통째로 실패한다. 개별 스토리는 navigation.pathname만 덮어쓰면 된다.
+    nextjs: {
+      appDirectory: true,
+    },
     options: {
       storySort: {
-        order: ['Foundation', 'Core', 'Common', '*'],
+        order: ['Foundation', 'UI', 'Core', 'Common', '*'],
       },
     },
     controls: {

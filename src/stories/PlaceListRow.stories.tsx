@@ -8,7 +8,7 @@ const myEntry = { ...mockRankList[0], rank: 1 };
 const wishlistDetail = getRestaurantDetail('1')!;
 
 const meta: Meta<typeof PlaceListRow> = {
-  title: 'Common/Restaurant/PlaceListRow',
+  title: 'Common/PlaceListRow',
   component: PlaceListRow,
   parameters: {
     layout: 'padded',

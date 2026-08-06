@@ -1,7 +1,6 @@
 'use client';
 
 import { computeNextTrustScore } from '@/lib/domain/trust-delta';
-import { cn } from '@/lib/utils';
 import { formatDelta } from '@/lib/format';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,14 +33,10 @@ export function MobileSubmitBar({ onSubmit, baseTrustScore }: Props) {
         </div>
         <Button
           type="button"
+          size="lg"
           onClick={onSubmit}
           disabled={!isValid}
-          className={cn(
-            'ml-auto h-12 rounded-xl px-6 text-label-1 transition-colors disabled:opacity-100',
-            isValid
-              ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
-              : 'bg-muted text-muted-foreground cursor-not-allowed',
-          )}
+          className="ml-auto px-6 press-scale-row"
         >
           {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
         </Button>

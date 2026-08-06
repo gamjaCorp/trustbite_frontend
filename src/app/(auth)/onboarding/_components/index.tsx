@@ -6,6 +6,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Check, Camera } from 'lucide-react';
 import { completeOnboarding } from '../actions';
 
+import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/core/user-avatar';
 import {
   Form,
@@ -18,7 +19,6 @@ import {
 } from '@/components/ui/form';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import { useImagePreview } from '@/hooks/use-image-preview';
-import { cn } from '@/lib/utils';
 import { CutleryRain } from '@/components/common/cutlery-rain';
 import {
   onboardingSchema,
@@ -100,18 +100,15 @@ export function OnboardingForm() {
             <div className="flex flex-col items-center gap-2">
               <div className="relative">
                 <UserAvatar initial={avatarInitial} imageUrl={displayAvatarSrc} size="xl" />
-                <button
+                <Button
                   type="button"
+                  size="icon"
                   onClick={() => fileInputRef.current?.click()}
                   aria-label="프로필 이미지 변경"
-                  className={cn(
-                    'absolute bottom-0 right-0 w-9 h-9 rounded-full',
-                    'bg-primary text-primary-foreground flex items-center justify-center',
-                    'ring-2 ring-background hover:bg-primary/80 transition-colors',
-                  )}
+                  className="absolute bottom-0 right-0 rounded-full ring-2 ring-background"
                 >
                   <Camera className="w-3.5 h-3.5" />
-                </button>
+                </Button>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -152,13 +149,9 @@ export function OnboardingForm() {
 
             {/* CTA */}
             <div>
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className="w-full rounded-xl bg-primary text-primary-foreground px-4 py-3.5 text-title-2 hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
+              <Button type="submit" size="lg" disabled={!canSubmit} className="w-full">
                 시작하기
-              </button>
+              </Button>
               <p className="mt-3 text-center text-title-3 text-primary">
                 믿을 수 있는 별점, 같이 모으는 맛집
               </p>

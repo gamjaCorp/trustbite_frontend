@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StatCell } from '@/components/common/display/stat-cell';
 
 const meta = {
-  title: 'Common/Display/StatCell',
+  title: 'Common/StatCell',
   component: StatCell,
   parameters: {
     layout: 'centered',

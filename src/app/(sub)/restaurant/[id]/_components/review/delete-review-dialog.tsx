@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { ConfirmDialog } from '@/components/core/confirm-dialog';
+import { Modal } from '@/components/core/modal';
 
 interface Props {
   open: boolean;
@@ -17,7 +17,7 @@ export function DeleteReviewDialog({ open, onOpenChange }: Props) {
   };
 
   return (
-    <ConfirmDialog
+    <Modal
       open={open}
       onOpenChange={onOpenChange}
       title="리뷰를 삭제할까요?"

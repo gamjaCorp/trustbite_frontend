@@ -4,7 +4,7 @@ import { SceneTagChipRow } from '@/components/common/display/scene-tag-chip-row'
 import { OCCASIONS } from '@/lib/domain/category';
 
 const meta = {
-  title: 'Common/Display/SceneTagChipRow',
+  title: 'Common/SceneTagChipRow',
   component: SceneTagChipRow,
   parameters: {
     layout: 'padded',

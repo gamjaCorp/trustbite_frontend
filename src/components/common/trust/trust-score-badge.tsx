@@ -37,7 +37,7 @@ export function TrustScoreBadge({ score, size = 'sm', onClick, showIcon = true, 
       <button
         type="button"
         onClick={onClick}
-        className={cn(badgeClass, 'hover:brightness-95 active:scale-95 transition-all cursor-pointer')}
+        className={cn(badgeClass, 'hover:brightness-95 transition-all press-scale')}
       >
         {inner}
       </button>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MyReview, MyReviewEntry } from '@/types/restaurant';
+import { IconButton } from '@/components/core/icon-button';
 import { useAuthStatus } from '@/hooks/use-auth-status';
 import {
   DropdownMenu,
@@ -50,13 +51,12 @@ function MyReviewVisit({
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className="shrink-0 w-11 h-11 -mt-1 -mr-1 rounded-full text-muted-foreground hover:bg-muted flex items-center justify-center transition-colors"
+            <IconButton
+              icon={MoreHorizontal}
               aria-label="수정/삭제"
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
+              variant="ghost"
+              className="-mt-1 -mr-1 text-muted-foreground"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onSelect={handleEdit}>

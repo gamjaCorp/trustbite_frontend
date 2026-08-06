@@ -8,7 +8,7 @@ const SIZE: Record<AvatarSize, { avatar: string; fallback: string }> = {
   sm: { avatar: 'h-8 w-8',   fallback: 'text-label-3' },
   md: { avatar: 'h-10 w-10', fallback: 'text-title-3' },
   lg: { avatar: 'h-12 w-12', fallback: 'text-title-1' },
-  xl: { avatar: 'h-20 w-20', fallback: 'text-2xl' },
+  xl: { avatar: 'h-20 w-20', fallback: 'text-headline-1' },
 };
 
 interface Props {

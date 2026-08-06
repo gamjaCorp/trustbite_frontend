@@ -208,7 +208,7 @@ export function KakaoMap({
             type="button"
             aria-label={`${entry.name} 지도 핀`}
             onClick={() => onPinClick?.(entry.id)}
-            className="bg-transparent p-0 border-0 cursor-pointer"
+            className="bg-transparent p-0 border-0"
           >
             <div className="relative flex items-center justify-center">
               <CategoryPin

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ToggleChip } from '@/components/common/display/toggle-chip';
 
 const meta = {
-  title: 'Common/Display/ToggleChip',
+  title: 'Common/ToggleChip',
   component: ToggleChip,
   parameters: {
     layout: 'centered',

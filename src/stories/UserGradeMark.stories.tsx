@@ -6,7 +6,7 @@ import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
 const NAMES = GRADE_LEVELS.map((d) => d.name);
 
 const meta = {
-  title: 'Common/Trust/UserGradeMark',
+  title: 'Common/UserGradeMark',
   component: UserGradeMark,
   parameters: {
     layout: 'centered',

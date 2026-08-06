@@ -5,7 +5,7 @@ import type { Category } from '@/types/restaurant';
 const CATEGORIES: Category[] = ['한식', '일식', '중식', '양식', '카페', '술집', '기타'];
 
 const meta = {
-  title: 'Common/Category/CategoryBadge',
+  title: 'Common/CategoryBadge',
   component: CategoryBadge,
   parameters: {
     layout: 'centered',

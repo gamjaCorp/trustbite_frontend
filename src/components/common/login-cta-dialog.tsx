@@ -1,7 +1,7 @@
 'use client';
 
 import { Lock } from 'lucide-react';
-import { ConfirmDialog } from '@/components/core/confirm-dialog';
+import { Modal } from '@/components/core/modal';
 
 interface Props {
   open: boolean;
@@ -18,18 +18,20 @@ export function LoginCtaDialog({
   description = '로그인하면 모든 리뷰를 볼 수 있어요',
 }: Props) {
   return (
-    <ConfirmDialog
+    <Modal
       open={open}
       onOpenChange={onOpenChange}
-      icon={<Lock className="w-7 h-7 text-primary" />}
-      iconTone="primary"
+      align="center"
+      size="md"
+      icon={<Lock />}
       title="로그인이 필요해요"
-      description={description}
       primaryAction={{
         label: '로그인하기',
         href: `/signin?callbackUrl=${encodeURIComponent(callbackPath)}`,
       }}
       secondaryAction={{ label: '나중에' }}
-    />
+    >
+      <p className="py-1 text-center text-body-2 text-muted-foreground">{description}</p>
+    </Modal>
   );
 }

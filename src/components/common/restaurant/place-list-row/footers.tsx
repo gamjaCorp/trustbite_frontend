@@ -104,7 +104,7 @@ export function RegionalFooter({
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
-        className="flex items-center gap-1 text-caption-2 text-muted-foreground cursor-pointer hover:underline bg-transparent p-0"
+        className="flex items-center gap-1 text-caption-2 text-muted-foreground hover:underline bg-transparent p-0"
         aria-label={`${name} 리뷰 보기`}
       >
         <MessageSquare className="w-3.5 h-3.5" aria-hidden />
@@ -159,7 +159,7 @@ export function WishlistFooter({
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); router.push(`/restaurant/${id}`); }}
-            className="flex items-center gap-1 cursor-pointer hover:underline bg-transparent p-0"
+            className="flex items-center gap-1 hover:underline bg-transparent p-0"
             aria-label={`${name} 리뷰 보기`}
           >
             <MessageSquare className="w-3.5 h-3.5" aria-hidden />

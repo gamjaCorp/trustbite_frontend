@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { signIn, providerMap } from '@/auth';
 import { AuthError } from 'next-auth';
@@ -42,11 +43,16 @@ export default async function SignInPage(props: {
                 }
               }}
             >
-              <Button type="submit" variant="outline" className="w-full h-11 rounded-xl">
-                <span className="font-medium">{provider.name}로 시작하기</span>
+              <Button type="submit" variant="outline" size="lg" className="w-full">
+                {provider.name}로 시작하기
               </Button>
             </form>
           ))}
+
+          {/* 홈은 비로그인도 볼 수 있다 — 로그인 화면이 막다른 길이 되지 않도록 */}
+          <Button asChild variant="ghost" size="lg" className="w-full text-muted-foreground">
+            <Link href="/">먼저 둘러볼래요</Link>
+          </Button>
         </div>
 
         <p className="text-center text-caption-2 text-muted-foreground leading-relaxed">

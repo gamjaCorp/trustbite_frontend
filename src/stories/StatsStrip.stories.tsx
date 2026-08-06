@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { StatsStrip } from '@/components/common/display/stats-strip';
 
 const meta = {
-  title: 'Common/Display/StatsStrip',
+  title: 'Common/StatsStrip',
   component: StatsStrip,
   parameters: {
     layout: 'padded',

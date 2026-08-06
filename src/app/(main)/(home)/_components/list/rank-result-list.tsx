@@ -78,7 +78,7 @@ export function RankResultList({
         )}
       />
       {hasMore && (
-        <Button variant="outline" className="w-full h-10" onClick={onLoadMore}>
+        <Button variant="outline" className="w-full rounded-chip" onClick={onLoadMore}>
           {remainingCount}개 더보기
         </Button>
       )}

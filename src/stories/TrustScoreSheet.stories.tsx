@@ -15,7 +15,7 @@ const lowBreakdown: TrustBreakdown = {
 };
 
 const meta = {
-  title: 'Common/Trust/TrustScoreSheet',
+  title: 'Common/TrustScoreSheet',
   component: TrustScoreSheet,
   parameters: {
     layout: 'padded',

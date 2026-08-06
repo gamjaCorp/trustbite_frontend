@@ -4,6 +4,7 @@ import { Clock, Copy, ExternalLink, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import { RestaurantDetail } from '@/types/restaurant';
 import { RestaurantLocationMap } from './restaurant-location-map';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   detail: RestaurantDetail;
@@ -89,25 +90,18 @@ export function LocationSection({ detail }: Props) {
 
           <div className="mt-auto pt-3 flex items-center gap-2 self-end">
             {detail.placeUrl && (
-              <a
-                href={detail.placeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-title-2 text-foreground hover:bg-muted transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" />
-                카카오맵
-              </a>
+              <Button asChild variant="outline" size="sm" className="rounded-chip gap-1.5">
+                <a href={detail.placeUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-4 h-4" />
+                  카카오맵
+                </a>
+              </Button>
             )}
             {displayAddress && (
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-title-2 text-foreground hover:bg-muted transition-colors"
-              >
+              <Button type="button" variant="outline" size="sm" onClick={handleCopy} className="rounded-chip gap-1.5">
                 <Copy className="w-4 h-4" />
                 복사
-              </button>
+              </Button>
             )}
           </div>
         </div>

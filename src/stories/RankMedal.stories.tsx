@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { RankMedal } from '@/components/common/display/rank-medal';
 
 const meta = {
-  title: 'Common/Display/RankMedal',
+  title: 'Common/RankMedal',
   component: RankMedal,
   parameters: {
     layout: 'centered',

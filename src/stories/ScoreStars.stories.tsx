@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ScoreStars } from '@/components/common/display/score-stars';
 
 const meta = {
-  title: 'Common/Display/ScoreStars',
+  title: 'Common/ScoreStars',
   component: ScoreStars,
   parameters: {
     layout: 'centered',

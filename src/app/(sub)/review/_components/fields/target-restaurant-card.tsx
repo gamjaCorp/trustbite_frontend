@@ -1,6 +1,7 @@
 'use client';
 
 import { Pencil } from 'lucide-react';
+import { IconButton } from '@/components/core/icon-button';
 import { Surface } from '@/components/common/display/surface';
 import { RestaurantIdentityRow } from '@/components/common/restaurant/restaurant-identity-row';
 import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
@@ -37,14 +38,13 @@ export function TargetRestaurantCard() {
         {visitOrdinal}번째 방문
       </span>
 
-      <button
-        type="button"
+      <IconButton
+        icon={Pencil}
         onClick={clearSelectedRestaurant}
         aria-label="음식점 다시 선택"
-        className="shrink-0 w-11 h-11 rounded-full text-muted-foreground hover:bg-muted hover:text-foreground flex items-center justify-center transition-colors"
-      >
-        <Pencil className="w-4 h-4" />
-      </button>
+        variant="ghost"
+        className="text-muted-foreground"
+      />
     </Surface>
   );
 }

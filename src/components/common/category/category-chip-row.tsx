@@ -25,7 +25,7 @@ export function CategoryChipRow({ category, onCategoryChange, categories }: Cate
             aria-pressed={active}
             onClick={() => onCategoryChange(c)}
             className={cn(
-              'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors cursor-pointer',
+              'inline-flex items-center gap-1 shrink-0 rounded-chip px-3 py-1.5 text-label-3 transition-colors',
               active
                 ? c === 'all'
                   ? 'bg-foreground text-background'

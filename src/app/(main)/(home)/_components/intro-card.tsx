@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ArrowRight, Check, Sparkles, Star, X } from 'lucide-react';
+import { IconButton } from '@/components/core/icon-button';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -39,13 +40,13 @@ export function IntroCard() {
       <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-primary/10 blur-sm pointer-events-none" />
 
       {/* 닫기 버튼 */}
-      <button
+      <IconButton
+        icon={X}
         onClick={dismiss}
         aria-label="닫기"
-        className="absolute top-0 right-0 w-11 h-11 rounded-full flex items-center justify-center text-primary/60 hover:text-primary hover:bg-primary/10 transition-colors z-10"
-      >
-        <X className="w-4 h-4" />
-      </button>
+        variant="ghost"
+        className="absolute top-0 right-0 z-10 text-primary/60 hover:bg-primary/10 hover:text-primary"
+      />
 
       {/* 내부 콘텐츠 최대 너비 제한 */}
       <div className="max-w-2xl mx-auto">

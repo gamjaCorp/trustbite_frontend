@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Surface } from '@/components/common/display/surface';
 
 const meta = {
-  title: 'Common/Display/Surface',
+  title: 'Common/Surface',
   component: Surface,
   parameters: {
     layout: 'centered',

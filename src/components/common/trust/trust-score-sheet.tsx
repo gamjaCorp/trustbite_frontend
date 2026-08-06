@@ -1,11 +1,5 @@
 import { Camera, FileText, TrendingUp } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
+import { Modal } from '@/components/core/modal';
 import { Progress } from '@/components/ui/progress';
 import { getTrustToneClass } from '@/lib/domain/trust-score';
 import type { TrustBreakdown } from '@/types/restaurant';
@@ -53,16 +47,14 @@ export function TrustScoreSheet({
   ];
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-modal">
-        <SheetHeader>
-          <SheetTitle className="text-left">{restaurantName}</SheetTitle>
-          <SheetDescription className="text-left">
-            이 가게의 신뢰도가 어떻게 계산됐는지 알려드릴게요.
-          </SheetDescription>
-        </SheetHeader>
-
-        <div className="px-4 pb-6 space-y-5">
+    <Modal
+      open={open}
+      onOpenChange={onOpenChange}
+      title={restaurantName}
+      description="이 가게의 신뢰도가 어떻게 계산됐는지 알려드릴게요."
+      size="md"
+    >
+      <div className="pb-6 space-y-5">
           <div
             className={cn(
               'flex items-baseline justify-between rounded-2xl px-4 py-3 ring-1',
@@ -93,8 +85,7 @@ export function TrustScoreSheet({
           <p className="text-caption-2 text-muted-foreground leading-relaxed">
             사진과 자세한 글이 있는 리뷰, 최근 활동이 많을수록 신뢰도가 올라가요.
           </p>
-        </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </Modal>
   );
 }

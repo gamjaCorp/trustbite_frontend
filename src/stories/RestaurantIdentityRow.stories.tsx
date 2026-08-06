@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { RestaurantIdentityRow } from '@/components/common/restaurant/restaurant-identity-row';
 
 const meta = {
-  title: 'Common/Restaurant/RestaurantIdentityRow',
+  title: 'Common/RestaurantIdentityRow',
   component: RestaurantIdentityRow,
   parameters: {
     layout: 'padded',

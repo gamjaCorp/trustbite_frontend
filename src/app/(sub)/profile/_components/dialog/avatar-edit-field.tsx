@@ -4,6 +4,7 @@
 import { useRef } from 'react';
 import { Camera } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/core/user-avatar';
 
 interface Props {
@@ -19,14 +20,15 @@ export function AvatarEditField({ initial, imageUrl, onFileChange }: Props) {
   return (
     <div className="relative">
       <UserAvatar initial={initial} imageUrl={imageUrl} size="xl" />
-      <button
+      <Button
         type="button"
+        size="icon"
         onClick={() => fileInputRef.current?.click()}
         aria-label="프로필 이미지 변경"
-        className="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-foreground text-background flex items-center justify-center ring-2 ring-background hover:bg-foreground/80 transition-colors after:absolute after:content-[''] after:-inset-1"
+        className="absolute bottom-0 right-0 rounded-full bg-foreground text-background ring-2 ring-background hover:bg-foreground/80 after:absolute after:content-[''] after:-inset-1"
       >
         <Camera className="w-3.5 h-3.5" />
-      </button>
+      </Button>
       <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={onFileChange} />
     </div>
   );

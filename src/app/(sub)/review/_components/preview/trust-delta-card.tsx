@@ -59,14 +59,10 @@ export function TrustDeltaCard({
 
       <Button
         type="button"
+        size="lg"
         onClick={onSubmit}
         disabled={!isValid}
-        className={cn(
-          'mt-4 hidden h-12 w-full rounded-xl text-label-1 transition-colors disabled:opacity-100 lg:block',
-          isValid
-            ? 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.99]'
-            : 'bg-muted text-muted-foreground cursor-not-allowed',
-        )}
+        className="mt-4 hidden w-full press-scale-row lg:inline-flex"
       >
         {isEditMode ? '리뷰 수정하기' : '리뷰 등록하기'}
       </Button>

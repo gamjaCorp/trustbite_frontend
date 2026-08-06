@@ -20,7 +20,7 @@ const MOCK_ME: MyProfileResponse = {
 };
 
 const meta = {
-  title: 'Common/Layout/BackHeader',
+  title: 'Common/BackHeader',
   component: BackHeader,
   parameters: {
     layout: 'fullscreen',

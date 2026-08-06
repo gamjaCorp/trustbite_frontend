@@ -5,7 +5,7 @@ import { GRADE_LEVELS } from '@/lib/domain/grade-levels';
 const NAMES = GRADE_LEVELS.map((d) => d.name);
 
 const meta = {
-  title: 'Common/Trust/GradeIcon',
+  title: 'Common/GradeIcon',
   component: GradeIcon,
   parameters: {
     layout: 'centered',

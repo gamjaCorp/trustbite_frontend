@@ -12,6 +12,7 @@ import { SectionHeader } from '@/components/common/display/section-header';
 import { DividedList } from '@/components/common/display/divided-list';
 import { IconButton } from '@/components/core/icon-button';
 import type { RestaurantDetail } from '@/types/restaurant';
+import { Button } from '@/components/ui/button';
 
 type WishlistSortKey = 'recent' | 'score' | 'trust';
 
@@ -73,14 +74,16 @@ export function WishlistSection() {
               다녀와서 리뷰를 쓰면 자동으로 &apos;나의 랭킹&apos;으로 옮겨져요
             </p>
           </div>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             aria-label="배너 닫기"
             onClick={() => setShowBanner(false)}
-            className="shrink-0 relative text-muted-foreground hover:text-foreground transition-colors after:absolute after:content-[''] after:-inset-3.5"
+            className="text-muted-foreground after:absolute after:content-[''] after:-inset-3.5"
           >
             <X className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       )}
 

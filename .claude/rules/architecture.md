@@ -8,7 +8,7 @@ src/app/<route>/_components/     해당 라우트에서만 쓰이는 컴포넌�
 src/app/<route>/_hooks/use-*.ts  해당 라우트에서만 쓰이는 훅.
 src/app/<route>/_lib/<name>.ts   해당 라우트에서만 쓰이는 순수 로직·타입·zod schema·Zustand 스토어.
 src/app/<route>/actions.ts       해당 라우트의 Server Action.
-src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 common/에 둔다. ui는 shadcn (직접 수정 금지)
+src/components/{core,ui}         core는 ui/ 프리미티브를 감싸는 공통 컴포넌트에 한정. 그 외 중복은 common/에 둔다. ui는 shadcn (수정 시 사전 승인 — CLAUDE.md `ui/ 수정 절차`)
 src/components/common/<도메인>/   두 개 이상 라우트에서 공유하는 컴포넌트. 라우트에 귀속시키면 교차 의존이 생기는 경우.
 src/api/<feature>/<feature>.ts   fetch 기반 API 함수 (publicFetch/authedFetch/Server Action, feature별 하위 폴더)
 src/hooks/use-*.ts               여러 라우트에서 공유하는 범용 훅 (예: use-debounced-value, use-auth-status, use-mobile)

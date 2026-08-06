@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { LayoutGrid } from 'lucide-react';
 import { PhotoLightbox } from './photo-lightbox';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   photos: string[];
@@ -71,15 +72,16 @@ export function PhotoGallery({ photos, totalCount }: Props) {
         </div>
       )}
 
-      <button
+      <Button
         type="button"
+        size="xs"
         onClick={() => hasPhotos && openAt(0)}
         disabled={!hasPhotos}
-        className="absolute bottom-3 right-8 inline-flex items-center gap-1.5 rounded-full bg-background/90 backdrop-blur px-3 py-1.5 text-label-3 text-foreground ring-1 ring-border hover:bg-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-background/90"
+        className="absolute bottom-3 right-8 gap-1.5 rounded-chip bg-background/90 text-foreground ring-1 ring-border backdrop-blur hover:bg-background"
       >
         <LayoutGrid className="w-3.5 h-3.5" />
         사진 {totalCount}장 모두 보기
-      </button>
+      </Button>
 
       <PhotoLightbox
         key={open ? initialIndex : -1}
