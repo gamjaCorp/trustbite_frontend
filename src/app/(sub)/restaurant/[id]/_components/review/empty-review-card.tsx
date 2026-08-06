@@ -24,7 +24,7 @@ export function EmptyReviewCard({ restaurantId }: Props) {
             </>
           }
           cta={
-            <Button asChild size="lg" >
+            <Button asChild>
               <Link href={`/review?restaurantId=${restaurantId}`}>첫 리뷰 쓰기</Link>
             </Button>
           }

@@ -12,7 +12,7 @@ export function NotFoundView() {
       title="페이지를 찾을 수 없어요"
       description="삭제됐거나 주소가 잘못된 것 같아요."
       cta={
-        <Button asChild size="lg">
+        <Button asChild>
           <Link href="/">홈으로</Link>
         </Button>
       }

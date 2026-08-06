@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { SearchInput, SearchInputItem } from '@/components/core/search-input';
+import { RestaurantIdentityRow } from '@/components/common/restaurant/restaurant-identity-row';
 import { RestaurantThumbnail } from '@/components/common/restaurant/restaurant-thumbnail';
 import { synthesizeEntryFromSuggest } from '@/lib/mock/synthesize-restaurant';
 import { useRankActions, useRankFocusedEntry, useRankQuery } from '../../_lib/region-rank-store';
@@ -107,21 +108,22 @@ export function SearchAutocomplete({ className }: Props) {
           return (
             <SearchInputItem key={item.id} value={value}>
               {/* 썸네일 — 이미지가 없으면 카테고리 아이콘 placeholder(텍스트 없음) */}
-              <div className="size-10 shrink-0 overflow-hidden rounded-md">
+              <div className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
                 <RestaurantThumbnail
                   src=""
                   alt={item.name}
                   category={item.categoryType}
                   showLabel={false}
+                  className="absolute inset-0"
                 />
               </div>
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="text-label-2 truncate">{item.name}</span>
-                <span className="text-caption-2 text-muted-foreground truncate">
-                  {item.address}
-                  {item.category ? ` · ${item.category}` : ''}
-                </span>
-              </div>
+
+              <RestaurantIdentityRow
+                name={item.name}
+                category={item.categoryType}
+                subtitle={item.address}
+                className="flex-1 text-left"
+              />
             </SearchInputItem>
           );
         })}

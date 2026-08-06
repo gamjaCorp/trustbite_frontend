@@ -124,8 +124,8 @@ function RestaurantRankListView({ initialEntries, initialHasMore }: Props) {
           title="아직 기록한 맛집이 없어요"
           description="첫 맛집을 추가하면 나만의 미식 가이드가 시작돼요."
           cta={
-            <Button className="gap-1.5">
-              <Plus className="w-4 h-4" />새 맛집 추가하기
+            <Button>
+              <Plus />새 맛집 추가하기
             </Button>
           }
         />

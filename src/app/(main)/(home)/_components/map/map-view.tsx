@@ -2,6 +2,7 @@
 import { MapPin } from 'lucide-react';
 import type { RegionalRankEntry } from '@/types/restaurant';
 import { type SearchArea } from '@/lib/geo';
+import { EmptyState } from '@/components/core/empty-state';
 import { KakaoMap } from './kakao-map';
 
 export type { SearchArea };
@@ -22,11 +23,12 @@ export function MapView(props: MapViewProps) {
 
   if (!appKey) {
     return (
-      <div className="absolute inset-0 bg-muted/30 flex flex-col items-center justify-center gap-2 text-muted-foreground">
-        <MapPin className="w-8 h-8" />
-        <p className="text-title-3">지도를 불러올 수 없어요</p>
-        <p className="text-caption-2">NEXT_PUBLIC_KAKAO_MAP_APP_KEY 미설정</p>
-      </div>
+      <EmptyState
+        icon={MapPin}
+        title="지도를 불러올 수 없어요"
+        description="NEXT_PUBLIC_KAKAO_MAP_APP_KEY 미설정"
+        className="absolute inset-0 bg-muted/30"
+      />
     );
   }
 

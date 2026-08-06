@@ -1,6 +1,6 @@
 'use client';
 
-import { UserCheck, UserPlus } from 'lucide-react';
+import { UserMinus, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useOptimistic, useTransition } from 'react';
@@ -32,29 +32,23 @@ export function FollowToggleButton({
 
   return (
     <Button
-      size="sm"
-      disabled={isPending}
+      variant={following ? 'outline' : 'default'}
+      size={size === 'sm' ? 'sm' : 'default'}
+      loading={isPending}
       onClick={(e) => {
         e.preventDefault();
         handleToggle();
       }}
-      className={cn(
-        'gap-1.5 rounded-xl shrink-0',
-        size === 'sm' ? 'h-10 px-2.5 text-label-3' : 'h-10 px-3 text-label-2',
-        following
-          ? 'bg-card text-foreground border border-border hover:bg-muted'
-          : 'bg-foreground text-background hover:bg-foreground/90',
-        isPending && 'opacity-60',
-      )}
+      className={cn(following && 'text-muted-foreground')}
     >
       {following ? (
         <>
-          <UserCheck className="w-3.5 h-3.5" />
-          팔로잉
+          <UserMinus />
+          언팔로우
         </>
       ) : (
         <>
-          <UserPlus className="w-3.5 h-3.5" />
+          <UserPlus />
           팔로우
         </>
       )}

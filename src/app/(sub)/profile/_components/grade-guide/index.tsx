@@ -1,5 +1,7 @@
+import { TriangleAlert } from 'lucide-react';
 import type { MyProfileResponse } from '@/types/user';
 import type { Grade } from '@/types/grade';
+import { EmptyState } from '@/components/core/empty-state';
 import { mergeGradeLadder } from '@/lib/domain/grade-levels';
 import { toTrustPercent } from '@/lib/domain/trust-score';
 import { AllGradesTimeline } from './all-grades-timeline';
@@ -20,9 +22,7 @@ export function GradeGuideCard({ profile, grades }: Props) {
 
   if (!myGradeData) {
     return (
-      <div className="px-8 py-10 text-center text-body-2 text-muted-foreground">
-        등급 정보를 불러올 수 없어요
-      </div>
+      <EmptyState icon={TriangleAlert} title="등급 정보를 불러올 수 없어요" className="py-10" />
     );
   }
 

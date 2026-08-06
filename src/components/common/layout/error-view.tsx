@@ -19,11 +19,11 @@ export function ErrorView({ reset }: Props) {
       description="잠시 후 다시 시도해 주세요. 계속 반복되면 새로고침해 주세요."
       cta={
         <div className="flex items-center gap-2">
-          <Button type="button" size="lg" onClick={reset}>
+          <Button type="button" onClick={reset}>
             <RotateCw />
             다시 시도
           </Button>
-          <Button asChild variant="outline" size="lg">
+          <Button asChild variant="outline">
             <Link href="/">홈으로</Link>
           </Button>
         </div>
