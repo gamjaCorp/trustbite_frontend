@@ -80,7 +80,11 @@ export function ConfirmDialog({
           <div className="w-full flex flex-col gap-2.5">
             {primaryAction.href ? (
               <Button asChild variant={primaryVariant} className="w-full h-12 text-title-2 rounded-xl">
-                <Link href={primaryAction.href}>{primaryAction.label}</Link>
+                {/* 링크 이동만으로는 open이 true로 남는다 — 헤더처럼 라우트 전환에도 살아있는 곳에서
+                    띄우면 이동 후에도 다이얼로그가 계속 떠 있어, 이동과 함께 직접 닫는다 */}
+                <Link href={primaryAction.href} onClick={() => onOpenChange(false)}>
+                  {primaryAction.label}
+                </Link>
               </Button>
             ) : (
               <Button

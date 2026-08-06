@@ -1,11 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { SessionProvider } from 'next-auth/react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { BackHeader } from '@/components/common/layout/back-header';
+import type { MyProfileResponse } from '@/types/user';
 
-const MOCK_SESSION = {
-  user: { id: 'mock-user', name: '햄' },
-  expires: '2099-01-01T00:00:00.000Z',
+const MOCK_ME: MyProfileResponse = {
+  userId: 1,
+  email: 'ham@example.com',
+  nickname: '햄',
+  picture: null,
+  grade: 'COLLECTOR',
+  trustScore: 0.72,
+  reviewCount: 37,
+  nextGrade: 'EXPLORER',
+  needCount: 3,
+  needScore: 0.05,
+  createdAt: '2026-01-01T00:00:00',
+  followerCount: 12,
+  followingCount: 8,
 };
 
 const meta = {
@@ -21,7 +32,8 @@ const meta = {
     },
     docs: {
       description: {
-        component: '뒤로가기 + TrustBite 로고 + 우측 내 프로필을 표시하는 페이지 헤더',
+        component:
+          '뒤로가기 + TrustBite 로고 + 우측 내 프로필을 표시하는 페이지 헤더. app/(sub) 그룹 레이아웃이 렌더한다',
       },
     },
   },
@@ -40,22 +52,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: 'Default — 비로그인',
-  decorators: [
-    (Story) => (
-      <SessionProvider session={null}>
-        <Story />
-      </SessionProvider>
-    ),
-  ],
+  args: { me: null },
 };
 
 export const LoggedIn: Story = {
   name: 'LoggedIn — 로그인 상태',
-  decorators: [
-    (Story) => (
-      <SessionProvider session={MOCK_SESSION}>
-        <Story />
-      </SessionProvider>
-    ),
-  ],
+  args: { me: MOCK_ME },
 };

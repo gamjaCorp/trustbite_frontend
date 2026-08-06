@@ -1,0 +1,36 @@
+import { Lock } from 'lucide-react';
+
+import { FollowToggleButton } from '@/components/common/follow/follow-toggle-button';
+
+interface Props {
+  totalCount: number;
+  targetName: string;
+  targetUserId: number;
+}
+
+// 팔로우 전 랭킹 잠금 상태 — Lock 아이콘 + 팔로우 CTA만 표시
+export function LockedRankingsSection({ totalCount, targetName, targetUserId }: Props) {
+  return (
+    <section className="mt-8 space-y-3">
+      <div className="flex items-baseline justify-between px-1">
+        <h2 className="text-title-1 text-foreground">전체 랭킹 {totalCount}곳</h2>
+        <span className="text-caption-2 text-muted-foreground">팔로우하면 열람할 수 있어요</span>
+      </div>
+
+      <div className="rounded-2xl bg-muted/40 border border-border px-6 py-7 flex flex-col items-center gap-3 text-center">
+        <span className="flex items-center justify-center w-10 h-10 rounded-full bg-card border border-border">
+          <Lock className="w-4 h-4 text-muted-foreground" />
+        </span>
+        <p className="text-title-2 text-foreground">
+          팔로우하고 {targetName}님의 {totalCount}곳을 확인해보세요
+        </p>
+        {/* TODO: 1차 MVP 제외 — 포인트 차감 카피 (포인트 시스템 3차 MVP) */}
+        <p className="text-caption-2 text-muted-foreground">
+          팔로우하면 전체 랭킹이 공개돼요
+        </p>
+        {/* 이 섹션 자체가 미팔로우 분기(UserRankingsGate)에서만 렌더되므로 항상 false */}
+        <FollowToggleButton targetUserId={targetUserId} isFollowing={false} size="md" />
+      </div>
+    </section>
+  );
+}

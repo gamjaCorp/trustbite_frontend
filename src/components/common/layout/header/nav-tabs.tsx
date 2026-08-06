@@ -42,7 +42,7 @@ export function NavTabs({ isAuthed }: { isAuthed: boolean }) {
               key={tab.href}
               href={tab.href}
               className={cn(
-                'px-4 pb-2.5 pt-1 transition-colors',
+                'px-4 pb-2 pt-1 transition-colors',
                 isActive
                   ? 'border-b-2 border-primary text-title-2 text-primary'
                   : 'text-body-2 text-muted-foreground hover:text-foreground',

@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { Provider } from 'next-auth/providers';
@@ -84,4 +85,16 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
       return session;
     },
   },
+});
+
+// 요청 단위로 메모이즈한 세션 조회.
+// next-auth의 auth()는 React cache로 감싸져 있지 않아 부를 때마다 JWT를 다시 복호화한다.
+// 레이아웃·헤더·페이지가 각각 부르면 한 요청에 3회가 되므로 여기서 한 번으로 모은다.
+// stale 쿠키 복호화 실패(JWTSessionError)는 앱 크래시 대신 로그아웃 상태로 degrade.
+export const getSession = cache(async () => {
+  try {
+    return await auth();
+  } catch {
+    return null;
+  }
 });
